@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>성분 분석</h1>  
+    <h1>성분분석</h1>  
   </div>
 </template>
 

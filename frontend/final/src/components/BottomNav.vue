@@ -22,7 +22,7 @@ export default {
       tabs: [
         {idx: 0, name: "기록일지", icon: "mdi-calendar-month-outline"},
         {idx: 1, name: "산책", icon: "mdi-dog"},
-        {idx: 2, name: "성분 분석", icon: "mdi-google-analytics"},
+        {idx: 2, name: "성분분석", icon: "mdi-google-analytics"},
         {idx: 3, name: "커뮤니티", icon: "mdi-forum-outline"},
         {idx: 4, name: "마이페이지", icon: "mdi-account"}
       ]
@@ -30,6 +30,7 @@ export default {
   },
   created() {
     this.active_tab = this.getNowTab
+    window.addEventListener('beforeunload', this.setNowTab(0))  
   },
   computed: {
     ...mapGetters(['getNowTab'])
