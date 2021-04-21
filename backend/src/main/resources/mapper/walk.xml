@@ -9,4 +9,10 @@
 		values(#{peid}, now(), 0);
 	</insert>
 
+	<update id="saveRoute" parameterType="map">
+		update walk
+		set w_img=#{url}
+		where wid=#{wid};
+	</update>
+
 </mapper>

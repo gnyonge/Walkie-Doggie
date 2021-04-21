@@ -88,10 +88,19 @@ public class WalkController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
-	// 산책 경로 저장하기
+	/*
+     * 기능: 산책 경로 저장
+     * 
+     * developer: 윤수민
+     * 
+     * @param file, wid
+     * 
+     * @return message
+     */
 	@ApiOperation(value = "Walk Route Insert", notes = "산책 경로 저장")
-	@PostMapping("/routeInsert")
-	public ResponseEntity<Map<String, Object>> insert_route(@RequestPart MultipartFile file) {
+	@PutMapping("/routeInsert")
+	public ResponseEntity<Map<String, Object>> save_route(@RequestParam(value = "wid") int wid,
+	@RequestParam(value = "file") MultipartFile file) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
@@ -115,7 +124,10 @@ public class WalkController {
 			String url = s3util.setS3Client().getUrl(bucket, saveFileName).toString();
 			tempfile.delete();
 			
-			int result =0;
+			Map<String, Object> map = new HashMap<>();
+			map.put("url", url);
+			map.put("wid", wid);
+			int result = walkService.saveRoute(map);
 
 			if (result == 1) {
 				logger.info("=====> 산책 경로 저장 성공");
