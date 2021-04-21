@@ -15,4 +15,10 @@
 		where wid=#{wid};
 	</update>
 
+	<update id="saveDistance" parameterType="map">
+		update walk
+		set w_distance=#{w_distance}
+		where wid=#{wid};
+	</update>
+
 </mapper>

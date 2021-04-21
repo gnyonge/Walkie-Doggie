@@ -13,4 +13,6 @@ public interface WalkDao {
 
     public int saveRoute(Map<String, Object> map);
 
+    public int saveDistance(Map<String, Object> map);
+
 }

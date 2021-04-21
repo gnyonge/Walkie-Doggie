@@ -148,4 +148,48 @@ public class WalkController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
+	/*
+     * 기능: 산책 거리 저장
+     * 
+     * developer: 윤수민
+     * 
+     * @param w_distance, wid
+     * 
+     * @return message
+     */
+	@ApiOperation(value = "Walk Route Insert", notes = "산책 거리 저장")
+	@PutMapping("/routeInsert")
+	public ResponseEntity<Map<String, Object>> save_distance(@RequestParam(value = "w_distance") int w_distance,
+	@RequestParam(value = "wid") int wid) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+
+		try {
+			logger.info("=====> 산책 거리 저장 시작");
+			
+			Map<String, Object> map = new HashMap<>();
+			map.put("w_distance", w_distance);
+			map.put("wid", wid);
+
+			int result = walkService.saveDistance(map);
+
+			if (result == 1) {
+				logger.info("=====> 산책 거리 저장 성공");
+				resultMap.put("message", "산책 거리 저장에 성공하였습니다.");
+				status = HttpStatus.ACCEPTED;
+			} else {
+				logger.info("=====> 산책 거리 저장 실패");
+				resultMap.put("message", "산책 거리 저장에 실패하였습니다.");
+				status = HttpStatus.NOT_FOUND;
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error("산책 거리 저장 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
 }
