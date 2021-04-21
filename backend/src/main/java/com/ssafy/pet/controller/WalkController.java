@@ -27,6 +27,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.ssafy.pet.dto.WalkDto;
+import com.ssafy.pet.service.WalkService;
 import com.ssafy.pet.util.S3Util;
 
 import io.swagger.annotations.Api;
@@ -43,53 +45,95 @@ public class WalkController {
 
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;
+
+	@Autowired
+    private WalkService walkService;
 	
-	// 산책 경로 저장하기
-		@ApiOperation(value = "Walk Route Insert", notes = "산책 경로 저장")
-		@PostMapping("/insert")
-		public ResponseEntity<Map<String, Object>> save_route(@RequestPart MultipartFile file) {
-			Map<String, Object> resultMap = new HashMap<>();
-			HttpStatus status = null;
+	/*
+     * 기능: 산책 정보 저장
+     * 
+     * developer: 윤수민
+     * 
+     * @param WalkDto(peid)
+     * 
+     * @return message, wid
+     */
+    @ApiOperation(value = "Walk Info Insert", notes = "산책 시작 시 산책 정보 저장")
+    @PostMapping("/insert")
+    public ResponseEntity<Map<String, Object>> insert_walk(@RequestBody WalkDto walkDto) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        
+        try {
+			logger.info("=====> 산책 정보 저장 시작");
+            
+			int result = walkService.createWalk(walkDto);
 
-			try {
-				logger.info("=====> 산책 경로 저장 시작");
-				String originName = file.getOriginalFilename(); // 파일 이름 가져오기
-
-				String ext = originName.substring(originName.lastIndexOf('.')); // 파일 확장명 가져오기
-				String saveFileName = UUID.randomUUID().toString() + ext; // 암호화해서 파일확장넣어주기
-				String path = System.getProperty("user.dir"); // 경로설정해주고
-
-				File tempfile = new File(path, saveFileName); // 경로에 파일만들어주고
-
-				String line = "walk/";
-
-				saveFileName = line + saveFileName;
-
-				file.transferTo(tempfile);
-				s3util.setS3Client().putObject(new PutObjectRequest(bucket, saveFileName, tempfile)
-						.withCannedAcl(CannedAccessControlList.PublicRead));
-				String url = s3util.setS3Client().getUrl(bucket, saveFileName).toString();
-				tempfile.delete();
-				
-				int result =0;
-
-				if (result == 1) {
-					logger.info("=====> 산책 경로 저장 성공");
-					resultMap.put("message", "산책 경로 저장에 성공하였습니다.");
-					status = HttpStatus.ACCEPTED;
-				} else {
-					logger.info("=====> 산책 경로 저장 실패");
-					resultMap.put("message", "산책 경로 저장에 실패하였습니다.");
-					status = HttpStatus.NOT_FOUND;
-				}
-
-			} catch (Exception e) {
-				// TODO: handle exception
-				logger.error("산책 경로 저장 실패 : {}", e);
-				resultMap.put("message", e.getMessage());
-				status = HttpStatus.INTERNAL_SERVER_ERROR;
+			if(result == 1){
+				logger.info("=====> 산책 정보 저장 성공");
+				resultMap.put("message", "산책 정보 저장에 성공하였습니다.");
+				resultMap.put("wid", walkDto.getWid());
+				status = HttpStatus.ACCEPTED;
+			}else {
+				logger.info("=====> 산책 정보 저장 실패");
+				resultMap.put("message", "산책 정보 저장에 실패하였습니다.");
+				status = HttpStatus.NOT_FOUND;
 			}
-			return new ResponseEntity<Map<String, Object>>(resultMap, status);
+
+        } catch (Exception e) {
+            logger.error("산책 정보 저장 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+	// 산책 경로 저장하기
+	@ApiOperation(value = "Walk Route Insert", notes = "산책 경로 저장")
+	@PostMapping("/routeInsert")
+	public ResponseEntity<Map<String, Object>> insert_route(@RequestPart MultipartFile file) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+
+		try {
+			logger.info("=====> 산책 경로 저장 시작");
+			String originName = file.getOriginalFilename(); // 파일 이름 가져오기
+
+			String ext = originName.substring(originName.lastIndexOf('.')); // 파일 확장명 가져오기
+			String saveFileName = UUID.randomUUID().toString() + ext; // 암호화해서 파일확장넣어주기
+			String path = System.getProperty("user.dir"); // 경로설정해주고
+
+			File tempfile = new File(path, saveFileName); // 경로에 파일만들어주고
+
+			String line = "walk/";
+
+			saveFileName = line + saveFileName;
+
+			file.transferTo(tempfile);
+			s3util.setS3Client().putObject(new PutObjectRequest(bucket, saveFileName, tempfile)
+					.withCannedAcl(CannedAccessControlList.PublicRead));
+			String url = s3util.setS3Client().getUrl(bucket, saveFileName).toString();
+			tempfile.delete();
+			
+			int result =0;
+
+			if (result == 1) {
+				logger.info("=====> 산책 경로 저장 성공");
+				resultMap.put("message", "산책 경로 저장에 성공하였습니다.");
+				status = HttpStatus.ACCEPTED;
+			} else {
+				logger.info("=====> 산책 경로 저장 실패");
+				resultMap.put("message", "산책 경로 저장에 실패하였습니다.");
+				status = HttpStatus.NOT_FOUND;
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error("산책 경로 저장 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 
 }
