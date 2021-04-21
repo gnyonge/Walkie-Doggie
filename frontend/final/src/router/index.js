@@ -6,6 +6,8 @@ import Food from '../views/Food.vue'
 import Community from '../views/Community.vue'
 import MyPage from '../views/MyPage.vue'
 
+import StartWalk from '../components/Walk/StartWalk.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -23,6 +25,11 @@ const routes = [
     path: '/walk',
     name: 'Walk',
     component: Walk
+  },
+  {
+    path: '/startwalk',
+    name: 'StartWalk',
+    component: StartWalk
   },
   {
     path: '/food',

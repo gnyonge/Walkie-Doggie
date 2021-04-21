@@ -1,11 +1,14 @@
 <template>
   <div>
-    <h1>산책</h1>  
+    <MainWalk/>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Walk',
+  components: {
+    MainWalk: () => import('@/components/Walk/MainWalk'),
+  }
 }
 </script>
