@@ -149,37 +149,32 @@ public class WalkController {
 	}
 
 	/*
-     * 기능: 산책 거리 저장
+     * 기능: 산책 종료 시 시간, 거리 저장
      * 
      * developer: 윤수민
      * 
-     * @param w_distance, wid
+     * @param wid, w_distance, w_time
      * 
      * @return message
      */
-	@ApiOperation(value = "Walk Route Insert", notes = "산책 거리 저장")
-	@PutMapping("/routeInsert")
-	public ResponseEntity<Map<String, Object>> save_distance(@RequestParam(value = "w_distance") int w_distance,
-	@RequestParam(value = "wid") int wid) {
+	@ApiOperation(value = "End Walking", notes = "산책 종료")
+	@PutMapping("/end")
+	public ResponseEntity<Map<String, Object>> save_end(@RequestBody Map<String, Object> param) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
-			logger.info("=====> 산책 거리 저장 시작");
-			
-			Map<String, Object> map = new HashMap<>();
-			map.put("w_distance", w_distance);
-			map.put("wid", wid);
+			logger.info("=====> 산책 종료 시작");
 
-			int result = walkService.saveDistance(map);
+			int result = walkService.saveEnd(param);
 
 			if (result == 1) {
-				logger.info("=====> 산책 거리 저장 성공");
-				resultMap.put("message", "산책 거리 저장에 성공하였습니다.");
+				logger.info("=====> 산책 종료 성공");
+				resultMap.put("message", "산책 종료에 성공하였습니다.");
 				status = HttpStatus.ACCEPTED;
 			} else {
-				logger.info("=====> 산책 거리 저장 실패");
-				resultMap.put("message", "산책 거리 저장에 실패하였습니다.");
+				logger.info("=====> 산책 종료 실패");
+				resultMap.put("message", "산책 종료에 실패하였습니다.");
 				status = HttpStatus.NOT_FOUND;
 			}
 

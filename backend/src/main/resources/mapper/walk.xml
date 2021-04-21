@@ -15,9 +15,9 @@
 		where wid=#{wid};
 	</update>
 
-	<update id="saveDistance" parameterType="map">
+	<update id="saveEnd" parameterType="map">
 		update walk
-		set w_distance=#{w_distance}
+		set w_distance=#{w_distance}, w_time=#{w_time}
 		where wid=#{wid};
 	</update>
 

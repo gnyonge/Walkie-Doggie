@@ -10,6 +10,6 @@ public interface WalkService {
 
     public int saveRoute(Map<String, Object> map);
 
-    public int saveDistance(Map<String, Object> map);
+    public int saveEnd(Map<String, Object> map);
 
 }

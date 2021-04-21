@@ -16,7 +16,7 @@ public class WalkDto {
     private String peid;
     private String w_img;
     private float w_distance;
-    private String w_time;
+    private int w_time;
     private String w_date;
     private int w_flag;
 }
