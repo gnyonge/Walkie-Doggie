@@ -3,6 +3,7 @@ package com.ssafy.pet.service;
 import java.util.Map;
 
 import com.ssafy.pet.dao.WalkDao;
+import com.ssafy.pet.dto.PlaceDto;
 import com.ssafy.pet.dto.WalkDto;
 
 import org.apache.ibatis.session.SqlSession;
@@ -36,7 +37,27 @@ public class WalkServiceImpl implements WalkService{
     }
 
     @Override
-    public int createPlace(Map<String, Object> param) {
+    public PlaceDto createPlace(Map<String, Object> param) {
         return sqlSession.getMapper(WalkDao.class).createPlace(param);
+    }
+
+    @Override
+    public int clickPlace(Map<String, Object> param) {
+        return sqlSession.getMapper(WalkDao.class).clickPlace(param);
+    }
+
+    @Override
+    public int getPid(Map<String, Object> param) {
+        return sqlSession.getMapper(WalkDao.class).getPid(param);
+    }
+
+    @Override
+    public int minusPlace(int pid) {
+        return sqlSession.getMapper(WalkDao.class).minusPlace(pid);
+    }
+
+    @Override
+    public int plusPlace(int pid) {
+        return sqlSession.getMapper(WalkDao.class).plusPlace(pid);
     }
 }

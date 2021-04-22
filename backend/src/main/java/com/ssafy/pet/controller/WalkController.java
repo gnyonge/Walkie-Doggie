@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.ssafy.pet.dto.PlaceDto;
 import com.ssafy.pet.dto.WalkDto;
 import com.ssafy.pet.service.WalkService;
 import com.ssafy.pet.util.S3Util;
@@ -206,13 +207,37 @@ public class WalkController {
 			logger.info("=====> 장소 클릭 시작");
             
 			// 등록된 장소인지 먼저 확인
-			int pid = walkService.checkPlace(param);
+			int pCount = walkService.checkPlace(param);
 
-			if(pid == 0){
+			if(pCount == 0){
 				// 등록되지 않은 장소인 경우이므로 PlaceDTO 생성
-				int result1 = walkService.createPlace(param);
-				if(result1 == 1){
+				
+				// 싫어요/좋아요 누른 경우에 따라 PlaceDTO 카운트 초기 설정
+				if((int)param.get("isLike") == 0){
+					param.put("p_like", 0);
+					param.put("p_hate", 1);
+				}else{
+					param.put("p_like", 1);
+					param.put("p_hate", 0);
+				}
+
+				PlaceDto placeDto = walkService.createPlace(param);
+
+				if(placeDto != null){
 					logger.info("=====> 장소 생성 성공");
+					param.put("pid", placeDto.getPid());
+					
+					int result = walkService.clickPlace(param);
+
+					if (result == 1) {
+						logger.info("=====> 좋아요/싫어요 성공");
+						resultMap.put("message", "좋아요/싫어요 성공하였습니다.");
+						status = HttpStatus.ACCEPTED;
+					} else {
+						logger.info("=====> 좋아요/싫어요 실패");
+						resultMap.put("message", "좋아요/싫어요 실패하였습니다.");
+						status = HttpStatus.NOT_FOUND;
+					}
 
 				}else{
 					logger.info("=====> 장소 생성 실패");
@@ -220,11 +245,53 @@ public class WalkController {
 				status = HttpStatus.NOT_FOUND;
 				}
 			}else{
-				
+				// 등록되어 있는 장소이므로 좋아요/싫어요 카운트 처리
+				int pid = walkService.getPid(param);
+				param.put("pid", pid);
+
+				int result = walkService.clickPlace(param);
+
+				if (result == 1) {
+					logger.info("=====> 좋아요/싫어요 성공");
+					
+					// likeplace에서만 처리된 상태, place 테이블의 카운트 처리
+					if((int)param.get("isLike") == 0){
+						int result2 = walkService.minusPlace(pid);
+
+						if (result2 == 1) {
+							logger.info("=====> 좋아요/싫어요 카운트 처리 성공");
+							resultMap.put("message", "좋아요/싫어요 카운트 처리 성공하였습니다.");
+							status = HttpStatus.ACCEPTED;
+						} else {
+							logger.info("=====> 좋아요/싫어요 실패");
+							resultMap.put("message", "좋아요/싫어요 실패하였습니다.");
+							status = HttpStatus.NOT_FOUND;
+						}
+
+					}else{
+						int result2 = walkService.plusPlace(pid);
+
+						if (result2 == 1) {
+							logger.info("=====> 좋아요/싫어요 카운트 처리 성공");
+							resultMap.put("message", "좋아요/싫어요 카운트 처리 성공하였습니다.");
+							status = HttpStatus.ACCEPTED;
+						} else {
+							logger.info("=====> 좋아요/싫어요 카운트 처리 실패");
+							resultMap.put("message", "좋아요/싫어요 카운트 처리 실패하였습니다.");
+							status = HttpStatus.NOT_FOUND;
+						}
+
+					}
+
+				} else {
+					logger.info("=====> 좋아요/싫어요 실패");
+					resultMap.put("message", "좋아요/싫어요 실패하였습니다.");
+					status = HttpStatus.NOT_FOUND;
+				}
 			}
 
         } catch (Exception e) {
-            logger.error("좋아요/싫아요 처리 실패 : {}", e);
+            logger.error("좋아요/싫어요 처리 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
