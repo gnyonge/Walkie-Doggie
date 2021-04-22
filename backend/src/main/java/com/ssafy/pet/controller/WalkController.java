@@ -180,7 +180,7 @@ public class WalkController {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("산책 거리 저장 실패 : {}", e);
+			logger.error("산책 종료 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}

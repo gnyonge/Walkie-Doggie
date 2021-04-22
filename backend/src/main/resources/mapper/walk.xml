@@ -4,7 +4,7 @@
 	
 <mapper namespace="com.ssafy.pet.dao.WalkDao">
 	
-	<insert id="createWalk" parameterType="WalkDto" useGeneratedKeys="true" keyColumn="wid" >
+	<insert id="createWalk" parameterType="WalkDto" useGeneratedKeys="true" keyProperty="wid" keyColumn="wid" >
 		insert into walk(peid, w_date, w_flag)
 		values(#{peid}, now(), 0);
 	</insert>

@@ -27,6 +27,6 @@ public class WalkServiceImpl implements WalkService{
 
     @Override
     public int saveEnd(Map<String, Object> map) {
-        return sqlSession.getMapper(WalkDao.class).saveDistance(map);
+        return sqlSession.getMapper(WalkDao.class).saveEnd(map);
     }
 }
