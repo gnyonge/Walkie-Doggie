@@ -4,6 +4,7 @@
 	
 <mapper namespace="com.ssafy.pet.dao.WalkDao">
 	
+	<!-- 경로 & 시간 -->
 	<insert id="createWalk" parameterType="WalkDto" useGeneratedKeys="true" keyProperty="wid" keyColumn="wid" >
 		insert into walk(peid, w_date, w_flag)
 		values(#{peid}, now(), 0);
@@ -20,5 +21,17 @@
 		set w_distance=#{w_distance}, w_time=#{w_time}
 		where wid=#{wid};
 	</update>
+
+	<!-- 장소 좋아요/싫어요 -->
+	<select id="checkPlace" parameterType="map" resultType="PlaceDto">
+		select count(*)
+		from place
+		where p_latitude=#{p_latitude} and p_longtitude = #{p_longtitude}
+	</select>
+
+	<insert id="createPlace" parameterType="map" useGeneratedKeys="true" keyProperty="pid" keyColumn="pid" >
+		insert into place(p_latitude, p_longtitude, p_like, p_hate, w_flag)
+		values(#{p_latitude}, #{p_longtitude}, 0, 0, 0);
+	</insert>
 
 </mapper>

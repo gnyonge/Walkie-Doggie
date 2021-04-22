@@ -187,4 +187,48 @@ public class WalkController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
+	/*
+     * 기능: 산책 중 특정 장소 클릭 시 좋아요/ 싫어요
+     * 
+     * developer: 윤수민
+     * 
+     * @param p_latitude, p_longtitude, pe_id, w_id, isLike
+     * 
+     * @return message
+     */
+    @ApiOperation(value = "Like/unlike place", notes = "산책 중 특정 장소 클릭 시 좋아요/싫어요")
+    @PostMapping("/clickPlace")
+    public ResponseEntity<Map<String, Object>> like_place(@RequestBody Map<String, Object> param) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        
+        try {
+			logger.info("=====> 장소 클릭 시작");
+            
+			// 등록된 장소인지 먼저 확인
+			int pid = walkService.checkPlace(param);
+
+			if(pid == 0){
+				// 등록되지 않은 장소인 경우이므로 PlaceDTO 생성
+				int result1 = walkService.createPlace(param);
+				if(result1 == 1){
+					logger.info("=====> 장소 생성 성공");
+
+				}else{
+					logger.info("=====> 장소 생성 실패");
+					resultMap.put("message", "산책 종료에 실패하였습니다.");
+				status = HttpStatus.NOT_FOUND;
+				}
+			}else{
+				
+			}
+
+        } catch (Exception e) {
+            logger.error("좋아요/싫아요 처리 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
 }

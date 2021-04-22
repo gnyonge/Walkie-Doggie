@@ -14,6 +14,7 @@ import lombok.ToString;
 public class LikePlaceDto {
     private int pid;
     private String peid;
+    private int wid;
     private int isLike;
     private int lp_flag;
 }

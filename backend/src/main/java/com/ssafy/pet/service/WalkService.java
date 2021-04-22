@@ -12,4 +12,8 @@ public interface WalkService {
 
     public int saveEnd(Map<String, Object> map);
 
+    public int checkPlace(Map<String, Object> param);
+
+    public int createPlace(Map<String, Object> param);
+
 }

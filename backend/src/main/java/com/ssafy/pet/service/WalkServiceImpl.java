@@ -29,4 +29,14 @@ public class WalkServiceImpl implements WalkService{
     public int saveEnd(Map<String, Object> map) {
         return sqlSession.getMapper(WalkDao.class).saveEnd(map);
     }
+
+    @Override
+    public int checkPlace(Map<String, Object> param) {
+        return sqlSession.getMapper(WalkDao.class).checkPlace(param);
+    }
+
+    @Override
+    public int createPlace(Map<String, Object> param) {
+        return sqlSession.getMapper(WalkDao.class).createPlace(param);
+    }
 }
