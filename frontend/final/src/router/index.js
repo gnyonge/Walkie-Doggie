@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Calendar from '../views/Calendar.vue'
+import Calendar from '../views/calendar/Calendar.vue'
 import Walk from '../views/Walk.vue'
 import Food from '../views/Food.vue'
 import Community from '../views/Community.vue'
 import MyPage from '../views/MyPage.vue'
+import TodayDiary from '../views/calendar/TodayDiary.vue'
+import TodayWalk from '../views/calendar/TodayWalk.vue'
 
 Vue.use(VueRouter)
 
@@ -17,8 +19,30 @@ const routes = [
   {
     path: '/calendar',
     name: 'Calendar',
-    component: Calendar
+    component: Calendar,
+    children: [
+      {
+        path: 'todaydiary',
+        name: 'TodayDiary',
+        component: TodayDiary
+      },
+      {
+        path: 'todaywalk',
+        name: 'TodayWalk',
+        component: TodayWalk
+      },
+    ]
   },
+  // {
+  //   path: '/calendar/todaydiary',
+  //   name: 'TodayDiary',
+  //   component: TodayDiary
+  // },
+  // {
+  //   path: '/calendar/todaywalk',
+  //   name: 'TodayWalk',
+  //   component: TodayWalk
+  // },
   {
     path: '/walk',
     name: 'Walk',
