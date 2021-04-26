@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Calendar from '../views/Calendar.vue'
-import Walk from '../views/Walk.vue'
+import Walk from '../views/Walk/Walk.vue'
 import Food from '../views/Food.vue'
 import Community from '../views/Community.vue'
+
 import MyPage from '../views/mypage/MyPage.vue'
 import Login from '../views/Login.vue'
 import LoginMain from '../views/LoginMain.vue'
@@ -14,6 +15,9 @@ import DogRegister2 from '../views/register/DogRegister2.vue'
 import DogChange from '../views/mypage/DogChange.vue'
 import Health from '../views/mypage/Health.vue'
 import InfoChange from '../views/mypage/InfoChange.vue'
+
+import StartWalk from '../views/Walk/StartWalk.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -31,6 +35,11 @@ const routes = [
     path: '/walk',
     name: 'Walk',
     component: Walk
+  },
+  {
+    path: '/startwalk',
+    name: 'StartWalk',
+    component: StartWalk
   },
   {
     path: '/food',
