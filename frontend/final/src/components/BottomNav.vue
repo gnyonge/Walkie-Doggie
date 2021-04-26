@@ -31,6 +31,7 @@ export default {
   created() {
     this.active_tab = this.getNowTab
     window.addEventListener('beforeunload', this.setNowTab(0))  
+    console.log('오예')
   },
   computed: {
     ...mapGetters(['getNowTab'])
