@@ -27,6 +27,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.ssafy.pet.dto.UserDto;
+import com.ssafy.pet.service.UserService;
 import com.ssafy.pet.util.S3Util;
 
 import io.swagger.annotations.Api;
@@ -39,10 +41,14 @@ public class UserController {
 	
 	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
+	private UserService userservice;
+	
+	@Autowired
 	private S3Util s3util;
 
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;
+	
 	
 	// 게시물 등록하기
 		@ApiOperation(value = "Community Post Insert", notes = "커뮤니티 글 등록")
@@ -91,5 +97,84 @@ public class UserController {
 			}
 			return new ResponseEntity<Map<String, Object>>(resultMap, status);
 		}
+		
+		//로그인하기
+		@ApiOperation(value = "User Signup", notes = "자체로그인 회원가입")
+		@PostMapping("/signup")
+		public ResponseEntity<Map<String, Object>> signup(@RequestBody UserDto user) {
+			Map<String, Object> resultMap = new HashMap<>();
+			HttpStatus status = null;
+
+			try {
+				logger.info("=====> 자체 회원가입 시작");
+				//uid 만들어야해
+				StringBuffer made = new StringBuffer();
+
+				for (int i = 0; i < 6; i++) {
+					char a = (char) ((Math.random() * 26) + 97); // 소문자
+					int ann = (int) (Math.random() * 9) + 1; // 숫자
+					made.append(a);
+					made.append(ann);
+				}
+
+				char b = (char) ((Math.random() * 26) + 97);
+				made.append(b);
+				System.out.println(made);
+				String line = made.toString();
+				user.setUid(line);
+				
+				int result = userservice.signup(user);
+				
+				if (result == 1) {
+					logger.info("=====> 자체회원가입 가능");
+					resultMap.put("message", "회원가입에 성공하였습니다.");
+					status = HttpStatus.ACCEPTED;
+				} else {
+					logger.info("=====> 자체 회원가입 실패");
+					resultMap.put("message", "회원가입에 실패하였습니다.");
+					status = HttpStatus.NOT_FOUND;
+				}
+
+			} catch (Exception e) {
+				// TODO: handle exception
+				logger.error("자체 회원가입 실패 : {}", e);
+				resultMap.put("message", e.getMessage());
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+			}
+			return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		}
+		
+		@ApiOperation(value = "NickName Overlap Check", notes = "닉네임 중복 체크")
+		@GetMapping("/check/{nick}")
+		public ResponseEntity<Map<String, Object>> allList(@PathVariable String nick) {
+			Map<String, Object> resultMap = new HashMap<>();
+			HttpStatus status = null;
+
+			try {
+				logger.info("=====> 닉네임 중복 체크");
+
+				int result = userservice.check_nick(nick);
+				boolean flag = false;
+				
+				if(result >=1) {
+					resultMap.put("message", "사용중인 닉네임입니다.");
+					resultMap.put("flag", flag);
+				}else {
+					flag = true;
+					resultMap.put("message", "사용가능한 닉네임입니다.");
+					resultMap.put("flag", flag);
+				}
+				status = HttpStatus.ACCEPTED;
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				logger.error("닉네임 중복 체크 실패 : {}", e);
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+				e.printStackTrace();
+			}
+
+			return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		}
+
 
 }
