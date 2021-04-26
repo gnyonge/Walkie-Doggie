@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Calendar from '../views/Calendar.vue'
-import Walk from '../views/Walk.vue'
+import Walk from '../views/Walk/Walk.vue'
 import Food from '../views/Food.vue'
 import Community from '../views/Community.vue'
 import MyPage from '../views/MyPage.vue'
 
-import StartWalk from '../components/Walk/StartWalk.vue'
+import StartWalk from '../views/Walk/StartWalk.vue'
 
 Vue.use(VueRouter)
 
