@@ -159,6 +159,7 @@ import { mapGetters, mapMutations } from 'vuex'
       deleteHealth(hth) {
         const index = this.healthArray.indexOf(hth);
         this.healthArray.splice(index, 1);
+        console.log('무야호')
       },
     }
   }
