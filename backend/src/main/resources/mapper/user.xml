@@ -5,7 +5,7 @@
 <mapper namespace="com.ssafy.pet.dao.UserDao">
 
 	<insert id="signup" parameterType="UserDto">
-		insert into user(uid, u_email, u_password, u_location, u_nickname)
+		insert into User(uid, u_email, u_password, u_location, u_nickname)
 		values(#{uid}, #{u_email}, #{u_password}, #{u_location}, #{u_nickname})
 	</insert>
 	
