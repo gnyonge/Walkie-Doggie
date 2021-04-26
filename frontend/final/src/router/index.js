@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Calendar from '../views/Calendar.vue'
+
+import Calendar from '../views/calendar/Calendar.vue'
+import Food from '../views/Food.vue'
+import TodayDiary from '../views/calendar/TodayDiary.vue'
+import TodayWalk from '../views/calendar/TodayWalk.vue'
+
 import Walk from '../views/Walk/Walk.vue'
 import Food from '../views/Food.vue'
 import Community from '../views/Community.vue'
@@ -18,6 +23,7 @@ import InfoChange from '../views/mypage/InfoChange.vue'
 
 import StartWalk from '../views/Walk/StartWalk.vue'
 
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -29,8 +35,30 @@ const routes = [
   {
     path: '/calendar',
     name: 'Calendar',
-    component: Calendar
+    component: Calendar,
+    children: [
+      {
+        path: 'todaydiary',
+        name: 'TodayDiary',
+        component: TodayDiary
+      },
+      {
+        path: 'todaywalk',
+        name: 'TodayWalk',
+        component: TodayWalk
+      },
+    ]
   },
+  // {
+  //   path: '/calendar/todaydiary',
+  //   name: 'TodayDiary',
+  //   component: TodayDiary
+  // },
+  // {
+  //   path: '/calendar/todaywalk',
+  //   name: 'TodayWalk',
+  //   component: TodayWalk
+  // },
   {
     path: '/walk',
     name: 'Walk',
