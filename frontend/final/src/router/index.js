@@ -1,12 +1,28 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
 import Calendar from '../views/calendar/Calendar.vue'
-import Walk from '../views/Walk.vue'
 import Food from '../views/Food.vue'
-import Community from '../views/Community.vue'
-import MyPage from '../views/MyPage.vue'
 import TodayDiary from '../views/calendar/TodayDiary.vue'
 import TodayWalk from '../views/calendar/TodayWalk.vue'
+
+import Walk from '../views/Walk/Walk.vue'
+import Food from '../views/Food.vue'
+import Community from '../views/Community.vue'
+
+import MyPage from '../views/mypage/MyPage.vue'
+import Login from '../views/Login.vue'
+import LoginMain from '../views/LoginMain.vue'
+import Signup from '../views/Signup.vue'
+import Register from '../views/register/Register.vue'
+import DogRegister from '../views/register/DogRegister.vue'
+import DogRegister2 from '../views/register/DogRegister2.vue'
+import DogChange from '../views/mypage/DogChange.vue'
+import Health from '../views/mypage/Health.vue'
+import InfoChange from '../views/mypage/InfoChange.vue'
+
+import StartWalk from '../views/Walk/StartWalk.vue'
+
 
 Vue.use(VueRouter)
 
@@ -49,6 +65,11 @@ const routes = [
     component: Walk
   },
   {
+    path: '/startwalk',
+    name: 'StartWalk',
+    component: StartWalk
+  },
+  {
     path: '/food',
     name: 'Food',
     component: Food
@@ -62,6 +83,51 @@ const routes = [
     path: '/mypage',
     name: 'MyPage',
     component: MyPage
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/loginmain',
+    name: 'LoginMain',
+    component: LoginMain
+  },
+  {
+    path: '/signup',
+    name: 'Signup',
+    component: Signup
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
+  {
+    path: '/dogregister',
+    name: 'DogRegister',
+    component: DogRegister
+  },
+  {
+    path: '/dogregisternext',
+    name: 'DogRegister2',
+    component: DogRegister2
+  },
+  {
+    path: '/dogchange',
+    name: 'DogChange',
+    component: DogChange
+  },
+  {
+    path: '/health',
+    name: 'Health',
+    component: Health
+  },
+  {
+    path: '/infochange',
+    name: 'InfoChange',
+    component: InfoChange
   },
   // {
   //   path: '/about',
