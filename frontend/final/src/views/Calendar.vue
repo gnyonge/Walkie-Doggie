@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>기록 일지</h1>  
+    <h1>기록일지</h1>  
   </div>
 </template>
 
