@@ -11,13 +11,14 @@
       ></b-calendar>
     </div>
     <div>
-      <div v-if="value" class="d-flex justify-center my-2 font-weight-bold" style="height: 40px;"><h3>오늘의 날짜는?</h3></div>
-      <div v-if="value" class="d-flex justify-center my-2 font-weight-bold" style="height: 40px;"><h3>{{context}}</h3></div>
-      <div v-if="value" style="height: 56px;" class="d-flex justify-center align-center">
+      <div v-if="value" id="date"><h4 class="my-5">오늘의 날짜는?🐶</h4></div>
+      <div v-if="value" id="date"><h5 class="mt-5">{{context}}</h5></div>
+      <v-divider id="divider"></v-divider>
+      <div v-if="value" id="writebtns">
         <div><p class="my-0">오늘 일기 써주실거죠?</p></div>
         <WritePage />
       </div>
-      <div v-if="value" style="height: 56px; margin-top: 10px;" class="d-flex justify-center align-center">
+      <div v-if="value" id="writebtns">
         <div><p class="my-0">산책 기록 보러가기</p></div>
         <DiaryDetail />
       </div>
@@ -52,10 +53,29 @@ export default {
 <style>
 #mybox {
   background-color: white;
-  padding-top: 10px;
+  padding-top: 20px;
   width: 100%;
+  border: 1px;
+  border-color: red;
 }
 .b-calendar-grid-body div.col {
   height: 60px;
 }
+#divider {
+  margin: 20px;
+}
+#date {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  height: 40px;
+}
+#writebtns {
+  height: 56px; 
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
 </style>

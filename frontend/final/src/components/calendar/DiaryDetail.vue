@@ -20,7 +20,7 @@
         </v-icon>
       </v-btn>
       </template>
-      <v-card style="background-color: #FDF8F2">
+      <v-card>
         <v-toolbar
           dark
           color="#DEB98B"
@@ -32,23 +32,13 @@
           >
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title class="mx-12">마이펫다이어리</v-toolbar-title>
+          <v-toolbar-title class="mx-16">My Pet Diary</v-toolbar-title>
           <v-spacer></v-spacer>
         </v-toolbar>
-        <v-list
-          three-line
-          subheader
-          style="background-color: #FDF8F2"
-        >
-          <v-list-item>
-            <v-list-item-content>
-              <div class="d-flex justify-center">
-              <v-btn class="d-inline" @click="todaydiary()">오늘의 일기</v-btn>
-              <v-btn class="d-inline" @click="todaywalk()">산책 기록</v-btn>
+              <div class="d-flex justify-center my-5">
+              <v-btn rounded @click="todaydiary()" id="btnstyle" :class="{diary: isDiary}">오늘의 일기</v-btn>
+              <v-btn rounded @click="todaywalk()" id="btnstyle" :class="{diary: !isDiary}">산책 기록</v-btn>
               </div>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
         <router-view></router-view>
       </v-card>
     </v-dialog>
@@ -63,13 +53,16 @@ export default {
         notifications: false,
         sound: true,
         widgets: false,
+        isDiary: false,
       }
     },
   methods: {
     todaydiary() {
+      this.isDiary = true
       if (this.$route.path!=='/calendar/todaydiary') this.$router.push({ name: "TodayDiary" })
     },
     todaywalk() {
+      this.isDiary = false
       if (this.$route.path!=='/calendar/todaywalk') this.$router.push({ name: "TodayWalk" })
     }
   }
@@ -77,5 +70,20 @@ export default {
 </script>
 
 <style>
-
+#btnstyle {
+  display: inline;
+  margin-left: 2px;
+  margin-right: 2px;
+  width: 110px;
+  background-color: #5EBC88;
+  color: white;
+  cursor: pointer; 
+  outline: none; 
+  box-shadow: 1px 4px 0 rgb(0,0,0,0.5);
+}
+.diary {
+  box-shadow: 1px 1px 0 rgb(0,0,0,0.5) !important;
+  position: relative; 
+  top:2px; 
+}
 </style>
