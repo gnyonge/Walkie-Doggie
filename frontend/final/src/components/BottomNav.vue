@@ -66,13 +66,6 @@ export default {
 }
 </script>
 <style>
-#nav {
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  height: 70px !important;
-  padding-top: 10px;
-}
 span {
   margin-top: 8px;
   color: black;
