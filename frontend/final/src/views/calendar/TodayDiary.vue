@@ -1,31 +1,80 @@
 <template>
-  <div>
+<div>
     <div v-if="diary">
       <div id="myimg"><img id="imgsize" src="@/assets/pet.png"></div>
       <div id="mydiv"><h3>{{getSelectedDate}}</h3></div>
       <div id="mydiv"><h3>아직 일기가 없어요 ㅠ_ㅠ</h3></div>
       <div class="d-flex justify-center align-center my-2" style="height: 40px;"><div>일기 써주실거죠? 멍멍!</div><div><WritePage /></div></div>
     </div>
-    <div v-else>
-      <div id="mydiv"><h3>{{getSelectedDate}}</h3></div>
-      <div class="mx-3"><img id="myimg2" src="@/assets/pet.png"></div>
-      <div id="contentbox"><div id="contentbox">ssssss</div></div>
-      <v-list-item-title id="contentbox2" class="font-weight-bold">특이사항</v-list-item-title>
-      <div id="contentbox"><div id="contentbox">ssssss</div></div>
-      <v-list-item-title id="contentbox2" class="font-weight-bold">건강사항</v-list-item-title>
-      <div class="mx-4">
-        <v-chip
+  <v-card
+    v-else
+    class="mx-auto"
+    max-width="374"
+  >
+    <template slot="progress">
+      <v-progress-linear
+        color="deep-purple"
+        height="10"
+        indeterminate
+      ></v-progress-linear>
+    </template>
+    <div class="mx-2">
+    <v-img
+      width="100%"
+      src="@/assets/diarydogs.jpg"
+    ></v-img>
+    </div>
+
+    <v-card-title>{{ getSelectedDate }}</v-card-title>
+    <!-- 일지 내용 -->
+    <v-card-text>
+      <div>친구들이랑 한강가서 놀았다 ㅎㅎ 친구들 귀욥</div>
+    </v-card-text>
+
+    <v-divider class="mx-4"></v-divider>
+    <!-- 특이사항 -->
+    <v-card-title>특이사항</v-card-title>
+
+    <v-card-text>
+      <li>기침함</li>
+      <li>사회화 잘 되는중</li>
+    </v-card-text>
+
+    <v-divider class="mx-4"></v-divider>
+    <!-- 건강사항 -->
+    <v-card-title>건강사항</v-card-title>
+
+    <v-card-text>
+      <v-chip
           id="chips"
           v-for="(hth, idx) in healthArray"
           :key="idx"
           class="mx-1 my-1"
           color="#EDD9BF"
+          text-color="white"
         >
           {{ hth }}
         </v-chip>
-      </div>
-    </div>
-  </div>
+    </v-card-text>
+
+    <v-card-actions class="d-flex justify-end">
+      <v-btn
+        color="#5EBC88"
+        text
+      >
+        수정
+      </v-btn>
+      <v-btn
+        color="#5EBC88"
+        text
+      >
+        삭제
+      </v-btn>
+    </v-card-actions>
+  </v-card>
+</div>
+
+
 </template>
 
 <script>
@@ -67,10 +116,5 @@ export default {
 #contentbox2 {
   padding-left: 12px;
   padding-right: 12px;
-  
 }
-#chips {
-  color: white;
-}
-
 </style>
