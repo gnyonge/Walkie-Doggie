@@ -1,7 +1,10 @@
 <template>
   <div class="">
     <div class="m-3">
-      <h1>예방접종 & 약</h1>
+      <h1>통계</h1>
+    </div>
+    <div class="m-3">
+      <h1>2021년 4월 4째주</h1>
     </div>
     <!-- 목록 --> 
     <div class="health-box d-flex align-items-center">  

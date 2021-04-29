@@ -23,6 +23,7 @@ import DogRegister2 from '../views/register/DogRegister2.vue'
 import DogChange from '../views/mypage/DogChange.vue'
 import Health from '../views/mypage/Health.vue'
 import InfoChange from '../views/mypage/InfoChange.vue'
+import Statistics from '../views/mypage/Statistics.vue'
 
 
 
@@ -126,6 +127,19 @@ const routes = [
     name: 'InfoChange',
     component: InfoChange
   },
+  {
+    path: '/statistics',
+    name: 'Statistics',
+    component: Statistics
+  },
+  // {
+  //   path: '/about',
+  //   name: 'About',
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  // }
 ]
 
 const router = new VueRouter({

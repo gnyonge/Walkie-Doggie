@@ -2,9 +2,9 @@
   <div class="register-btn-pd">
     <h1 class="text-center mb-5">반려견 등록</h1>
       <div class="d-flex justify-center">
-        <div class="circle">
+        <router-link to="/dogregisternext"><div class="circle ">
           <p>+ 반려견 등록</p>
-        </div> 
+        </div></router-link>
       </div>
       <div class="d-flex justify-center mt-15">
         <div>
@@ -36,5 +36,38 @@ export default {
   line-height: 200px;
   color: white;
   margin-top: 30%;
+}
+.filebox label {
+  display: inline-block;
+  color: #fff;
+  background-color: #DEB98B;
+  cursor: pointer;
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  font-size: 24px;
+  text-align:center;
+  line-height: 150px;
+}
+
+.filebox label:hover {
+  background-color: #cc9653;
+}
+
+.filebox label:active {
+  background-color: #754812;
+}
+
+.filebox input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 </style>

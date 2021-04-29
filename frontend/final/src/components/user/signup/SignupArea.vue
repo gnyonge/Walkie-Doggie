@@ -4,7 +4,7 @@
     <div class="login-center">
       <v-form>
         <v-flex class="ph-size">
-          <h1 class="text-center mb-5">회원가입</h1>
+          <h1 class="text-center mb-5 mt-5">회원가입</h1>
           <v-text-field name="nickname" label="닉네임" id="nickname" v-model="nickname" type="nickname" required></v-text-field>
           <v-btn>중복확인</v-btn>
         </v-flex>
@@ -13,7 +13,7 @@
           <v-btn>인증번호 전송</v-btn>
         </v-flex>
         <v-flex class="ph-size">
-          <v-text-field name="password" label="인증번호" id="code" v-model="code" type="code" required></v-text-field>
+          <v-text-field name="code" label="인증번호" id="code" v-model="code" type="code" required></v-text-field>
           <v-btn>확인</v-btn>
         </v-flex>
         <v-flex class="ph-size">
@@ -24,7 +24,7 @@
         </v-flex>
       </v-form>
       <div class="login-btn-pd">
-        <v-btn class="login-btn">회원가입</v-btn>
+        <router-link to="/register"><v-btn class="login-btn" >회원가입</v-btn></router-link>
       </div>
     </div>
   </div>
@@ -33,7 +33,15 @@
 
 <script>
 export default {
-  
+  data () {
+    return {
+      email: '',
+      password: '',
+      code: '',
+      passwordcheck: '',
+      nickname: '',
+    }
+  }
 }
 </script>
 <style scoped>
