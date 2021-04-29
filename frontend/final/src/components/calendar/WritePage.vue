@@ -47,12 +47,13 @@
           three-line
           subheader
         >
-          <v-subheader class="mt-4">{{getSelectedDate}}</v-subheader>
+          <v-subheader class="mt-4 font-weight-bold d-flex justify-center" style="font-size: 25px">{{getSelectedDate}}</v-subheader>
           <v-list-item>
             <v-list-item-content>
               <!-- <v-list-item-title>일지 내용</v-list-item-title> -->
               <v-textarea
                 v-model="diaryContent"
+                
                 label="일지 내용"
                 auto-grow
                 outlined
@@ -65,7 +66,7 @@
         <v-divider></v-divider>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title>사진 첨부</v-list-item-title>
+              <v-list-item-title style="font-size: 20px">사진 첨부</v-list-item-title>
               <v-file-input
                 multiple
                 color="#5EBC88"
@@ -204,5 +205,8 @@ import { mapGetters, mapMutations } from 'vuex'
 }
 .v-list {
   padding-bottom: 0px !important;
+}
+.v-label {
+  font-size: 20px !important;
 }
 </style>

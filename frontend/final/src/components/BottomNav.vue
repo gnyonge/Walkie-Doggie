@@ -29,8 +29,10 @@ export default {
     }
   },
   created() {
+    if (this.$route.name == 'Home') {
+      this.setNowTab(0)
+      }
     this.active_tab = this.getNowTab
-    window.addEventListener('beforeunload', this.setNowTab(0))  
   },
   computed: {
     ...mapGetters(['getNowTab'])
@@ -39,9 +41,6 @@ export default {
     getNowTab(newVal) {
       this.active_tab = newVal
     },
-    active_tab(newVal) {
-      this.setNowTab(newVal)
-    }
   },
   methods: {
     ...mapMutations(['setNowTab']),
@@ -49,18 +48,23 @@ export default {
       if (idx == 0) {
         if (this.$route.path!=='/calendar') this.$router.push('/calendar')
         this.active_tab = 0
+        this.setNowTab(0)
       } else if (idx == 1) {
           if (this.$route.path!=='/walk') this.$router.push('/walk')
           this.active_tab = 1
+          this.setNowTab(1)
       } else if (idx == 2) {
           if (this.$route.path!=='/food') this.$router.push('/food')
           this.active_tab = 2
+          this.setNowTab(2)
       } else if (idx == 3) {
           if (this.$route.path!=='/community') this.$router.push('/community')
           this.active_tab = 3
+          this.setNowTab(3)
       } else if (idx == 4) {
           if (this.$route.path!=='/mypage') this.$router.push('/mypage')
           this.active_tab = 4
+          this.setNowTab(4)
       }
   }}
 }
