@@ -1,7 +1,7 @@
 <template>
   <v-app id="back">
     <TopNav id="top"/>
-    <router-view style="padding-top: 70px;"></router-view>
+    <router-view style="padding-top: 80px; padding-bottom: 70px;"></router-view>
     <BottomNav id="bottom"/>
   </v-app>
 </template>
@@ -24,7 +24,7 @@ export default {
 };
 </script>
 <style>
-@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);
+@import url(https://fonts.googleapis.com/earlyaccess/jejugothic.css);
 #back {
   background-color: #FDF8F2;
   font-family: "Jeju Gothic", serif;
