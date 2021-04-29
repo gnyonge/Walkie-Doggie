@@ -24,7 +24,7 @@ export default {
 };
 </script>
 <style>
-@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);
+@import url(https://fonts.googleapis.com/earlyaccess/jejugothic.css);
 #back {
   background-color: #FDF8F2;
   font-family: "Jeju Gothic", serif;
