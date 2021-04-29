@@ -13,8 +13,12 @@
       </v-btn>
       </router-link>
         
-      <div class="logo mt-2">
-        <v-img src="../../assets/images/서비스로고예시.png" class="logo-img" alt=""></v-img>
+      <div class="mt-2">
+        <v-img src="../../assets/images/서비스로고예시.png" 
+        class="rounded-circle" height="158"
+        max-height="158"
+        max-width="158" alt="">
+        </v-img>
       </div>
       <div>
         <p>나이: 2살</p>

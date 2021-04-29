@@ -19,6 +19,7 @@ import DogRegister2 from '../views/register/DogRegister2.vue'
 import DogChange from '../views/mypage/DogChange.vue'
 import Health from '../views/mypage/Health.vue'
 import InfoChange from '../views/mypage/InfoChange.vue'
+import Statistics from '../views/mypage/Statistics.vue'
 
 import StartWalk from '../views/Walk/StartWalk.vue'
 
@@ -127,6 +128,11 @@ const routes = [
     path: '/infochange',
     name: 'InfoChange',
     component: InfoChange
+  },
+  {
+    path: '/statistics',
+    name: 'Statistics',
+    component: Statistics
   },
   // {
   //   path: '/about',
