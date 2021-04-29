@@ -6,7 +6,11 @@ import TodayDiary from '../views/calendar/TodayDiary.vue'
 import TodayWalk from '../views/calendar/TodayWalk.vue'
 
 import Walk from '../views/Walk/Walk.vue'
-import Food from '../views/Food.vue'
+import StartWalk from '../views/Walk/StartWalk.vue'
+
+import Food from '../views/food/Food.vue'
+import FoodResult from '../views/food/FoodResult.vue'
+
 import Community from '../views/Community.vue'
 
 import MyPage from '../views/mypage/MyPage.vue'
@@ -20,7 +24,6 @@ import DogChange from '../views/mypage/DogChange.vue'
 import Health from '../views/mypage/Health.vue'
 import InfoChange from '../views/mypage/InfoChange.vue'
 
-import StartWalk from '../views/Walk/StartWalk.vue'
 
 
 Vue.use(VueRouter)
@@ -48,16 +51,6 @@ const routes = [
       },
     ]
   },
-  // {
-  //   path: '/calendar/todaydiary',
-  //   name: 'TodayDiary',
-  //   component: TodayDiary
-  // },
-  // {
-  //   path: '/calendar/todaywalk',
-  //   name: 'TodayWalk',
-  //   component: TodayWalk
-  // },
   {
     path: '/walk',
     name: 'Walk',
@@ -72,6 +65,11 @@ const routes = [
     path: '/food',
     name: 'Food',
     component: Food
+  },
+  {
+    path: '/food/result',
+    name: 'FoodResult',
+    component: FoodResult
   },
   {
     path: '/community',
@@ -128,14 +126,6 @@ const routes = [
     name: 'InfoChange',
     component: InfoChange
   },
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // }
 ]
 
 const router = new VueRouter({
