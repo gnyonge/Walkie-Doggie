@@ -150,45 +150,6 @@ public class WalkController {
 	}
 
 	/*
-     * 기능: 산책 종료 시 시간, 거리 저장
-     * 
-     * developer: 윤수민
-     * 
-     * @param wid, w_distance, w_time
-     * 
-     * @return message
-     */
-	@ApiOperation(value = "End Walking", notes = "산책 종료")
-	@PutMapping("/end")
-	public ResponseEntity<Map<String, Object>> save_end(@RequestBody Map<String, Object> param) {
-		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = null;
-
-		try {
-			logger.info("=====> 산책 종료 시작");
-
-			int result = walkService.saveEnd(param);
-
-			if (result == 1) {
-				logger.info("=====> 산책 종료 성공");
-				resultMap.put("message", "산책 종료에 성공하였습니다.");
-				status = HttpStatus.ACCEPTED;
-			} else {
-				logger.info("=====> 산책 종료 실패");
-				resultMap.put("message", "산책 종료에 실패하였습니다.");
-				status = HttpStatus.NOT_FOUND;
-			}
-
-		} catch (Exception e) {
-			// TODO: handle exception
-			logger.error("산책 종료 실패 : {}", e);
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
-
-	/*
      * 기능: 산책 중 특정 장소 클릭 시 좋아요/ 싫어요
      * 
      * developer: 윤수민
