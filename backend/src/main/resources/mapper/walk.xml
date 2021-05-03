@@ -6,8 +6,8 @@
 	
 	<!-- 경로 & 시간 -->
 	<insert id="createWalk" parameterType="WalkDto" useGeneratedKeys="true" keyProperty="wid" keyColumn="wid" >
-		insert into Walk(peid, w_img, w_distance, w_time, w_date, w_flag, w_like)
-		values(#{peid}, #{w_img}, #{w_distance}, #{w_time}, now(), 0, #{w_like});
+		insert into Walk(peid, w_img, w_distance, w_time, w_date, w_flag, w_like, w_likeList)
+		values(#{peid}, #{w_img}, #{w_distance}, #{w_time}, now(), 0, #{w_like}, #{w_likeList});
 	</insert>
 
 	<update id="saveRoute" parameterType="map">

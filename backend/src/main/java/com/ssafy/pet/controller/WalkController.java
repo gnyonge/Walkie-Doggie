@@ -55,7 +55,7 @@ public class WalkController {
      * 
      * developer: 윤수민
      * 
-     * @param WalkDto(peid)
+     * @param WalkDto
      * 
      * @return message, wid
      */

@@ -16,6 +16,5 @@ public class PlaceDto {
     private float p_latitude;
     private float p_longtitude;
     private int p_like;
-    private int p_hate;
     private int p_flag;
 }

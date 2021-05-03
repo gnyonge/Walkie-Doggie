@@ -12,9 +12,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class LikePlaceDto {
+    private int lid;
     private int pid;
     private String peid;
-    private int wid;
-    private int isLike;
-    private int lp_flag;
+    private int uid;
+    private int l_like;
+    private int l_hate;
+    private String l_image;
+    private String l_desc;
+    private int l_flag;
 }
