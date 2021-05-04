@@ -6,7 +6,7 @@
         <v-flex class="ph-size">
           <h1 class="text-center mb-5 mt-5">회원가입</h1>
           <v-text-field name="nickname" label="닉네임" id="nickname" v-model="nickname" type="nickname" required></v-text-field>
-          <v-btn>중복확인</v-btn>
+          <v-btn color="#DEB98B" style="color:white; font-weight: 400 ;">중복확인</v-btn>
         </v-flex>
         <v-flex class="ph-size">
           <v-text-field name="email" label="이메일주소" id="email" v-model="email" type="email" required></v-text-field>
