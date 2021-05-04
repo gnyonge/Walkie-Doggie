@@ -53,7 +53,7 @@ public class PlaceController {
     private PlaceService placeService;
 
 	/*
-     * 기능: 산책 중 특정 장소 좋아요 클리
+     * 기능: 산책 중 특정 장소 좋아요 클릭
      * 
      * developer: 윤수민
      * 
@@ -74,15 +74,12 @@ public class PlaceController {
 			// 등록된 장소인지 먼저 확인
 			Integer pid = placeService.checkPlace(param); 
 			if(pid == null){ // 등록되지 않은 장소
-				
 				pid = placeService.createPlace(param);
-
-				if(pid != 0){
+				if(pid != 0){		
 					logger.info("=====> 장소 생성 성공");
 					param.put("pid", pid);
-					
 					int result = placeService.clickPlace(param);
-
+					
 					logger.info("=====> 좋아요 성공");
 					resultMap.put("message", "장소 생성 후 좋아요 성공하였습니다.");
 					status = HttpStatus.ACCEPTED;
@@ -95,7 +92,6 @@ public class PlaceController {
 					// 	resultMap.put("message", "장소 생성 후 좋아요 실패하였습니다.");
 					// 	status = HttpStatus.NOT_FOUND;
 					// }
-
 				}else{
 					logger.info("=====> 장소 생성 실패");
 					resultMap.put("message", "장소 생성에 실패하였습니다.");
@@ -103,24 +99,17 @@ public class PlaceController {
 				}
 			}else{ // 기존에 등록된 장소
 				logger.info("=====> 기존 등록된 장소");
-
 				param.put("pid", pid);
-
 				int result = placeService.checkLike(param);
-
 				if(result == 0){ // 해당 강아지가 해당 장소 좋아요 누른 적 없는 경우
-					
 					int result2 = placeService.clickPlace(param);
-
 					if (result2 == 1) {
 						logger.info("=====> 좋아요 성공");
-
 						int result3 = placeService.plusPlace(pid);
-
+						
 						logger.info("=====> 카운트 처리 성공");
 						resultMap.put("message", "기존 등록된 장소 좋아요 카운트 처리 성공하였습니다.");
 						status = HttpStatus.ACCEPTED;
-
 						// if(result3 == 1){
 						// 	logger.info("=====> 카운트 처리 성공");
 						// 	resultMap.put("message", "기존 등록된 장소 좋아요 카운트 처리 성공하였습니다.");
@@ -130,21 +119,17 @@ public class PlaceController {
 						// 	resultMap.put("message", "기존 등록된 장소 좋아요 카운트 처리 실패하였습니다.");
 						// 	status = HttpStatus.NOT_FOUND;
 						// }
-
 					} else {
 						logger.info("=====> 좋아요 실패");
 						resultMap.put("message", "기존 등록된 장소 좋아요 실패하였습니다.");
 						status = HttpStatus.NOT_FOUND;
 					}
-
 				}else{
 					logger.info("=====> 좋아요 중복");
 						resultMap.put("message", "기존에 좋아요를 눌렀던 장소입니다.");
 						status = HttpStatus.NOT_FOUND;
 				}	
-
-			}
-			
+			}			
         } catch (Exception e) {
             logger.error("좋아요 처리 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
@@ -158,24 +143,22 @@ public class PlaceController {
      * 
      * developer: 윤수민
      * 
-     * @param : LikePlaceDto(lid, l_image, l_desc), login_id
+     * @param : LikePlaceDto(lid,l_image,l_desc), login_id
      * 
      * @return : message
      */
 	@ApiOperation(value = "Modify place", notes = "좋아요 누른 장소 게시글 수정")
-    @PutMapping("/modify")
+    @PutMapping("/modify/{login_id}")
     public ResponseEntity<Map<String, Object>> modifyPlace(@RequestBody LikePlaceDto likePlaceDto,
-            @RequestParam(value = "login_id") String login_id) {
+            @PathVariable("login_id") String login_id) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         
         try {
 			logger.info("place/modify 호출 성공");
-
             Map<String, Object> map = new HashMap<>();
             map.put("lid", likePlaceDto.getLid());
             map.put("login_id", login_id);
-
             if (placeService.isWriter(map) != 0) { // 로그인한 계정이 작성자가 맞는 경우
                 if (placeService.modifyPlace(likePlaceDto) == 1) {
 					logger.info("=====> 장소 게시글 수정 성공");
@@ -190,6 +173,54 @@ public class PlaceController {
 
         } catch (Exception e) {
 			logger.error("좋아요 게시글 수정 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+	/*
+     * 기능: 좋아요 포스트 삭제
+     * 
+     * developer: 윤수민
+     * 
+     * @param : lid, login_id
+     * 
+     * @return : message
+     */
+    @DeleteMapping("/delete/{login_id}")
+    public ResponseEntity<Map<String, Object>> deletePlace(@RequestParam(value = "lid") int lid, @RequestParam(value = "pid") int pid,
+            @PathVariable("login_id") String login_id) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.ACCEPTED;
+        
+        try {
+			logger.info("place/delete 호출성공");
+            Map<String, Object> map = new HashMap<>();
+            map.put("lid", lid);
+            map.put("login_id", login_id);
+            if (placeService.isWriter(map) != 0) { // 로그인한 계정이 작성자가 맞는 경우
+                if (placeService.deletePlace(lid) >= 1) {
+					logger.info("=====> 장소 게시글 삭제 성공");
+
+					int result = placeService.minusPlace(pid);
+					if(result != 0){
+						resultMap.put("message", "장소 게시글 삭제 완료하였습니다.");
+						status = HttpStatus.ACCEPTED;
+					}else{
+						resultMap.put("message", "장소 게시글 삭제 성공 후 카운트 처리에 실패하였습니다.");
+						status = HttpStatus.ACCEPTED;
+					}
+					
+                }
+            } else {
+                logger.info("=====> 작성자가 아님");
+                resultMap.put("message", "게시글 작성자만 삭제할 수 있습니다.");
+				status = HttpStatus.NOT_FOUND;
+            }
+
+        } catch (Exception e) {
+            logger.error("좋아요 게시글 삭제 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }

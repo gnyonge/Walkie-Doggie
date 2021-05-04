@@ -47,4 +47,17 @@
 		where lid=#{lid};
 	</update>
 
+	<!-- 장소 삭제 -->
+	<update id="deletePlace" parameterType="int">
+		update LikePlace
+		set l_flag = 1
+		where lid=#{lid};
+	</update>
+
+	<update id="minusPlace" parameterType="int">
+		update Place
+		set p_like = p_like - 1
+		where pid=#{pid} and p_like!=0;
+	</update>
+
 </mapper>

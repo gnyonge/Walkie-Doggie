@@ -19,5 +19,9 @@ public interface PlaceService {
 	public int isWriter(Map<String, Object> map);
 
     public int modifyPlace(LikePlaceDto likePlaceDto);
+
+	public int deletePlace(int lid);
+
+	public int minusPlace(int pid);
     
 }

@@ -49,4 +49,14 @@ public class PlaceServiceImpl implements PlaceService{
         return pdao.modifyPlace(likePlaceDto);
     }
 
+    @Override
+    public int deletePlace(int lid) {
+        return pdao.deletePlace(lid);
+    }
+
+    @Override
+    public int minusPlace(int pid) {
+        return pdao.minusPlace(pid);
+    }
+
 }
