@@ -10,9 +10,6 @@
       label-help
       ></b-calendar>
     </v-card>
-        <div id="mainBox">새로운 카드</div>
-    <v-btn id="mainBtn">새로운 버튼</v-btn>
-    <v-btn id="mainBtn">새로운 버튼</v-btn>
     <v-card
     v-if="value"
     class="m-2 p-2"
@@ -27,7 +24,7 @@
       </div>
       <div v-if="value" id="writebtns">
         <div><p class="my-0">산책 기록 보러가기</p></div>
-        <v-btn id="mainBtn" @click="goto('walk')">산책기록</v-btn>
+        <v-btn id="mainBtn" @click="goto('todaywalk')">산책기록</v-btn>
       </div>
     </v-card>
 </div>
