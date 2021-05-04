@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 import com.ssafy.pet.dao.PlaceDao;
+import com.ssafy.pet.dto.LikePlaceDto;
 
 @Service
 public class PlaceServiceImpl implements PlaceService{
@@ -36,6 +37,16 @@ public class PlaceServiceImpl implements PlaceService{
     @Override
     public int checkLike(Map<String, Object> map) {
         return pdao.checkLike(map);
+    }
+
+    @Override
+    public int isWriter(Map<String, Object> map) {
+        return pdao.isWriter(map);
+    }
+
+    @Override
+    public int modifyPlace(LikePlaceDto likePlaceDto) {
+        return pdao.modifyPlace(likePlaceDto);
     }
 
 }

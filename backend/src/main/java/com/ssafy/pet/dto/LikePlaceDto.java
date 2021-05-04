@@ -15,9 +15,8 @@ public class LikePlaceDto {
     private int lid;
     private int pid;
     private String peid;
-    private int uid;
+    private String uid;
     private int l_like;
-    private int l_hate;
     private String l_image;
     private String l_desc;
     private int l_flag;

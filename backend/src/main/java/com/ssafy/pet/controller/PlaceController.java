@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.ssafy.pet.dto.LikePlaceDto;
 import com.ssafy.pet.dto.PlaceDto;
 import com.ssafy.pet.dto.WalkDto;
 import com.ssafy.pet.service.WalkService;
@@ -68,7 +69,7 @@ public class PlaceController {
         HttpStatus status = null;
         
         try {
-			logger.info("=====> 장소 좋아요 시작");
+			logger.info("place/likePlace 호출 성공");
             
 			// 등록된 장소인지 먼저 확인
 			Integer pid = placeService.checkPlace(param); 
@@ -146,6 +147,49 @@ public class PlaceController {
 			
         } catch (Exception e) {
             logger.error("좋아요 처리 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+	/*
+     * 기능: 좋아요 포스트 수정
+     * 
+     * developer: 윤수민
+     * 
+     * @param : LikePlaceDto(lid, l_image, l_desc), login_id
+     * 
+     * @return : message
+     */
+	@ApiOperation(value = "Modify place", notes = "좋아요 누른 장소 게시글 수정")
+    @PutMapping("/modify")
+    public ResponseEntity<Map<String, Object>> modifyPlace(@RequestBody LikePlaceDto likePlaceDto,
+            @RequestParam(value = "login_id") String login_id) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        
+        try {
+			logger.info("place/modify 호출 성공");
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("lid", likePlaceDto.getLid());
+            map.put("login_id", login_id);
+
+            if (placeService.isWriter(map) != 0) { // 로그인한 계정이 작성자가 맞는 경우
+                if (placeService.modifyPlace(likePlaceDto) == 1) {
+					logger.info("=====> 장소 게시글 수정 성공");
+					resultMap.put("message", "장소 게시글 수정 완료하였습니다.");
+					status = HttpStatus.ACCEPTED;
+                }
+            } else {
+				logger.info("=====> 작성자가 아님");
+                resultMap.put("message", "게시글 작성자만 수정할 수 있습니다.");
+				status = HttpStatus.NOT_FOUND;
+            }
+
+        } catch (Exception e) {
+			logger.error("좋아요 게시글 수정 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }

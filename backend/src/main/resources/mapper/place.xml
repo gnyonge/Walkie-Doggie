@@ -34,4 +34,17 @@
 		where pid=#{pid};
 	</update>
 
+	<!-- 장소 수정 -->
+	<select id="isWriter" parameterType="map" resultType="int" >
+		select count(*)
+		from LikePlace
+		where lid=#{lid} and uid = #{login_id};
+	</select>
+
+	<update id="modifyPlace" parameterType="LikePlaceDto">
+		update LikePlace
+		set l_image = #{l_image}, l_desc = #{l_desc}
+		where lid=#{lid};
+	</update>
+
 </mapper>
