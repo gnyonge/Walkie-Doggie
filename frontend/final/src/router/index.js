@@ -5,9 +5,9 @@ import Calendar from '../views/calendar/Calendar.vue'
 import TodayDiary from '../views/calendar/TodayDiary.vue'
 import TodayWalk from '../views/calendar/TodayWalk.vue'
 
-import Walk from '../views/Walk/Walk.vue'
-import StartWalk from '../views/Walk/StartWalk.vue'
-import HotPlace from '../views/Walk/HotPlace.vue'
+import Walk from '../views/walk/Walk.vue'
+import StartWalk from '../views/walk/StartWalk.vue'
+import HotPlace from '../views/walk/HotPlace.vue'
 
 import Food from '../views/food/Food.vue'
 import FoodResult from '../views/food/FoodResult.vue'

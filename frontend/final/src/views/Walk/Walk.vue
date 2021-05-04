@@ -8,7 +8,7 @@
 export default {
   name: 'Walk',
   components: {
-    MainWalk: () => import('../../components/Walk/MainWalk'),
+    MainWalk: () => import('../../components/walk/MainWalk'),
   }
 }
 </script>
