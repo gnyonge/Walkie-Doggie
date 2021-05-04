@@ -32,7 +32,7 @@ public class WalkServiceImpl implements WalkService{
     }
 
     @Override
-    public int checkPlace(Map<String, Object> param) {
+    public Integer checkPlace(Map<String, Object> param) {
         return sqlSession.getMapper(WalkDao.class).checkPlace(param);
     }
 
@@ -47,17 +47,12 @@ public class WalkServiceImpl implements WalkService{
     }
 
     @Override
-    public int getPid(Map<String, Object> param) {
-        return sqlSession.getMapper(WalkDao.class).getPid(param);
-    }
-
-    @Override
-    public int minusPlace(int pid) {
-        return sqlSession.getMapper(WalkDao.class).minusPlace(pid);
-    }
-
-    @Override
     public int plusPlace(int pid) {
         return sqlSession.getMapper(WalkDao.class).plusPlace(pid);
+    }
+
+    @Override
+    public int checkLike(Map<String, Object> map) {
+        return sqlSession.getMapper(WalkDao.class).checkLike(map);
     }
 }

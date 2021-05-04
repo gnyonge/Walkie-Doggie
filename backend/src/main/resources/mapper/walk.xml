@@ -17,16 +17,11 @@
 	</update>
 
 	<!-- 장소 좋아요 -->
-	<select id="checkPlace" parameterType="map" resultType="int" >
-		select count(*)
+	<select id="checkPlace" parameterType="map" resultType="Integer" >
+		select pid
 		from Place
-		where p_latitude=#{p_latitude} and p_longtitude = #{p_longtitude}
+		where p_latitude=#{p_latitude} and p_longtitude = #{p_longtitude};
 	</select>
-
-	<!-- <insert id="createPlace" parameterType="map" useGeneratedKeys="true" keyProperty="pid" keyColumn="pid" >
-		insert into Place(p_latitude, p_longtitude, p_like, p_flag)
-		values(#{p_latitude}, #{p_longtitude}, 1, 0);
-	</insert> -->
 
 	<select id="createPlace" parameterType="map" resultType="integer">
 		insert into Place(p_latitude, p_longtitude, p_like, p_flag)
@@ -39,16 +34,16 @@
 		values(#{pid}, #{peid}, #{uid}, #{l_image}, #{l_desc}, 0, 0);
 	</insert>
 
+	<select id="checkLike" parameterType="map" resultType="int" >
+		select count(*)
+		from LikePlace
+		where peid=#{peid} and pid = #{pid};
+	</select>
+
 	<update id="plusPlace" parameterType="int">
-		update Likeplace
+		update Place
 		set p_like = p_like + 1
 		where pid=#{pid};
 	</update>
-
-	<select id="getPid" parameterType="map">
-		select pid
-		from Place
-		where p_latitude=#{p_latitude} and p_longtitude = #{p_longtitude}
-	</select>
 
 </mapper>

@@ -158,16 +158,8 @@ public class WalkController {
      * 
      * @return message
 	 * 
-	 * {
-  "p_latitude": 0,
-  "p_longtitude": 1,
-  "peid": "petpetpetpet1",
-  "uid": "adminadmin123",
-  "l_image": "string",
-  "l_desc": "string"
-}
      */
-    @ApiOperation(value = "Like/unlike place", notes = "산책 중 특정 장소 좋아요 클릭")
+    @ApiOperation(value = "Like place", notes = "산책 중 특정 장소 좋아요 클릭")
     @PostMapping("/likePlace")
     public ResponseEntity<Map<String, Object>> likePlace(@RequestBody Map<String, Object> param) {
         Map<String, Object> resultMap = new HashMap<>();
@@ -177,10 +169,11 @@ public class WalkController {
 			logger.info("=====> 장소 좋아요 시작");
             
 			// 등록된 장소인지 먼저 확인
-			int pCnt = walkService.checkPlace(param); 
-			if(pCnt==0){ // 등록되지 않은 장소
+			Integer pid = walkService.checkPlace(param); 
+			logger.info("!!!!!pid: "+pid);
+			if(pid == null){ // 등록되지 않은 장소
 				
-				int pid = walkService.createPlace(param);
+				pid = walkService.createPlace(param);
 
 				if(pid != 0){
 					logger.info("=====> 장소 생성 성공");
@@ -206,14 +199,43 @@ public class WalkController {
 			}else{ // 기존에 등록된 장소
 				logger.info("=====> 기존 등록된 장소");
 
+				param.put("pid", pid);
 
+				int result = walkService.checkLike(param);
 
-				
-				resultMap.put("message", "중복되는 장소입니다");
-				status = HttpStatus.NOT_FOUND;
+				if(result == 0){ // 해당 강아지가 해당 장소 좋아요 누른 적 없는 경우
+					
+					int result2 = walkService.clickPlace(param);
+
+					if (result2 == 1) {
+						logger.info("=====> 좋아요 성공");
+
+						int result3 = walkService.plusPlace(pid);
+
+						if(result3 == 1){
+							logger.info("=====> 카운트 처리 성공");
+							resultMap.put("message", "기존 등록된 장소 좋아요 카운트 처리 성공하였습니다.");
+							status = HttpStatus.ACCEPTED;
+						}else{
+							logger.info("=====> 좋아요 실패");
+							resultMap.put("message", "기존 등록된 장소 좋아요 카운트 처리 실패하였습니다.");
+							status = HttpStatus.NOT_FOUND;
+						}
+
+					} else {
+						logger.info("=====> 좋아요 실패");
+						resultMap.put("message", "기존 등록된 장소 좋아요 실패하였습니다.");
+						status = HttpStatus.NOT_FOUND;
+					}
+
+				}else{
+					logger.info("=====> 좋아요 중복");
+						resultMap.put("message", "기존에 좋아요를 눌렀던 장소입니다.");
+						status = HttpStatus.NOT_FOUND;
+				}	
+
 			}
 			
-
         } catch (Exception e) {
             logger.error("좋아요 처리 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
@@ -221,115 +243,5 @@ public class WalkController {
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
-
-	// /*
-    //  * 기능: 산책 중 특정 장소 클릭 시 좋아요/ 싫어요
-    //  * 
-    //  * developer: 윤수민
-    //  * 
-    //  * @param p_latitude, p_longtitude, pe_id, w_id, isLike
-    //  * 
-    //  * @return message
-    //  */
-    // @ApiOperation(value = "Like/unlike place", notes = "산책 중 특정 장소 클릭 시 좋아요/싫어요")
-    // @PostMapping("/clickPlace")
-    // public ResponseEntity<Map<String, Object>> like_place(@RequestBody Map<String, Object> param) {
-    //     Map<String, Object> resultMap = new HashMap<>();
-    //     HttpStatus status = null;
-        
-    //     try {
-	// 		logger.info("=====> 장소 클릭 시작");
-            
-	// 		// 등록된 장소인지 먼저 확인
-	// 		int pCount = walkService.checkPlace(param);
-
-	// 		if(pCount == 0){
-	// 			// 등록되지 않은 장소인 경우이므로 PlaceDTO 생성
-				
-	// 			// 싫어요/좋아요 누른 경우에 따라 PlaceDTO 카운트 초기 설정
-	// 			if((int)param.get("isLike") == 0){
-	// 				param.put("p_like", 0);
-	// 				param.put("p_hate", 1);
-	// 			}else{
-	// 				param.put("p_like", 1);
-	// 				param.put("p_hate", 0);
-	// 			}
-
-	// 			PlaceDto placeDto = walkService.createPlace(param);
-
-	// 			if(placeDto != null){
-	// 				logger.info("=====> 장소 생성 성공");
-	// 				param.put("pid", placeDto.getPid());
-					
-	// 				int result = walkService.clickPlace(param);
-
-	// 				if (result == 1) {
-	// 					logger.info("=====> 좋아요/싫어요 성공");
-	// 					resultMap.put("message", "좋아요/싫어요 성공하였습니다.");
-	// 					status = HttpStatus.ACCEPTED;
-	// 				} else {
-	// 					logger.info("=====> 좋아요/싫어요 실패");
-	// 					resultMap.put("message", "좋아요/싫어요 실패하였습니다.");
-	// 					status = HttpStatus.NOT_FOUND;
-	// 				}
-
-	// 			}else{
-	// 				logger.info("=====> 장소 생성 실패");
-	// 				resultMap.put("message", "산책 종료에 실패하였습니다.");
-	// 			status = HttpStatus.NOT_FOUND;
-	// 			}
-	// 		}else{
-	// 			// 등록되어 있는 장소이므로 좋아요/싫어요 카운트 처리
-	// 			int pid = walkService.getPid(param);
-	// 			param.put("pid", pid);
-
-	// 			int result = walkService.clickPlace(param);
-
-	// 			if (result == 1) {
-	// 				logger.info("=====> 좋아요/싫어요 성공");
-					
-	// 				// likeplace에서만 처리된 상태, place 테이블의 카운트 처리
-	// 				if((int)param.get("isLike") == 0){
-	// 					int result2 = walkService.minusPlace(pid);
-
-	// 					if (result2 == 1) {
-	// 						logger.info("=====> 좋아요/싫어요 카운트 처리 성공");
-	// 						resultMap.put("message", "좋아요/싫어요 카운트 처리 성공하였습니다.");
-	// 						status = HttpStatus.ACCEPTED;
-	// 					} else {
-	// 						logger.info("=====> 좋아요/싫어요 실패");
-	// 						resultMap.put("message", "좋아요/싫어요 실패하였습니다.");
-	// 						status = HttpStatus.NOT_FOUND;
-	// 					}
-
-	// 				}else{
-	// 					int result2 = walkService.plusPlace(pid);
-
-	// 					if (result2 == 1) {
-	// 						logger.info("=====> 좋아요/싫어요 카운트 처리 성공");
-	// 						resultMap.put("message", "좋아요/싫어요 카운트 처리 성공하였습니다.");
-	// 						status = HttpStatus.ACCEPTED;
-	// 					} else {
-	// 						logger.info("=====> 좋아요/싫어요 카운트 처리 실패");
-	// 						resultMap.put("message", "좋아요/싫어요 카운트 처리 실패하였습니다.");
-	// 						status = HttpStatus.NOT_FOUND;
-	// 					}
-
-	// 				}
-
-	// 			} else {
-	// 				logger.info("=====> 좋아요/싫어요 실패");
-	// 				resultMap.put("message", "좋아요/싫어요 실패하였습니다.");
-	// 				status = HttpStatus.NOT_FOUND;
-	// 			}
-	// 		}
-
-    //     } catch (Exception e) {
-    //         logger.error("좋아요/싫어요 처리 실패 : {}", e);
-	// 		resultMap.put("message", e.getMessage());
-    //         status = HttpStatus.INTERNAL_SERVER_ERROR;
-    //     }
-    //     return new ResponseEntity<Map<String, Object>>(resultMap, status);
-    // }
 
 }
