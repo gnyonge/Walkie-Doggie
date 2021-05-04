@@ -37,7 +37,7 @@ public class WalkServiceImpl implements WalkService{
     }
 
     @Override
-    public PlaceDto createPlace(Map<String, Object> param) {
+    public int createPlace(Map<String, Object> param) {
         return sqlSession.getMapper(WalkDao.class).createPlace(param);
     }
 

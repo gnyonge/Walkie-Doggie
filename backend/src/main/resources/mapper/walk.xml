@@ -4,7 +4,7 @@
 	
 <mapper namespace="com.ssafy.pet.dao.WalkDao">
 	
-	<!-- 경로 & 시간 -->
+	<!-- 산책 정보 -->
 	<insert id="createWalk" parameterType="WalkDto" useGeneratedKeys="true" keyProperty="wid" keyColumn="wid" >
 		insert into Walk(peid, w_img, w_distance, w_time, w_date, w_flag, w_like, w_likeList)
 		values(#{peid}, #{w_img}, #{w_distance}, #{w_time}, now(), 0, #{w_like}, #{w_likeList});
@@ -16,45 +16,39 @@
 		where wid=#{wid};
 	</update>
 
-	<update id="saveEnd" parameterType="map">
-		update Walk
-		set w_distance=#{w_distance}, w_time=#{w_time}
-		where wid=#{wid};
-	</update>
-
-	<!-- 장소 좋아요/싫어요 -->
-	<select id="checkPlace" parameterType="map">
+	<!-- 장소 좋아요 -->
+	<select id="checkPlace" parameterType="map" resultType="int" >
 		select count(*)
 		from Place
 		where p_latitude=#{p_latitude} and p_longtitude = #{p_longtitude}
 	</select>
 
-	<insert id="createPlace" parameterType="map" useGeneratedKeys="true" keyProperty="pid" keyColumn="pid" >
-		insert into Place(p_latitude, p_longtitude, p_like, p_hate, w_flag)
-		values(#{p_latitude}, #{p_longtitude}, 0, 0, 0);
-	</insert>
+	<!-- <insert id="createPlace" parameterType="map" useGeneratedKeys="true" keyProperty="pid" keyColumn="pid" >
+		insert into Place(p_latitude, p_longtitude, p_like, p_flag)
+		values(#{p_latitude}, #{p_longtitude}, 1, 0);
+	</insert> -->
 
-	<insert id="clickPlace" parameterType="map" >
-		insert into Likeplace(pid, peid, isLike, lp_flag)
-		values(#{pid}, #{peid}, #{isLike}, 0);
-	</insert>
-
-	<select id="getPid" parameterType="map">
-		select pid
-		from Place
-		where p_latitude=#{p_latitude} and p_longtitude = #{p_longtitude}
+	<select id="createPlace" parameterType="map" resultType="integer">
+		insert into Place(p_latitude, p_longtitude, p_like, p_flag)
+		values(#{p_latitude}, #{p_longtitude}, 1, 0)
+		returning pid;
 	</select>
 
-	<update id="minusPlace" parameterType="int">
-		update Likeplace
-		set p_hate = p_hate + 1
-		where pid=#{pid};
-	</update>
+	<insert id="clickPlace" parameterType="map" useGeneratedKeys="true" keyProperty="lid" keyColumn="lid"  >
+		insert into LikePlace(pid, peid, uid, l_image, l_desc, l_like, l_flag)
+		values(#{pid}, #{peid}, #{uid}, #{l_image}, #{l_desc}, 0, 0);
+	</insert>
 
 	<update id="plusPlace" parameterType="int">
 		update Likeplace
 		set p_like = p_like + 1
 		where pid=#{pid};
 	</update>
+
+	<select id="getPid" parameterType="map">
+		select pid
+		from Place
+		where p_latitude=#{p_latitude} and p_longtitude = #{p_longtitude}
+	</select>
 
 </mapper>

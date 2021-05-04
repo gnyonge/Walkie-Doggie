@@ -18,7 +18,7 @@ public interface WalkDao {
 
     public int checkPlace(Map<String, Object> param);
 
-    public PlaceDto createPlace(Map<String, Object> param);
+    public int createPlace(Map<String, Object> param);
 
     public int clickPlace(Map<String, Object> param);
 
