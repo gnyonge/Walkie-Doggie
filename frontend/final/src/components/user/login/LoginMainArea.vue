@@ -1,20 +1,19 @@
 <template>
-  <div class="">
+  <div class="logo-center">
     <div class="login-btn-group">  
       <!-- 1. 서비스로고 -->
       <div class="logo">
-        <v-img src="../../../assets/images/서비스로고예시.png" class="logo-img" alt=""></v-img>
+        <v-img src="../../../assets/images/서비스로고.png" class="logo-img" alt=""></v-img>
       </div>
       <!-- 2. 로그인 회원가입 버튼 --> 
       <div class="login-btn-pd">
-        <router-link to="/login"><v-btn class="login-btn">로그인</v-btn></router-link>
+        <router-link to="/login"><v-btn class="login-btn" id="mainBtn" style="margin-top: 30px;margin-bottom:40px;">로그인</v-btn></router-link>
       </div>
       <div class="signup-btn-pd">
-        <router-link to="/signup"><v-btn class="signup-btn">회원가입</v-btn></router-link> 
+        <router-link to="/signup"><v-btn class="signup-btn" id="mainBtn">회원가입</v-btn></router-link> 
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -28,7 +27,7 @@ export default {
   height: 200px; 
   border-radius: 70%;
   overflow: hidden;
-  border: solid 3px;
+  /* margin-top: ; */
   /* display: flex; */
   /* justify-content: center; */
   /* align-items: center; */
@@ -51,10 +50,16 @@ export default {
   width: 200px;
 }
 .login-btn-pd{
-  padding: 30px;
-  margin-top: 120px;
+  /* padding: 30px; */
+  margin-top: 30px;
 }
 .signup-btn-pd{
-  padding: 30px;
+  /* padding: 30px; */
 }
+.logo-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 </style>
