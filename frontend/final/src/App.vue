@@ -62,7 +62,6 @@ export default {
   display: inline;
   border-radius: 10px;
   padding: 10px;
-  margin: 20px;
   width: 130px; 
   background-color: #BAF1E4;
   color: white;
