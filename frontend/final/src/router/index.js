@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Calendar from '../views/calendar/Calendar.vue'
-import TodayDiary from '../views/calendar/TodayDiary.vue'
 import TodayWalk from '../views/calendar/TodayWalk.vue'
 
 import Walk from '../views/Walk/Walk.vue'
@@ -40,9 +39,9 @@ const routes = [
     component: Calendar,
     children: [
       {
-        path: 'todaydiary',
-        name: 'TodayDiary',
-        component: TodayDiary
+        path: 'write',
+        name: 'CalendarWrite',
+        component: Calendar
       },
       {
         path: 'todaywalk',
