@@ -2,10 +2,10 @@
   <v-bottom-navigation
     id="nav"
     v-model="active_tab"
-    color="#DEB98B"
+    color="#48B9A8"
     light
   >
-    <v-btn id="btns" v-for="tab in tabs" :key="tab.idx" @click="goTo(tab.idx)">
+    <v-btn id="btns" v-for="tab in tabs" :key="tab.idx" @click="goTo(tab.path, tab.idx)">
       <span>{{tab.name}}</span>
       <v-icon>{{tab.icon}}</v-icon>
     </v-btn>
@@ -20,17 +20,18 @@ export default {
     return {
       active_tab: "",
       tabs: [
-        {idx: 0, name: "기록일지", icon: "mdi-calendar-month-outline"},
-        {idx: 1, name: "산책", icon: "mdi-dog"},
-        {idx: 2, name: "성분분석", icon: "mdi-google-analytics"},
-        {idx: 3, name: "커뮤니티", icon: "mdi-forum-outline"},
-        {idx: 4, name: "마이페이지", icon: "mdi-account"}
+        {idx: 0, name: "기록일지", icon: "mdi-calendar-month-outline", path: "calendar"},
+        {idx: 1, name: "산책", icon: "mdi-dog", path: "walk"},
+        {idx: 2, name: "성분분석", icon: "mdi-google-analytics", path: "food"},
+        {idx: 3, name: "마이페이지", icon: "mdi-account", path: "mypage"},
       ]
     }
   },
   created() {
+    if (this.$route.name == 'Home') {
+      this.setNowTab(0)
+      }
     this.active_tab = this.getNowTab
-    window.addEventListener('beforeunload', this.setNowTab(0))  
   },
   computed: {
     ...mapGetters(['getNowTab'])
@@ -39,29 +40,13 @@ export default {
     getNowTab(newVal) {
       this.active_tab = newVal
     },
-    active_tab(newVal) {
-      this.setNowTab(newVal)
-    }
   },
   methods: {
     ...mapMutations(['setNowTab']),
-    goTo(idx) {
-      if (idx == 0) {
-        if (this.$route.path!=='/calendar') this.$router.push('/calendar')
-        this.active_tab = 0
-      } else if (idx == 1) {
-          if (this.$route.path!=='/walk') this.$router.push('/walk')
-          this.active_tab = 1
-      } else if (idx == 2) {
-          if (this.$route.path!=='/food') this.$router.push('/food')
-          this.active_tab = 2
-      } else if (idx == 3) {
-          if (this.$route.path!=='/community') this.$router.push('/community')
-          this.active_tab = 3
-      } else if (idx == 4) {
-          if (this.$route.path!=='/mypage') this.$router.push('/mypage')
-          this.active_tab = 4
-      }
+    goTo(path, idx) {
+      if (this.$route.path!==`/${path}`) this.$router.push(`/${path}`)
+      this.active_tab = idx
+      this.setNowTab(idx)
   }}
 }
 </script>
@@ -73,5 +58,11 @@ span {
 #btns {
   background-color: white;
   margin-top: 5px;
+  border-radius: 30px;
+}
+.v-bottom-navigation {
+  display: flex;
+  justify-content: space-between !important;
+  border-radius: 30px 30px 0px 0px;
 }
 </style>

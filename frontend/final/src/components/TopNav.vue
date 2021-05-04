@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="headerdiv">
+    <div>
     <v-img id="header" src="@/assets/header.png"></v-img>
     </div>
   </div>
@@ -12,10 +12,6 @@
   }
 </script>
 <style>
-#headerdiv {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
 #header {
   width: 200px;
   height: 100%;

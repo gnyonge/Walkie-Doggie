@@ -1,14 +1,15 @@
 <template>
   <div>
-    <MainWalk/>
+    <FoodMain />
   </div>
 </template>
 
 <script>
+import FoodMain from '@/components/food/FoodMain'
 export default {
-  name: 'Walk',
+  name: 'Food',
   components: {
-    MainWalk: () => import('../../components/walk/MainWalk'),
+    FoodMain
   }
 }
 </script>

@@ -2,12 +2,14 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Calendar from '../views/calendar/Calendar.vue'
-import TodayDiary from '../views/calendar/TodayDiary.vue'
 import TodayWalk from '../views/calendar/TodayWalk.vue'
 
-import Walk from '../views/Walk/Walk.vue'
-import Food from '../views/Food.vue'
-import Community from '../views/Community.vue'
+import Walk from '../views/walk/Walk.vue'
+import StartWalk from '../views/walk/StartWalk.vue'
+import HotPlace from '../views/walk/HotPlace.vue'
+
+import Food from '../views/food/Food.vue'
+import FoodResult from '../views/food/FoodResult.vue'
 
 import MyPage from '../views/mypage/MyPage.vue'
 import Login from '../views/Login.vue'
@@ -19,8 +21,8 @@ import DogRegister2 from '../views/register/DogRegister2.vue'
 import DogChange from '../views/mypage/DogChange.vue'
 import Health from '../views/mypage/Health.vue'
 import InfoChange from '../views/mypage/InfoChange.vue'
+import Statistics from '../views/mypage/Statistics.vue'
 
-import StartWalk from '../views/Walk/StartWalk.vue'
 
 
 Vue.use(VueRouter)
@@ -37,9 +39,9 @@ const routes = [
     component: Calendar,
     children: [
       {
-        path: 'todaydiary',
-        name: 'TodayDiary',
-        component: TodayDiary
+        path: 'write',
+        name: 'CalendarWrite',
+        component: Calendar
       },
       {
         path: 'todaywalk',
@@ -48,16 +50,6 @@ const routes = [
       },
     ]
   },
-  // {
-  //   path: '/calendar/todaydiary',
-  //   name: 'TodayDiary',
-  //   component: TodayDiary
-  // },
-  // {
-  //   path: '/calendar/todaywalk',
-  //   name: 'TodayWalk',
-  //   component: TodayWalk
-  // },
   {
     path: '/walk',
     name: 'Walk',
@@ -69,14 +61,19 @@ const routes = [
     component: StartWalk
   },
   {
+    path: '/hotplace',
+    name: 'HotPlace',
+    component: HotPlace
+  },
+  {
     path: '/food',
     name: 'Food',
     component: Food
   },
   {
-    path: '/community',
-    name: 'Community',
-    component: Community
+    path: '/food/result',
+    name: 'FoodResult',
+    component: FoodResult
   },
   {
     path: '/mypage',
@@ -127,6 +124,11 @@ const routes = [
     path: '/infochange',
     name: 'InfoChange',
     component: InfoChange
+  },
+  {
+    path: '/statistics',
+    name: 'Statistics',
+    component: Statistics
   },
   // {
   //   path: '/about',

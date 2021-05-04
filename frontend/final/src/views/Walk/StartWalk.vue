@@ -12,7 +12,7 @@
     <v-btn
       elevation="2"
       large
-      @click="hate">싫어요</v-btn>
+      @click="goToHotPlace">멍플레이스</v-btn>
     <!-- 산책 종료  -->  
     <v-dialog
         transition="dialog-bottom-transition"
@@ -35,9 +35,9 @@
               <div class="pa-12">
                 산책 시작 시간 : {{ start }} <br>
                 산책 종료 시간 : {{ end }} <br>
+                총 산책 시간 : {{ totaltime }}
                 산책 거리 : <br>
                 좋아요 수 : {{ likecnt }}<br>
-                싫어요 수 : {{ hatecnt }}<br>
                 </div>
             </v-card-text>
             <v-card-actions class="justify-end">
@@ -61,18 +61,23 @@ export default {
   name: 'StartWalk',
   data() {
     return {
+      // 지도 
       mapContainer: '',
       mapOption: '',
-      map : {},
+      map: {},
       // 시간 
       start: '', 
       end: '', 
+      totaltime: 0,
       // 선호도 
       likecnt: 0,
-      hatecnt: 0, 
       // 실시간 위치 
-      loc : '',
-      linePath: [],
+      walkLoc : '',
+      realTimeLoc: '', 
+      linePath: [], 
+      // 멍플레이스
+      likePath: [],
+      deleteAll: true,
     }
   },
   computed: {
@@ -86,7 +91,7 @@ export default {
       const script = document.createElement('script');
       // global kakao
       script.onload = () => kakao.maps.load(this.initMap);
-      script.src = 'http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6985aa694c9e9631fa03de6f22217f30';
+      script.src = 'https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6985aa694c9e9631fa03de6f22217f30';
       document.head.appendChild(script);
     }
 
@@ -95,6 +100,21 @@ export default {
     
     // 실시간 위치 정보 
     this.navigation()
+
+  },
+  destroyed() {
+    if (this.deleteAll === true) { // 하단바로 이동시 산책 정보 초기화
+      this.linePath = []
+      this.likePath = []
+    }else{ // 멍플레이스 보다 온거라면
+      
+      // 백엔드로 정보를 보내고 난 후 
+      
+    }
+    // 실시간 정보 가져오기죽이기 
+    clearInterval(this.walkLoc)
+    clearInterval(this.realTimeLoc)
+    
   },
   watch: {
     
@@ -107,6 +127,7 @@ export default {
       this.mapOption = {
         //한강 주소 
         center: new kakao.maps.LatLng(37.507781796841705, 126.99274641516297),
+        draggable: true,
         level: 5
       };
 
@@ -114,27 +135,34 @@ export default {
 
     // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
     if (navigator.geolocation) {
-      
+      var tmp_this = this
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
       navigator.geolocation.getCurrentPosition(function(position) { 
         var lat = position.coords.latitude, // 위도
             lon = position.coords.longitude; // 경도
-        
+        // 시작 위치 갱신 
+        tmp_this.lat = lat 
+        tmp_this.lon = lon 
+        tmp_this.linePath.push(new kakao.maps.LatLng(lat, lon))
+
         var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-            message = '<div style="padding:5px;">산책을 시작합니다.</div>'; // 인포윈도우에 표시될 내용입니다
-    
-       
+            message = '<div style="padding:5px;">시작 위치.</div>'; // 인포윈도우에 표시될 내용입니다
+        
        // 마커와 인포윈도우를 표시합니다
         displayMarker(locPosition, message);
+        
+
         });
     } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
         var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
             message = 'geolocation을 사용할수 없어요..'
       
         displayMarker(locPosition, message);
+
     }
    
     var map = this.map
+    
     // 지도에 마커와 인포윈도우를 표시하는 함수입니다
     function displayMarker(locPosition, message) {
       // 마커를 생성합니다
@@ -154,6 +182,11 @@ export default {
         
       // 인포윈도우를 마커위에 표시합니다 
       infowindow.open(map, marker);
+
+      // message창 3초 후에 종료 
+      setTimeout(function(){ 
+        infowindow.close()
+        marker.setMap(null);}, 3000)
       
       // 지도 중심좌표를 접속위치로 변경합니다
       map.setCenter(locPosition);   
@@ -186,7 +219,7 @@ export default {
       
       var imageSrc = 'https://i.ibb.co/X2SKnKb/like.png', // 마커이미지의 주소입니다    
           imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
-          imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+          imageOption = {offset: new kakao.maps.Point(35, 50)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
       
       // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
       var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
@@ -202,45 +235,21 @@ export default {
       });
     },
 
-    // 싫어요
-    hate() {
-      this.hatecnt += 1 
-
-      var dogHate = this.map
-      // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-      navigator.geolocation.getCurrentPosition(function(position) { 
-        var lat = position.coords.latitude, // 위도
-            lon = position.coords.longitude; // 경도
-        var markerPosition  = new kakao.maps.LatLng(lat, lon)
-        
-        var imageSrc = 'https://i.ibb.co/wzx63zW/hate.png', // 마커이미지의 주소입니다    
-            imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
-            imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-        
-        // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
-        
-        // 마커를 생성합니다
-        var marker = new kakao.maps.Marker({
-            position: markerPosition,
-            image: markerImage // 마커이미지 설정 
-          })
-        // like, hate 중복 처리 필요 
-        // console.log(dogHate.getCenter())    
-        // console.log(dogHate)    
-        // 마커가 지도 위에 표시되도록 설정합니다
-        marker.setMap(dogHate);
-        });
-    },
-
     // 산책종료
     doneWalk() {
-      console.log("정보가져오기")
-      // 산책 종료시 경로정보 종료
-      clearInterval(this.loc)
+      // 백엔드로 정보 보내기 
+      // 실시간 정보 가져오기죽이기 
+      clearInterval(this.walkLoc)
+      clearInterval(this.realTimeLoc)
       this.end = this.getTime()
     },
 
+    // 멍플레이스로 보내기 
+    goToHotPlace() {
+      this.deleteAll = false 
+      this.$router.push('/hotplace')
+    },
+    
     // 메인으로 보내기 
     gotoMain(){
       // 하단바 색상 변경 
@@ -250,33 +259,63 @@ export default {
 
     // 움직이는 경로 표시하기 
     navigation(){
-      this.loc = setInterval(this.getLocation, 6000)
+      this.realTimeLoc = setInterval(this.realTime, 3000)
+      this.walkLoc = setInterval(this.getLocation, 6000)
       
     },
-    
+    // 현재 위치 실시간 
+    realTime(){
+      var map = this.map
+      
+      // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+      navigator.geolocation.getCurrentPosition(function(position) { 
+        var lat = position.coords.latitude, // 위도
+            lon = position.coords.longitude; // 경도
+      
+      // 지도에 표시할 원을 생성합니다
+      var circle = new kakao.maps.Circle({
+          center : new kakao.maps.LatLng(lat, lon),  // 원의 중심좌표 입니다 
+          radius: 25, // 미터 단위의 원의 반지름입니다 
+          strokeWeight: 2, // 선의 두께입니다 
+          strokeColor: '#980000', // 선의 색깔입니다
+          strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+          strokeStyle: 'solid', // 선의 스타일 입니다
+          fillColor: '#FF0000', // 채우기 색깔입니다
+          fillOpacity: 0.1   // 채우기 불투명도 입니다   
+      }); 
+      circle.setMap(null)
+      // 지도에 원을 표시합니다 
+      circle.setMap(map); 
+      
+      // 움직이는 곳 기준으로 중심 좌표 
+      map.setCenter(new kakao.maps.LatLng(lat, lon));
+      
+      })
+    },
+     
+
     // 위치 정보 기반 선 표시 
     getLocation() {
       var map = this.map
-      var linePath = this.linePath 
-
+      var linePath = this.linePath
+      
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
       navigator.geolocation.getCurrentPosition(function(position) { 
         var lat = position.coords.latitude, // 위도
             lon = position.coords.longitude; // 경도
       linePath.push(new kakao.maps.LatLng(lat, lon))
-      linePath.push(new kakao.maps.LatLng(35.17770708976171, 126.80778566432434))
 
-      // console.log(linePath.length)
+      // 선 연결 
       var polyline = new kakao.maps.Polyline({
         path: linePath, // 선을 구성하는 좌표배열 
         strokeWeight: 5, // 선의 두께
         strokeColor: '#1E90FF', // 선의 색깔 
-        strokeOpacity: 0.7, // 선의 불투명도, 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+        strokeOpacity: 0.2, // 선의 불투명도, 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
         strokeStyle: 'solid' // 선의 스타일입니다
       })
       polyline.setMap(map)
       
-    })
+      })
     }
   },
 }
