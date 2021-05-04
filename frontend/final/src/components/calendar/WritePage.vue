@@ -197,7 +197,7 @@ import { mapGetters, mapMutations } from 'vuex'
 </script>
 
 <style>
-.v-btn__content, .v-label, .v-chip__content {
+/* .v-btn__content, .v-label, .v-chip__content {
   margin: 0px;
 }
 .v-text-field__details {
@@ -208,5 +208,5 @@ import { mapGetters, mapMutations } from 'vuex'
 }
 .v-label {
   font-size: 20px !important;
-}
+} */
 </style>

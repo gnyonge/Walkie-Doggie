@@ -12,7 +12,7 @@
     </v-card>
         <div id="mainBox">새로운 카드</div>
     <v-btn id="mainBtn">새로운 버튼</v-btn>
-    <v-btn id="mainBtn" style="color: #323232">새로운 버튼</v-btn>
+    <v-btn id="mainBtn">새로운 버튼</v-btn>
     <v-card
     v-if="value"
     class="m-2 p-2"
@@ -23,11 +23,11 @@
       <v-divider id="divider"></v-divider>
       <div v-if="value" id="writebtns">
         <div><p class="my-0">오늘 일기 써주실거죠?</p></div>
-        <WritePage />
+        <v-btn id="mainBtn" @click="goto('write')">일기쓰기</v-btn>
       </div>
       <div v-if="value" id="writebtns">
         <div><p class="my-0">산책 기록 보러가기</p></div>
-        <DiaryDetail />
+        <v-btn id="mainBtn" @click="goto('walk')">산책기록</v-btn>
       </div>
     </v-card>
 </div>
@@ -35,12 +35,9 @@
 
 <script>
 import { mapMutations } from 'vuex'
-import WritePage from '@/components/calendar/WritePage'
-import DiaryDetail from '@/components/calendar/DiaryDetail'
 
 export default {
   name: "CalendarMain",
-  components: { WritePage, DiaryDetail },
   data() {
     return {
       value: '',
@@ -52,6 +49,9 @@ export default {
     onContext(ctx) {
       this.context = ctx.selectedFormatted
       this.setSelectedDate(this.context)
+    },
+    goto(name) {
+      this.$router.push(`/calendar/${name}`)
     }
   }
 }

@@ -60,11 +60,14 @@ export default {
 /* 수정하지 마쉐요 직접 class나 style줘서 바꿔주십시오 */
 #mainBtn {
   display: inline;
-  border-radius: 10px;
+  border-radius: 20px;
   padding: 10px;
-  margin: 20px;
-  width: 130px; 
+  width: 130px;
+  box-shadow: 1px 3px 0 rgb(0,0,0,0.3);
   background-color: #BAF1E4;
-  color: white;
+  color: #323232;
+}
+span {
+  margin-top: 0px;
 }
 </style>
