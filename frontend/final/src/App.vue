@@ -1,7 +1,7 @@
 <template>
   <v-app id="back">
     <TopNav id="top"/>
-    <router-view style="padding-top: 70px;"></router-view>
+    <router-view style="padding-top: 70px; padding-bottom: 70px;"></router-view>
     <BottomNav id="bottom"/>
   </v-app>
 </template>
@@ -24,19 +24,23 @@ export default {
 };
 </script>
 <style>
-@import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);
+@import url(https://fonts.googleapis.com/earlyaccess/jejugothic.css);
 #back {
-  background-color: #FDF8F2;
+  background-color: #F7FAFB;
   font-family: "Jeju Gothic", serif;
+  color: #323232;
 }
 #top {
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
+  z-index: 200;
   top: 0;
   width: 100%;
-  background-color: white;
+  background-color: #48B9A8;
+  border-radius: 0px 0px 20px 20px;
+
 }
 #bottom {
   position: fixed;
@@ -44,5 +48,23 @@ export default {
   width: 100%;
   height: 70px !important;
   padding-top: 10px;
+}
+/* 수정하지 마쉐요 직접 class나 style줘서 바꿔주십시오 */
+#mainBox {
+  border-radius: 15px;
+  background-color: white;
+  box-shadow: 5px 5px 5px #E5E5E5;
+  margin: 20px;
+  padding: 20px;
+}
+/* 수정하지 마쉐요 직접 class나 style줘서 바꿔주십시오 */
+#mainBtn {
+  display: inline;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 20px;
+  width: 130px; 
+  background-color: #BAF1E4;
+  color: white;
 }
 </style>

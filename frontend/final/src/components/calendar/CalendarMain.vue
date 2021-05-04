@@ -1,18 +1,25 @@
 <template>
 <div>
-    <div id="mybox">
+    <v-card class="m-2 p-2">
       <b-calendar v-model="value" @context="onContext" locale="ko-kr"
-      selected-variant="success"
-      today-variant="success"
-      nav-button-variant="success"
+      selected-variant="warning"
+      today-variant="warning"
+      nav-button-variant="warning"
       block
       hide-header
       label-help
       ></b-calendar>
-    </div>
-    <div>
-      <div v-if="value" id="date"><h4 class="my-5">오늘의 날짜는?🐶</h4></div>
-      <div v-if="value" id="date"><h5 class="mt-5">{{context}}</h5></div>
+    </v-card>
+        <div id="mainBox">새로운 카드</div>
+    <v-btn id="mainBtn">새로운 버튼</v-btn>
+    <v-btn id="mainBtn" style="color: #323232">새로운 버튼</v-btn>
+    <v-card
+    v-if="value"
+    class="m-2 p-2"
+    max-width="374"
+    >
+      <div id="date"><h4 class="mt-2">오늘의 날짜는?🐶</h4></div>
+      <div id="date"><h5 class="mt-3">{{context}}</h5></div>
       <v-divider id="divider"></v-divider>
       <div v-if="value" id="writebtns">
         <div><p class="my-0">오늘 일기 써주실거죠?</p></div>
@@ -22,7 +29,7 @@
         <div><p class="my-0">산책 기록 보러가기</p></div>
         <DiaryDetail />
       </div>
-    </div>
+    </v-card>
 </div>
 </template>
 
@@ -53,16 +60,18 @@ export default {
 <style>
 #mybox {
   background-color: white;
-  padding-top: 20px;
+  margin: 10px;
+  padding-top: 9px;
   width: 100%;
-  border: 1px;
-  border-color: red;
 }
 .b-calendar-grid-body div.col {
   height: 60px;
 }
+.btn-warning:not(:disabled):not(.disabled).active, .btn-warning:not(:disabled):not(.disabled):active, .show>.btn-warning.dropdown-toggle {
+  background-color: #F2B75B !important;
+}
 #divider {
-  margin: 20px;
+  margin: 9px;
 }
 #date {
   display: flex;
@@ -72,7 +81,7 @@ export default {
 }
 #writebtns {
   height: 56px; 
-  margin-top: 15px;
+  margin-top: 10px;
   display: flex;
   justify-content: flex-end;
   align-items: center;

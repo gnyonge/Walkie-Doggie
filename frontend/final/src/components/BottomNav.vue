@@ -2,7 +2,7 @@
   <v-bottom-navigation
     id="nav"
     v-model="active_tab"
-    color="#DEB98B"
+    color="#48B9A8"
     light
   >
     <v-btn id="btns" v-for="tab in tabs" :key="tab.idx" @click="goTo(tab.idx)">
@@ -23,14 +23,15 @@ export default {
         {idx: 0, name: "기록일지", icon: "mdi-calendar-month-outline"},
         {idx: 1, name: "산책", icon: "mdi-dog"},
         {idx: 2, name: "성분분석", icon: "mdi-google-analytics"},
-        {idx: 3, name: "커뮤니티", icon: "mdi-forum-outline"},
-        {idx: 4, name: "마이페이지", icon: "mdi-account"}
+        {idx: 3, name: "마이페이지", icon: "mdi-account"},
       ]
     }
   },
   created() {
+    if (this.$route.name == 'Home') {
+      this.setNowTab(0)
+      }
     this.active_tab = this.getNowTab
-    window.addEventListener('beforeunload', this.setNowTab(0))  
   },
   computed: {
     ...mapGetters(['getNowTab'])
@@ -39,9 +40,6 @@ export default {
     getNowTab(newVal) {
       this.active_tab = newVal
     },
-    active_tab(newVal) {
-      this.setNowTab(newVal)
-    }
   },
   methods: {
     ...mapMutations(['setNowTab']),
@@ -49,19 +47,20 @@ export default {
       if (idx == 0) {
         if (this.$route.path!=='/calendar') this.$router.push('/calendar')
         this.active_tab = 0
+        this.setNowTab(0)
       } else if (idx == 1) {
           if (this.$route.path!=='/walk') this.$router.push('/walk')
           this.active_tab = 1
+          this.setNowTab(1)
       } else if (idx == 2) {
           if (this.$route.path!=='/food') this.$router.push('/food')
           this.active_tab = 2
+          this.setNowTab(2)
       } else if (idx == 3) {
-          if (this.$route.path!=='/community') this.$router.push('/community')
-          this.active_tab = 3
-      } else if (idx == 4) {
           if (this.$route.path!=='/mypage') this.$router.push('/mypage')
-          this.active_tab = 4
-      }
+          this.active_tab = 3
+          this.setNowTab(3)
+      } 
   }}
 }
 </script>
@@ -73,5 +72,11 @@ span {
 #btns {
   background-color: white;
   margin-top: 5px;
+  border-radius: 30px;
+}
+.v-bottom-navigation {
+  display: flex;
+  justify-content: space-between !important;
+  border-radius: 30px 30px 0px 0px;
 }
 </style>
