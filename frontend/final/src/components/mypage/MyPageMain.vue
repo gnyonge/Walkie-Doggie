@@ -14,7 +14,7 @@
       </router-link>
         
       <div class="mt-2">
-        <v-img src="../../assets/images/서비스로고예시.png" 
+        <v-img src="../../assets/images/서비스로고.png" 
         class="rounded-circle" height="158"
         max-height="158"
         max-width="158" alt="">
