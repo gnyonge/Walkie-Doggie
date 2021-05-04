@@ -181,18 +181,15 @@ public class WalkController {
 					
 					int result = walkService.clickPlace(param);
 
-					logger.info("=====> 좋아요 성공");
-					resultMap.put("message", "장소 생성 후 좋아요 성공하였습니다.");
-					status = HttpStatus.ACCEPTED;
-					// if (result == 1) {
-					// 	logger.info("=====> 좋아요 성공");
-					// 	resultMap.put("message", "장소 생성 후 좋아요 성공하였습니다.");
-					// 	status = HttpStatus.ACCEPTED;
-					// } else {
-					// 	logger.info("=====> 좋아요 실패");
-					// 	resultMap.put("message", "장소 생성 후 좋아요 실패하였습니다.");
-					// 	status = HttpStatus.NOT_FOUND;
-					// }
+					if (result == 1) {
+						logger.info("=====> 좋아요 성공");
+						resultMap.put("message", "장소 생성 후 좋아요 성공하였습니다.");
+						status = HttpStatus.ACCEPTED;
+					} else {
+						logger.info("=====> 좋아요 실패");
+						resultMap.put("message", "장소 생성 후 좋아요 실패하였습니다.");
+						status = HttpStatus.NOT_FOUND;
+					}
 
 				}else{
 					logger.info("=====> 장소 생성 실패");
@@ -215,19 +212,15 @@ public class WalkController {
 
 						int result3 = walkService.plusPlace(pid);
 
-						logger.info("=====> 카운트 처리 성공");
-						resultMap.put("message", "기존 등록된 장소 좋아요 카운트 처리 성공하였습니다.");
-						status = HttpStatus.ACCEPTED;
-
-						// if(result3 == 1){
-						// 	logger.info("=====> 카운트 처리 성공");
-						// 	resultMap.put("message", "기존 등록된 장소 좋아요 카운트 처리 성공하였습니다.");
-						// 	status = HttpStatus.ACCEPTED;
-						// }else{
-						// 	logger.info("=====> 좋아요 실패");
-						// 	resultMap.put("message", "기존 등록된 장소 좋아요 카운트 처리 실패하였습니다.");
-						// 	status = HttpStatus.NOT_FOUND;
-						// }
+						if(result3 == 1){
+							logger.info("=====> 카운트 처리 성공");
+							resultMap.put("message", "기존 등록된 장소 좋아요 카운트 처리 성공하였습니다.");
+							status = HttpStatus.ACCEPTED;
+						}else{
+							logger.info("=====> 좋아요 실패");
+							resultMap.put("message", "기존 등록된 장소 좋아요 카운트 처리 실패하였습니다.");
+							status = HttpStatus.NOT_FOUND;
+						}
 
 					} else {
 						logger.info("=====> 좋아요 실패");
