@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ssafy.pet.dao.PlaceDao">
+
+	<!-- 장소 좋아요 -->
+	<select id="checkPlace" parameterType="map" resultType="Integer" >
+		select pid
+		from Place
+		where p_latitude=#{p_latitude} and p_longtitude = #{p_longtitude};
+	</select>
+
+	<select id="createPlace" parameterType="map" resultType="integer">
+		insert into Place(p_latitude, p_longtitude, p_like, p_flag)
+		values(#{p_latitude}, #{p_longtitude}, 1, 0)
+		returning pid;
+	</select>
+
+	<insert id="clickPlace" parameterType="map" useGeneratedKeys="true" keyProperty="lid" keyColumn="lid"  >
+		insert into LikePlace(pid, peid, uid, l_image, l_desc, l_like, l_flag)
+		values(#{pid}, #{peid}, #{uid}, #{l_image}, #{l_desc}, 0, 0);
+	</insert>
+
+	<select id="checkLike" parameterType="map" resultType="int" >
+		select count(*)
+		from LikePlace
+		where peid=#{peid} and pid = #{pid};
+	</select>
+
+	<update id="plusPlace" parameterType="int">
+		update Place
+		set p_like = p_like + 1
+		where pid=#{pid};
+	</update>
+
+</mapper>
