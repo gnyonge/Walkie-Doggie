@@ -7,6 +7,7 @@ import TodayWalk from '../views/calendar/TodayWalk.vue'
 
 import Walk from '../views/Walk/Walk.vue'
 import StartWalk from '../views/Walk/StartWalk.vue'
+import HotPlace from '../views/Walk/HotPlace.vue'
 
 import Food from '../views/food/Food.vue'
 import FoodResult from '../views/food/FoodResult.vue'
@@ -61,6 +62,11 @@ const routes = [
     path: '/startwalk',
     name: 'StartWalk',
     component: StartWalk
+  },
+  {
+    path: '/hotplace',
+    name: 'HotPlace',
+    component: HotPlace
   },
   {
     path: '/food',

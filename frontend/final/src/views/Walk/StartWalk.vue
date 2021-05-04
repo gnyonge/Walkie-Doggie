@@ -12,7 +12,7 @@
     <v-btn
       elevation="2"
       large
-      @click="hate">싫어요</v-btn>
+      @click="goToHotPlace">멍플레이스</v-btn>
     <!-- 산책 종료  -->  
     <v-dialog
         transition="dialog-bottom-transition"
@@ -38,7 +38,6 @@
                 총 산책 시간 : {{ totaltime }}
                 산책 거리 : <br>
                 좋아요 수 : {{ likecnt }}<br>
-                싫어요 수 : {{ hatecnt }}<br>
                 </div>
             </v-card-text>
             <v-card-actions class="justify-end">
@@ -66,20 +65,19 @@ export default {
       mapContainer: '',
       mapOption: '',
       map: {},
-      lat: 0, 
-      lon: 0, 
       // 시간 
       start: '', 
       end: '', 
       totaltime: 0,
       // 선호도 
       likecnt: 0,
-      hatecnt: 0, 
-      visited: new Map(),
       // 실시간 위치 
       walkLoc : '',
       realTimeLoc: '', 
       linePath: [], 
+      // 멍플레이스
+      likePath: [],
+      deleteAll: true,
     }
   },
   computed: {
@@ -105,8 +103,18 @@ export default {
 
   },
   destroyed() {
-    console.log("bottomNav를 이용한 종료")
+    if (this.deleteAll === true) { // 하단바로 이동시 산책 정보 초기화
+      this.linePath = []
+      this.likePath = []
+    }else{ // 멍플레이스 보다 온거라면
+      
+      // 백엔드로 정보를 보내고 난 후 
+      
+    }
+    // 실시간 정보 가져오기죽이기 
     clearInterval(this.walkLoc)
+    clearInterval(this.realTimeLoc)
+    
   },
   watch: {
     
@@ -135,7 +143,9 @@ export default {
         // 시작 위치 갱신 
         tmp_this.lat = lat 
         tmp_this.lon = lon 
-  
+        tmp_this.linePath.push(new kakao.maps.LatLng(lon, lat))
+        console.log(tmp_this.linePath)
+
         var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
             message = '<div style="padding:5px;">시작 위치.</div>'; // 인포윈도우에 표시될 내용입니다
         
@@ -226,38 +236,6 @@ export default {
       });
     },
 
-    // 싫어요
-    hate() {
-      this.hatecnt += 1 
-
-      var dogHate = this.map
-      // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-      navigator.geolocation.getCurrentPosition(function(position) { 
-        var lat = position.coords.latitude, // 위도
-            lon = position.coords.longitude; // 경도
-        var markerPosition  = new kakao.maps.LatLng(lat, lon)
-        
-        var imageSrc = 'https://i.ibb.co/wzx63zW/hate.png', // 마커이미지의 주소입니다    
-            imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
-            imageOption = {offset: new kakao.maps.Point(35, 50)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-        
-        // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
-        
-        // 마커를 생성합니다
-        var marker = new kakao.maps.Marker({
-            position: markerPosition,
-            image: markerImage // 마커이미지 설정 
-          })
-        // like, hate 중복 처리 필요 
-        // console.log(dogHate.getCenter())    
-        // console.log(dogHate)    
-        // 마커가 지도 위에 표시되도록 설정합니다
-        marker.setMap(dogHate);
-
-        });
-    },
-
     // 산책종료
     doneWalk() {
       // 백엔드로 정보 보내기 
@@ -267,9 +245,16 @@ export default {
       console.log("종료버튼으로 무한루프 종료")
       
     },
-
+    // 멍플레이스로 보내기 
+    goToHotPlace() {
+      this.deleteAll = false 
+      this.$router.push('/hotplace')
+    },
     // 메인으로 보내기 
     gotoMain(){
+      // 실시간 정보 가져오기죽이기 
+      clearInterval(this.walkLoc)
+      clearInterval(this.realTimeLoc)
       // 하단바 색상 변경 
       this.setNowTab(0)
       this.$router.push('/calendar')
@@ -278,29 +263,12 @@ export default {
     // 움직이는 경로 표시하기 
     navigation(){
       this.realTimeLoc = setInterval(this.realTime, 3000)
-      this.walkLoc = setInterval(this.getLocation, 60000)
+      this.walkLoc = setInterval(this.getLocation, 6000)
       
     },
     // 현재 위치 실시간 
     realTime(){
-      var map = this.map
-      var lat = this.lat 
-      var lon = this.lon 
-      
-      // 지도에 표시할 원을 생성합니다
-      var circle = new kakao.maps.Circle({
-          center : new kakao.maps.LatLng(lat, lon),  // 원의 중심좌표 입니다 
-          radius: 10, // 미터 단위의 원의 반지름입니다 
-          strokeWeight: 5, // 선의 두께입니다 
-          strokeColor: '#980000', // 선의 색깔입니다
-          strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-          strokeStyle: 'dashed', // 선의 스타일 입니다
-          fillColor: '#FF0000', // 채우기 색깔입니다
-          fillOpacity: 0.7  // 채우기 불투명도 입니다   
-      }); 
-      // 지도에 원을 표시합니다 
-      circle.setMap(map); 
-
+      console.log('핫플레이스 가능?')
     },
      
 
@@ -315,6 +283,7 @@ export default {
         var lat = position.coords.latitude, // 위도
             lon = position.coords.longitude; // 경도
       linePath.push(new kakao.maps.LatLng(lat, lon))
+      console.log(linePath)
       // 285번째줄 왜 에러나지..
       // this.linePath = linePath
     
@@ -323,7 +292,7 @@ export default {
         path: linePath, // 선을 구성하는 좌표배열 
         strokeWeight: 5, // 선의 두께
         strokeColor: '#1E90FF', // 선의 색깔 
-        strokeOpacity: 0.7, // 선의 불투명도, 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+        strokeOpacity: 0.2, // 선의 불투명도, 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
         strokeStyle: 'solid' // 선의 스타일입니다
       })
       polyline.setMap(map)
