@@ -2,14 +2,17 @@
 <div>
     <v-card class="m-2 p-2">
       <b-calendar v-model="value" @context="onContext" locale="ko-kr"
-      selected-variant="success"
-      today-variant="success"
-      nav-button-variant="success"
+      selected-variant="warning"
+      today-variant="warning"
+      nav-button-variant="warning"
       block
       hide-header
       label-help
       ></b-calendar>
     </v-card>
+        <div id="mainBox">새로운 카드</div>
+    <v-btn id="mainBtn">새로운 버튼</v-btn>
+    <v-btn id="mainBtn" style="color: #323232">새로운 버튼</v-btn>
     <v-card
     v-if="value"
     class="m-2 p-2"
@@ -63,6 +66,9 @@ export default {
 }
 .b-calendar-grid-body div.col {
   height: 60px;
+}
+.btn-warning:not(:disabled):not(.disabled).active, .btn-warning:not(:disabled):not(.disabled):active, .show>.btn-warning.dropdown-toggle {
+  background-color: #F2B75B !important;
 }
 #divider {
   margin: 9px;

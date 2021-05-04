@@ -11,8 +11,6 @@ import StartWalk from '../views/Walk/StartWalk.vue'
 import Food from '../views/food/Food.vue'
 import FoodResult from '../views/food/FoodResult.vue'
 
-import Community from '../views/Community.vue'
-
 import MyPage from '../views/mypage/MyPage.vue'
 import Login from '../views/Login.vue'
 import LoginMain from '../views/LoginMain.vue'
@@ -71,11 +69,6 @@ const routes = [
     path: '/food/result',
     name: 'FoodResult',
     component: FoodResult
-  },
-  {
-    path: '/community',
-    name: 'Community',
-    component: Community
   },
   {
     path: '/mypage',
