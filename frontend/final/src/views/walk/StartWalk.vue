@@ -140,6 +140,8 @@ export default {
       navigator.geolocation.getCurrentPosition(function(position) { 
         var lat = position.coords.latitude, // 위도
             lon = position.coords.longitude; // 경도
+        
+        
         // 시작 위치 갱신 
         tmp_this.lat = lat 
         tmp_this.lon = lon 
@@ -267,6 +269,7 @@ export default {
     realTime(){
       var map = this.map
       
+      
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
       navigator.geolocation.getCurrentPosition(function(position) { 
         var lat = position.coords.latitude, // 위도
@@ -283,7 +286,7 @@ export default {
           fillColor: '#FF0000', // 채우기 색깔입니다
           fillOpacity: 0.1   // 채우기 불투명도 입니다   
       }); 
-      circle.setMap(null)
+      
       // 지도에 원을 표시합니다 
       circle.setMap(map); 
       
