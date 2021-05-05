@@ -59,4 +59,29 @@ public class PlaceServiceImpl implements PlaceService{
         return pdao.minusPlace(pid);
     }
 
+    @Override
+    public Integer checkLikePost(Map<String, Object> param) {
+        return pdao.checkLikePost(param);
+    }
+
+    @Override
+    public int clickLike(Map<String, Object> param) {
+        return pdao.clickLike(param);
+    }
+
+    @Override
+    public int clickUnlike(Map<String, Object> param) {
+        return pdao.clickUnlike(param);
+    }
+
+    @Override
+    public void plusPost(int lid) {
+        pdao.plusPost(lid);
+    }
+
+    @Override
+    public void minusPost(int lid) {
+        pdao.minusPost(lid);
+    }
+
 }

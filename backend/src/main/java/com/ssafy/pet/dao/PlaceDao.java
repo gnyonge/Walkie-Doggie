@@ -26,5 +26,15 @@ public interface PlaceDao {
 	public int deletePlace(int lid);
 
 	public int minusPlace(int pid);
+
+    public Integer checkLikePost(Map<String, Object> param);
+
+    public int clickLike(Map<String, Object> param);
+
+    public int clickUnlike(Map<String, Object> param);
+
+    public void plusPost(int lid);
+
+    public void minusPost(int lid);
     
 }

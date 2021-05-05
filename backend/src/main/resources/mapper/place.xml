@@ -61,5 +61,32 @@
 	</update>
 
 	<!-- 게시글 좋아요 -->
+	<select id="checkLikePost" parameterType="map" resultType="Integer" >
+		select lid
+		from LikePost
+		where lid=#{lid} and uid = #{uid};
+	</select>
+	
+	<insert id="clickLike" parameterType="map" >
+		insert into LikePost 
+		values(#{lid}, #{uid});
+	</insert>
+
+	<delete id="clickUnlike" parameterType="int">
+		delete from LikePost
+		where lid=#{lid};
+	</update>
+
+	<update id="plusPost" parameterType="int">
+		update LikePlace
+		set l_like = l_like + 1
+		where lid=#{lid};
+	</update>
+
+	<update id="plusPost" parameterType="int">
+		update LikePlace
+		set l_like = l_like - 1
+		where lid=#{lid};
+	</update>
 
 </mapper>

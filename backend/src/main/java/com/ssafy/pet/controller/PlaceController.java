@@ -210,5 +210,61 @@ public class PlaceController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
+	/*
+     * 기능: 핫플레이스 게시글 좋아요
+     * 
+     * developer: 윤수민
+     * 
+     * @param lid, uid
+     * 
+     * @return message
+	 * 
+     */
+    @ApiOperation(value = "Like post", notes = "핫플레이스 게시글 좋아요 클릭")
+    @PostMapping("/likePost")
+    public ResponseEntity<Map<String, Object>> likePost(@RequestParam(value = "lid") int lid, @RequestParam(value = "uid") int uid) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        
+        try {
+			logger.info("place/likePost 호출 성공");
+            Map<String, Object> param = new HashMap<>();
+			param.put("lid", lid);
+			param.put("uid", uid);
+			// 좋아요한 게시글인지 확인
+			Integer isLike = placeService.checkLikePost(param); 
+			if(isLike == null){ // 좋아요하지 않은 게시글
+				int result = placeService.clickLike(param);
+				if(result != 0){	
+					placeService.plusPost(lid);	
+					logger.info("=====> 핫플레이스 게시글 좋아요 성공");
+					resultMap.put("message", "핫플레이스 게시글 좋아요 성공하였습니다.");
+					status = HttpStatus.ACCEPTED;
+				}else{
+					logger.info("=====> 핫플레이스 게시글 좋아요 실패");
+					resultMap.put("message", "핫플레이스 게시글 좋아요 실패하였습니다.");
+					status = HttpStatus.NOT_FOUND;
+				}
+			}else{ // 기존에 좋아요 한 경우
+				logger.info("=====> 기존 좋아요 한 게시글");
+				int result = placeService.clickUnlike(param);
+				if(result != 0){	
+					placeService.minusPost(lid);		
+					logger.info("=====> 핫플레이스 게시글 좋아요 취소 성공");
+					resultMap.put("message", "핫플레이스 게시글 좋아요 취소 성공하였습니다.");
+					status = HttpStatus.ACCEPTED;
+				}else{
+					logger.info("=====> 핫플레이스 게시글 좋아요 취소 실패");
+					resultMap.put("message", "핫플레이스 게시글 좋아요 취소 실패하였습니다.");
+					status = HttpStatus.NOT_FOUND;
+				}
+			}			
+        } catch (Exception e) {
+            logger.error("게시글 좋아요 처리 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
 
 }
