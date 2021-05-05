@@ -83,15 +83,6 @@ public class PlaceController {
 					logger.info("=====> 좋아요 성공");
 					resultMap.put("message", "장소 생성 후 좋아요 성공하였습니다.");
 					status = HttpStatus.ACCEPTED;
-					// if (result == 1) {
-					// 	logger.info("=====> 좋아요 성공");
-					// 	resultMap.put("message", "장소 생성 후 좋아요 성공하였습니다.");
-					// 	status = HttpStatus.ACCEPTED;
-					// } else {
-					// 	logger.info("=====> 좋아요 실패");
-					// 	resultMap.put("message", "장소 생성 후 좋아요 실패하였습니다.");
-					// 	status = HttpStatus.NOT_FOUND;
-					// }
 				}else{
 					logger.info("=====> 장소 생성 실패");
 					resultMap.put("message", "장소 생성에 실패하였습니다.");
@@ -110,15 +101,6 @@ public class PlaceController {
 						logger.info("=====> 카운트 처리 성공");
 						resultMap.put("message", "기존 등록된 장소 좋아요 카운트 처리 성공하였습니다.");
 						status = HttpStatus.ACCEPTED;
-						// if(result3 == 1){
-						// 	logger.info("=====> 카운트 처리 성공");
-						// 	resultMap.put("message", "기존 등록된 장소 좋아요 카운트 처리 성공하였습니다.");
-						// 	status = HttpStatus.ACCEPTED;
-						// }else{
-						// 	logger.info("=====> 좋아요 실패");
-						// 	resultMap.put("message", "기존 등록된 장소 좋아요 카운트 처리 실패하였습니다.");
-						// 	status = HttpStatus.NOT_FOUND;
-						// }
 					} else {
 						logger.info("=====> 좋아요 실패");
 						resultMap.put("message", "기존 등록된 장소 좋아요 실패하였습니다.");
@@ -139,7 +121,7 @@ public class PlaceController {
     }
 
 	/*
-     * 기능: 좋아요 포스트 수정
+     * 기능: 핫플레이스 포스트 수정
      * 
      * developer: 윤수민
      * 
@@ -147,7 +129,7 @@ public class PlaceController {
      * 
      * @return : message
      */
-	@ApiOperation(value = "Modify place", notes = "좋아요 누른 장소 게시글 수정")
+	@ApiOperation(value = "Modify place", notes = "핫플레이스 게시글 수정")
     @PutMapping("/modify/{login_id}")
     public ResponseEntity<Map<String, Object>> modifyPlace(@RequestBody LikePlaceDto likePlaceDto,
             @PathVariable("login_id") String login_id) {
@@ -180,7 +162,7 @@ public class PlaceController {
     }
 
 	/*
-     * 기능: 좋아요 포스트 삭제
+     * 기능: 핫플레이스 포스트 삭제
      * 
      * developer: 윤수민
      * 
@@ -188,6 +170,7 @@ public class PlaceController {
      * 
      * @return : message
      */
+	@ApiOperation(value = "Delete place", notes = "핫플레이스 게시글 삭제")
     @DeleteMapping("/delete/{login_id}")
     public ResponseEntity<Map<String, Object>> deletePlace(@RequestParam(value = "lid") int lid, @RequestParam(value = "pid") int pid,
             @PathVariable("login_id") String login_id) {
@@ -226,5 +209,6 @@ public class PlaceController {
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
+
 
 }
