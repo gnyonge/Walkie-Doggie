@@ -4,9 +4,10 @@
     <div class="mt-15 d-flex justify-center">
       <div id="tempimg">사진 업로드 하면 여기 띄워짐!</div>
     </div>
-    <div id="date" class="mt-5"><h4 class="mt-2">조금은 주의가 필요한 성분들이에요.</h4></div>
-    <v-card
-    class="mx-auto my-5"
+    <!-- <div id="date" class="mt-5"><h4 class="mt-2">조금은 주의가 필요한 성분들이에요.</h4></div> -->
+    <div
+    id="mainBox"
+    class="my-5"
     max-width="344"
     outlined
     v-for="i, idx in 3"
@@ -19,9 +20,6 @@
         color="grey"
       ></v-list-item-avatar>
       <v-list-item-content>
-        <!-- <div class="overline mb-4">
-          성분 이름
-        </div> -->
         <v-list-item-title class="headline mb-1">
           성분 이름
         </v-list-item-title>
@@ -29,7 +27,7 @@
       </v-list-item-content>
 
     </v-list-item>
-  </v-card>
+  </div>
   </div>
 </template>
 

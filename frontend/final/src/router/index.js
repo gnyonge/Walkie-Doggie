@@ -2,6 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Calendar from '../views/calendar/Calendar.vue'
+import CalendarWrite from '../views/calendar/CalendarWrite.vue'
+import CalendarDetail from '../views/calendar/CalendarDetail.vue'
+import TodayDiary from '../views/calendar/TodayDiary.vue'
 import TodayWalk from '../views/calendar/TodayWalk.vue'
 
 import Walk from '../views/walk/Walk.vue'
@@ -37,11 +40,21 @@ const routes = [
     path: '/calendar',
     name: 'Calendar',
     component: Calendar,
+  },
+  {
+    path: '/calendar/write',
+    name: 'CalendarWrite',
+    component: CalendarWrite
+  },
+  {
+    path: '/calendar/detail',
+    name: 'CalendarDetail',
+    component: CalendarDetail,
     children: [
       {
-        path: 'write',
-        name: 'CalendarWrite',
-        component: Calendar
+        path: 'todaydiary',
+        name: 'TodayDiary',
+        component: TodayDiary
       },
       {
         path: 'todaywalk',

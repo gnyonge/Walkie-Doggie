@@ -6,7 +6,7 @@
     light
   >
     <v-btn id="btns" v-for="tab in tabs" :key="tab.idx" @click="goTo(tab.path, tab.idx)">
-      <span>{{tab.name}}</span>
+      <span id="span-in-nav">{{tab.name}}</span>
       <v-icon>{{tab.icon}}</v-icon>
     </v-btn>
   </v-bottom-navigation>
@@ -51,9 +51,9 @@ export default {
 }
 </script>
 <style>
-span {
+#span-in-nav {
   margin-top: 8px;
-  color: black;
+  color: #323232;
 }
 #btns {
   background-color: white;
