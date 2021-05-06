@@ -6,7 +6,7 @@
         <v-icon @click="goback()">mdi-arrow-left</v-icon>
         </div>
         <div>
-          일지 작성
+          일기쓰기
         </div>
         <div style="width: 24px; background-color: white;">
         </div>
@@ -17,7 +17,7 @@
       <div id="contentBox">
         <v-textarea
           v-model="diaryContent"
-          label="일지 내용"
+          label="일기 내용"
           outlined
           rows="5"
           row-height="25"

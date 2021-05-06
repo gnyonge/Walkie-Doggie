@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="d-flex justify-center my-5">
+    <div class="d-flex justify-center mt-3">
       <v-btn rounded @click="todaydiary()" id="btnstyle" :class="{diary: isDiary}">오늘의 일기</v-btn>
-      <v-btn rounded @click="todaywalk()" id="btnstyle" :class="{diary: !isDiary}">산책 기록</v-btn>
+      <v-btn rounded @click="todaywalk()" id="btnstyle" :class="{diary: !isDiary}">산책기록</v-btn>
     </div>
     <router-view></router-view>
     

@@ -10,23 +10,24 @@
       label-help
       ></b-calendar>
     </v-card>
-    <v-card
+    
+    <div
+    id="mainBox"
     v-if="value"
-    class="m-2 p-2"
     max-width="374"
     >
       <div id="date"><h4 class="mt-2">오늘의 날짜는?🐶</h4></div>
       <div id="date"><h5 class="mt-3">{{context}}</h5></div>
-      <v-divider id="divider"></v-divider>
+      <v-divider></v-divider>
       <div v-if="value" id="writebtns">
         <div><p class="my-0">오늘 일기 써주실거죠?</p></div>
-        <v-btn id="mainBtn" @click="goto('write')">일기쓰기</v-btn>
+        <v-btn id="mainBtn" width="100px" class="ml-3" @click="goto('write')">일기쓰기</v-btn>
       </div>
       <div v-if="value" id="writebtns">
         <div><p class="my-0">산책 기록 보러가기</p></div>
-        <v-btn id="mainBtn" @click="goto('detail/todaywalk')">산책기록</v-btn>
+        <v-btn id="mainBtn" width="100px" class="ml-3" @click="goto('detail/todaywalk')">산책기록</v-btn>
       </div>
-    </v-card>
+    </div>
 </div>
 </template>
 
@@ -66,9 +67,6 @@ export default {
 }
 .btn-warning:not(:disabled):not(.disabled).active, .btn-warning:not(:disabled):not(.disabled):active, .show>.btn-warning.dropdown-toggle {
   background-color: #F2B75B !important;
-}
-#divider {
-  margin: 9px;
 }
 #date {
   display: flex;

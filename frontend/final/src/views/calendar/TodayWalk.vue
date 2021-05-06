@@ -5,7 +5,7 @@
       <v-icon @click="goback()">mdi-arrow-left</v-icon>
       </div>
       <div>
-        산책 기록
+        산책기록
       </div>
       <div style="width: 24px; background-color: white;">
       </div>
