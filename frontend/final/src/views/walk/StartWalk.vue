@@ -1,56 +1,78 @@
 <template>
-<div>
-  <div id="app">
-    <div id="map"></div>
-    <div>
-    <!-- 좋아요 -->
-    <v-btn
-      elevation="2"
-      large
-      @click="like">좋아요</v-btn>
-    <!-- 싫어요 -->
-    <v-btn
-      elevation="2"
-      large
-      @click="goToHotPlace">멍플레이스</v-btn>
-    <!-- 산책 종료  -->  
-    <v-dialog
-        transition="dialog-bottom-transition"
-        max-width="600"
-      >
-        <template v-slot:activator="{ on, attrs }">
+  <div>
+    <div id="mainBox" style="margin-top: 20%;">
+      <div id="app">
+        <!-- 지도 -->
+        <div id="map">
+        </div>
+        </div>
+        <div class="btncalss">
+          <!-- 좋아요 -->
           <v-btn
-            color="primary"
-            v-bind="attrs"
-            v-on="on"
-            @click="doneWalk">산책 종료</v-btn>
-        </template>
-        <template>
-          <v-card>
-            <v-toolbar
-              color="primary"
-              dark
-            >뿌꾸 산책을 종료 합니다.(color값 조정해야함)</v-toolbar>
-            <v-card-text>
-              <div class="pa-12">
-                산책 시작 시간 : {{ start }} <br>
-                산책 종료 시간 : {{ end }} <br>
-                총 산책 시간 : {{ totaltime }}
-                산책 거리 : <br>
-                좋아요 수 : {{ likecnt }}<br>
+            large
+            id="mainBtn"
+            style="width: 10px;"
+            @click="like">
+           <v-icon style="color: #FC6C8C;">mdi-cards-heart</v-icon> 
+          </v-btn>
+          <!-- 멍플레이스 -->
+          <v-btn
+            large
+            id="mainBtn"
+            style="width: 10px; "
+            @click="goToHotPlace">
+            <v-icon style="color: #FA3C5A;">mdi-fire</v-icon>
+            </v-btn>
+          <!-- 산책 종료  -->  
+          <v-dialog
+              transition="dialog-bottom-transition"
+              max-width="600">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              large
+              v-bind="attrs"
+              v-on="on"
+              id="mainBtn"
+              style="width: 10px; "
+              @click="doneWalk">
+              <v-icon style="color: #F2B75B">mdi-file-excel-box-outline</v-icon>
+            </v-btn>
+          </template>
+          <template>
+            <v-card>
+              <v-card-text>
+                <div style="text-align: center;">
+                  <p><v-icon style="font-size: 120px;color: #7CE793;">mdi-check</v-icon></p>
+                  <p>산책 시작 시간 :<br> {{ start }} </p>
+                  <p>산책 종료 시간 :<br> {{ end }} </p>
+                  <p>총 산책 시간 : {{ totalH }}시간 {{ totalM}}분</p>
+                  <p>좋아요 수 : {{ likecnt }}</p>
                 </div>
-            </v-card-text>
-            <v-card-actions class="justify-end">
-              <v-btn
-                text
-                @click="gotoMain"
-              >창 닫기</v-btn>
-            </v-card-actions>
-          </v-card>
-        </template>
-      </v-dialog>
+              </v-card-text>
+                <v-card-actions class="justify-center">
+                  <v-btn
+                    text
+                    id="mainBtn"
+                    style="background-color: #FC6C8C;"
+                    @click="gotoMain">
+                    창 닫기
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </template>
+          </v-dialog>
+        </div>
+      
     </div>
-  </div>
+    <div class="d-flex justify-center img">
+      <v-img
+        height="80"
+        class="rounded-circle gird"
+        max-height="80"
+        max-width="80"
+        src="../../assets/dog.jpg">
+      </v-img>
+    </div>
   </div>
 </template>
 
@@ -68,7 +90,12 @@ export default {
       // 시간 
       start: '', 
       end: '', 
-      totaltime: 0,
+      beforeH: 0,
+      beforeM:0,
+      afterH:0,
+      afterM: 0,
+      totalH: 0,
+      totalM: 0, 
       // 선호도 
       likecnt: 0,
       // 실시간 위치 
@@ -192,22 +219,33 @@ export default {
       
       // 지도 중심좌표를 접속위치로 변경합니다
       map.setCenter(locPosition);   
-    }   
-    
-  },
-
+      }  
+    },
     // 시간 가져오기 
     getTime() {
       let today = new Date() 
       let date = today.getFullYear() + '년' + (today.getMonth() + 1 ) + '월' + today.getDate() + '일'
       let time = today.getHours() + '시' + today.getMinutes() + '분'
+      this.afterH = today.getHours()
+      this.afterM = today.getMinutes()
       let dateTime = date + ' ' + time 
       return dateTime
     }, 
     // 시작 시간 가져오기 
     startTime() {
-      this.start = this.getTime()
+      let today = new Date() 
+      let date = today.getFullYear() + '년' + (today.getMonth() + 1 ) + '월' + today.getDate() + '일'
+      let time = today.getHours() + '시' + today.getMinutes() + '분'
+      this.beforeH = today.getHours()
+      this.beforeM = today.getMinutes()
+      let dateTime = date + ' ' + time
+      this.start = dateTime
     }, 
+    // 산책시간 계산 
+    calTime(){
+      this.totalH = this.afterH - this.beforeH
+      this.totalM = this.afterM - this.beforeM
+    },
     // 좋아요
     like() {
       this.likecnt += 1 
@@ -244,6 +282,7 @@ export default {
       clearInterval(this.walkLoc)
       clearInterval(this.realTimeLoc)
       this.end = this.getTime()
+      this.calTime()
     },
 
     // 멍플레이스로 보내기 
@@ -261,42 +300,10 @@ export default {
 
     // 움직이는 경로 표시하기 
     navigation(){
-      this.realTimeLoc = setInterval(this.realTime, 3000)
       this.walkLoc = setInterval(this.getLocation, 6000)
       
     },
-    // 현재 위치 실시간 
-    realTime(){
-      var map = this.map
-      
-      
-      // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-      navigator.geolocation.getCurrentPosition(function(position) { 
-        var lat = position.coords.latitude, // 위도
-            lon = position.coords.longitude; // 경도
-      
-      // 지도에 표시할 원을 생성합니다
-      var circle = new kakao.maps.Circle({
-          center : new kakao.maps.LatLng(lat, lon),  // 원의 중심좌표 입니다 
-          radius: 25, // 미터 단위의 원의 반지름입니다 
-          strokeWeight: 2, // 선의 두께입니다 
-          strokeColor: '#980000', // 선의 색깔입니다
-          strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-          strokeStyle: 'solid', // 선의 스타일 입니다
-          fillColor: '#FF0000', // 채우기 색깔입니다
-          fillOpacity: 0.1   // 채우기 불투명도 입니다   
-      }); 
-      
-      // 지도에 원을 표시합니다 
-      circle.setMap(map); 
-      
-      // 움직이는 곳 기준으로 중심 좌표 
-      map.setCenter(new kakao.maps.LatLng(lat, lon));
-      
-      })
-    },
-     
-
+    
     // 위치 정보 기반 선 표시 
     getLocation() {
       var map = this.map
@@ -326,7 +333,27 @@ export default {
 
 <style>
 #map {
-    width: 375px;
-    height: 300px;
+    width: auto;
+    height: 350px;
 }
+.img{
+  position: absolute;
+  margin: 37% 40%;
+  z-index: 1;
+}
+.gird{
+  border: 5px solid rgb(250, 250, 250);
+
+}
+.btncalss{
+  position: absolute;
+  text-align: center;
+  display: inline-block;
+  margin: 2% 0%; 
+  width: 295px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 1;
+}
+
 </style>
