@@ -19,7 +19,7 @@
         </v-icon>
       </v-btn>
       </template>
-      <v-card style="background-color: #FDF8F2">
+      <v-card>
         <v-toolbar
           dark
           color="#5EBC88"
@@ -46,18 +46,23 @@
         <v-list
           three-line
           subheader
-          style="background-color: #FDF8F2"
         >
-          <v-subheader>{{getSelectedDate}}</v-subheader>
+          <v-subheader class="mt-4">{{getSelectedDate}}</v-subheader>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title>일지 내용</v-list-item-title>
+              <!-- <v-list-item-title>일지 내용</v-list-item-title> -->
               <v-textarea
-                background-color="amber lighten-4"
-                color="orange orange-darken-4"
+                v-model="diaryContent"
+                label="일지 내용"
+                auto-grow
+                outlined
+                rows="5"
+                row-height="25"
+                color="#5EBC88"
               ></v-textarea>
             </v-list-item-content>
           </v-list-item>
+        <v-divider></v-divider>
           <v-list-item>
             <v-list-item-content>
               <v-list-item-title>사진 첨부</v-list-item-title>
@@ -67,11 +72,12 @@
               ></v-file-input>
             </v-list-item-content>
           </v-list-item>
+        <v-divider></v-divider>
+
         </v-list>
         <v-list
           three-line
           subheader
-          style="background-color: #FDF8F2"
         >
 
           <v-list-item>
@@ -82,12 +88,16 @@
               color="success"
               hide-details
             ></v-checkbox></v-list-item-title>
-            <v-text-field
-              color="success"
-              v-model="memoContent"
-              class="px-5"
-              v-if="memo"
-            ></v-text-field>
+            <v-textarea
+                class="px-5 mt-5"
+                v-model="memoContent"
+                v-if="memo"
+                auto-grow
+                outlined
+                rows="5"
+                row-height="15"
+                color="#5EBC88"
+              ></v-textarea>
             
             </v-list-item-content>
             
@@ -109,13 +119,13 @@
               label="입력 후 enter"
             ></v-text-field>
             
-            <div class="mx-4">
+            <div class="mx-4" v-if="health">
               <v-chip
                 v-for="(hth, idx) in healthArray"
                 :key="idx"
                 class="mx-1 my-1"
                 close
-                color="#5EBC88"
+                color="#EDD9BF"
                 @click:close="deleteHealth(hth)"
               >
                 {{ hth }}
@@ -137,16 +147,37 @@ import { mapGetters, mapMutations } from 'vuex'
     data () {
       return {
         dialog: false,
-        memo: false,
-        health: false,
-        memoContent: "",
-        healthContent: "",
-        healthArray: [],
+        diaryContent: "",
+        memo: false, // 특이사항
+        health: false, // 건강사항
+        memoContent: "", // 특이사항 내용
+        healthContent: "", // 건강사항 내용 (1개)
+        healthArray: [], // 건강사항 내용들 (전체)
 
       }
     },
     computed: {
       ...mapGetters(['getSelectedDate'])
+    },
+    watch: {
+      health(newVal) {
+        if (!newVal) {
+          this.healthContent = ""
+          this.healthArray = []
+        }
+      },
+      memo(newVal) {
+        if(!newVal) {
+          this.memoContent = ""
+        }
+      },
+      dialog(newVal) {
+        if(!newVal) {
+          this.health = false
+          this.memo = false
+          this.diaryContent = ""
+        }
+      }
     },
     methods: {
       ...mapMutations(['setSelectedDate']),
@@ -168,5 +199,10 @@ import { mapGetters, mapMutations } from 'vuex'
 .v-btn__content, .v-label, .v-chip__content {
   margin: 0px;
 }
-
+.v-text-field__details {
+  display: none !important;
+}
+.v-list {
+  padding-bottom: 0px !important;
+}
 </style>
