@@ -192,7 +192,7 @@ public class PlaceController {
 						status = HttpStatus.ACCEPTED;
 					}else{
 						resultMap.put("message", "장소 게시글 삭제 성공 후 카운트 처리에 실패하였습니다.");
-						status = HttpStatus.ACCEPTED;
+						status = HttpStatus.NOT_FOUND;
 					}
 					
                 }
@@ -261,6 +261,43 @@ public class PlaceController {
 			}			
         } catch (Exception e) {
             logger.error("게시글 좋아요 처리 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+	/*
+     * 기능: 핫플레이스 리스트
+     * 
+     * developer: 윤수민
+     * 
+     * @param : p_location, filter(nre,popular)
+     * 
+     * @return : message,
+     * postList(lid, uid, l_like, l_image, l_desc, l_date)
+     */
+	@ApiOperation(value = "HotPlace postList", notes = "핫플레이스 게시글 리스트")
+    @GetMapping("/list/{p_location}")
+    public ResponseEntity<Map<String, Object>> getPostByList(@PathVariable("p_location") String p_location) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        
+        try {
+			logger.info("place/list 호출성공");
+
+            List<Map<String, Object>> postList = placeService.getPostListNew(p_location);
+			if(postList != null){
+				resultMap.put("postList", postList);
+				resultMap.put("message", "핫플레이스 게시글 리스트 호출 성공하였습니다.");
+				status = HttpStatus.ACCEPTED;
+			}else{
+				resultMap.put("message", "핫플레이스 게시글 리스트가 없습니다.");
+				status = HttpStatus.NOT_FOUND;
+			}
+            
+        } catch (Exception e) {
+            logger.error("게시글 리스트 호출 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }

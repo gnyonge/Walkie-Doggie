@@ -17,4 +17,5 @@ public class PlaceDto {
     private float p_longtitude;
     private int p_like;
     private int p_flag;
+    private String p_location;
 }

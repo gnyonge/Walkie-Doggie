@@ -1,5 +1,6 @@
 package com.ssafy.pet.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.ssafy.pet.dto.LikePlaceDto;
@@ -36,5 +37,8 @@ public interface PlaceService {
     public void plusPost(int lid);
 
     public void minusPost(int lid);
+
+    // 게시글 리스트
+    public List<Map<String, Object>> getPostListNew(String p_location);
     
 }

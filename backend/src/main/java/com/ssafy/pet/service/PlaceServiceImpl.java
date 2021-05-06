@@ -3,6 +3,7 @@ package com.ssafy.pet.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.ssafy.pet.dao.PlaceDao;
@@ -85,6 +86,12 @@ public class PlaceServiceImpl implements PlaceService{
     @Override
     public void minusPost(int lid) {
         pdao.minusPost(lid);
+    }
+
+    // 게시글 리스트
+    @Override
+    public List<Map<String, Object>> getPostListNew(String p_location) {
+        return pdao.getPostListNew(p_location);
     }
 
 }

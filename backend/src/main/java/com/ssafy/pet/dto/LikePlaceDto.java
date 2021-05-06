@@ -21,4 +21,5 @@ public class LikePlaceDto {
     private String l_desc;
     private int l_flag;
     private String l_date;
+    private String p_location;
 }
