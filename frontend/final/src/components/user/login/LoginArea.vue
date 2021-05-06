@@ -1,24 +1,32 @@
 <template>
   <div class="">
     <!-- 로그인--> 
-    <div class="login-center">
+    <div class="">
       <!-- <v-form @submit.prevent="onSignin"> -->
-      <v-form>
-        <v-flex class="ph-size">
-          <h1 class="text-center mb-5 mt-5">로그인</h1>
-          <v-text-field name="email" label="이메일" id="email" v-model="email" type="email" required></v-text-field>
-        </v-flex>
-
-        <v-flex class="ph-size">
-          <v-text-field name="password" label="비밀번호" id="password" v-model="password" type="password" required></v-text-field>
-        </v-flex>
-      </v-form>
-      <router-link to="/calendar"><div class="login-btn-pd">
-        <v-btn class="login-btn">로그인</v-btn>
-      </div></router-link>
-      <!-- 카카오로그인 --> 
-      <div class="klogin-btn" style="background: #BDBDBD;">
-        <v-img src="../../../assets/images/카카오로그인버튼.png" class="logo-img" alt=""></v-img>
+      <div id="mainBox">
+        <div class="d-flex justify-space-between">
+        <div>
+        <v-icon @click="goback()">mdi-arrow-left</v-icon>
+        </div>
+        <div>
+          로그인
+        </div>
+        <div style="width: 24px; background-color: white;">
+        </div>
+      </div>
+        <v-form>
+          <v-text-field name="email" label="이메일" id="email" v-model="email" type="email" required color="#48B9A8" style="margin-top:20px;"></v-text-field>
+          <v-text-field name="password" label="비밀번호" id="password" v-model="password" type="password" required color="#48B9A8" style="margin-top:20px;"></v-text-field>
+        </v-form>
+        <router-link to="/calendar">
+          <div class="login-btn-pd">
+            <v-btn class="login-btn" id="mainBtn" style="width:250px; margin-top:20px; margin-bottom: 20px;"><b>로그인</b></v-btn>
+          </div>
+        </router-link>
+        <!-- 카카오로그인 --> 
+        <div class="klogin-btn" style="background: #BDBDBD;">
+          <v-img src="../../../assets/images/카카오로그인버튼.png" class="logo-img" alt="" ></v-img>
+        </div>
       </div>
     </div>
   </div>
@@ -45,8 +53,8 @@ export default {
   width: 250px;
 }
 .login-btn-pd{
-  padding: 30px;
-  margin-top: 120px;
+  /* padding: 30px; */
+  /* margin-top: 120px; */
 }
 .klogin-btn {
   width: 250px;
