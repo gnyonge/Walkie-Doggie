@@ -4,12 +4,12 @@
       <v-btn rounded @click="todaydiary()" id="btnstyle" :class="{diary: isDiary}">오늘의 일기</v-btn>
       <v-btn rounded @click="todaywalk()" id="btnstyle" :class="{diary: !isDiary}">산책 기록</v-btn>
     </div>
+    <router-view></router-view>
     
   </div>
 </template>
 
 <script>
-import TodayDiary from '@/'
 export default {
   name: "CalendarDetail",
   data () {
@@ -20,11 +20,11 @@ export default {
   methods: {
     todaydiary() {
       this.isDiary = true
-      if (this.$route.path!=='/calendar/todaydiary') this.$router.push({ name: "TodayDiary" })
+      if (this.$route.path!=='/calendar/detail/todaydiary') this.$router.push({ name: "TodayDiary" })
     },
     todaywalk() {
       this.isDiary = false
-      if (this.$route.path!=='/calendar/todaywalk') this.$router.push({ name: "TodayWalk" })
+      if (this.$route.path!=='/calendar/detail/todaywalk') this.$router.push({ name: "TodayWalk" })
     }
   }
 }

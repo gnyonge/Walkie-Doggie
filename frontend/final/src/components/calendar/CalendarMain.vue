@@ -24,7 +24,7 @@
       </div>
       <div v-if="value" id="writebtns">
         <div><p class="my-0">산책 기록 보러가기</p></div>
-        <v-btn id="mainBtn" @click="goto('todaywalk')">산책기록</v-btn>
+        <v-btn id="mainBtn" @click="goto('detail/todaywalk')">산책기록</v-btn>
       </div>
     </v-card>
 </div>
