@@ -1,6 +1,6 @@
 <template>
-  <div class="register-btn-pd">
-    <h1 class="text-center mb-5">반려견 등록</h1>
+  <div class="register-btn-pd" id="mainBox">
+    <h5 class="text-center mb-5">반려견 등록</h5>
       <div class="d-flex justify-center">
         <router-link to="/dogregisternext"><div class="circle ">
           <p>+ 반려견 등록</p>
@@ -29,7 +29,7 @@ export default {
 .circle {
   width: 200px;
   height: 200px;
-  background: #DEB98B;
+  background: #F2B75B;
   border-radius: 50%;
   font-size: 28px;
   text-align:center;

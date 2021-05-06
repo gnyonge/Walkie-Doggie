@@ -1,110 +1,131 @@
 <template>
   <div class="">
-    <div class="login-btn-group profile-box">  
+    <div class="">  
       <!-- 1. 프로필 박스 -->
       <router-link to="/infochange">
-        <v-btn
+        <!-- <v-btn
           tile
         >
         <v-icon left>
           mdi-cog
         </v-icon>
         설정
-      </v-btn>
+      </v-btn> -->
       </router-link>
-        
-      <div class="mt-2">
-        <v-img src="../../assets/images/서비스로고.png" 
-        class="rounded-circle" height="158"
-        max-height="158"
-        max-width="158" alt="">
-        </v-img>
+      <div class="d-flex ml-3 mr-3 mt-5 justify-center">
+        <!-- 1. 프로필 사진 --> 
+        <div class="mt-5">
+          <v-img src="../../assets/images/서비스로고.png" 
+          class="rounded-circle" height="158"
+          max-height="120"
+          max-width="120" alt="">
+          </v-img>
+        </div>
+        <!-- 2. 인적사항 --> 
+        <div class="mt-3 ml-4">
+          <p style="font-size: 20px">이름</p>
+          <p>나이: 2살</p>
+          <p>몸무게: 2.2kg</p>
+          <p>특이사항: 닭고기 알레르기</p>
+        </div>
       </div>
-      <div>
-        <p>나이: 2살</p>
-        <p>몸무게: 2.2kg</p>
-        <p>특이사항: 닭고기 알레르기</p>
+      <!-- 버튼 그룹 --> 
+      <div class="d-flex">
+        <!-- 건강 버튼-->
+        <div id="mainBox" style="width:40%">
+          <router-link to="/health">
+          <div class="d-flex justify-center">
+            <v-icon size="80px" color="#BAF1E4">mdi-pill</v-icon> 
+          </div>
+          <div class="d-flex justify-center mt-3">
+            <h5 style="color:#BAF1E4">건강</h5>
+          </div>
+          </router-link>
+        </div>
+        <!-- 통계 버튼 --> 
+        <div id="mainBox" style="width:40%">
+          <router-link to="/statistics">
+          <div class="d-flex justify-center">
+            <v-icon size="80px" color="#BAF1E4">mdi-poll</v-icon> 
+          </div>
+          <div class="d-flex justify-center mt-3">
+            <h5 style="color:#BAF1E4">통계</h5>
+          </div>
+          </router-link>
+        </div>
       </div>
     </div>
-      <!-- 2. 건강, 통계보기, 강아지 계정 변경 --> 
-      <div class="mt-5 lst">
-        <router-link to="/health" class="d-flex justify-center"><p>건강</p></router-link>
+      <!-- 3.강아지 계정 변경 --> 
+      <div class="ml-5 mt-3">
+        <h5><b>강아지 계정 관리</b> </h5>
       </div>
-      <div class="mt-5 lst">
-        <router-link to="/statistics" class="d-flex justify-center"><p>통계보기</p></router-link> 
+        <div class="frame" >
+          <div class="card-list">
+            <div class="mt-5" id="mainBox" style="background-color:#BAF1E4;">
+              <div class="d-flex justify-end">
+                <v-icon>mdi-cog-outline</v-icon>
+              </div>
+              <div>
+                <v-img src="../../assets/images/서비스로고.png" 
+                  class="rounded-circle" height="158"
+                  max-height="158"
+                  max-width="158" alt="">
+                  </v-img>
+              </div>
+              <div class="d-flex justify-center mt-2">
+                <p style="color:#79704F; font-size:24px;">이름</p>
+              </div>
+              
+            </div>
+            <div class="mt-5" id="mainBox">
+              <p>건강</p>
+            </div>
+            <div class="mt-5 card" id="mainBox">
+              <p>건강</p>
+            </div>
+            <div class="space"></div>
+          </div>
+        </div>
       </div>
-      <div class="mt-5 lst">
-        <router-link to="/dogchange" class="d-flex justify-center"><p>강아지 계정 변경</p></router-link> 
-      </div>
-    </div>
   
 
 </template>
 
 <script>
+// import InfoChange from "../../views/mypage/InfoChange.vue"
+
 export default {
+  // components: { InfoChange },
   
 }
 </script>
 <style scoped>
-.logo {
-  width: 200px;
-  height: 200px; 
-  border-radius: 70%;
-  overflow: hidden;
-  border: solid 3px;
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
-  
-}
-.logo-img {
-  width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-.login-btn-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.login-btn {
-  width: 200px;
-}
-.signup-btn {
-  width: 200px;
-}
-.login-btn-pd{
-  padding: 30px;
-  margin-top: 120px;
-}
-.signup-btn-pd{
-  padding: 30px;
-}
-.mypage-list {
-  /* display: block; */
-  width: 100%;
-  height: 50px;
-  border-radius: 0;
-  box-shadow: 0;
-  background: #DEB98B;
-}
-.mypage-list-btn {
-  box-shadow: 0;
-  background: #DEB98B;
-}
-.profile-box {
-  width: 100%;
-  height: 40%;
-  background: #EFE8DE;
-}
-.lst {
-  width: 100%;
-  height: 95px;
-  background: #EFE8DE;
-  font-size: 40px;
-}
 p {
   color: black;
+}
+
+.frame {
+  width: 360px;
+  overflow: auto;
+}
+
+.card-list {
+  display: flex;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.card {
+  flex-shrink: 0;
+  width: 200px;
+  height: 300px;
+  margin-right: 10px;
+}
+
+.space {
+  flex-shrink: 0;
+  width: 200px;
+  height: 200px;
+/*   background-color: white; */
 }
 </style>
