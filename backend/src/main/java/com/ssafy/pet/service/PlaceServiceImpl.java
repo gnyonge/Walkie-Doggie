@@ -14,6 +14,7 @@ public class PlaceServiceImpl implements PlaceService{
     @Autowired
 	PlaceDao pdao;
 
+    // 장소 좋아요
 	@Override
     public Integer checkPlace(Map<String, Object> param) {
         return pdao.checkPlace(param);
@@ -39,6 +40,7 @@ public class PlaceServiceImpl implements PlaceService{
         return pdao.checkLike(map);
     }
 
+    // 핫플레이스 게시글 수정 및 삭제
     @Override
     public int isWriter(Map<String, Object> map) {
         return pdao.isWriter(map);
@@ -59,6 +61,7 @@ public class PlaceServiceImpl implements PlaceService{
         return pdao.minusPlace(pid);
     }
 
+    // 게시글 좋아요
     @Override
     public Integer checkLikePost(Map<String, Object> param) {
         return pdao.checkLikePost(param);

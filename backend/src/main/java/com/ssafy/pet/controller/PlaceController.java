@@ -62,7 +62,7 @@ public class PlaceController {
      * @return message
 	 * 
      */
-    @ApiOperation(value = "Like place", notes = "산책 중 특정 장소 좋아요 클릭")
+    @ApiOperation(value = "Like place/ Insert HotPlace post", notes = "산책 중 특정 장소 좋아요 클릭")
     @PostMapping("/likePlace")
     public ResponseEntity<Map<String, Object>> likePlace(@RequestBody Map<String, Object> param) {
         Map<String, Object> resultMap = new HashMap<>();
@@ -129,7 +129,7 @@ public class PlaceController {
      * 
      * @return : message
      */
-	@ApiOperation(value = "Modify place", notes = "핫플레이스 게시글 수정")
+	@ApiOperation(value = "Modify HotPlace post", notes = "핫플레이스 게시글 수정")
     @PutMapping("/modify/{login_id}")
     public ResponseEntity<Map<String, Object>> modifyPlace(@RequestBody LikePlaceDto likePlaceDto,
             @PathVariable("login_id") String login_id) {
@@ -170,7 +170,7 @@ public class PlaceController {
      * 
      * @return : message
      */
-	@ApiOperation(value = "Delete place", notes = "핫플레이스 게시글 삭제")
+	@ApiOperation(value = "Delete HotPlace post", notes = "핫플레이스 게시글 삭제")
     @DeleteMapping("/delete/{login_id}")
     public ResponseEntity<Map<String, Object>> deletePlace(@RequestParam(value = "lid") int lid, @RequestParam(value = "pid") int pid,
             @PathVariable("login_id") String login_id) {
@@ -220,9 +220,9 @@ public class PlaceController {
      * @return message
 	 * 
      */
-    @ApiOperation(value = "Like post", notes = "핫플레이스 게시글 좋아요 클릭")
+    @ApiOperation(value = "Like HotPlace post", notes = "핫플레이스 게시글 좋아요 클릭")
     @PostMapping("/likePost")
-    public ResponseEntity<Map<String, Object>> likePost(@RequestParam(value = "lid") int lid, @RequestParam(value = "uid") int uid) {
+    public ResponseEntity<Map<String, Object>> likePost(@RequestParam(value = "lid") int lid, @RequestParam(value = "uid") String uid) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         

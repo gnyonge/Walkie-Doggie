@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface PlaceDao {
 
+    // 장소 좋아요
     public Integer checkPlace(Map<String, Object> param);
 
     public int createPlace(Map<String, Object> param);
@@ -19,6 +20,7 @@ public interface PlaceDao {
 
     public int checkLike(Map<String, Object> map);
 
+    // 핫플레이스 게시글 수정 및 삭제
 	public int isWriter(Map<String, Object> map);
 
     public int modifyPlace(LikePlaceDto likePlaceDto);
@@ -27,6 +29,7 @@ public interface PlaceDao {
 
 	public int minusPlace(int pid);
 
+    // 게시글 좋아요
     public Integer checkLikePost(Map<String, Object> param);
 
     public int clickLike(Map<String, Object> param);
