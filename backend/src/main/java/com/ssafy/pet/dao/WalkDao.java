@@ -24,8 +24,4 @@ public interface WalkDao {
 
     public int getPid(Map<String, Object> param);
 
-    public int minusPlace(int pid);
-
-    public int plusPlace(int pid);
-
 }
