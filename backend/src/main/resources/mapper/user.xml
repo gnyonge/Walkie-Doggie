@@ -5,12 +5,16 @@
 <mapper namespace="com.ssafy.pet.dao.UserDao">
 
 	<insert id="signup" parameterType="UserDto">
-		insert into User(uid, u_email, u_password, u_location, u_nickname)
-		values(#{uid}, #{u_email}, #{u_password}, #{u_location}, #{u_nickname})
+		insert into User(uid, u_email, u_password, u_nickname)
+		values(#{uid}, #{u_email}, #{u_password}, #{u_nickname})
 	</insert>
 	
 	<select id="check_nick" parameterType="String" resultType="int">
-		select count(*) from user where u_nickname= #{u_nickname}
+		select count(*) from User where u_nickname= #{u_nickname}
+	</select>
+	
+	<select id="checkEmail" parameterType="String" resultType="UserDto">
+		select * from User where u_email=#{email}
 	</select>
 
 	<select id="findByProvider" parameterType="map" resultType="UserDto">
