@@ -32,11 +32,9 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ssafy.pet.dto.PetDto;
 import com.ssafy.pet.dto.UserDto;
 import com.ssafy.pet.service.UserService;
-<<<<<<< HEAD
-=======
+
 import com.ssafy.pet.util.JWTUtil;
 import com.ssafy.pet.util.MailUtils;
->>>>>>> frontend
 import com.ssafy.pet.util.S3Util;
 
 import io.swagger.annotations.Api;
@@ -46,7 +44,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-	
+
 	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	private UserService userservice;
@@ -56,10 +54,6 @@ public class UserController {
 
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;
-<<<<<<< HEAD
-	
-	
-=======
 
 	@Autowired
 	private JavaMailSender mailSender;
@@ -83,55 +77,6 @@ public class UserController {
 		return line;
 	}
 
->>>>>>> frontend
-	// 게시물 등록하기
-		@ApiOperation(value = "Community Post Insert", notes = "커뮤니티 글 등록")
-		@PostMapping("/insert")
-		public ResponseEntity<Map<String, Object>> insert_post(@RequestPart MultipartFile file) {
-			Map<String, Object> resultMap = new HashMap<>();
-			HttpStatus status = null;
-
-			try {
-				logger.info("=====> 커뮤니티 글 등록 시작");
-				String originName = file.getOriginalFilename(); // 파일 이름 가져오기
-
-				String ext = originName.substring(originName.lastIndexOf('.')); // 파일 확장명 가져오기
-				String saveFileName = UUID.randomUUID().toString() + ext; // 암호화해서 파일확장넣어주기
-				String path = System.getProperty("user.dir"); // 경로설정해주고
-
-				File tempfile = new File(path, saveFileName); // 경로에 파일만들어주고
-
-				String line = "community/";
-
-				saveFileName = line + saveFileName;
-
-				file.transferTo(tempfile);
-				s3util.setS3Client().putObject(new PutObjectRequest(bucket, saveFileName, tempfile)
-						.withCannedAcl(CannedAccessControlList.PublicRead));
-				String url = s3util.setS3Client().getUrl(bucket, saveFileName).toString();
-				tempfile.delete();
-				
-				int result =0;
-
-				if (result == 1) {
-					logger.info("=====> 커뮤니티 글 등록 성공");
-					resultMap.put("message", "게시글 등록에 성공하였습니다.");
-					status = HttpStatus.ACCEPTED;
-				} else {
-					logger.info("=====> 커뮤니티 글 등록 실패");
-					resultMap.put("message", "게시글 등록에 실패하였습니다.");
-					status = HttpStatus.NOT_FOUND;
-				}
-
-			} catch (Exception e) {
-				// TODO: handle exception
-				logger.error("글 등록 실패 : {}", e);
-				resultMap.put("message", e.getMessage());
-				status = HttpStatus.INTERNAL_SERVER_ERROR;
-			}
-			return new ResponseEntity<Map<String, Object>>(resultMap, status);
-		}
-		
 		//로그인하기
 		@ApiOperation(value = "User Signup", notes = "자체로그인 회원가입")
 		@PostMapping("/signup")
@@ -177,7 +122,6 @@ public class UserController {
 			}
 			return new ResponseEntity<Map<String, Object>>(resultMap, status);
 		}
-<<<<<<< HEAD
 		
 		@ApiOperation(value = "NickName Overlap Check", notes = "닉네임 중복 체크")
 		@GetMapping("/check/{nick}")
@@ -199,7 +143,6 @@ public class UserController {
 					resultMap.put("message", "사용가능한 닉네임입니다.");
 					resultMap.put("flag", flag);
 				}
-=======
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
@@ -241,7 +184,6 @@ public class UserController {
 				status = HttpStatus.ACCEPTED;
 			} else {
 				resultMap.put("message", "회원가입된 메일입니다.");
->>>>>>> frontend
 				status = HttpStatus.ACCEPTED;
 
 			} catch (Exception e) {
