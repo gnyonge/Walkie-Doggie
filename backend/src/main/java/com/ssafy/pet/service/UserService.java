@@ -10,12 +10,8 @@ public interface UserService {
 	int signup(UserDto user);
 
 	int check_nick(String nick);
-<<<<<<< HEAD
-}
-=======
-	
+
 	UserDto checkEmail(String email);
 	List<PetDto> petInfo(String uid);
 	
 	}
->>>>>>> frontend

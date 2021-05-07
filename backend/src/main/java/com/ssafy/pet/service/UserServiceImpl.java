@@ -1,12 +1,9 @@
 package com.ssafy.pet.service;
 
-<<<<<<< HEAD
-=======
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
->>>>>>> frontend
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,9 +28,6 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		return udao.check_nick(nick);
 	}
-<<<<<<< HEAD
-=======
-	
 	@Override
 	public UserDto checkEmail(String email) {
 		// TODO Auto-generated method stub
@@ -54,6 +48,5 @@ public class UserServiceImpl implements UserService{
 //		map.put("auth", auth);
 //		return udao.authEmail(map);
 //	}
->>>>>>> frontend
 
 }
