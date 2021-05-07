@@ -31,9 +31,6 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		return udao.check_nick(nick);
 	}
-<<<<<<< HEAD
-=======
-	
 	@Override
 	public UserDto checkEmail(String email) {
 		// TODO Auto-generated method stub
@@ -54,6 +51,5 @@ public class UserServiceImpl implements UserService{
 //		map.put("auth", auth);
 //		return udao.authEmail(map);
 //	}
->>>>>>> frontend
 
 }
