@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		return udao.check_nick(nick);
 	}
+	
 	@Override
 	public UserDto checkEmail(String email) {
 		// TODO Auto-generated method stub

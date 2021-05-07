@@ -13,9 +13,6 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @Component
 public class S3Util {
-	//넌왜 없니?
-	//뭐니?
-	//무어지?
 	
 	@Value("${cloud.aws.credentials.accessKey}")
 	private String accessKey; // 액세스 키

@@ -6,63 +6,14 @@
 	
 	<!-- 산책 정보 -->
 	<insert id="createWalk" parameterType="WalkDto" useGeneratedKeys="true" keyProperty="wid" keyColumn="wid" >
-<<<<<<< HEAD
-		insert into walk(peid, w_date, w_flag)
-		values(#{peid}, now(), 0);
-=======
 		insert into Walk(peid, w_img, w_distance, w_time, w_date, w_flag, w_like, w_likeList)
 		values(#{peid}, #{w_img}, #{w_distance}, #{w_time}, now(), 0, #{w_like}, #{w_likeList});
->>>>>>> frontend
 	</insert>
 
 	<update id="saveRoute" parameterType="map">
-		update walk
+		update Walk
 		set w_img=#{url}
 		where wid=#{wid};
 	</update>
 
-<<<<<<< HEAD
-	<update id="saveEnd" parameterType="map">
-		update walk
-		set w_distance=#{w_distance}, w_time=#{w_time}
-		where wid=#{wid};
-	</update>
-
-	<!-- 장소 좋아요/싫어요 -->
-	<select id="checkPlace" parameterType="map">
-		select count(*)
-		from place
-		where p_latitude=#{p_latitude} and p_longtitude = #{p_longtitude}
-	</select>
-
-	<insert id="createPlace" parameterType="map" resultType="PlaceDto" useGeneratedKeys="true" keyProperty="pid" keyColumn="pid" >
-		insert into place(p_latitude, p_longtitude, p_like, p_hate, w_flag)
-		values(#{p_latitude}, #{p_longtitude}, 0, 0, 0);
-	</insert>
-
-	<insert id="clickPlace" parameterType="map" >
-		insert into likeplace(pid, peid, isLike, lp_flag)
-		values(#{pid}, #{peid}, #{isLike}, 0);
-	</insert>
-
-	<select id="getPid" parameterType="map">
-		select pid
-		from place
-		where p_latitude=#{p_latitude} and p_longtitude = #{p_longtitude}
-	</select>
-
-	<update id="minusPlace" parameterType="int">
-		update likeplace
-		set p_hate = p_hate + 1
-		where pid=#{pid};
-	</update>
-
-	<update id="plusPlace" parameterType="int">
-		update likeplace
-		set p_like = p_like + 1
-		where pid=#{pid};
-	</update>
-
-=======
->>>>>>> frontend
 </mapper>
