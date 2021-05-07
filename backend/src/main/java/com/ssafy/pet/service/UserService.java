@@ -1,5 +1,8 @@
 package com.ssafy.pet.service;
 
+import java.util.List;
+
+import com.ssafy.pet.dto.PetDto;
 import com.ssafy.pet.dto.UserDto;
 
 public interface UserService {
@@ -9,5 +12,6 @@ public interface UserService {
 	int check_nick(String nick);
 	
 	UserDto checkEmail(String email);
+	List<PetDto> petInfo(String uid);
 	
 	}

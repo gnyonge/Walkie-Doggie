@@ -43,5 +43,7 @@ public interface PlaceDao {
 
     // 게시글 리스트
     public List<Map<String, Object>> getPostListNew(String p_location);
+
+    public List<Map<String, Object>> getPostListLike(String p_location);
     
 }

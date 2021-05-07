@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +30,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.ssafy.pet.dto.PetDto;
 import com.ssafy.pet.dto.UserDto;
 import com.ssafy.pet.service.UserService;
+import com.ssafy.pet.util.JWTUtil;
 import com.ssafy.pet.util.MailUtils;
 import com.ssafy.pet.util.S3Util;
 
@@ -53,6 +57,9 @@ public class UserController {
 
 	@Autowired
 	private JavaMailSender mailSender;
+	
+	@Autowired
+	private JWTUtil jwtutil;
 
 	private String MakeUid() {
 		StringBuffer made = new StringBuffer();
@@ -217,7 +224,7 @@ public class UserController {
 				// uid, mail, flag 세팅하러갑시다!
 				resultMap.put("message", "인증 메일을 보냈습니다. 확인해주십시오");
 				status = HttpStatus.ACCEPTED;
-			}else {
+			} else {
 				resultMap.put("message", "회원가입된 메일입니다.");
 				status = HttpStatus.ACCEPTED;
 			}
@@ -230,5 +237,32 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
+	// mypage 마이페이지
+	@ApiOperation(value = "Mypage Info", notes = "마이페이지")
+	@GetMapping("/info")//user/info
+	public ResponseEntity<Map<String, Object>> myInfo(HttpServletRequest req) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		String jwt = req.getHeader("doggie_token");
+
+		try {
+			logger.info("=====> 마이페이지");
+			
+			resultMap.putAll(jwtutil.get(req.getHeader("doggie_token")));
+			String uid = jwtutil.getUserId(jwt);
+			System.out.println("uid : "+uid);
+			
+			List<PetDto> list = userservice.petInfo(uid);
+			resultMap.put("petList", list);
+			resultMap.put("message", "SUCCESS");
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("메일 중복 체크 실패 : {}", e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 
 }
