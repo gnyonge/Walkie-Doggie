@@ -94,4 +94,9 @@ public class PlaceServiceImpl implements PlaceService{
         return pdao.getPostListNew(p_location);
     }
 
+    @Override
+    public List<Map<String, Object>> getPostListLike(String p_location) {
+        return pdao.getPostListLike(p_location);
+    }
+
 }
