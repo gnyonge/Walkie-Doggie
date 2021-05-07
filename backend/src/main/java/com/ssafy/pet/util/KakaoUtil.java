@@ -22,7 +22,7 @@ public class KakaoUtil {
         String access_Token = "";
         String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
-        
+        //왜 이번엔 너가 없니?
         try {
             URL url = new URL(reqURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
