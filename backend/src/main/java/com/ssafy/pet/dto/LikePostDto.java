@@ -11,15 +11,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class LikePlaceDto {
+public class LikePostDto {
     private int lid;
-    private int pid;
-    private String peid;
     private String uid;
-    private int l_like;
-    private String l_image;
-    private String l_desc;
-    private int l_flag;
-    private String l_date;
-    private String p_location;
 }

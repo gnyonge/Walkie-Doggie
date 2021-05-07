@@ -19,4 +19,6 @@ public class WalkDto {
     private int w_time;
     private String w_date;
     private int w_flag;
+    private int w_like;
+    private String w_likeList;
 }

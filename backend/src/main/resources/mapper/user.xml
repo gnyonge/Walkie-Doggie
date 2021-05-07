@@ -5,40 +5,19 @@
 <mapper namespace="com.ssafy.pet.dao.UserDao">
 
 	<insert id="signup" parameterType="UserDto">
-		insert into User(uid, u_email, u_password, u_location, u_nickname)
-		values(#{uid}, #{u_email}, #{u_password}, #{u_location}, #{u_nickname})
+		insert into User(uid, u_email, u_password, u_nickname)
+		values(#{uid}, #{u_email}, #{u_password}, #{u_nickname})
 	</insert>
 	
 	<select id="check_nick" parameterType="String" resultType="int">
-		select count(*) from user where u_nickname= #{u_nickname}
-	</select>
-
-	<select id="findByProvider" parameterType="map" resultType="UserDto">
-		select *
-		from user
-		where provider=#{provider} and provider_id = #{provider_id}
+		select count(*) from User where u_nickname= #{u_nickname}
 	</select>
 	
-	<select id="findById" parameterType="string" resultType="UserDto">
-		select *
-		from user
-		where uid = #{uid} 
+	<select id="checkEmail" parameterType="String" resultType="UserDto">
+		select * from User where u_email=#{email}
 	</select>
 	
-	<insert id="save" parameterType="UserDto" >
-		insert into user(uid, nickname, profile, provider, provider_id)
-		values(#{uid}, #{nickname}, #{profile}, #{provider}, #{provider_id})
-	</insert>
-	
-	<update id="updateUser" parameterType="map">
-		update user
-		set nickname=#{nickname}, profile=#{profile}
-		where uid=#{uid}
-	</update>
-	
-	<select id="findNickName" parameterType="string" resultType="String">
-		select nickname
-		from user
-		where uid = #{uid} 
+	<select id="petInfo" parameterType="String" resultType="PetDto">
+		select * from Pet where uid=#{uid}
 	</select>
 </mapper>
