@@ -44,6 +44,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+	//UserController부분
 
 	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Autowired
