@@ -43,8 +43,8 @@ public class LoginController {
 				Map<String, Object> userInfo = kakao.getUserInfo(access_Token);
 			    System.out.println("login Controller : " + userInfo);
 			    
-			    String nickname = userInfo.get("nickname");
-			    String email = userInfo.get("email");
+//			    String nickname = userInfo.get("nickname");
+//			    String email = userInfo.get("email");
 			    
 			    
 			    //    클라이언트의 이메일이 존재할 때 세션에 해당 이메일과 토큰 등록
