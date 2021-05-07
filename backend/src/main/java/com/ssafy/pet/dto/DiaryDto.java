@@ -2,7 +2,7 @@ package com.ssafy.pet.dto;
 
 public class DiaryDto {
 
-	private int peid;
+	private String peid;
 	private String d_memo;
 	private String d_img;
 	private String d_date;
@@ -10,7 +10,7 @@ public class DiaryDto {
 	private int d_walk;
 	private int d_flag;
 
-	public DiaryDto(int peid, String d_memo, String d_img, String d_date, String d_special, int d_walk, int d_flag) {
+	public DiaryDto(String peid, String d_memo, String d_img, String d_date, String d_special, int d_walk, int d_flag) {
 		super();
 		this.peid = peid;
 		this.d_memo = d_memo;
@@ -21,11 +21,11 @@ public class DiaryDto {
 		this.d_flag = d_flag;
 	}
 
-	public int getPeid() {
+	public String getPeid() {
 		return peid;
 	}
 
-	public void setPeid(int peid) {
+	public void setPeid(String peid) {
 		this.peid = peid;
 	}
 

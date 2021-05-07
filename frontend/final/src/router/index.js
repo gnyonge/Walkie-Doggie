@@ -2,11 +2,15 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Calendar from '../views/calendar/Calendar.vue'
+import CalendarWrite from '../views/calendar/CalendarWrite.vue'
+import CalendarDetail from '../views/calendar/CalendarDetail.vue'
+import TodayDiary from '../views/calendar/TodayDiary.vue'
 import TodayWalk from '../views/calendar/TodayWalk.vue'
 
 import Walk from '../views/walk/Walk.vue'
 import StartWalk from '../views/walk/StartWalk.vue'
 import HotPlace from '../views/walk/HotPlace.vue'
+import LikePosting from '../views/walk/LikePosting.vue'
 
 import Food from '../views/food/Food.vue'
 import FoodResult from '../views/food/FoodResult.vue'
@@ -37,11 +41,21 @@ const routes = [
     path: '/calendar',
     name: 'Calendar',
     component: Calendar,
+  },
+  {
+    path: '/calendar/write',
+    name: 'CalendarWrite',
+    component: CalendarWrite
+  },
+  {
+    path: '/calendar/detail',
+    name: 'CalendarDetail',
+    component: CalendarDetail,
     children: [
       {
-        path: 'write',
-        name: 'CalendarWrite',
-        component: Calendar
+        path: 'todaydiary',
+        name: 'TodayDiary',
+        component: TodayDiary
       },
       {
         path: 'todaywalk',
@@ -64,6 +78,11 @@ const routes = [
     path: '/hotplace',
     name: 'HotPlace',
     component: HotPlace
+  },
+  {
+    path: '/likeposting',
+    name: 'LikePosting',
+    component: LikePosting
   },
   {
     path: '/food',

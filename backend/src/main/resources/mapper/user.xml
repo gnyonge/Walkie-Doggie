@@ -12,33 +12,8 @@
 	<select id="check_nick" parameterType="String" resultType="int">
 		select count(*) from user where u_nickname= #{u_nickname}
 	</select>
-
-	<select id="findByProvider" parameterType="map" resultType="UserDto">
-		select *
-		from user
-		where provider=#{provider} and provider_id = #{provider_id}
-	</select>
 	
-	<select id="findById" parameterType="string" resultType="UserDto">
-		select *
-		from user
-		where uid = #{uid} 
-	</select>
-	
-	<insert id="save" parameterType="UserDto" >
-		insert into user(uid, nickname, profile, provider, provider_id)
-		values(#{uid}, #{nickname}, #{profile}, #{provider}, #{provider_id})
-	</insert>
-	
-	<update id="updateUser" parameterType="map">
-		update user
-		set nickname=#{nickname}, profile=#{profile}
-		where uid=#{uid}
-	</update>
-	
-	<select id="findNickName" parameterType="string" resultType="String">
-		select nickname
-		from user
-		where uid = #{uid} 
+	<select id="petInfo" parameterType="String" resultType="PetDto">
+		select * from Pet where uid=#{uid}
 	</select>
 </mapper>
