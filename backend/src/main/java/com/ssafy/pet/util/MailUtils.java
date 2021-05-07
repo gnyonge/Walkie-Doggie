@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 
 public class MailUtils {
 	//너도 없니?
+	//뭐니?
 	 private JavaMailSender mailSender;
 	    private MimeMessage message;
 	    private MimeMessageHelper messageHelper;
