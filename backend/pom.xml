@@ -118,6 +118,8 @@
 			<artifactId>spring-context-support</artifactId>
 			<version>5.2.0.RELEASE</version>
 		</dependency>
+<<<<<<< HEAD
+=======
 		<!-- https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2 -->
 		<dependency>
 			<groupId>org.springframework.security.oauth</groupId>
@@ -143,6 +145,7 @@
 			<version>0.7.0</version>
 		</dependency>
 
+>>>>>>> frontend
 	</dependencies>
 
 	<build>

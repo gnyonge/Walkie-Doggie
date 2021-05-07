@@ -14,4 +14,17 @@ public interface WalkDao {
 
     public int saveRoute(Map<String, Object> map);
 
+<<<<<<< HEAD
+    public int saveEnd(Map<String, Object> map);
+
+    public int checkPlace(Map<String, Object> param);
+
+    public PlaceDto createPlace(Map<String, Object> param);
+
+    public int clickPlace(Map<String, Object> param);
+
+    public int getPid(Map<String, Object> param);
+
+=======
+>>>>>>> frontend
 }
