@@ -272,29 +272,42 @@ public class PlaceController {
      * 
      * developer: 윤수민
      * 
-     * @param : p_location, filter(nre,popular)
+     * @param : p_location, sort(new,popular)
      * 
      * @return : message,
      * postList(lid, uid, l_like, l_image, l_desc, l_date)
      */
 	@ApiOperation(value = "HotPlace postList", notes = "핫플레이스 게시글 리스트")
     @GetMapping("/list/{p_location}")
-    public ResponseEntity<Map<String, Object>> getPostByList(@PathVariable("p_location") String p_location) {
+    public ResponseEntity<Map<String, Object>> getPostByList(@PathVariable("p_location") String p_location, @RequestParam(value = "sort") String sort) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         
         try {
 			logger.info("place/list 호출성공");
 
-            List<Map<String, Object>> postList = placeService.getPostListNew(p_location);
-			if(postList != null){
-				resultMap.put("postList", postList);
-				resultMap.put("message", "핫플레이스 게시글 리스트 호출 성공하였습니다.");
-				status = HttpStatus.ACCEPTED;
-			}else{
-				resultMap.put("message", "핫플레이스 게시글 리스트가 없습니다.");
-				status = HttpStatus.NOT_FOUND;
-			}
+            if(sort.equals("new")){ // 최신순 정렬
+                List<Map<String, Object>> postList = placeService.getPostListNew(p_location);
+                if(postList != null){
+                    resultMap.put("postList", postList);
+                    resultMap.put("message", "최신순 핫플레이스 게시글 리스트 호출 성공하였습니다.");
+                    status = HttpStatus.ACCEPTED;
+                }else{
+                    resultMap.put("message", "핫플레이스 게시글 리스트가 없습니다.");
+                    status = HttpStatus.NOT_FOUND;
+                }
+            }else{ // 좋아요순 정렬
+                List<Map<String, Object>> postList = placeService.getPostListLike(p_location);
+                if(postList != null){
+                    resultMap.put("postList", postList);
+                    resultMap.put("message", "좋아요순 핫플레이스 게시글 리스트 호출 성공하였습니다.");
+                    status = HttpStatus.ACCEPTED;
+                }else{
+                    resultMap.put("message", "핫플레이스 게시글 리스트가 없습니다.");
+                    status = HttpStatus.NOT_FOUND;
+                }
+            }
+            
             
         } catch (Exception e) {
             logger.error("게시글 리스트 호출 실패 : {}", e);
