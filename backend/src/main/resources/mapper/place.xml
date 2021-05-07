@@ -94,5 +94,11 @@
 		from LikePlace
 		order by l_date desc;
 	</select>
+
+	<select id="getPostListLike" parameterType="string" resultType="map" >
+		select lid, uid, l_like, l_image, l_desc, l_date
+		from LikePlace
+		order by l_like desc;
+	</select>
 	
 </mapper>
