@@ -1,12 +1,14 @@
 package com.ssafy.pet.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.pet.dao.UserDao;
+import com.ssafy.pet.dto.PetDto;
 import com.ssafy.pet.dto.UserDto;
 
 @Service
@@ -31,6 +33,12 @@ public class UserServiceImpl implements UserService{
 	public UserDto checkEmail(String email) {
 		// TODO Auto-generated method stub
 		return udao.checkEmail(email);
+	}
+	
+	@Override
+	public List<PetDto> petInfo(String uid) {
+		// TODO Auto-generated method stub
+		return udao.petInfo(uid);
 	}
 	
 //	@Override
