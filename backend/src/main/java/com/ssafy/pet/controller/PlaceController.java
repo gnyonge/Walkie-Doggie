@@ -317,4 +317,41 @@ public class PlaceController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
+    /*
+     * 기능: 핫플레이스 TOP5
+     * 
+     * developer: 윤수민
+     * 
+     * @param : p_location
+     * 
+     * @return : message,
+     * postList(lid, uid, l_like, l_image, l_desc, l_date)
+     */
+	@ApiOperation(value = "HotPlace top5", notes = "핫플레이스 TOP5")
+    @GetMapping("/top5/{p_location}")
+    public ResponseEntity<Map<String, Object>> getTop5(@PathVariable("p_location") String p_location) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        
+        try {
+			logger.info("place/top5 호출성공");
+
+            List<Map<String, Object>> postList = placeService.getTop5(p_location);
+            if(postList != null){
+                resultMap.put("postList", postList);
+                resultMap.put("message", "핫플레이스 TOP5 호출 성공하였습니다.");
+                status = HttpStatus.ACCEPTED;
+            }else{
+                resultMap.put("message", "핫플레이스 리스트가 없습니다.");
+                status = HttpStatus.NOT_FOUND;
+            }
+            
+        } catch (Exception e) {
+            logger.error("top5 호출 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
 }
