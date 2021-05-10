@@ -1,11 +1,10 @@
 <template>
   <div>
-    <div id="mainBox" style="margin-top: 20%;">
+    <div id="mainBox" style="margin-top: 10%;">
       <div id="app">
         <!-- 지도 -->
-        <div id="map">
-        </div>
-        </div>
+        <div id="map"></div>
+      </div>
         <div class="btncalss">
           <!-- 좋아요 -->
           <v-btn
@@ -110,7 +109,6 @@ export default {
   computed: {
     ...mapGetters(['getNowTab'])
   },
-
   mounted() {
     if (window.kakao && window.kakao.maps) {
       this.initMap();
@@ -250,6 +248,8 @@ export default {
     like() {
       this.likecnt += 1 
 
+      // 마커 이미지를 가져오기 위한 코드 
+      this.$router.push('/likeposting')
       var dogLike = this.map
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
       navigator.geolocation.getCurrentPosition(function(position) { 
@@ -334,11 +334,11 @@ export default {
 <style>
 #map {
     width: auto;
-    height: 350px;
+    height: 480px;
 }
 .img{
   position: absolute;
-  margin: 37% 40%;
+  margin: 10% 40%;
   z-index: 1;
 }
 .gird{
