@@ -38,7 +38,7 @@
             <v-icon size="80px" color="#BAF1E4">mdi-pill</v-icon> 
           </div>
           <div class="d-flex justify-center mt-3">
-            <h5 style="color:#BAF1E4">건강</h5>
+            <div style="color:#48B9A8; font-size:20px;">건강</div>
           </div>
           </router-link>
         </div>
@@ -49,7 +49,7 @@
             <v-icon size="80px" color="#BAF1E4">mdi-poll</v-icon> 
           </div>
           <div class="d-flex justify-center mt-3">
-            <h5 style="color:#BAF1E4">통계</h5>
+            <div style="color:#48B9A8; font-size:20px;">통계</div>
           </div>
           </router-link>
         </div>
