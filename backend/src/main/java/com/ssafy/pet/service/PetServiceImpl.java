@@ -36,4 +36,10 @@ public class PetServiceImpl implements PetService {
 		// TODO Auto-generated method stub
 		return pdao.get_old(peid);
 	}
+	
+	@Override
+	public int leave_pet(String peid) {
+		// TODO Auto-generated method stub
+		return pdao.leave_pet(peid);
+	}
 }

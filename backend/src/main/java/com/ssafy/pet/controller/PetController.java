@@ -27,6 +27,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ssafy.pet.dto.HealthDto;
 import com.ssafy.pet.dto.PetDto;
+import com.ssafy.pet.dto.UserDto;
 import com.ssafy.pet.service.PetService;
 import com.ssafy.pet.util.S3Util;
 
@@ -67,7 +68,7 @@ public class PetController {
 	}
 	
 	
-	@ApiOperation(value = "Check Pet Regist", notes = "강아지 등록 가능 여부 확인")
+	@ApiOperation(value = "Check Pet Regist", notes = "반려견 등록 가능 여부 확인")
 	@GetMapping("/check/add")
 	public ResponseEntity<Map<String, Object>> posiblePet(@RequestParam String uid ) {
 		Map<String, Object> resultMap = new HashMap<>();
@@ -146,7 +147,7 @@ public class PetController {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("글 등록 실패 : {}", e);
+			logger.error("반려견 등록 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
@@ -155,7 +156,7 @@ public class PetController {
 	
 	
 	//반려견 건강 내역 보기
-	@ApiOperation(value = "Show Health", notes = "강아지 건강 등록 내역 보기")
+	@ApiOperation(value = "Show Health", notes = "반려견 건강 등록 내역 보기")
 	@GetMapping("/health/{peid}")//user/address
 	public ResponseEntity<Map<String, Object>> setAddress(@PathVariable String peid) {
 		Map<String, Object> resultMap = new HashMap<>();
@@ -171,7 +172,7 @@ public class PetController {
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			logger.error("메일 중복 체크 실패 : {}", e);
+			logger.error("반려견 건강 등록 내역 확인 실패 : {}", e);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			e.printStackTrace();
 		}
@@ -192,6 +193,12 @@ public class PetController {
 			//3. 사진 등록 했고 지금 등록 안해서 사진 안바꿀꺼야
 			//4. 사진 등록 했고 지금 등록 된 사진으로 바꿀꺼야 
 			PetDto old = petservice.get_old(pet.getPeid());
+			
+			if(file==null) {
+				//파일등록 안했을때
+			}else {
+				//파일 등록했을때
+			}
 			
 //			String photo = old.getC_img();
 //			if (photo != null) { // 이미 사진이 저장되어있을때
@@ -239,6 +246,36 @@ public class PetController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	//계정삭제
+	@ApiOperation(value = "Leave Pet", notes = "반려견 삭제")
+	@PutMapping("/leave")
+	public ResponseEntity<Map<String, Object>> leave_pet(@RequestBody PetDto pet){
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+
+		try {
+			logger.info("=====> 반려견탈퇴");
+			int result = petservice.leave_pet(pet.getPeid());
+			boolean flag = false;
+			if(result>=1) {
+				flag = true;
+				resultMap.put("message", "반려견 정보가 삭제되었습니다.");
+				resultMap.put("flag", flag);
+			}else {
+				resultMap.put("message", "반려견 정보 삭제에 실패 하였습니다.");
+				resultMap.put("flag", flag);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("반려견 정보 삭제 실패 : {}", e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
 
 	
 

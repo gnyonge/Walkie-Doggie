@@ -77,55 +77,7 @@ public class UserController {
 		return line;
 	}
 
-	// 게시물 등록하기
-	@ApiOperation(value = "Community Post Insert", notes = "커뮤니티 글 등록")
-	@PostMapping("/insert")
-	public ResponseEntity<Map<String, Object>> insert_post(@RequestPart MultipartFile file) {
-		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = null;
-
-		try {
-			logger.info("=====> 커뮤니티 글 등록 시작");
-			String originName = file.getOriginalFilename(); // 파일 이름 가져오기
-
-			String ext = originName.substring(originName.lastIndexOf('.')); // 파일 확장명 가져오기
-			String saveFileName = UUID.randomUUID().toString() + ext; // 암호화해서 파일확장넣어주기
-			String path = System.getProperty("user.dir"); // 경로설정해주고
-
-			File tempfile = new File(path, saveFileName); // 경로에 파일만들어주고
-
-			String line = "community/";
-
-			saveFileName = line + saveFileName;
-
-			file.transferTo(tempfile);
-			s3util.setS3Client().putObject(new PutObjectRequest(bucket, saveFileName, tempfile)
-					.withCannedAcl(CannedAccessControlList.PublicRead));
-			String url = s3util.setS3Client().getUrl(bucket, saveFileName).toString();
-			tempfile.delete();
-
-			int result = 0;
-
-			if (result == 1) {
-				logger.info("=====> 커뮤니티 글 등록 성공");
-				resultMap.put("message", "게시글 등록에 성공하였습니다.");
-				status = HttpStatus.ACCEPTED;
-			} else {
-				logger.info("=====> 커뮤니티 글 등록 실패");
-				resultMap.put("message", "게시글 등록에 실패하였습니다.");
-				status = HttpStatus.NOT_FOUND;
-			}
-
-		} catch (Exception e) {
-			// TODO: handle exception
-			logger.error("글 등록 실패 : {}", e);
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
-
-	// 로그인하기
+	// 회원가입하기
 	@ApiOperation(value = "User Signup", notes = "자체로그인 회원가입")
 	@PostMapping("/signup")
 	public ResponseEntity<Map<String, Object>> signup(@RequestBody UserDto user) {
@@ -264,7 +216,7 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	// mypage 마이페이지
+	// 지역등록
 	@ApiOperation(value = "Set Address", notes = "지역등록")
 	@GetMapping("/address")//user/address
 	public ResponseEntity<Map<String, Object>> setAddress(@RequestParam String uid,@RequestParam String add) {
@@ -294,7 +246,7 @@ public class UserController {
 	}
 	//계정삭제
 	@ApiOperation(value = "Leave User", notes = "회원탈퇴")
-	@PutMapping("/leave")//user/address
+	@PutMapping("/leave")
 	public ResponseEntity<Map<String, Object>> leaveUser(@RequestBody UserDto user){
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
