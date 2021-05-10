@@ -92,13 +92,24 @@
 	<select id="getPostListNew" parameterType="string" resultType="map" >
 		select lid, uid, l_like, l_image, l_desc, l_date
 		from LikePlace
+		where p_location=#{p_location}
 		order by l_date desc;
 	</select>
 
 	<select id="getPostListLike" parameterType="string" resultType="map" >
 		select lid, uid, l_like, l_image, l_desc, l_date
 		from LikePlace
+		where p_location=#{p_location}
 		order by l_like desc;
+	</select>
+
+	<!-- Top5 -->
+	<select id="getTop5" parameterType="string" resultType="map" >
+		select pid
+		from Place
+		where p_location=#{p_location}
+		order by p_like desc
+		limit 3;
 	</select>
 	
 </mapper>

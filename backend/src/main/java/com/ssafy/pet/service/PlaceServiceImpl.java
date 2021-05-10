@@ -99,4 +99,10 @@ public class PlaceServiceImpl implements PlaceService{
         return pdao.getPostListLike(p_location);
     }
 
+    // Top5
+    @Override
+    public List<Map<String, Object>> getTop5(String p_location) {
+        return pdao.getTop5(p_location);
+    }
+
 }
