@@ -89,7 +89,7 @@ public class PlaceController {
 						.withCannedAcl(CannedAccessControlList.PublicRead));
 				String url = s3util.setS3Client().getUrl(bucket, saveFileName).toString();
 				tempfile.delete();
-				param.put("l_image", url)
+				param.put("l_image", url);
 			}
 
 			// 등록된 장소인지 먼저 확인
