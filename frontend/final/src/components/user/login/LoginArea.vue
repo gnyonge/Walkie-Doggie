@@ -19,12 +19,12 @@
           <v-text-field name="password" label="비밀번호" id="password" v-model="password" type="password" required color="#48B9A8" style="margin-top:20px;"></v-text-field>
         </v-form>
         <router-link to="/calendar">
-          <div class="login-btn-pd">
-            <v-btn class="login-btn" id="mainBtn" style="width:250px; margin-top:20px; margin-bottom: 20px;"><b>로그인</b></v-btn>
+          <div class="d-flex justify-center">
+            <v-btn class="login-btn" id="mainBtn" style="width:100%; margin-top:20px; margin-bottom: 20px;"><b>로그인</b></v-btn>
           </div>
         </router-link>
         <!-- 카카오로그인 --> 
-        <div class="klogin-btn" style="background: #BDBDBD;">
+        <div class=" d-flex justify-center" style="background: #BDBDBD;">
           <v-img src="../../../assets/images/카카오로그인버튼.png" class="logo-img" alt="" ></v-img>
         </div>
       </div>

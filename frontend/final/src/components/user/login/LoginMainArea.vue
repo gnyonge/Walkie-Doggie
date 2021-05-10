@@ -1,8 +1,13 @@
+	
+오후 2:41
+
+
+
 <template>
   <div class="logo-center">
     <div class="login-btn-group">  
       <!-- 1. 서비스로고 -->
-      <div class="logo">
+      <div class="logo mt-10">
         <v-img src="../../../assets/images/서비스로고.png" class="logo-img" alt=""></v-img>
       </div>
       <!-- 2. 로그인 회원가입 버튼 --> 

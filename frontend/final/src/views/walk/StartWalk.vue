@@ -1,11 +1,10 @@
 <template>
   <div>
-    <div id="mainBox" style="margin-top: 20%;">
+    <div id="mainBox" style="margin-top: 10%;">
       <div id="app">
         <!-- 지도 -->
-        <div id="map">
-        </div>
-        </div>
+        <div id="map"></div>
+      </div>
         <div class="btncalss">
           <!-- 좋아요 -->
           <v-btn
@@ -100,17 +99,14 @@ export default {
       likecnt: 0,
       // 실시간 위치 
       walkLoc : '',
-      realTimeLoc: '', 
       linePath: [], 
       // 멍플레이스
       likePath: [],
-      deleteAll: true,
     }
   },
   computed: {
     ...mapGetters(['getNowTab'])
   },
-
   mounted() {
     if (window.kakao && window.kakao.maps) {
       this.initMap();
@@ -130,17 +126,7 @@ export default {
 
   },
   destroyed() {
-    if (this.deleteAll === true) { // 하단바로 이동시 산책 정보 초기화
-      this.linePath = []
-      this.likePath = []
-    }else{ // 멍플레이스 보다 온거라면
-      
-      // 백엔드로 정보를 보내고 난 후 
-      
-    }
-    // 실시간 정보 가져오기죽이기 
     clearInterval(this.walkLoc)
-    clearInterval(this.realTimeLoc)
     
   },
   watch: {
@@ -250,6 +236,8 @@ export default {
     like() {
       this.likecnt += 1 
 
+      // 마커 이미지를 가져오기 위한 코드 
+      this.$router.push('/likeposting')
       var dogLike = this.map
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
       navigator.geolocation.getCurrentPosition(function(position) { 
@@ -280,15 +268,13 @@ export default {
       // 백엔드로 정보 보내기 
       // 실시간 정보 가져오기죽이기 
       clearInterval(this.walkLoc)
-      clearInterval(this.realTimeLoc)
       this.end = this.getTime()
       this.calTime()
     },
 
     // 멍플레이스로 보내기 
     goToHotPlace() {
-      this.deleteAll = false 
-      this.$router.push('/hotplace')
+      // 핫플레이스 리스트 가져와서 보여주기 
     },
     
     // 메인으로 보내기 
@@ -334,11 +320,11 @@ export default {
 <style>
 #map {
     width: auto;
-    height: 350px;
+    height: 480px;
 }
 .img{
   position: absolute;
-  margin: 37% 40%;
+  margin: 10% 40%;
   z-index: 1;
 }
 .gird{

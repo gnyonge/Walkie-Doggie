@@ -19,7 +19,11 @@
 
 <script>
 export default {
-  
+  methods: {
+    // goback() {
+    //     this.$router.push('/')
+    //   }
+  }
 }
 </script>
 <style scoped>

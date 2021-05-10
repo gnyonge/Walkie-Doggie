@@ -1,27 +1,32 @@
 <template>
-  <div class="">
-    <div class="profile-box d-flex align-items-center">  
-      <!-- 1. 프로필 박스 -->
-      <div class="logo mt-1">
-        <v-img src="../../assets/images/서비스로고예시.png" class="" alt=""></v-img>
-      </div>
-      <div class="ml-8"><p>찡꼬</p></div>
-    </div>
-    <div class="profile-box d-flex align-items-center mt-5">  
-      <!-- 1. 프로필 박스 -->
-      <div class="logo mt-1">
-        <v-img src="../../assets/images/서비스로고예시.png" class="" alt=""></v-img>
-      </div>
-      <div class="ml-8"><p>두부</p></div>
-    </div>
-    <div class="profile-box d-flex align-items-center mt-5">  
-      <!-- 1. 프로필 박스 -->
-      <div class="logo mt-1">
-        <v-img src="../../assets/images/서비스로고예시.png" class="" alt=""></v-img>
-      </div>
-      <div class="ml-8"><p>바니</p></div>
-    </div>
+  <div class="" id="mainBox">
     <div>
+        <v-icon @click="goback()">mdi-arrow-left</v-icon>
+    </div>
+    <div class="d-flex justify-center" style="font-size: 30px;">두부</div>
+    <div class="d-flex justify-center mt-3">
+      <v-img src="../../assets/images/서비스로고.png" 
+        class="rounded-circle" height="158"
+        max-height="158"
+        max-width="158" alt="">
+      </v-img>
+      <div class="d-flex justify-end">
+        <v-icon>mdi-camera-flip</v-icon>
+      </div>
+    </div>
+    
+    <div>
+      <div class="d-flex justify-between mt-5 ml-5">나이</div>
+      <div class="d-flex justify-between mt-5 ml-5">몸무게</div>
+      <div class="mt-5 ml-5">특이사항</div>
+    </div>
+    
+    <router-link to="/mypage">
+      <div class="d-flex justify-center mt-5">
+        <v-btn class="" id="mainBtn" style="width:250px; margin-top:20px; margin-bottom: 20px;"><b>변경</b></v-btn>
+      </div>
+    </router-link>
+    <!-- <div>
        <v-btn
       class="mx-2"
       fab
@@ -32,17 +37,21 @@
         mdi-plus
       </v-icon>
     </v-btn>
-    </div>
+    </div> -->
    
 
-    </div>
+  </div>
   
 
 </template>
 
 <script>
 export default {
-  
+  methods: {
+    goback() {
+        this.$router.push('/mypage')
+      }
+  }
 }
 </script>
 <style scoped>

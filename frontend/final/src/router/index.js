@@ -26,7 +26,9 @@ import DogChange from '../views/mypage/DogChange.vue'
 import Health from '../views/mypage/Health.vue'
 import InfoChange from '../views/mypage/InfoChange.vue'
 import Statistics from '../views/mypage/Statistics.vue'
-
+// import VueChartJS from '@/views/VueChartJS'
+// import VueChartKick from '@/views/VueChartKick'
+// import VueCharts from '@/views/VueCharts'
 
 
 Vue.use(VueRouter)
@@ -150,12 +152,19 @@ const routes = [
     component: Statistics
   },
   // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  //   path: '/chartjs',
+  //   name: 'VueChartJS',
+  //   component: VueChartJS
+  // },
+  // {
+  //   path: '/chartkick',
+  //   name: 'VueChartKick',
+  //   component: VueChartKick
+  // },
+  // {
+  //   path: '/charts',
+  //   name: 'VueCharts',
+  //   component: VueCharts
   // }
 ]
 
