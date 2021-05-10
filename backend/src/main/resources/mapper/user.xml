@@ -20,4 +20,12 @@
 	<select id="petInfo" parameterType="String" resultType="PetDto">
 		select * from Pet where uid=#{uid}
 	</select>
+	
+	<update id="setAddress" parameterType="map">
+		update User set u_location=#{address} where uid=#{uid}
+	</update>
+	
+	<update id="leaveUser" parameterType="map">
+		update User set u_flag=1 where uid=#{uid} and u_password=#{password}
+	</update>
 </mapper>
