@@ -288,7 +288,7 @@ export default {
     // 멍플레이스로 보내기 
     goToHotPlace() {
       this.deleteAll = false 
-      this.$router.push('/hotplace')
+      // 핫플레이스 리스트 가져와서 보여주기 
     },
     
     // 메인으로 보내기 
