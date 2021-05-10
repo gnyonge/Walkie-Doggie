@@ -57,20 +57,41 @@ public class PlaceController {
      * 
      * developer: 윤수민
      * 
-     * @param p_latitude, p_longtitude, peid, uid, l_image, l_desc
+     * @param p_latitude, p_longtitude, peid, uid, l_desc, file
      * 
      * @return message
 	 * 
      */
     @ApiOperation(value = "Like place/ Insert HotPlace post", notes = "산책 중 특정 장소 좋아요 클릭")
     @PostMapping("/likePlace")
-    public ResponseEntity<Map<String, Object>> likePlace(@RequestBody Map<String, Object> param) {
+    public ResponseEntity<Map<String, Object>> likePlace(@RequestPart MultipartFile file, @RequestPart Map<String, Object> param) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         
         try {
 			logger.info("place/likePlace 호출 성공");
             
+            if(file != null){
+				String originName = file.getOriginalFilename(); // 파일 이름 가져오기
+
+				String ext = originName.substring(originName.lastIndexOf('.')); // 파일 확장명 가져오기
+				String saveFileName = UUID.randomUUID().toString() + ext; // 암호화해서 파일확장넣어주기
+				String path = System.getProperty("user.dir"); // 경로설정해주고
+
+				File tempfile = new File(path, saveFileName); // 경로에 파일만들어주고
+
+				String line = "diary/";
+
+				saveFileName = line + saveFileName;
+
+				file.transferTo(tempfile);
+				s3util.setS3Client().putObject(new PutObjectRequest(bucket, saveFileName, tempfile)
+						.withCannedAcl(CannedAccessControlList.PublicRead));
+				String url = s3util.setS3Client().getUrl(bucket, saveFileName).toString();
+				tempfile.delete();
+				param.put("l_image", url)
+			}
+
 			// 등록된 장소인지 먼저 확인
 			Integer pid = placeService.checkPlace(param); 
 			if(pid == null){ // 등록되지 않은 장소
@@ -311,6 +332,43 @@ public class PlaceController {
             
         } catch (Exception e) {
             logger.error("게시글 리스트 호출 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+    /*
+     * 기능: 핫플레이스 TOP5
+     * 
+     * developer: 윤수민
+     * 
+     * @param : p_location
+     * 
+     * @return : message,
+     * postList(lid, uid, l_like, l_image, l_desc, l_date)
+     */
+	@ApiOperation(value = "HotPlace top5", notes = "핫플레이스 TOP5")
+    @GetMapping("/top5/{p_location}")
+    public ResponseEntity<Map<String, Object>> getTop5(@PathVariable("p_location") String p_location) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        
+        try {
+			logger.info("place/top5 호출성공");
+
+            List<Map<String, Object>> postList = placeService.getTop5(p_location);
+            if(postList != null){
+                resultMap.put("postList", postList);
+                resultMap.put("message", "핫플레이스 TOP5 호출 성공하였습니다.");
+                status = HttpStatus.ACCEPTED;
+            }else{
+                resultMap.put("message", "핫플레이스 리스트가 없습니다.");
+                status = HttpStatus.NOT_FOUND;
+            }
+            
+        } catch (Exception e) {
+            logger.error("top5 호출 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }

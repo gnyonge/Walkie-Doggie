@@ -77,55 +77,7 @@ public class UserController {
 		return line;
 	}
 
-	// 게시물 등록하기
-	@ApiOperation(value = "Community Post Insert", notes = "커뮤니티 글 등록")
-	@PostMapping("/insert")
-	public ResponseEntity<Map<String, Object>> insert_post(@RequestPart MultipartFile file) {
-		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = null;
-
-		try {
-			logger.info("=====> 커뮤니티 글 등록 시작");
-			String originName = file.getOriginalFilename(); // 파일 이름 가져오기
-
-			String ext = originName.substring(originName.lastIndexOf('.')); // 파일 확장명 가져오기
-			String saveFileName = UUID.randomUUID().toString() + ext; // 암호화해서 파일확장넣어주기
-			String path = System.getProperty("user.dir"); // 경로설정해주고
-
-			File tempfile = new File(path, saveFileName); // 경로에 파일만들어주고
-
-			String line = "community/";
-
-			saveFileName = line + saveFileName;
-
-			file.transferTo(tempfile);
-			s3util.setS3Client().putObject(new PutObjectRequest(bucket, saveFileName, tempfile)
-					.withCannedAcl(CannedAccessControlList.PublicRead));
-			String url = s3util.setS3Client().getUrl(bucket, saveFileName).toString();
-			tempfile.delete();
-
-			int result = 0;
-
-			if (result == 1) {
-				logger.info("=====> 커뮤니티 글 등록 성공");
-				resultMap.put("message", "게시글 등록에 성공하였습니다.");
-				status = HttpStatus.ACCEPTED;
-			} else {
-				logger.info("=====> 커뮤니티 글 등록 실패");
-				resultMap.put("message", "게시글 등록에 실패하였습니다.");
-				status = HttpStatus.NOT_FOUND;
-			}
-
-		} catch (Exception e) {
-			// TODO: handle exception
-			logger.error("글 등록 실패 : {}", e);
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
-
-	// 로그인하기
+	// 회원가입하기
 	@ApiOperation(value = "User Signup", notes = "자체로그인 회원가입")
 	@PostMapping("/signup")
 	public ResponseEntity<Map<String, Object>> signup(@RequestBody UserDto user) {
@@ -196,7 +148,7 @@ public class UserController {
 
 	@ApiOperation(value = "Auth Mail Send", notes = "인증번호 메일 보내기")
 	@PostMapping("/sendMail")
-	public ResponseEntity<Map<String, Object>> checkmail(@RequestParam UserDto user, @RequestParam String auth) {
+	public ResponseEntity<Map<String, Object>> sendMail(@RequestParam UserDto user, @RequestParam String auth) {
 		// 1. 이미 있는 메일이야? 메일 중복 확인
 
 		// 2. 메일 중복 아니야? 난수 생성해서 uid세팅하고, u_flag는 1로 해서 비활성화! mail 세팅하고!
@@ -256,6 +208,63 @@ public class UserController {
 			resultMap.put("petList", list);
 			resultMap.put("message", "SUCCESS");
 			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("메일 중복 체크 실패 : {}", e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	// 지역등록
+	@ApiOperation(value = "Set Address", notes = "지역등록")
+	@GetMapping("/address")//user/address
+	public ResponseEntity<Map<String, Object>> setAddress(@RequestParam String uid,@RequestParam String add) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+
+		try {
+			logger.info("=====> 주소설정하기");
+			int result = userservice.setAddress(uid, add);
+			
+			if(result>=1) {
+				resultMap.put("message", "주소 등록이 완료하였습니다");
+				resultMap.put("flag", "SUCCESS");
+			}else {
+				resultMap.put("message", "주소 등록에 실패하였습니다");
+				resultMap.put("flag", "FAIL");
+
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("메일 중복 체크 실패 : {}", e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	//계정삭제
+	@ApiOperation(value = "Leave User", notes = "회원탈퇴")
+	@PutMapping("/leave")
+	public ResponseEntity<Map<String, Object>> leaveUser(@RequestBody UserDto user){
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+
+		try {
+			logger.info("=====> 회원탈퇴");
+			
+			int result = userservice.leaveUser(user.getUid(), user.getU_password());
+			boolean flag = false;
+			if(result>=1) {
+				flag = true;
+				resultMap.put("message", "탈퇴되었습니다.");
+				resultMap.put("flag", flag);
+			}else {
+				resultMap.put("message", "탈퇴 실패 하였습니다. 비밀번호를 확인해주세요 ");
+				resultMap.put("flag", flag);
+			}
+			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.error("메일 중복 체크 실패 : {}", e);

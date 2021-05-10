@@ -45,5 +45,8 @@ public interface PlaceDao {
     public List<Map<String, Object>> getPostListNew(String p_location);
 
     public List<Map<String, Object>> getPostListLike(String p_location);
+
+    // Top5
+    public List<Map<String, Object>> getTop5(String p_location);
     
 }

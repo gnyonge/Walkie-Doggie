@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ssafy.pet.dao.PetDao">
+
+	<select id="check_add" parameterType="String" resultType="String">
+		select u_location from User where uid=#{uid}
+	</select>
+	
+	<insert id="regist_pet" parameterType="PetDto">
+		insert into Pet(peid, uid, pe_name, pe_profile_photo, pe_age,pe_weight, pe_trauma, pe_disease, pe_birthday)
+		values(#{peid},#{uid}, #{pe_name},#{pe_profile_photo},#{pe_age},#{pe_weight},#{pe_trauma},#{pe_disease},#{pe_birthday})
+	</insert>
+	
+	<select id="show_health" parameterType="String" resultType="HealthDto">
+		select * from Health where peid=#{peid}
+	</select>
+	
+	<select id="get_old" parameterType="String" resultType="PetDto">
+		select * from Pet where peid=#{peid}
+	</select>
+	
+	<update id="leave_pet" parameterType="String">
+		update Pet set pe_flag=1 where peid=#{peid}
+	</update>
+	
+	
+
+</mapper>
