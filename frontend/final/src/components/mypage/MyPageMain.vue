@@ -2,6 +2,16 @@
   <div class="">
     <div class="">  
       <!-- 1. 프로필 박스 -->
+      <router-link to="/infochange">
+        <!-- <v-btn
+          tile
+        >
+        <v-icon left>
+          mdi-cog
+        </v-icon>
+        설정
+      </v-btn> -->
+      </router-link>
       <div class="d-flex ml-3 mr-3 mt-5 justify-center">
         <!-- 1. 프로필 사진 --> 
         <div class="mt-5">
