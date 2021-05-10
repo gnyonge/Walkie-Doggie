@@ -14,5 +14,6 @@ public interface PetDao {
 	int regist_pet(PetDto pet);
 	List<HealthDto> show_health(String peid);
 	PetDto get_old(String peid);
+	int leave_pet(String peid);
 
 }
