@@ -99,11 +99,9 @@ export default {
       likecnt: 0,
       // 실시간 위치 
       walkLoc : '',
-      realTimeLoc: '', 
       linePath: [], 
       // 멍플레이스
       likePath: [],
-      deleteAll: true,
     }
   },
   computed: {
@@ -128,17 +126,7 @@ export default {
 
   },
   destroyed() {
-    if (this.deleteAll === true) { // 하단바로 이동시 산책 정보 초기화
-      this.linePath = []
-      this.likePath = []
-    }else{ // 멍플레이스 보다 온거라면
-      
-      // 백엔드로 정보를 보내고 난 후 
-      
-    }
-    // 실시간 정보 가져오기죽이기 
     clearInterval(this.walkLoc)
-    clearInterval(this.realTimeLoc)
     
   },
   watch: {
@@ -280,15 +268,13 @@ export default {
       // 백엔드로 정보 보내기 
       // 실시간 정보 가져오기죽이기 
       clearInterval(this.walkLoc)
-      clearInterval(this.realTimeLoc)
       this.end = this.getTime()
       this.calTime()
     },
 
     // 멍플레이스로 보내기 
     goToHotPlace() {
-      this.deleteAll = false 
-      this.$router.push('/hotplace')
+      // 핫플레이스 리스트 가져와서 보여주기 
     },
     
     // 메인으로 보내기 
