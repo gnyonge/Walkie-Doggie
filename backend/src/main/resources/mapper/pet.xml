@@ -21,6 +21,10 @@
 		select * from Pet where peid=#{peid}
 	</select>
 	
+	<update id="leave_pet" parameterType="String">
+		update Pet set pe_flag=1 where peid=#{peid}
+	</update>
+	
 	
 
 </mapper>
