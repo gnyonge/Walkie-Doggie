@@ -17,7 +17,6 @@ public interface UserDao {
 	
 	UserDto checkEmail(String email);
 	List<PetDto> petInfo(String uid);
-		
-//	int authEmail(Map<String, Object> map);
-
+	int setAddress(Map<String, Object> map);
+	int leaveUser(Map<String, Object> map);
 }
