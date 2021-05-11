@@ -13,5 +13,7 @@ public interface UserService {
 	
 	UserDto checkEmail(String email);
 	List<PetDto> petInfo(String uid);
+	int setAddress(String uid, String address);
+	int leaveUser(String uid, String password);
 	
 	}

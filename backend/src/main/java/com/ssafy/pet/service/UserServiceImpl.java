@@ -41,13 +41,23 @@ public class UserServiceImpl implements UserService{
 		return udao.petInfo(uid);
 	}
 	
-//	@Override
-//	public int authEmail(String email, String auth) {
-//		// TODO Auto-generated method stub
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("email", email);
-//		map.put("auth", auth);
-//		return udao.authEmail(map);
-//	}
+	@Override
+	public int setAddress(String uid, String address) {
+		// TODO Auto-generated method stub
+		Map<String, Object> map = new HashMap<>();
+		map.put("uid", uid);
+		map.put("address", address);
+		return udao.setAddress(map);
+	}
+	
+	@Override
+	public int leaveUser(String uid, String password) {
+		// TODO Auto-generated method stub
+		Map<String, Object> map = new HashMap<>();
+		map.put("uid", uid);
+		map.put("password", password);
+		return udao.leaveUser(map);
+	}
+
 
 }
