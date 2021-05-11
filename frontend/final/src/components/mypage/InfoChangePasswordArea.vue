@@ -3,8 +3,9 @@
     <div class="" id="mainBox">
       <v-form>
         <h5 class="text-center mb-5 mt-5">비밀번호 설정</h5>
-        <v-text-field name="password" label="비밀번호" id="password" v-model="password" type="password" required color="#48B9A8"></v-text-field>
-        <v-text-field name="passwordcheck" label="비밀번호 확인" id="passwordcheck" v-model="passwordcheck" type="passwordcheck" required color="#48B9A8"></v-text-field>
+        <v-text-field name="password" label="기존 비밀번호" id="password" v-model="password" type="password" required color="#48B9A8"></v-text-field>
+        <v-text-field name="newpassword" label="새로운 비밀번호" id="newpassword" v-model="newpassword" type="newpassword" required color="#48B9A8"></v-text-field>
+        <v-text-field name="newpasswordcheck" label="새로운 비밀번호 확인" id="newpasswordcheck" v-model="passwordcheck" type="newpasswordcheck" required color="#48B9A8"></v-text-field>
       </v-form>
       <router-link to="/mypage">
         <div class="d-flex justify-center mt-5">

@@ -77,11 +77,20 @@
               </div>
               
             </div>
-            <div class="mt-5" id="mainBox">
-              <p>건강</p>
-            </div>
             <div class="mt-5 card" id="mainBox">
               <p>건강</p>
+            </div>
+            <div class="d-flex justify-center">
+              <v-btn
+              class="mx-2"
+              fab
+              dark
+              color="#BAF1E4"
+            >
+                <v-icon dark>
+                  mdi-plus
+                </v-icon>
+              </v-btn>
             </div>
             <div class="space"></div>
           </div>

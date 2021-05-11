@@ -18,7 +18,10 @@
     <div>
       <div class="d-flex justify-between mt-5 ml-5">나이</div>
       <div class="d-flex justify-between mt-5 ml-5">몸무게</div>
-      <div class="mt-5 ml-5">특이사항</div>
+      <div class="d-flex justify-between mt-5 ml-5">트라우마</div>
+      <div class="d-flex justify-between mt-5 ml-5">질병</div>
+      <div class="d-flex justify-between mt-5 ml-5">생일</div>
+      
     </div>
     
     <router-link to="/mypage">
@@ -26,6 +29,9 @@
         <v-btn class="" id="mainBtn" style="width:250px; margin-top:20px; margin-bottom: 20px;"><b>변경</b></v-btn>
       </div>
     </router-link>
+    <div class="d-flex justify-center mt-5">
+        <v-btn class="" id="mainBtn" style="width:250px; margin-top:20px; margin-bottom: 20px;"><b>일기 닫기</b></v-btn>
+      </div>
     <!-- <div>
        <v-btn
       class="mx-2"
