@@ -32,14 +32,20 @@ public class PetServiceImpl implements PetService {
 	}
 	
 	@Override
-	public PetDto get_old(String peid) {
+	public PetDto show_pet(String peid) {
 		// TODO Auto-generated method stub
-		return pdao.get_old(peid);
+		return pdao.show_pet(peid);
 	}
 	
 	@Override
 	public int leave_pet(String peid) {
 		// TODO Auto-generated method stub
 		return pdao.leave_pet(peid);
+	}
+	
+	@Override
+	public int update_pet(PetDto pet) {
+		// TODO Auto-generated method stub
+		return pdao.update_pet(pet);
 	}
 }
