@@ -14,11 +14,14 @@
     <!-- 멍 PHOTOS 반복 -->
     <div id="contentBox" v-for="i, idx in 3" :key="idx">
       <div class="d-flex justify-center mb-3">사진이 잘 나와요!</div>
-      <v-img
-        id="diaryBox"
-        width="100%"
-        src="@/assets/diarydogs.jpg"
-      ></v-img>
+      <div @click="clickItem(i)">
+        <v-img
+          id="diaryBox"
+          width="100%"
+          src="@/assets/diarydogs.jpg"
+        ></v-img>
+      </div>
+      
       <div class="d-flex justify-end mt-1">
         <v-icon class="mt-2">mdi-heart-outline</v-icon><div class="d-inline mr-3" style="font-size: 18px; margin-top: 10px;">10220</div>
       </div>
@@ -28,12 +31,27 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
+
 export default {
   name: "ImageList",
+  data() {
+    return {
+     
+    }
+  },
+  computed: {
+    ...mapGetters(['getSelectedItem'])
+  },
   methods: {
+    ...mapMutations(['setSelectedItem']),
     goback() {
       this.$router.push('/walk')
-    }
+    },
+    clickItem(i){
+      this.setSelectedItem(i)
+      console.log(i)
+    },
   }
 }
 </script>
