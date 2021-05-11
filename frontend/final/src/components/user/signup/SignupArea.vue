@@ -3,6 +3,9 @@
     <!-- 로그인--> 
     <div class="">
       <div id="mainBox">
+        <div>
+        <v-icon @click="goback()">mdi-arrow-left</v-icon>
+    </div>
       <v-form>
 
           <h5 class="text-center mb-5 mt-5">회원가입</h5>
@@ -21,7 +24,7 @@
           <v-text-field name="passwordcheck" label="비밀번호 확인" id="passwordcheck" v-model="passwordcheck" type="passwordcheck" required color="#48B9A8"></v-text-field>
 
       </v-form>
-      <div class="">
+      <div class="d-flex justify-center">
         <router-link to="/register"><v-btn class="" id="mainBtn" style="width:150px;">회원가입</v-btn></router-link>
       </div>
       </div>
@@ -40,6 +43,11 @@ export default {
       passwordcheck: '',
       nickname: '',
     }
+  },
+  methods: {
+    goback() {
+        this.$router.push('/loginmain')
+      }
   }
 }
 </script>

@@ -1,22 +1,50 @@
 <template>
-  <div class="">
-    <div class="m-3">
-      <h1>예방접종 & 약</h1>
+  <div id="mainBox">
+    <div class="d-flex justify-space-between">
+      <div>
+      <v-icon @click="goback()">mdi-arrow-left</v-icon>
+      </div>
+      <div>
+        건강사항
+      </div>
+      <div style="width: 24px; background-color: white;">
+      </div>
     </div>
-    <!-- 목록 --> 
-    <div class="health-box d-flex align-items-center">  
-      <div class=""><p></p></div>
-    </div>
-    <!-- 뒤로가기 버튼 --> 
-    <div class="mt-5">
-      <router-link to="/mypage" class="d-flex justify-center"><v-btn>뒤로가기</v-btn></router-link> 
+    <div
+      class="my-5"
+      max-width="344"
+      outlined
+      v-for="i, idx in 3"
+      :key="idx"
+    >
+      <v-list-item three-line id="healthDiv">
+        <v-list-item-content>
+          <div>
+            2월 1일
+          </div>
+          <v-list-item-subtitle>
+            <li>예방접종 1차</li>
+            <li>심장사상충 약</li>
+          </v-list-item-subtitle>
+        </v-list-item-content>
+        <v-list-item-avatar
+          tile
+          size="60"
+          color="grey"
+        ></v-list-item-avatar>
+      </v-list-item>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  
+  name: "HealthArea",
+  methods: {
+    goback() {
+      this.$router.push('/mypage')
+    }
+  }
 }
 </script>
 <style scoped>
@@ -44,7 +72,6 @@ export default {
 }
 .health-box {
   padding: 25px;
-  
   height: 80%;
   background: #EFE8DE;
   margin: 10px;
@@ -58,5 +85,11 @@ export default {
 p {
   color: black;
   font-size: 40px;
+}
+#healthDiv {
+  border-radius: 15px;
+  background-color: white;
+  border: 1px solid #E5E5E5;
+  box-shadow: 3px 3px 3px #E5E5E5;
 }
 </style>

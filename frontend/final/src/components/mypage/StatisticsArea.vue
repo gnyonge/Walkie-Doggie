@@ -1,25 +1,33 @@
 <template>
-  <div class="">
-    <div class="m-3">
-      <h1>통계</h1>
+  <div id="mainBox">
+    <div class="d-flex justify-space-between">
+      <div>
+      <v-icon @click="goback()">mdi-arrow-left</v-icon>
+      </div>
+      <div>
+        통계
+      </div>
+      <div style="width: 24px; background-color: white;">
+      </div>
     </div>
-    <div class="m-3">
-      <h1>2021년 4월 4째주</h1>
-    </div>
-    <!-- 목록 --> 
-    <div class="health-box d-flex align-items-center">  
-      <div class=""><p></p></div>
-    </div>
-    <!-- 뒤로가기 버튼 --> 
-    <div class="mt-5">
-      <router-link to="/mypage" class="d-flex justify-center"><v-btn>뒤로가기</v-btn></router-link> 
+    <div>
+      <Chart />
     </div>
   </div>
 </template>
 
 <script>
+import Chart from '@/components/mypage/Chart'
 export default {
-  
+  name: "StatisticsArea",
+  components: {
+    Chart,
+  },
+  methods: {
+    goback() {
+      this.$router.push('/mypage')
+    }
+  }
 }
 </script>
 <style scoped>

@@ -1,5 +1,8 @@
 <template>
   <div class="" id="mainBox">
+    <div>
+        <v-icon @click="goback()">mdi-arrow-left</v-icon>
+    </div>
     <h5 class="text-center mb-5">반려견 등록페이지</h5>
       <div class="d-flex justify-center">
         <div class="filebox">
@@ -27,7 +30,9 @@
           <v-text-field name="note" label="특이사항(성격,알레르기,트라우마,선천적 질병 등)" id="note" v-model="note" type="note" required color="#48B9A8"></v-text-field>
         </v-flex>
       </v-form>
-      <router-link to="/calendar"><v-btn id="mainBtn">반려견 등록</v-btn></router-link>
+      <div class="d-flex justify-center">
+        <router-link to="/calendar"><v-btn id="mainBtn">반려견 등록</v-btn></router-link>
+      </div>
       </div>
       
   </div>
@@ -44,6 +49,11 @@ export default {
       note: '',
       photo: '',
     }
+  },
+  methods: {
+    goback() {
+        this.$router.push('/dogregister')
+      }
   }
 }
 </script>
