@@ -74,6 +74,15 @@ const actions = {
         return error
       })
   },
+  // 산책 종료 
+  doneWalkInApi(params){
+    return rscApi.post('walk/insert', params)
+      .then((res) => {
+        console.log(res)
+      }).catch((error) =>{
+        console.log(error)
+      })
+  },
 };
 
 export default {
