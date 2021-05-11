@@ -336,21 +336,21 @@ public class PlaceController {
         try {
 			logger.info("place/list 호출성공");
 
-            if(sort.equals("new")){ // 최신순 정렬
-                List<Map<String, Object>> postList = placeService.getPostListNew(p_location);
+            if(sort.equals("pop")){ // 인기순 정렬
+                List<Map<String, Object>> postList = placeService.getPostListLike(p_location);
                 if(postList != null){
                     resultMap.put("postList", postList);
-                    resultMap.put("message", "최신순 핫플레이스 게시글 리스트 호출 성공하였습니다.");
+                    resultMap.put("message", "좋아요순 핫플레이스 게시글 리스트 호출 성공하였습니다.");
                     status = HttpStatus.ACCEPTED;
                 }else{
                     resultMap.put("message", "핫플레이스 게시글 리스트가 없습니다.");
                     status = HttpStatus.NOT_FOUND;
                 }
-            }else{ // 좋아요순 정렬
-                List<Map<String, Object>> postList = placeService.getPostListLike(p_location);
+            }else{ // 최신순 정렬
+                List<Map<String, Object>> postList = placeService.getPostListNew(p_location);
                 if(postList != null){
                     resultMap.put("postList", postList);
-                    resultMap.put("message", "좋아요순 핫플레이스 게시글 리스트 호출 성공하였습니다.");
+                    resultMap.put("message", "최신순 핫플레이스 게시글 리스트 호출 성공하였습니다.");
                     status = HttpStatus.ACCEPTED;
                 }else{
                     resultMap.put("message", "핫플레이스 게시글 리스트가 없습니다.");
