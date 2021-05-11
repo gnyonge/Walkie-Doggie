@@ -98,7 +98,9 @@ export default {
     }
   },
   mounted(){
-    this.getPhoto()
+    // 클릭하자마자 사진 바로 받기 
+    var camera = document.getElementById('camera')
+    camera.click()
   },
   methods:{
     selectThis(name, idx) {
@@ -113,7 +115,7 @@ export default {
     //사용자 업로드 사진 주소 백엔드 전송 후 보여주기 
     getPhoto(){
       var camera = document.getElementById('camera')
-        
+      
       camera.addEventListener('change', function(e) {
         // console.log(e.target.files[0])
         var file = e.target.files[0]

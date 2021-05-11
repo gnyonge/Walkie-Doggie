@@ -17,15 +17,42 @@ export default {
   },
   data(){
     return{
-      positions: [],
+      map: {},
+      positions: [ // 일단 더미 데이터
+        {
+          title: '카카오', 
+          lat: 35.17104466433188,
+          lon: 126.80083721411596,
+          imageSrc: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png'
+        },
+        {
+          title: '생태연못', 
+          lat: 35.17243177736109, 
+          lon: 126.80249585904436,
+          imageSrc: 'https://t1.daumcdn.net/liveboard/holapet/0e5f90af436e4c218343073164a5f657.JPG'
+        },
+        {
+          title: '텃밭', 
+          lat: 35.17378144379576,
+          lon: 126.80402040469657,
+          imageSrc: 'https://lh3.googleusercontent.com/proxy/DZtjLulmXwRts3LBz1d_t6tcvwDjL2RUt7kXXJS7bSplRfQDYT6RMEBmSdeb4q3WljgZqSQDnoDDaIQMHoR_odQQREu0kWFTnnipF0UMKdXfoR4jeCmPTdLB7YMDKwN3LPx1DYzmoeue-nwzAt_H6xcNCI-4ugdYYdtPUvYbIgM'
+        },
+        {
+          title: '왜 마지막만 나와',
+          lat: 35.17220631984472, 
+          lon: 126.80086444891174,
+          imageSrc: 'https://cbmpress.sfo2.digitaloceanspaces.com/vlife/1613865410_dmlhUINL_258ccfc67b9d31c9a6414eb0663033ea96d4be54.png'
+        }
+      ],
     }
   },
   mounted() {
     // 백엔드 서버에서 멍플레이스 정보 요청(axios)
-    this.getPlace()
     // 카카오 map 
     if (window.kakao && window.kakao.maps) {
     this.initMap();
+    // 핀 꽂기 
+    this.pin()
     } else {
     const script = document.createElement('script');
     // global kakao
@@ -33,6 +60,7 @@ export default {
     script.src = 'https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6985aa694c9e9631fa03de6f22217f30';
     document.head.appendChild(script);
     }
+    
   },
   methods: {
     // 지도 첫 화면 로드 
@@ -44,65 +72,88 @@ export default {
         draggable: true,
         level: 5
       };
-
-    this.map = new kakao.maps.Map(this.mapContainer, this.mapOption); // 지도를 생성합니다
-
-    // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
-    if (navigator.geolocation) {
-      // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-      navigator.geolocation.getCurrentPosition(function(position) { 
-        var lat = position.coords.latitude, // 위도
-            lon = position.coords.longitude; // 경도
-
-        var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-            message = '<div style="padding:5px;">현재 위치.</div>'; // 인포윈도우에 표시될 내용입니다
-        
-       // 마커와 인포윈도우를 표시합니다
-        displayMarker(locPosition, message);
-        
-
-        });
-    } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-        var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
-            message = 'geolocation을 사용할수 없어요..'
       
-        displayMarker(locPosition, message);
-
-    }
-   
-    var map = this.map
+      var t = this
+      t.map = new kakao.maps.Map(this.mapContainer, this.mapOption); // 지도를 생성합니다
     
-    // 지도에 마커와 인포윈도우를 표시하는 함수입니다
-    function displayMarker(locPosition, message) {
-      // 마커를 생성합니다
-      var marker = new kakao.maps.Marker({  
-          map: map, 
-          position: locPosition
-      }); 
+      // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
+      if (navigator.geolocation) {
+        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+        navigator.geolocation.getCurrentPosition(function(position) { 
+          var lat = position.coords.latitude, // 위도
+              lon = position.coords.longitude; // 경도
 
-      var iwContent = message, // 인포윈도우에 표시할 내용
-          iwRemoveable = true;
-
-      // 인포윈도우를 생성합니다
-      var infowindow = new kakao.maps.InfoWindow({
-          content : iwContent,
-          removable : iwRemoveable
-      });
-        
-      // 인포윈도우를 마커위에 표시합니다 
-      infowindow.open(map, marker);
-
-      // message창 3초 후에 종료 
-      setTimeout(function(){ 
-        infowindow.close()
-        marker.setMap(null);}, 3000)
+          // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+          var locPosition = new kakao.maps.LatLng(lat, lon)
+              
+          // 마커와 인포윈도우를 표시합니다
+          displayMarker(locPosition)
+        });
+      } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+          var locPosition = new kakao.maps.LatLng(33.450701, 126.570667)
+          displayMarker(locPosition,);
+        }
+   
+      var map = this.map
       
-      // 지도 중심좌표를 접속위치로 변경합니다
-      map.setCenter(locPosition);   
-      }  
+      // 지도에 마커와 인포윈도우를 표시하는 함수입니다
+      function displayMarker(locPosition) {
+        var marker = new kakao.maps.Marker({
+          position: locPosition
+        });
+
+        // 마커가 지도 위에 표시되도록 설정합니다
+        marker.setMap(map);
+
+        // 지도 중심좌표를 접속위치로 변경합니다
+        map.setCenter(locPosition);   
+        }  
+      },
+    // 백엔드에서 핫플레스 정보 가져오기 
+    getInfo(){
+
     },
-    // 핀 정보 불러오기
-    getPlace() {},
+    // 핀 꽂기
+    pin() {
+      // aixios로 위치정보 가져오기
+      var map = this.map
+      var positions = this.positions
+      
+      for (var i = 0 ; i < positions.length; i++){
+        // 마커 이미지의 이미지 크기 입니다
+        var imageSize = new kakao.maps.Size(31, 35); 
+        var imageOption = {offset: new kakao.maps.Point(27, 69)};
+        // 마커 이미지 생성 
+        var markerImage = new kakao.maps.MarkerImage(positions[i].imageSrc, imageSize, imageOption);
+
+        //위치 정보 갱신 
+        var latlng = new kakao.maps.LatLng(positions[i].lat, positions[i].lon)
+        
+        // 마커생성 
+        var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: latlng, // 마커를 표시할 위치
+        title : positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        image : markerImage // 마커 이미지 
+        });
+        
+        // 마커에 클릭이벤트를 등록합니다
+        kakao.maps.event.addListener(marker, 'click', getMakerInfo(map, marker))  
+      }
+      //  마커 클릭시 해당 정보 가져오는 함수 
+      function getMakerInfo(map, marker){
+        return function(){
+        // 마커 선택후 해당 정보 자식 컴포넌트로 전송 
+
+        
+        // 선정 이유 
+        console.log(marker.getTitle())
+        // 위도경도 출력 
+        console.log(marker.getPosition())
+        }
+      }
+      marker.setMap(map)
+    },
   },
 }
 </script>
