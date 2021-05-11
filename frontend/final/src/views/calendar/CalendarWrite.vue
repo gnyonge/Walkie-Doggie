@@ -80,14 +80,14 @@
         </div>
       </div>
       <div class="d-flex justify-end">
-        <v-btn id="mainBtn" width="50px">완료</v-btn>
+        <v-btn id="mainBtn" width="50px" @click="createDiary()">완료</v-btn>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: "CalendarWrite",
@@ -128,6 +128,7 @@ export default {
     },
     methods: {
       ...mapMutations(['setSelectedDate']),
+      ...mapActions(['createNoPhotoDiaryInApi']),
       addHealth() {
       if (this.healthContent.replace(/(\s*)/g, "").length > 0) {
         this.healthArray.push(this.healthContent);
@@ -140,6 +141,20 @@ export default {
       },
       goback() {
         this.$router.push('/calendar')
+      },
+      createDiary() {
+        this.createNoPhotoDiaryInApi({
+          d_date: this.getSelectedDate,
+          d_flag: 0,
+          d_img: "string",
+          d_memo: this.diaryContent,
+          d_special: this.memoContent,
+          d_walk: 0,
+          peid: "petpetpetpet1"
+        }).then((res) => {
+          console.log(res)
+          console.log('성공??')
+        })
       }
     }
 }
