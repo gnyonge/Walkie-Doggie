@@ -5,13 +5,13 @@
     </div>
     <h5 class="text-center mb-5">반려견 등록페이지</h5>
       <div class="d-flex justify-center">
-        <div class="filebox">
+        <div class="">
           <label for="myfile" class="circle">
             사진</label>
           <input type="file"
               id="photo" name="photo"
               accept="image/*"
-              style="display:none;"
+              
             >
         </div> 
       </div>
@@ -23,21 +23,61 @@
         <v-flex class="ph-size">
           <v-text-field name="age" label="나이(생일)" id="age" v-model="age" type="age" required color="#48B9A8"></v-text-field>
         </v-flex>
+    
+      <v-dialog
+        ref="dialog"
+        v-model="modal"
+        :return-value.sync="date"
+        persistent
+        width="290px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="date"
+            label="생일"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="date"
+          scrollable
+          locale="ko-kr"
+          color="#48B9A8"
+        >
+          <v-spacer></v-spacer>
+          <v-btn
+            text
+            color="#48B9A8"
+            @click="modal = false"
+          >
+            취소
+          </v-btn>
+          <v-btn
+            text
+            color="#48B9A8"
+            @click="$refs.dialog.save(date)"
+          >
+            확인
+          </v-btn>
+        </v-date-picker>
+      </v-dialog>
         <v-flex class="ph-size">
           <v-text-field name="weight" label="체중" id="weight" v-model="weight" type="weight" required color="#48B9A8"></v-text-field>
         </v-flex>
         <v-flex class="ph-size">
-          <v-text-field name="note" label="선천적 질병" id="note" v-model="note" type="note" required color="#48B9A8"></v-text-field>
-        </v-flex>
-        <!-- <v-flex class="ph-size">
-          <v-text-field name="note" label="트라우마" id="note" v-model="note" type="note" required color="#48B9A8"></v-text-field>
+          <v-text-field name="disease" label="선천적 질병" id="disease" v-model="disease" type="disease" required color="#48B9A8"></v-text-field>
         </v-flex>
         <v-flex class="ph-size">
-          <v-text-field name="note" label="알레르기" id="note" v-model="note" type="note" required color="#48B9A8"></v-text-field>
-        </v-flex> -->
+          <v-text-field name="trauma" label="트라우마" id="trauma" v-model="trauma" type="trauma" required color="#48B9A8"></v-text-field>
+        </v-flex>
+        <v-flex class="ph-size">
+          <v-text-field name="allergy" label="알레르기" id="allergy" v-model="allergy" type="allergy" required color="#48B9A8"></v-text-field>
+        </v-flex>
       </v-form>
       <div class="d-flex justify-center">
-        <router-link to="/calendar"><v-btn id="mainBtn">반려견 등록</v-btn></router-link>
+        <v-btn id="mainBtn" @click="registerNewDog">반려견 등록</v-btn>
       </div>
       </div>
       
@@ -46,17 +86,49 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   data () {
     return {
       name: '',
       age: '',
       weight: '',
-      note: '',
+      trauma: '',
+      allergy:'',
+      disease:'',
       photo: '',
+
+      date: new Date().toISOString().substr(0, 10),
+      menu: false,
+      modal: false,
+      menu2: false,
     }
   },
   methods: {
+    ...mapActions(['dogRegisterInApi']),
+    // registerNewDog() {
+    //   console.log('안녕하세용')
+    //   this.dogRegisterInApi({
+    //     pe_age: this.age,
+    //     pe_brithday: this.date,
+    //     pe_disease: this.disease,
+    //     pe_flag: 0,
+    //     pe_name: this.name,
+    //     pe_trauma: this.trauma,
+    //     pe_weight: this.weight,
+    //     peid: "string",
+    //     pr_profile_photo: this.photo,
+    //     uid: "string"
+    //   })
+    //   .then((res) => {
+    //     console.log(res, '반려견 등록 성공 !')
+    //     this.$router.push('/calendar')
+        
+    //   }).catch((error)=> {
+    //     console.log(error)
+    //   }) 
+    // },
     goback() {
         this.$router.push('/dogregister')
       }
