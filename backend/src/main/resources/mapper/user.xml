@@ -35,4 +35,21 @@
 	<update id="changePass" parameterType="map">
 		update User set u_password=#{password} where uid=#{uid}
 	</update>
+	
+	<select id="checkAuth" parameterType="String" resultType="EmailAuthDto">
+		select * from emailAuth where email=#{email}
+	</select>
+	
+	<insert id="insertAuth" parameterType="EmailAuthDto">
+		insert into emailAuth(email, auth)
+		values(#{email}, #{auth})	
+	</insert>
+	
+	<update id="updateAuth" parameterType="EmailAuthDto">
+		update emailAuth set auth=#{auth} where email=#{email}
+	</update>
+	
+	<update id="updateFlag" parameterType="String">
+		update emailAuth set flag=1 where email=#{email}
+	</update>
 </mapper>

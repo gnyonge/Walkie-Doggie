@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.ssafy.pet.dto.EmailAuthDto;
 import com.ssafy.pet.dto.PetDto;
 import com.ssafy.pet.dto.UserDto;
 
@@ -21,4 +22,8 @@ public interface UserDao {
 	int leaveUser(Map<String, Object> map);
 	UserDto checkPass(UserDto user);
 	int changePass(Map<String, Object> map);
+	EmailAuthDto checkAuth(String email);
+	int insertAuth(EmailAuthDto temp);
+	int updateAuth(EmailAuthDto temp);
+	int updateFlag(String email);
 }

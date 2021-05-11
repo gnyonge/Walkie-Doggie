@@ -30,12 +30,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.ssafy.pet.dto.EmailAuthDto;
 import com.ssafy.pet.dto.PetDto;
 import com.ssafy.pet.dto.UserDto;
 import com.ssafy.pet.service.UserService;
 import com.ssafy.pet.util.JWTUtil;
 import com.ssafy.pet.util.MailUtils;
 import com.ssafy.pet.util.S3Util;
+import com.ssafy.pet.util.SecurityUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -60,6 +62,9 @@ public class UserController {
 	
 	@Autowired
 	private JWTUtil jwtutil;
+	
+	@Autowired
+	private SecurityUtil securityutil;
 
 	private String MakeUid() {
 		StringBuffer made = new StringBuffer();
@@ -141,14 +146,10 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	// 로그인을 시킬때
-	// 1. 일단 넣어 그리고 uid에 인증번호를 넣고 u_flag를 1로 해줘 그럼 인증번호만 확인한 애야,
-	// 2. 인증번호 확인을 누르고 맞는지 확인 해주 그리고
-	// 3. 회원가입을 누르면 전체 정보 입력되고 u_flag는 0으로 바꿔줘
-
+	//1. 인증 메일 보내기  (랜덤값을 만들어서 sha-256방식으로 암호화 했으면 좋겠어)
 	@ApiOperation(value = "Auth Mail Send", notes = "인증번호 메일 보내기")
 	@PostMapping("/sendMail")
-	public ResponseEntity<Map<String, Object>> sendMail(@RequestParam UserDto user, @RequestParam String auth) {
+	public ResponseEntity<Map<String, Object>> sendMail(@RequestBody EmailAuthDto user) {
 		// 1. 이미 있는 메일이야? 메일 중복 확인
 
 		// 2. 메일 중복 아니야? 난수 생성해서 uid세팅하고, u_flag는 1로 해서 비활성화! mail 세팅하고!
@@ -157,24 +158,46 @@ public class UserController {
 		HttpStatus status = null;
 
 		try {
-			String mail = user.getU_email();
+			String mail = user.getEmail();
 
 			logger.info("=====> 이메일 중복 체크");
 
 			UserDto checkEmail = userservice.checkEmail(mail);
-			if (checkEmail == null) { // 메일 중복 확인끝! 중복된 메일이 없으시네요~~
+			
+			if (checkEmail == null) { // 메일 중복 확인끝! 중복된 메일이 없으시네요~~ 메일로 등록된 유저가 없으면 인증메일은 몇번이고 받아도되니까
+				//메일인증 테이블에 있는지 확인해보쟈!
+				EmailAuthDto auth = userservice.checkAuth(mail);//이거왜한거야? 궁금하네 망할  아  밑에 있꾸나
+				//인증메일은 받은게 처음인지 여러번 누른애인지 확인하는거
+				
+				String code = MakeUid();
+				System.out.println("메일 코드 : "+code);
+				
 				// 이제 메일을 보내봅시다
 				MailUtils sendMail = new MailUtils(mailSender);
 				sendMail.setSubject("[WALKIE DOGGIE] 워키도키 회원가입 이메일 인증");
 				sendMail.setText(new StringBuffer().append("<h1>[워키도키 회원가입 이메일 인증]</h1>")
 						.append("<h3> 안녕하세요? 워키도키입니다 </h3>").append("<h4>아래 인증번호를 입력하여 인증 확인 해주시기 바랍니다.</h4>")
-						.append("<p>인증번호 : " + auth + "</p>").toString());
+						.append("<p>인증번호 : " + code + "</p>").toString());
 				sendMail.setFrom("ssafyuser@gmail.com", "WALKIE DOGGIE 관리자");
 				sendMail.setTo(mail);
 				sendMail.send();
 				logger.info("=====> 메일보냈어요");
-				// uid, mail, flag 세팅하러갑시다!
-				resultMap.put("message", "인증 메일을 보냈습니다. 확인해주십시오");
+				
+				EmailAuthDto temp = new EmailAuthDto();
+				temp.setEmail(mail);
+				temp.setAuth(securityutil.bytesToHex(securityutil.sha256(code)));
+				int res = 0;
+				if(auth==null) {
+					//인증메일 한번만 보낸놈
+					res = userservice.insertAuth(temp);
+				}else {
+					//인증메일 한번이 아닌놈
+					res = userservice.updateAuth(temp);
+				}
+				
+				if(res==1) {
+					resultMap.put("message", "인증 메일을 보냈습니다. 확인해주십시오");
+				}
 				status = HttpStatus.ACCEPTED;
 			} else {
 				resultMap.put("message", "회원가입된 메일입니다.");
@@ -188,6 +211,44 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	//2. 인증 번호 확인 하기
+	@ApiOperation(value = "Auth Mail Check", notes = "인증번호 확인")
+	@PostMapping("/checkMail")
+	public ResponseEntity<Map<String, Object>> checkMail(@RequestBody EmailAuthDto user) {
+		// 1. 이미 있는 메일이야? 메일 중복 확인
+
+		// 2. 메일 중복 아니야? 난수 생성해서 uid세팅하고, u_flag는 1로 해서 비활성화! mail 세팅하고!
+
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+
+		try {
+			logger.info("=====> 중복처리해서 인증번호맡는지 확인하쟈");
+			
+
+			EmailAuthDto check= userservice.checkAuth(user.getEmail());
+			
+			String temp = securityutil.bytesToHex(securityutil.sha256(user.getAuth()));
+			
+			if(temp.equals(check.getAuth())) {
+				resultMap.put("message", "인증 확인이 되었습니다.");
+				userservice.updateFlag(user.getEmail());
+
+			}else {
+				resultMap.put("message", "인증 번호가 틀렸습니다.");
+				
+			}
+				status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("인증 번호 체크 실패 : {}", e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
 
 	// mypage 마이페이지
 	@ApiOperation(value = "Mypage Info", notes = "마이페이지")

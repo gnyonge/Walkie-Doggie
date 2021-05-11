@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.pet.dao.UserDao;
+import com.ssafy.pet.dto.EmailAuthDto;
 import com.ssafy.pet.dto.PetDto;
 import com.ssafy.pet.dto.UserDto;
 
@@ -71,6 +72,30 @@ public class UserServiceImpl implements UserService{
 		map.put("uid", uid);
 		map.put("password", pass);
 		return udao.changePass(map);
+	}
+	
+	@Override
+	public EmailAuthDto checkAuth(String email) {
+		// TODO Auto-generated method stub
+		return udao.checkAuth(email);
+	}
+	
+	@Override
+	public int insertAuth(EmailAuthDto temp) {
+		// TODO Auto-generated method stub
+		return udao.insertAuth(temp);
+	}
+	
+	@Override
+	public int updateAuth(EmailAuthDto temp) {
+		// TODO Auto-generated method stub
+		return udao.updateAuth(temp);
+	}
+	
+	@Override
+	public int updateFlag(String email) {
+		// TODO Auto-generated method stub
+		return udao.updateFlag(email);
 	}
 
 
