@@ -11,7 +11,7 @@
       </div>
     </div>
     <div id="myimg"><img id="imgsize" src="@/assets/pet.png"></div>
-    <div id="mydiv1" class="font-weight-bold"><div>{{getSelectedDate}}</div></div>
+    <div id="mydiv1" class="font-weight-bold"><div>{{getPrettyDate}}</div></div>
     <v-divider></v-divider>
     <div id="mydiv2" class="mt-8"><div><v-icon>mdi-check</v-icon>오늘 0번 산책했어요 !</div></div>
     <div id="mydiv2"><div><v-icon>mdi-check</v-icon>경로(캡쳐 사진)!</div></div>
@@ -25,7 +25,7 @@ import { mapGetters } from 'vuex'
 export default {
   name: "TodayWalk",
   computed: {
-      ...mapGetters(['getSelectedDate'])
+      ...mapGetters(['getSelectedDate', 'getPrettyDate'])
     },
   methods: {
     goback() {
