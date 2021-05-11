@@ -58,6 +58,20 @@ public class UserServiceImpl implements UserService{
 		map.put("password", password);
 		return udao.leaveUser(map);
 	}
+	
+	@Override
+	public UserDto checkPass(UserDto user) {
+		// TODO Auto-generated method stub
+		return udao.checkPass(user);
+	}
+	@Override
+	public int changePass(String uid, String pass) {
+		// TODO Auto-generated method stub
+		Map<String, Object> map = new HashMap<>();
+		map.put("uid", uid);
+		map.put("password", pass);
+		return udao.changePass(map);
+	}
 
 
 }

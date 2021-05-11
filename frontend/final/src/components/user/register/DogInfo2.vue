@@ -21,14 +21,20 @@
           <v-text-field name="name" label="강아지이름" id="name" v-model="name" type="name" required color="#48B9A8"></v-text-field>
         </v-flex>
         <v-flex class="ph-size">
-          <v-text-field name="age" label="나이" id="age" v-model="age" type="age" required color="#48B9A8"></v-text-field>
+          <v-text-field name="age" label="나이(생일)" i≥d="age" v-model="age" type="age" required color="#48B9A8"></v-text-field>
         </v-flex>
         <v-flex class="ph-size">
           <v-text-field name="weight" label="체중" id="weight" v-model="weight" type="weight" required color="#48B9A8"></v-text-field>
         </v-flex>
         <v-flex class="ph-size">
-          <v-text-field name="note" label="특이사항(성격,알레르기,트라우마,선천적 질병 등)" id="note" v-model="note" type="note" required color="#48B9A8"></v-text-field>
+          <v-text-field name="note" label="선천적 질병" id="note" v-model="note" type="note" required color="#48B9A8"></v-text-field>
         </v-flex>
+        <!-- <v-flex class="ph-size">
+          <v-text-field name="note" label="트라우마" id="note" v-model="note" type="note" required color="#48B9A8"></v-text-field>
+        </v-flex>
+        <v-flex class="ph-size">
+          <v-text-field name="note" label="알레르기" id="note" v-model="note" type="note" required color="#48B9A8"></v-text-field>
+        </v-flex> -->
       </v-form>
       <div class="d-flex justify-center">
         <router-link to="/calendar"><v-btn id="mainBtn">반려견 등록</v-btn></router-link>

@@ -4,16 +4,22 @@
       <!-- 지도 -->
       <div id="map"></div>
     </div>
+    
     <ImageList />
   </div>
 </template>
 
 <script>
+import { mapGetters} from 'vuex'
 import ImageList from '@/components/walk/ImageList'
+
 export default {
   name: 'HotPlace',
   components: {
-    ImageList
+    ImageList,
+  },
+  computed: {
+    ...mapGetters(['getSelectedItem'])
   },
   data(){
     return{
@@ -23,7 +29,7 @@ export default {
           title: '카카오', 
           lat: 35.17104466433188,
           lon: 126.80083721411596,
-          imageSrc: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png'
+          imageSrc: "@/assets/diarydogs.jpg"
         },
         {
           title: '생태연못', 
@@ -125,7 +131,6 @@ export default {
         var imageOption = {offset: new kakao.maps.Point(27, 69)};
         // 마커 이미지 생성 
         var markerImage = new kakao.maps.MarkerImage(positions[i].imageSrc, imageSize, imageOption);
-
         //위치 정보 갱신 
         var latlng = new kakao.maps.LatLng(positions[i].lat, positions[i].lon)
         

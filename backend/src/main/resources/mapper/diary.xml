@@ -16,7 +16,7 @@
 
 	<select id="get_diary" parameterType="String"
 		resultType="DiaryDto">
-		select * from Diary where d_date=#{d_date} and d_flag=0
+		select * from Diary where d_date=#{d_date} and peid=#{peid} and d_flag=0
 	</select>
 
 	<update id="update_diary" parameterType="DiaryDto">
@@ -39,5 +39,18 @@
 		d_flag=1
 		where d_date=#{d_date}
 	</update>
+
+	<select id="get_image" parameterType="map" resultType="string">
+		select w_img
+		from Walk 
+		where peid=#{peid} and date(w_date)=#{d_date} and w_flag=0
+		order by w_date asc;
+	</select>
+
+	<select id="get_walk" parameterType="map" resultType="map">
+		select count(*) as count, sum(w_distance) as distance, sum(w_time) as time
+		from Walk 
+		where peid=#{peid} and date(w_date)=#{d_date} and w_flag=0;
+	</select>
 
 </mapper>

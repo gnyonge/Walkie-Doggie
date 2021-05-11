@@ -244,6 +244,70 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	// 비밀번호 확인
+	@ApiOperation(value = "Check Password", notes = "비밀번호 확인")
+	@PostMapping("/check/pass")//user/address
+	public ResponseEntity<Map<String, Object>> CheckPass(@RequestBody UserDto user) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+
+		try {
+			logger.info("=====> 비밀번호 맞는지 확인하기");
+			boolean result = checkPass(user);
+			resultMap.put("message", result);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("메일 중복 체크 실패 : {}", e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	public boolean checkPass(UserDto user) {
+		UserDto check = userservice.checkPass(user);
+		boolean flag = false;
+		if(check!=null) {
+			flag = true;
+		}
+		return flag;
+	}
+	
+	// 비밀번호 변경
+	@ApiOperation(value = "Change Password", notes = "비밀번호 변경")
+	@PutMapping("/change/pass")//user/address
+	public ResponseEntity<Map<String, Object>> changePass(@RequestParam UserDto user,@RequestParam String newPass) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+
+		try {
+			logger.info("=====> 비밀번호 변경하기");
+			boolean result = checkPass(user);
+			if(result==true) {
+				//비밀번호 변경가능
+				int res = userservice.changePass(user.getUid(), newPass);
+				if(res>=1) {
+					resultMap.put("message", "비밀번호 변경에 성공하였습니다.");
+				}else {
+					resultMap.put("message", "비밀번호 변경에 실패하였습니다.");
+				}
+			}else {
+				//비밀번호가 맞지 않아서 변경 불가
+				resultMap.put("message", "비밀번호가 맞지않습니다");
+
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("비밀번호 변경 실패 : {}", e);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
 	//계정삭제
 	@ApiOperation(value = "Leave User", notes = "회원탈퇴")
 	@PutMapping("/leave")
