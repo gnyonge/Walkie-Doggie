@@ -15,5 +15,7 @@ public interface UserService {
 	List<PetDto> petInfo(String uid);
 	int setAddress(String uid, String address);
 	int leaveUser(String uid, String password);
+	UserDto checkPass(UserDto user);
+	int changePass(String uid, String pass);
 	
 	}

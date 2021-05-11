@@ -19,4 +19,6 @@ public interface UserDao {
 	List<PetDto> petInfo(String uid);
 	int setAddress(Map<String, Object> map);
 	int leaveUser(Map<String, Object> map);
+	UserDto checkPass(UserDto user);
+	int changePass(Map<String, Object> map);
 }
