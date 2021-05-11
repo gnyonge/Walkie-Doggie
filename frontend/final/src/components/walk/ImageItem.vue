@@ -11,7 +11,7 @@
       </div>
     </div>
     <div id="contentBox">
-      <div class="d-flex justify-center mb-3">사진이 잘 나와요!</div>
+      <div class="d-flex justify-center mb-3">{{getSelectedItem}}</div>
       <v-img
         id="diaryBox"
         width="100%"
@@ -25,8 +25,17 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: "ImageItem",
+  data() {
+    return{
+      item: '' 
+    }
+  },
+  computed: {
+    ...mapGetters(['getSelectedItem'])
+  },
   methods: {
     goback() {
       this.$router.push('/hotplace')
