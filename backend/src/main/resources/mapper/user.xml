@@ -28,4 +28,11 @@
 	<update id="leaveUser" parameterType="map">
 		update User set u_flag=1 where uid=#{uid} and u_password=#{password}
 	</update>
+	
+	<select id="checkPass" parameterType="UserDto" resultType="UserDto">
+		select * from User where uid=#{uid} and u_password=#{u_password}
+	</select>
+	<update id="changePass" parameterType="map">
+		update User set u_password=#{password} where uid=#{uid}
+	</update>
 </mapper>
