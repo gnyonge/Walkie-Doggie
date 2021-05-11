@@ -8,7 +8,7 @@
 	<select id="checkPlace" parameterType="map" resultType="Integer" >
 		select pid
 		from Place
-		where p_latitude=#{p_latitude} and p_longtitude = #{p_longtitude};
+		where p_latitude=#{p_latitude} and p_longtitude = #{p_longtitude} and p_flag=0;
 	</select>
 
 	<select id="createPlace" parameterType="map" resultType="integer">
@@ -25,7 +25,7 @@
 	<select id="checkLike" parameterType="map" resultType="int" >
 		select count(*)
 		from LikePlace
-		where peid=#{peid} and pid = #{pid};
+		where peid=#{peid} and pid = #{pid} and l_flag=0;
 	</select>
 
 	<update id="plusPlace" parameterType="int">
@@ -38,7 +38,7 @@
 	<select id="isWriter" parameterType="map" resultType="int" >
 		select count(*)
 		from LikePlace
-		where lid=#{lid} and uid = #{login_id};
+		where lid=#{lid} and uid = #{login_id} and l_flag=0;;
 	</select>
 
 	<update id="modifyPlace" parameterType="LikePlaceDto">
@@ -92,14 +92,14 @@
 	<select id="getPostListNew" parameterType="string" resultType="map" >
 		select lid, uid, l_like, l_image, l_desc, l_date
 		from LikePlace
-		where p_location=#{p_location}
+		where p_location=#{p_location} and po_flag=0
 		order by l_date desc;
 	</select>
 
 	<select id="getPostListLike" parameterType="string" resultType="map" >
 		select lid, uid, l_like, l_image, l_desc, l_date
 		from LikePlace
-		where p_location=#{p_location}
+		where p_location=#{p_location} and po_flag=0
 		order by l_like desc;
 	</select>
 
@@ -107,9 +107,9 @@
 	<select id="getTop5" parameterType="string" resultType="map" >
 		select pid
 		from Place
-		where p_location=#{p_location}
+		where p_location=#{p_location} and p_flag=0
 		order by p_like desc
-		limit 3;
+		limit 5;
 	</select>
 	
 </mapper>
