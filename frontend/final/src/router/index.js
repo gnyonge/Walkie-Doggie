@@ -24,7 +24,8 @@ import DogRegister from '../views/register/DogRegister.vue'
 import DogRegister2 from '../views/register/DogRegister2.vue'
 import DogChange from '../views/mypage/DogChange.vue'
 import Health from '../views/mypage/Health.vue'
-import InfoChange from '../views/mypage/InfoChange.vue'
+import InfoChangeLocation from '../views/mypage/InfoChangeLocation.vue'
+import InfoChangePassword from '../views/mypage/InfoChangePassword.vue'
 import Statistics from '../views/mypage/Statistics.vue'
 // import VueChartJS from '@/views/VueChartJS'
 // import VueChartKick from '@/views/VueChartKick'
@@ -142,9 +143,14 @@ const routes = [
     component: Health
   },
   {
-    path: '/infochange',
-    name: 'InfoChange',
-    component: InfoChange
+    path: '/infochangelocation',
+    name: 'InfoChangeLocation',
+    component: InfoChangeLocation
+  },
+  {
+    path: '/infochangepw',
+    name: 'InfoChangePassword',
+    component: InfoChangePassword
   },
   {
     path: '/statistics',
