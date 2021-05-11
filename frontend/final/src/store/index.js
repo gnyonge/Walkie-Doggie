@@ -6,14 +6,15 @@ import calendar from './module/calendarStore';
 import walk from './module/walkStore';
 import mypage from './module/mypageStore';
 import food from './module/foodStore';
+import loginSignin from './module/loginSigninStore';
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  modules: { calendar, walk, mypage, food },
+  modules: { calendar, walk, mypage, food, loginSignin },
   plugins: [
     createPersistedState({
-      paths: ['calendar', 'walk', 'mypage', 'food']
+      paths: ['calendar', 'walk', 'mypage', 'food', 'loginSignin']
     })
   ],
 })
