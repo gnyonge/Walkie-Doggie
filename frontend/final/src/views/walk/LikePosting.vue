@@ -29,44 +29,6 @@
           v-for="option, idx in selectOptions" :key="idx">
             {{option.name}}
           </v-btn>
-            <!-- <input 
-              type="radio" 
-              name="chk_info" 
-              class="btn" 
-              :value="option.name" 
-              v-model="optionvalue"/> 
-            <label for="btn01">{{option.name}}
-            </label> -->
-        <!-- <div id="mainBox">
-          <input 
-            type="radio" 
-            name="chk_info" 
-            class="btn" 
-            id="btn02" 
-            value="2" 
-            v-model="optionvalue"/> 
-            <label for="btn02"> 강아지 자랑 </label>
-        </div>
-        <div id="mainBox">
-          <input 
-            type="radio" 
-            name="chk_info" 
-            class="btn" 
-            id="btn03" 
-            value="3" 
-            v-model="optionvalue"/> 
-            <label for="btn03"> 휴식공간 </label>
-        </div>
-        <div id="mainBox">
-          <input 
-            type="radio" 
-            name="chk_info"
-            class="btn" 
-            id="btn04" 
-            value="4"  
-            v-model="optionvalue"/> 
-            <label for="btn04"> 날씨 좋음 </label>
-        </div> -->
         </div>
       </div>
       <div>

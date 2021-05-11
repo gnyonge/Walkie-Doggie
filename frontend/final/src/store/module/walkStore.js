@@ -1,5 +1,6 @@
 const state = {
   selectedItem: null ,
+  
 };
 const getters = {
   getSelectedItem(state) {

@@ -26,7 +26,7 @@ export default {
       map: {},
       positions: [ // 일단 더미 데이터
         {
-          title: '카카오', 
+          title: '마킹한 곳 ', 
           lat: 35.17104466433188,
           lon: 126.80083721411596,
           imageSrc: "@/assets/diarydogs.jpg"
