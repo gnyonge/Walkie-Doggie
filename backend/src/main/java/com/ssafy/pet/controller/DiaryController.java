@@ -146,10 +146,10 @@ public class DiaryController {
 
 		try {
 			logger.info("=====> 기록일지 조회 시작!");
-			DiaryDto diary = dservice.get_diary(d_date);
+			DiaryDto diary = dservice.get_diary(peid, d_date);
 
 			logger.info("=====> 건강 조회 시작!");
-			List<HealthDto> health_list = hservice.get_health(d_date);
+			List<HealthDto> health_list = hservice.get_health(peid, d_date);
 
 			resultMap.put("Diary", diary); // 기록일지
 			resultMap.put("Health_list", health_list); // 건강 목록
@@ -205,13 +205,13 @@ public class DiaryController {
 			diary.setD_img(url);
 			int update = dservice.update_pic(diary);
 
-			if (update == 1) {
+			if (result == 1) {
 				logger.info("=====> 기록일지 수정 성공");
-				resultMap.put("message", "글 수정에 성공하였습니다.");
+				resultMap.put("message", "기록일지 수정에 성공하였습니다.");
 				status = HttpStatus.ACCEPTED;
 			} else {
 				logger.info("=====> 기록일지 수정 실패");
-				resultMap.put("message", "글 수정에 실패하였습니다.");
+				resultMap.put("message", "기록일지 수정에 실패하였습니다.");
 				status = HttpStatus.NOT_FOUND;
 			}
 

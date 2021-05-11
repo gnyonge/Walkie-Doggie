@@ -11,7 +11,7 @@ public interface HealthDao {
 
 	int insert_health(HealthDto health); // 건강 등록
 
-	List<HealthDto> get_health(String h_date); // 건강 조회
+	List<HealthDto> get_health(String peid, String h_date); // 건강 조회
 
 	int update_health(HealthDto health); // 건강 수정
 

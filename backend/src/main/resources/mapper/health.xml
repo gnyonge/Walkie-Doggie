@@ -17,7 +17,7 @@
 
 	<select id="get_health" parameterType="String"
 		resultType="HealthDto">
-		select * from Health where h_flag=0 and h_date=#{h_date}
+		select * from Health where h_flag=0 and h_date=#{h_date} and peid=#{peid}
 	</select>
 
 	<update id="update_health" parameterType="HealthDto">

@@ -20,8 +20,8 @@ public class HealthServiceImpl implements HealthService {
 	}
 
 	@Override
-	public List<HealthDto> get_health(String h_date) {
-		return hdao.get_health(h_date);
+	public List<HealthDto> get_health(String peid, String h_date) {
+		return hdao.get_health(peid, h_date);
 	}
 
 	@Override
