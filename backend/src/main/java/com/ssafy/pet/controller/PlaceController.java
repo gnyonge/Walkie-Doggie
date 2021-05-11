@@ -221,7 +221,7 @@ public class PlaceController {
      */
 	@ApiOperation(value = "Delete HotPlace post", notes = "핫플레이스 게시글 삭제")
     @DeleteMapping("/delete/{peid}")
-    public ResponseEntity<Map<String, Object>> deletePlace(@RequestParam(value = "lid") int lid, @RequestParam(value = "pid") int pid,
+    public ResponseEntity<Map<String, Object>> deletePlace(@RequestParam(value = "lid") int lid,
             @PathVariable("peid") String peid) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
@@ -235,6 +235,7 @@ public class PlaceController {
                 if (placeService.deletePlace(lid) >= 1) {
 					logger.info("=====> 장소 게시글 삭제 성공");
 
+                    int pid = placeService.getPid(lid);
 					int result = placeService.minusPlace(pid);
 					if(result != 0){
 						resultMap.put("message", "장소 게시글 삭제 완료하였습니다.");

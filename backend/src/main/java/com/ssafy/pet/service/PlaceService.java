@@ -23,6 +23,8 @@ public interface PlaceService {
 
     public int modifyPlace(LikePlaceDto likePlaceDto);
 
+    public int getPid(int lid);
+
 	public int deletePlace(int lid);
 
 	public int minusPlace(int pid);
