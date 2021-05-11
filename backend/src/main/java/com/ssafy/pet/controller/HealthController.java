@@ -76,7 +76,7 @@ public class HealthController {
 
 		try {
 			logger.info("=====> 건강 조회 시작!");
-			List<HealthDto> health_list = hservice.get_health(h_date);
+			List<HealthDto> health_list = hservice.get_health(peid, h_date);
 
 			resultMap.put("HealthList", health_list);
 			resultMap.put("message", "건강 리스트 가져오기 성공하였습니다.");

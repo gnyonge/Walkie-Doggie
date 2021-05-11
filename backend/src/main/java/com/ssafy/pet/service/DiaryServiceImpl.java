@@ -3,6 +3,9 @@ package com.ssafy.pet.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.ssafy.pet.dao.DiaryDao;
 import com.ssafy.pet.dto.DiaryDto;
 
@@ -18,8 +21,8 @@ public class DiaryServiceImpl implements DiaryService {
 	}
 
 	@Override
-	public DiaryDto get_diary(String d_date) {
-		return ddao.get_diary(d_date);
+	public DiaryDto get_diary(String peid, String d_date) {
+		return ddao.get_diary(peid, d_date);
 	}
 
 	@Override
@@ -36,5 +39,14 @@ public class DiaryServiceImpl implements DiaryService {
 	public int delete_diary(DiaryDto diary) {
 		return ddao.delete_diary(diary);
 	}
+	
+	@Override
+	public List<String> get_image(Map<String, Object> map) {
+		return ddao.get_image(map);
+	}
 
+	@Override
+	public List<Map<String, Object>> get_walk(Map<String, Object> map) {
+		return ddao.get_walk(map);
+	}
 }
