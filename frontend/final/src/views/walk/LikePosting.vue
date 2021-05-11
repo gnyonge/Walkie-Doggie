@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations, mapActions } from 'vuex'
+
 export default {
   name: 'LikePosting', 
   data() {
@@ -64,14 +66,30 @@ export default {
     var camera = document.getElementById('camera')
     camera.click()
   },
+  computed: {
+      ...mapGetters(['getNowLat', 'getNowLon', 'getAreaName', 'getTempPhotoURL'])
+  },
   methods:{
+    ...mapMutations([]),
+    ...mapActions(['sendNowPost', 'makeTempPhotoUInApi', 'sendNowPostInApi']),
     selectThis(name, idx) {
       this.optionValue = name
       this.isClicked = idx
     },
     // 사진, 옵션 정보 백엔드 정보 전송 
     posting(){
-      
+      this.makeTempPhotoUInApi({
+        p_latitude: this.getNowLat,
+        p_longtitude: this.getNowLat,
+        peid: "string",
+        l_image: this.getTempPhotoURL,
+        l_desc: "string",
+        p_location: this.getAreaName
+      }).then((res) =>{
+        console.log(res, '백엔드 전송 성공')
+      }).catch((error) =>{
+        console.log(error)
+      })
       this.$router.push('/startwalk')
     },
     //사용자 업로드 사진 주소 백엔드 전송 후 보여주기 
@@ -81,8 +99,16 @@ export default {
       camera.addEventListener('change', function(e) {
         // console.log(e.target.files[0])
         var file = e.target.files[0]
+        this.makeTempPhotoUInApi({
+          file: file
+        }).then(()=> {
+          console.log('업로드한 사진 미리보기 성공')
+        }).catch((error)=>{
+          console.log(error)
+        })
         console.log(URL.createObjectURL(file))
         // 백엔드 서버에서 이미지 주소 받아서 넣기 
+
         this.photo_url = file
       })
     },
