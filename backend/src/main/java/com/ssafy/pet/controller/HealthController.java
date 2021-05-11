@@ -37,26 +37,22 @@ public class HealthController {
 	// 건강 등록하기
 	@ApiOperation(value = "Health Insert", notes = "건강 등록")
 	@PostMapping("/insert")
-	public ResponseEntity<Map<String, Object>> insert_health(@RequestBody HealthDto health) {
+	public ResponseEntity<Map<String, Object>> insert_health(@RequestBody List<HealthDto> health_list) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
 
 			logger.info("=====> 건강 등록 시작!");
-			System.out.println(health);
-
-			int result = hservice.insert_health(health);
-
-			if (result == 1) {
-				logger.info("=====> 건강 등록 성공");
-				resultMap.put("message", "건강 등록에 성공하였습니다.");
-				status = HttpStatus.ACCEPTED;
-			} else {
-				logger.info("=====> 건강 등록 실패");
-				resultMap.put("message", "건강 등록에 실패하였습니다.");
-				status = HttpStatus.NOT_FOUND;
+			System.out.println(health_list);
+			
+			for(HealthDto dto : health_list) {
+				hservice.insert_health(dto);
 			}
+			
+			logger.info("=====> 건강 등록 성공");
+			resultMap.put("message", "건강 등록에 성공하였습니다.");
+			status = HttpStatus.ACCEPTED;
 
 		} catch (Exception e) {
 			// TODO: handle exception

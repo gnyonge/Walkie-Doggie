@@ -1,3 +1,5 @@
+import { rscApi } from '@/services/api';
+
 const state = {
   nowTab: 0,
   selectedDate: ""
@@ -19,6 +21,14 @@ const mutations = {
   }
 };
 const actions = {
+  createNoPhotoDiaryInApi(context, params) {
+    return rscApi.post('diary/insert/np', params)
+      .then((res) => {
+        console.log(res, '머시냐')
+        return res;
+      })
+      .catch(() => {});
+  },
 };
 
 export default {

@@ -45,7 +45,7 @@ export default {
   methods: {
     ...mapMutations(['setSelectedDate']),
     onContext(ctx) {
-      this.context = ctx.selectedFormatted
+      this.context = ctx.activeYMD
       this.setSelectedDate(this.context)
     },
     goto(name) {
