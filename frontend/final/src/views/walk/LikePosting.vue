@@ -22,22 +22,22 @@
       </v-btn> -->
       <!-- 사용자 의견 선택옵션 -->
       <div>
-        <div>선정이유</div>
+        <div>왜 좋은가요?</div>
         <div>
-          {{ optionvalue }}
-          <div id="mainBox">
-            <input 
+          <div v-if="optionValue">"{{ optionValue }}"</div>
+          <v-btn text id="likeBox" @click="selectThis(option.name, idx)" :class="{clicked: optionValue == option.name}"
+          v-for="option, idx in selectOptions" :key="idx">
+            {{option.name}}
+          </v-btn>
+            <!-- <input 
               type="radio" 
               name="chk_info" 
               class="btn" 
-              id="btn01" 
-              value="1" 
+              :value="option.name" 
               v-model="optionvalue"/> 
-            <label for="btn01"> 마킹 
-              <v-icon>mdi-lead-pencil</v-icon>
-            </label>
-          </div>
-        <div id="mainBox">
+            <label for="btn01">{{option.name}}
+            </label> -->
+        <!-- <div id="mainBox">
           <input 
             type="radio" 
             name="chk_info" 
@@ -66,11 +66,12 @@
             value="4"  
             v-model="optionvalue"/> 
             <label for="btn04"> 날씨 좋음 </label>
-        </div>
+        </div> -->
         </div>
       </div>
       <div>
         <v-btn
+          class="mt-3"
           large
           id="mainBtn"
           @click="posting">
@@ -87,13 +88,23 @@ export default {
   data() {
     return {
       photo_url: '', 
-      optionvalue: 0, 
+      optionValue: 0,
+      selectOptions: [
+        {idx: 0, name: '사진이 잘 나와요!'},
+        {idx: 1, name: '휴식 공간이 있어요!'},
+        {idx: 2, name: '마킹을 했어요!'},
+        {idx: 3, name: '날씨가 좋아요!'},
+      ]
     }
   },
   mounted(){
     this.getPhoto()
   },
   methods:{
+    selectThis(name, idx) {
+      this.optionValue = name
+      this.isClicked = idx
+    },
     // 사진, 옵션 정보 백엔드 정보 전송 
     posting(){
       
@@ -129,5 +140,24 @@ export default {
   {
     background: #000000 ;
     color: rgb(255, 255, 255); 
+  }
+  #likeBox {
+    border-radius: 15px;
+    background-color: white;
+    box-shadow: 5px 5px 5px #E5E5E5;
+    border: 1px solid grey;
+    padding: 20px;
+    margin: 10px;
+    width: 200px;
+    cursor: pointer; 
+    outline: none; 
+    box-shadow: 1px 4px 0 rgb(0,0,0,0.3);
+  }
+  .clicked {
+    box-shadow: 1px 1px 0 rgb(0,0,0,0.3) !important;
+    background-color: #BAF1E4 !important;
+    border: hidden !important;
+    position: relative; 
+    top:2px; 
   }
 </style>

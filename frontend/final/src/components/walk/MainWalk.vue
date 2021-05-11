@@ -33,11 +33,16 @@
         <v-icon>mdi-fire</v-icon>
       </v-btn>
     </div>
+    <ImageItem />
   </div>
 </template>
 <script>
+import ImageItem from '@/components/walk/ImageItem'
 export default {
   name: 'MainWalk',
+  components: {
+    ImageItem
+  },
   methods:{
     startWalk(){
       this.$router.push('/startwalk')

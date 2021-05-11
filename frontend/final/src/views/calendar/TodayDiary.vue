@@ -97,15 +97,6 @@ export default {
 #myimg2 {
   width: 100%;
 }
-#contentbox {
-  background-color: white;
-  margin: 12px;
-  border-radius: 15px;
-}
-#contentbox2 {
-  padding-left: 12px;
-  padding-right: 12px;
-}
 #diaryBox {
   border-radius: 15px;
   background-color: white;

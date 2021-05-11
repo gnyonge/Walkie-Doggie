@@ -4,12 +4,17 @@
       <!-- 지도 -->
       <div id="map"></div>
     </div>
+    <ImageList />
   </div>
 </template>
 
 <script>
+import ImageList from '@/components/walk/ImageList'
 export default {
   name: 'HotPlace',
+  components: {
+    ImageList
+  },
   data(){
     return{
       positions: [],
