@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.ssafy.pet.dto.AllergyDto;
 import com.ssafy.pet.dto.HealthDto;
 import com.ssafy.pet.dto.PetDto;
 import com.ssafy.pet.dto.UserDto;
@@ -100,7 +101,7 @@ public class PetController {
 	// 반려견 등록
 	@ApiOperation(value = "Pet Regist", notes = "반려견 등록")
 	@PostMapping("/insert")
-	public ResponseEntity<Map<String, Object>> regist_pet(@RequestPart MultipartFile file, @RequestPart PetDto pet) {
+	public ResponseEntity<Map<String, Object>> regist_pet(@RequestPart MultipartFile file, @RequestPart PetDto pet, @RequestPart List<AllergyDto> allergy) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
@@ -133,6 +134,10 @@ public class PetController {
 			}
 
 			int result = petservice.regist_pet(pet);
+			
+			for(AllergyDto all : allergy) {
+				petservice.insert_allergy(all);
+			}
 
 			if (result == 1) {
 				logger.info("=====> 반려견 등록 성공");
