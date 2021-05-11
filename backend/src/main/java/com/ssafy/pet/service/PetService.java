@@ -2,6 +2,7 @@ package com.ssafy.pet.service;
 
 import java.util.List;
 
+import com.ssafy.pet.dto.AllergyDto;
 import com.ssafy.pet.dto.HealthDto;
 import com.ssafy.pet.dto.PetDto;
 
@@ -13,5 +14,6 @@ public interface PetService {
 	PetDto show_pet(String peid);
 	int leave_pet(String peid);
 	int update_pet(PetDto pet);
+	int insert_allergy(AllergyDto allergy);
 
 }

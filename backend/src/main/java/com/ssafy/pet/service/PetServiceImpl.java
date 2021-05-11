@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.pet.dao.PetDao;
+import com.ssafy.pet.dto.AllergyDto;
 import com.ssafy.pet.dto.HealthDto;
 import com.ssafy.pet.dto.PetDto;
 
@@ -47,5 +48,10 @@ public class PetServiceImpl implements PetService {
 	public int update_pet(PetDto pet) {
 		// TODO Auto-generated method stub
 		return pdao.update_pet(pet);
+	}
+	@Override
+	public int insert_allergy(AllergyDto allergy) {
+		// TODO Auto-generated method stub
+		return pdao.insert_allergy(allergy);
 	}
 }
