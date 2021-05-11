@@ -152,8 +152,7 @@ export default {
           d_walk: 0,
           peid: "petpetpetpet1"
         }).then((res) => {
-          console.log(res)
-          console.log('성공??')
+          console.log(res, '성공!!!')
         })
       }
     }

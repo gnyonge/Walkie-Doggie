@@ -21,7 +21,7 @@
           <v-text-field name="name" label="강아지이름" id="name" v-model="name" type="name" required color="#48B9A8"></v-text-field>
         </v-flex>
         <v-flex class="ph-size">
-          <v-text-field name="age" label="나이(생일)" i≥d="age" v-model="age" type="age" required color="#48B9A8"></v-text-field>
+          <v-text-field name="age" label="나이(생일)" id="age" v-model="age" type="age" required color="#48B9A8"></v-text-field>
         </v-flex>
         <v-flex class="ph-size">
           <v-text-field name="weight" label="체중" id="weight" v-model="weight" type="weight" required color="#48B9A8"></v-text-field>

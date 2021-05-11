@@ -14,7 +14,7 @@
       class="my-5"
       max-width="344"
       outlined
-      v-for="i, idx in 3"
+      v-for="i, idx in 3" 
       :key="idx"
     >
       <v-list-item three-line id="healthDiv">
