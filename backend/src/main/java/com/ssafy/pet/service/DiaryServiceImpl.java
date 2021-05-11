@@ -21,8 +21,8 @@ public class DiaryServiceImpl implements DiaryService {
 	}
 
 	@Override
-	public DiaryDto get_diary(String d_date) {
-		return ddao.get_diary(d_date);
+	public DiaryDto get_diary(String peid, String d_date) {
+		return ddao.get_diary(peid, d_date);
 	}
 
 	@Override

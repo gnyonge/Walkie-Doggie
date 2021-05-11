@@ -16,7 +16,7 @@
 
 	<select id="get_diary" parameterType="String"
 		resultType="DiaryDto">
-		select * from Diary where d_date=#{d_date} and d_flag=0
+		select * from Diary where d_date=#{d_date} and peid=#{peid} and d_flag=0
 	</select>
 
 	<update id="update_diary" parameterType="DiaryDto">
