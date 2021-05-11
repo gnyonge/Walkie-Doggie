@@ -31,5 +31,9 @@
 		where peid=#{peid}
 	</update>
 	
+	<insert id="insert_allergy" parameterType="AllergyDto">
+		insert into Allergy(peid, al_name)
+		values(#{peid}, #{al_name})
+	</insert>
 
 </mapper>
