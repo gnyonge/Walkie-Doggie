@@ -37,36 +37,36 @@
               <v-icon>mdi-lead-pencil</v-icon>
             </label>
           </div>
-        <div id="mainBox">
-          <input 
-            type="radio" 
-            name="chk_info" 
-            class="btn" 
-            id="btn02" 
-            value="2" 
-            v-model="optionvalue"/> 
-            <label for="btn02"> 강아지 자랑 </label>
-        </div>
-        <div id="mainBox">
-          <input 
-            type="radio" 
-            name="chk_info" 
-            class="btn" 
-            id="btn03" 
-            value="3" 
-            v-model="optionvalue"/> 
-            <label for="btn03"> 휴식공간 </label>
-        </div>
-        <div id="mainBox">
-          <input 
-            type="radio" 
-            name="chk_info"
-            class="btn" 
-            id="btn04" 
-            value="4"  
-            v-model="optionvalue"/> 
-            <label for="btn04"> 날씨 좋음 </label>
-        </div>
+          <div id="mainBox">
+            <input 
+              type="radio" 
+              name="chk_info" 
+              class="btn" 
+              id="btn02" 
+              value="2" 
+              v-model="optionvalue"/> 
+              <label for="btn02"> 강아지 자랑 </label>
+          </div>
+          <div id="mainBox">
+            <input 
+              type="radio" 
+              name="chk_info" 
+              class="btn" 
+              id="btn03" 
+              value="3" 
+              v-model="optionvalue"/> 
+              <label for="btn03"> 휴식공간 </label>
+          </div>
+          <div id="mainBox">
+            <input 
+              type="radio" 
+              name="chk_info"
+              class="btn" 
+              id="btn04" 
+              value="4"  
+              v-model="optionvalue"/> 
+              <label for="btn04"> 날씨 좋음 </label>
+          </div>
         </div>
       </div>
       <div>
@@ -91,7 +91,9 @@ export default {
     }
   },
   mounted(){
-    this.getPhoto()
+    // 클릭하자마자 사진 바로 받기 
+    var camera = document.getElementById('camera')
+    camera.click()
   },
   methods:{
     // 사진, 옵션 정보 백엔드 정보 전송 
@@ -102,7 +104,7 @@ export default {
     //사용자 업로드 사진 주소 백엔드 전송 후 보여주기 
     getPhoto(){
       var camera = document.getElementById('camera')
-        
+      
       camera.addEventListener('change', function(e) {
         // console.log(e.target.files[0])
         var file = e.target.files[0]

@@ -42,7 +42,7 @@
   },
   "eslintConfig": {
     "globals": {
-      "kakao": false
+      "kakao": true
     },
     "root": true,
     "env": {
