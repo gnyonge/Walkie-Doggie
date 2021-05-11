@@ -106,7 +106,7 @@ public class PlaceController {
      * 
      * developer: 윤수민
      * 
-     * @param p_latitude, p_longtitude, peid, l_desc, l_image
+     * @param pid, peid, l_desc, l_image, p_location
      * 
      * @return message
 	 * 
@@ -174,14 +174,14 @@ public class PlaceController {
      * 
      * developer: 윤수민
      * 
-     * @param : LikePlaceDto(lid,l_image,l_desc), login_id
+     * @param : LikePlaceDto(lid,l_image,l_desc), peid
      * 
      * @return : message
      */
 	@ApiOperation(value = "Modify HotPlace post", notes = "핫플레이스 게시글 수정")
-    @PutMapping("/modify/{login_id}")
+    @PutMapping("/modify/{peid}")
     public ResponseEntity<Map<String, Object>> modifyPlace(@RequestBody LikePlaceDto likePlaceDto,
-            @PathVariable("login_id") String login_id) {
+            @PathVariable("peid") String peid) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         
@@ -189,7 +189,7 @@ public class PlaceController {
 			logger.info("place/modify 호출 성공");
             Map<String, Object> map = new HashMap<>();
             map.put("lid", likePlaceDto.getLid());
-            map.put("login_id", login_id);
+            map.put("peid", peid);
             if (placeService.isWriter(map) != 0) { // 로그인한 계정이 작성자가 맞는 경우
                 if (placeService.modifyPlace(likePlaceDto) == 1) {
 					logger.info("=====> 장소 게시글 수정 성공");
@@ -215,14 +215,14 @@ public class PlaceController {
      * 
      * developer: 윤수민
      * 
-     * @param : lid, login_id
+     * @param : lid, peid
      * 
      * @return : message
      */
 	@ApiOperation(value = "Delete HotPlace post", notes = "핫플레이스 게시글 삭제")
-    @DeleteMapping("/delete/{login_id}")
+    @DeleteMapping("/delete/{peid}")
     public ResponseEntity<Map<String, Object>> deletePlace(@RequestParam(value = "lid") int lid, @RequestParam(value = "pid") int pid,
-            @PathVariable("login_id") String login_id) {
+            @PathVariable("peid") String peid) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
         
@@ -230,7 +230,7 @@ public class PlaceController {
 			logger.info("place/delete 호출성공");
             Map<String, Object> map = new HashMap<>();
             map.put("lid", lid);
-            map.put("login_id", login_id);
+            map.put("peid", peid);
             if (placeService.isWriter(map) != 0) { // 로그인한 계정이 작성자가 맞는 경우
                 if (placeService.deletePlace(lid) >= 1) {
 					logger.info("=====> 장소 게시글 삭제 성공");

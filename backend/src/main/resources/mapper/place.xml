@@ -18,8 +18,8 @@
 	</select>
 
 	<insert id="clickPlace" parameterType="map" useGeneratedKeys="true" keyProperty="lid" keyColumn="lid"  >
-		insert into LikePlace(pid, peid, uid, l_image, l_desc, l_like, l_flag, l_date)
-		values(#{pid}, #{peid}, #{uid}, #{l_image}, #{l_desc}, 0, 0, now());
+		insert into LikePlace(pid, peid, l_image, l_desc, p_location, l_like, l_flag, l_date)
+		values(#{pid}, #{peid},  #{l_image}, #{l_desc}, #{p_location}, 0, 0, now());
 	</insert>
 
 	<select id="checkLike" parameterType="map" resultType="int" >
@@ -34,11 +34,11 @@
 		where pid=#{pid};
 	</update>
 
-	<!-- 장소 수정 및 삭제-->
+	<!-- 핫플레이스 수정 및 삭제-->
 	<select id="isWriter" parameterType="map" resultType="int" >
 		select count(*)
 		from LikePlace
-		where lid=#{lid} and uid = #{login_id} and l_flag=0;;
+		where lid=#{lid} and peid= #{peid} and l_flag=0;;
 	</select>
 
 	<update id="modifyPlace" parameterType="LikePlaceDto">
