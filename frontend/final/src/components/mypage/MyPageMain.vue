@@ -2,16 +2,6 @@
   <div class="">
     <div class="">  
       <!-- 1. 프로필 박스 -->
-      <router-link to="/infochange">
-        <!-- <v-btn
-          tile
-        >
-        <v-icon left>
-          mdi-cog
-        </v-icon>
-        설정
-      </v-btn> -->
-      </router-link>
       <div class="d-flex ml-3 mr-3 mt-5 justify-center">
         <!-- 1. 프로필 사진 --> 
         <div class="mt-5">
@@ -28,6 +18,37 @@
           <p>몸무게: 2.2kg</p>
           <p>특이사항: 닭고기 알레르기</p>
         </div>
+        <!-- 햄버거버튼 -->
+        <v-menu
+            bottom
+            left
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                color="#BAF1E4"
+                icon
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon size="40px">mdi-menu</v-icon>
+              </v-btn>
+            </template>
+
+            <v-list width="100px">
+              <!-- <v-list-item
+                v-for="(item, i) in items"
+                :key="i"
+              >
+                <v-list-item-title @click="goto()">{{ item.title }}</v-list-item-title>
+              </v-list-item> -->
+              <v-list-item class="d-flex"
+              >
+                <v-list-item-title @click="goto('infochangelocation')">지역 수정</v-list-item-title>
+                <v-list-item-title @click="goto('infochangepw')">계정 설정</v-list-item-title>
+                <v-list-item-title @click="goto('')">지역 수정</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
       </div>
       <!-- 버튼 그룹 --> 
       <div class="d-flex">
@@ -55,15 +76,18 @@
         </div>
       </div>
     </div>
-      <!-- 3.강아지 계정 변경 --> 
+      <!-- 3.강아지 일기 관리 --> 
       <div class="ml-5 mt-3">
         <h5><b>강아지 계정 관리</b> </h5>
       </div>
         <div class="frame" >
           <div class="card-list">
+            <!-- 한 마리당 하나의 카드 -->
+            <!-- 카드 클릭시 대표 강아지 설정 변경  -->
             <div class="mt-5" id="mainBox" style="background-color:#BAF1E4;">
               <div class="d-flex justify-end">
-                <v-icon>mdi-cog-outline</v-icon>
+                <!-- 설정버튼 클릭 시 dogchange 페이지로 이동 -->
+                <v-icon @click="gotoDogChange()">mdi-cog-outline</v-icon>
               </div>
               <div>
                 <v-img src="../../assets/images/서비스로고.png" 
@@ -77,17 +101,15 @@
               </div>
               
             </div>
-            <div class="mt-5 card" id="mainBox">
-              <p>건강</p>
-            </div>
-            <div class="d-flex justify-center">
+            <!-- 강아지 추가 페이지로 이동 -->
+            <div class="d-flex justify-center width:200px;" id="mainBox">
               <v-btn
               class="mx-2"
               fab
               dark
               color="#BAF1E4"
             >
-                <v-icon dark>
+                <v-icon>
                   mdi-plus
                 </v-icon>
               </v-btn>
@@ -96,8 +118,6 @@
           </div>
         </div>
       </div>
-  
-
 </template>
 
 <script>
@@ -105,6 +125,25 @@
 
 export default {
   // components: { InfoChange },
+  name: "MyPageMain",
+  data: () => ({
+      // items: [
+      //   { title: '지역 수정' , m_url: 'infochangelocation'},
+      //   { title: '계정 관리' ,m_url: 'infochangepassword' },
+      //   { title: '로그아웃' ,m_url: ''},
+      // ],
+    }),
+  methods: {
+    goto(m_url) {
+      this.$router.push(`/${m_url}`)
+    },
+    gotoDogChange() {
+      this.$router.push('/dogchange')
+    },
+    goback() {
+      this.$router.push('/mypage')
+    }
+  }
   
 }
 </script>
