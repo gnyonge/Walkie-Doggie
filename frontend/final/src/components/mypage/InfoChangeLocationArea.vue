@@ -1,8 +1,11 @@
 <template>
   <div class="" id="mainBox">
     <div class="">
-      <h1 style="font-size: 15px;">지역 설정</h1>
-      <p style="font-size:12px;">주소를 입력해 주세요.</p>
+      <div>
+        <v-icon @click="goback()">mdi-arrow-left</v-icon>
+      </div>
+      <h1 style="font-size: 15px;" class="d-flex justify-center">지역 설정</h1>
+      <p style="font-size:12px;" class="d-flex justify-center">주소를 입력해 주세요.</p>
       <DaumPostcode
       :on-complete=handleAddress
     />
@@ -51,7 +54,10 @@ export default {
       document.head.appendChild(recaptchaScript)
     },
   methods: {
-    handleAddress 
+    handleAddress,
+    goback() {
+      this.$router.push('/mypage')
+    }
   }
 }
 </script>

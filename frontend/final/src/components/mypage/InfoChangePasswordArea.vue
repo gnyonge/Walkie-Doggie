@@ -1,6 +1,9 @@
 <template>
   <div>
     <div class="" id="mainBox">
+      <div>
+        <v-icon @click="goback()">mdi-arrow-left</v-icon>
+      </div>
       <v-form>
         <h5 class="text-center mb-5 mt-5">비밀번호 설정</h5>
         <v-text-field name="password" label="기존 비밀번호" id="password" v-model="password" type="password" required color="#48B9A8"></v-text-field>
@@ -23,7 +26,11 @@
 <script>
 
 export default {
-
+  methods: {
+    goback() {
+      this.$router.push('/mypage')
+    }
+  }
 }
 </script>
 <style scoped>

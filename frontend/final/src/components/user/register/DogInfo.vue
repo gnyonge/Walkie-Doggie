@@ -2,9 +2,9 @@
   <div class="register-btn-pd" id="mainBox">
     <h5 class="text-center mb-5">반려견 등록</h5>
       <div class="d-flex justify-center">
-        <router-link to="/dogregisternext"><div class="circle ">
+        <div class="circle " @click="goto()">
           <p>+ 반려견 등록</p>
-        </div></router-link>
+        </div>
       </div>
       <div class="d-flex justify-center mt-15">
         <div>
@@ -12,17 +12,17 @@
           <p>최대 3마리까지 등록 가능합니다.</p>
         </div>
       </div>
-      
   </div>
 
 </template>
 
 <script>
 export default {
+  name: "DogInfo",
   methods: {
-    // goback() {
-    //     this.$router.push('/')
-    //   }
+    goto() {
+      this.$router.push('/dogregisternext')
+    }
   }
 }
 </script>
