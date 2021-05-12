@@ -114,7 +114,6 @@ export default {
       trauma: '',
       allergy:'',
       disease:'',
-      photo: '',
       photo_url: require('../../../assets/images/서비스로고.png'),
 
       date: new Date().toISOString().substr(0, 10),
@@ -132,26 +131,23 @@ export default {
     goback() {
       this.$router.push('/dogregister')
     },
+    //사용자 업로드 사진 주소 백엔드 전송 후 보여주기 
     getPhoto(){
       var camera = document.getElementById('ex_file')
       var t = this
       camera.addEventListener('change', function(e) {
-        let formData = new FormData()
+        const form = new FormData()
         var file = e.target.files[0]
-        t.file = e.target.files[0]
-        console.log(file,'파일')
-        formData.append('file', t.file)
+        form.append('file', file)
         t.makeTempPhotoUrlInApi(
-          formData
-        ).then((res)=> {
-          console.log('then', res)
+          form
+        ).then(()=> {
+          console.log('업로드한 사진 미리보기 성공')
         }).catch((error)=>{
-          console.log('error', error)
+          console.log(error)
         })
-        // console.log(t.photo_url,'그 전에 되는지??')
         // 백엔드 서버에서 이미지 주소 받아서 넣기 
         t.photo_url = t.getTempPhotoURL
-        console.log(t.photo_url, 'url')
       })
     },
     registerNewDog() {
