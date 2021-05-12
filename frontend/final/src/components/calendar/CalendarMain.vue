@@ -17,7 +17,7 @@
     max-width="374"
     >
       <div id="date"><h4 class="mt-2">오늘의 날짜는?🐶</h4></div>
-      <div id="date"><h5 class="mt-3">{{context}}</h5></div>
+      <div id="date"><h5 class="mt-3">{{getPrettyDate}}</h5></div>
       <v-divider></v-divider>
       <div v-if="value" id="writebtns">
         <div><p class="my-0">오늘 일기 써주실거죠?</p></div>
@@ -25,14 +25,14 @@
       </div>
       <div v-if="value" id="writebtns">
         <div><p class="my-0">산책 기록 보러가기</p></div>
-        <v-btn id="mainBtn" width="100px" class="ml-3" @click="goto('detail/todaywalk')">산책기록</v-btn>
+        <v-btn id="mainBtn" width="100px" class="ml-3" @click="goto(`detail/todaywalk/${getSelectedDate}`)">산책기록</v-btn>
       </div>
     </div>
 </div>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
 
 export default {
   name: "CalendarMain",
@@ -42,13 +42,20 @@ export default {
       context: null
     }
   },
+  computed: {
+    ...mapGetters(['getPrettyDate', 'getSelectedDate'])
+  },
   methods: {
-    ...mapMutations(['setSelectedDate']),
-    onContext(ctx) {
-      this.context = ctx.selectedFormatted
+    ...mapMutations(['setSelectedDate', 'setPrettyDate', 'setDetailBtn']),
+    onContext(ctx) {2020-20-20
+      this.context = ctx.activeYMD
       this.setSelectedDate(this.context)
+      let prettyDate = this.context.slice(0,4) + '년 ' + this.context.slice(5,7) + '월 ' + this.context.slice(8,10) + '일'
+      this.setPrettyDate(prettyDate)
+      
     },
     goto(name) {
+      this.setDetailBtn('walk')
       this.$router.push(`/calendar/${name}`)
     }
   }
