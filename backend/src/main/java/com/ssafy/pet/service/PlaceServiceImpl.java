@@ -53,6 +53,11 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
+    public int getPid(int lid) {
+        return pdao.getPid(lid);
+    }
+
+    @Override
     public int deletePlace(int lid) {
         return pdao.deletePlace(lid);
     }
