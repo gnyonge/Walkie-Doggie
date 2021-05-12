@@ -56,7 +56,11 @@ const actions = {
   },
   // 업로드 사진 미리보기 
   makeTempPhotoUrlInApi(context, params){
-    return rscApi.post('place/imageUpload', params)
+    return rscApi.post('place/imageUpload', params, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
       .then((res)=> {
         // tempPhotoURL 갱신 
         context.commit('setTempPhotoURL', res.url)

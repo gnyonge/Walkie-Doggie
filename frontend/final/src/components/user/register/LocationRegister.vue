@@ -10,15 +10,8 @@
     <DaumPostcode
       :on-complete=handleAddress
     />
-    <!-- <div class="daummap"> 
-      <h1>우편번호: <span>{{ zip }}</span></h1> 
-      <h1>기본주소: <span>{{ addr1 }}</span></h1> 
-      <h1>상세주소: <span>{{ addr2 }}</span></h1> 
-      <div ref="embed"></div> 
-      <button @click="showApi">주소API 호출</button> 
-    </div> -->
     <div class="register-btn-pd">
-        <router-link to="/dogregister"><v-btn class="register-btn" >지역 설정</v-btn></router-link>
+        <v-btn class="register-btn" @click="goto()">지역 설정</v-btn>
     </div>
     </v-flex>
   </div>
@@ -42,12 +35,11 @@ var handleAddress = (data) => {
   }
 
   console.log(fullAddress) // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+  console.log(extraAddress)
 }
 export default {
   data () {
     return {
-      nickname: '',
-      zip: '', addr1: '', addr2: ''
     }
   },
   components: {
@@ -59,7 +51,10 @@ export default {
       document.head.appendChild(recaptchaScript)
     },
   methods: {
-    handleAddress 
+    handleAddress,
+    goto() {
+      this.$router.push('/dogregister')
+    }
   }
 //   methods: { showApi() { 
 //     new window.daum.Postcode({ 
