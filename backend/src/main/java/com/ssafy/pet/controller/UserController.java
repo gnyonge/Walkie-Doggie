@@ -79,20 +79,31 @@ public class UserController {
 
 		try {
 			logger.info("=====> 자체 회원가입 시작");
-			user.setUid(uidutil.MakeUid());
-
-			int result = userservice.signup(user);
-
-			if (result == 1) {
-				logger.info("=====> 자체회원가입 가능");
-				resultMap.put("message", "회원가입에 성공하였습니다.");
-				status = HttpStatus.ACCEPTED;
-			} else {
-				logger.info("=====> 자체 회원가입 실패");
-				resultMap.put("message", "회원가입에 실패하였습니다.");
-				status = HttpStatus.NOT_FOUND;
+			//이메일 인증이 끝난애인지 확인해보쟈! 
+			EmailAuthDto authdto = userservice.checkEmailAuth(user.getU_email());
+			
+			//인증메일을 보낸 친구인지 인증이 처리된 친구인지
+			if(authdto!=null && authdto.getFlag()==1) { 
+				user.setUid(uidutil.MakeUid());
+				
+				String pass = securityutil.bytesToHex(securityutil.sha256(user.getU_password()));
+				user.setU_password(pass);
+				
+				int result = userservice.signup(user);
+				
+				if (result == 1) {
+					logger.info("=====> 자체회원가입 가능");
+					resultMap.put("message", "회원가입에 성공하였습니다.");
+					status = HttpStatus.ACCEPTED;
+				} else {
+					logger.info("=====> 자체 회원가입 실패");
+					resultMap.put("message", "회원가입에 실패하였습니다.");
+					status = HttpStatus.NOT_FOUND;
+				}
+			}else { //null일때는 인증메일을 보내지도 않은 친구 flag=0일땐 인증을 확인하지않은 친구
+				resultMap.put("message", "이메일 인증 확인해주십시오.");
+				status = HttpStatus.ACCEPTED;	
 			}
-
 		} catch (Exception e) {
 			// TODO: handle exception
 			logger.error("자체 회원가입 실패 : {}", e);
@@ -146,6 +157,7 @@ public class UserController {
 		HttpStatus status = null;
 
 		try {
+			System.out.println("hiru : "+user);
 			String mail = user.getEmail();
 
 			logger.info("=====> 이메일 중복 체크");
@@ -295,6 +307,7 @@ public class UserController {
 	}
 	
 	// 비밀번호 확인
+	//uid password 필수
 	@ApiOperation(value = "Check Password", notes = "비밀번호 확인")
 	@PostMapping("/check/pass")//user/address
 	public ResponseEntity<Map<String, Object>> CheckPass(@RequestBody UserDto user) {
@@ -303,8 +316,16 @@ public class UserController {
 
 		try {
 			logger.info("=====> 비밀번호 맞는지 확인하기");
-			boolean result = checkPass(user);
-			resultMap.put("message", result);
+			String pass = securityutil.bytesToHex(securityutil.sha256(user.getU_password()));
+			user.setU_password(pass);
+			System.out.println(user.getU_password());
+			
+			UserDto check = userservice.checkPass(user.getUid()); 
+			if(check.getU_password().equals(pass)) {
+				resultMap.put("message", true);
+			}else {
+				resultMap.put("message", false);	
+			}
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -314,17 +335,8 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
-	public boolean checkPass(UserDto user) {
-		UserDto check = userservice.checkPass(user);
-		boolean flag = false;
-		if(check!=null) {
-			flag = true;
-		}
-		return flag;
-	}
-	
 	// 비밀번호 변경
+	//uid, password 필수
 	@ApiOperation(value = "Change Password", notes = "비밀번호 변경")
 	@PutMapping("/change/pass")//user/address
 	public ResponseEntity<Map<String, Object>> changePass(@RequestParam UserDto user,@RequestParam String newPass) {
@@ -333,19 +345,22 @@ public class UserController {
 
 		try {
 			logger.info("=====> 비밀번호 변경하기");
-			boolean result = checkPass(user);
-			if(result==true) {
+			
+			String pass = securityutil.bytesToHex(securityutil.sha256(user.getU_password()));
+			String newOne = securityutil.bytesToHex(securityutil.sha256(newPass));
+			
+			UserDto check = userservice.checkPass(user.getUid());
+			
+			if(check.getU_password().equals(pass)) {
 				//비밀번호 변경가능
-				int res = userservice.changePass(user.getUid(), newPass);
+				int res = userservice.changePass(user.getUid(), newOne);
 				if(res>=1) {
 					resultMap.put("message", "비밀번호 변경에 성공하였습니다.");
 				}else {
 					resultMap.put("message", "비밀번호 변경에 실패하였습니다.");
-				}
+				}				
 			}else {
-				//비밀번호가 맞지 않아서 변경 불가
 				resultMap.put("message", "비밀번호가 맞지않습니다");
-
 			}
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
@@ -366,6 +381,8 @@ public class UserController {
 
 		try {
 			logger.info("=====> 회원탈퇴");
+			String pass = securityutil.bytesToHex(securityutil.sha256(user.getU_password()));
+			user.setU_password(pass);
 			
 			int result = userservice.leaveUser(user.getUid(), user.getU_password());
 			boolean flag = false;
