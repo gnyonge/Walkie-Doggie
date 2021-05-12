@@ -1,26 +1,29 @@
 <template>
-  <div class="">
-    <!-- 로그인--> 
-    <div class="">
-      <div id="mainBox">
-        <div>
+  <div id="mainBox">
+    <div class="d-flex justify-space-between mb-8">
+      <!-- 뒤로가기 버튼  -->
+      <div>
         <v-icon @click="goback()">mdi-arrow-left</v-icon>
+      </div>
+      <div>
+        회원가입
+      </div>
+      <div style="width: 24px; background-color: white;">
+      </div>
     </div>
-      <v-form>
-          <h5 class="text-center mb-5 mt-5">회원가입</h5>
-          <v-text-field name="nickname" label="닉네임" id="nickname" v-model="nickname" type="nickname" required color="#48B9A8"><v-btn slot="append" id="mainBtn" style="margin:5px; width:80px;">중복 확인</v-btn></v-text-field>
-          <v-text-field name="email" label="이메일주소" id="email" v-model="email" type="email" required color="#48B9A8"><v-btn id="mainBtn" slot="append" style="margin:5px; width:120px;" @click="sendCheckEmail()">인증번호 전송</v-btn></v-text-field>
-          <v-text-field name="code" label="인증번호" id="code" v-model="code" type="code" required color="#48B9A8"><v-btn id="mainBtn" slot="append" style="margin:5px; width:60px;">확인</v-btn></v-text-field>
-          <v-text-field name="password" label="비밀번호" id="password" v-model="password" type="password" required color="#48B9A8"></v-text-field>
-          <v-text-field name="passwordcheck" label="비밀번호 확인" id="passwordcheck" v-model="passwordcheck" type="passwordcheck" required color="#48B9A8"></v-text-field>
-      </v-form>
-      <div class="d-flex justify-center">
-        <router-link to="/register"><v-btn class="" id="mainBtn" style="width:150px;" @click="registerUser()">회원가입</v-btn></router-link>
-      </div>
-      </div>
+    <!-- 회원가입 폼 -->
+    <v-form>
+      <v-text-field name="nickname" label="닉네임" id="nickname" v-model="nickname" type="nickname" required color="#48B9A8"><v-btn slot="append" id="mainBtn" style="margin:5px; width:80px;">중복 확인</v-btn></v-text-field>
+      <v-text-field name="email" label="이메일주소" id="email" v-model="email" type="email" required color="#48B9A8"><v-btn id="mainBtn" slot="append" style="margin:5px; width:120px;" @click="sendCheckEmail()">인증번호 전송</v-btn></v-text-field>
+      <v-text-field name="code" label="인증번호" id="code" v-model="code" type="code" required color="#48B9A8"><v-btn id="mainBtn" slot="append" style="margin:5px; width:60px;">확인</v-btn></v-text-field>
+      <v-text-field name="password" label="비밀번호" id="password" v-model="password" type="password" required color="#48B9A8"></v-text-field>
+      <v-text-field name="passwordcheck" label="비밀번호 확인" id="passwordcheck" v-model="passwordcheck" type="passwordcheck" required color="#48B9A8"></v-text-field>
+    </v-form>
+    <!-- 회원가입 완료 버튼  -->
+    <div class="d-flex justify-center">
+      <v-btn class="" id="mainBtn" style="margin-top: 30px;width: 180px; height: 60px; border-radius: 50px; font-size: 25px" @click="registerUser()">회원가입</v-btn>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -65,6 +68,7 @@ export default {
       .then((res) => {
         console.log(res.data, '회원가입버튼 눌렀을 때 성공 !')
       })
+      this.$router.push('/register') // 반려견 등록 페이지로 이동 
     },
     sendCheckEmail() {
       // this.sendEmailInApi({

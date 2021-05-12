@@ -101,13 +101,13 @@ export default {
       healthArray: ['예방접종 1차', '심장사상충 약'],
     }
   },
-  created() {
-    this.getTodayDiaryInApi({
-      date: this.getSelectedDate,
-      peid: 'petpetpetpet1'}).then((res) => {
-        console.log(res.data)
-      })
-  },
+  // created() {
+  //   this.getTodayDiaryInApi({
+  //     date: this.getSelectedDate,
+  //     peid: 'petpetpetpet1'}).then((res) => {
+  //       console.log(res.data)
+  //     })
+  // },
   computed: {
       ...mapGetters(['getSelectedDate', 'getMyDiaryObject', 'getPrettyDate'])
     },
@@ -153,5 +153,17 @@ export default {
   box-shadow: 5px 5px 5px #E5E5E5;
   padding: 20px;
 }
-
+.filebox label {
+  display: inline-block; 
+  padding: .5em .75em; 
+  color: #323232; 
+  font-size: inherit; 
+  line-height: normal; 
+  vertical-align: middle; 
+  background-color: #BAF1E4; 
+  cursor: pointer; 
+  border: 1px solid #ebebeb; 
+  border-bottom-color: #e2e2e2; 
+  border-radius: .25em; 
+  } 
 </style>
