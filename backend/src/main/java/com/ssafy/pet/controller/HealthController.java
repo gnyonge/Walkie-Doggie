@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.ssafy.pet.dto.HealthDto;
 import com.ssafy.pet.service.HealthService;
 
@@ -37,19 +40,26 @@ public class HealthController {
 	// 건강 등록하기
 	@ApiOperation(value = "Health Insert", notes = "건강 등록")
 	@PostMapping("/insert")
-	public ResponseEntity<Map<String, Object>> insert_health(@RequestBody List<HealthDto> health_list) {
+	public ResponseEntity<Map<String, Object>> insert_health(@RequestBody Map<String, Object> health_map) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
+
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); // 파라미터Map에서 DTO에 들어있지 않는 변수가 있어도
+																					// 무시함.
+
+		List<HealthDto> health_list = mapper.convertValue(health_map.get("health_list"),
+				TypeFactory.defaultInstance().constructCollectionType(List.class, HealthDto.class));
 
 		try {
 
 			logger.info("=====> 건강 등록 시작!");
 			System.out.println(health_list);
-			
-			for(HealthDto dto : health_list) {
+
+			for (HealthDto dto : health_list) {
 				hservice.insert_health(dto);
 			}
-			
+
 			logger.info("=====> 건강 등록 성공");
 			resultMap.put("message", "건강 등록에 성공하였습니다.");
 			status = HttpStatus.ACCEPTED;

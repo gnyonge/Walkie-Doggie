@@ -18,8 +18,8 @@
 	</select>
 
 	<insert id="clickPlace" parameterType="map" useGeneratedKeys="true" keyProperty="lid" keyColumn="lid"  >
-		insert into LikePlace(pid, peid, uid, l_image, l_desc, l_like, l_flag, l_date)
-		values(#{pid}, #{peid}, #{uid}, #{l_image}, #{l_desc}, 0, 0, now());
+		insert into LikePlace(pid, peid, l_image, l_desc, p_location, l_like, l_flag, l_date)
+		values(#{pid}, #{peid},  #{l_image}, #{l_desc}, #{p_location}, 0, 0, now());
 	</insert>
 
 	<select id="checkLike" parameterType="map" resultType="int" >
@@ -34,11 +34,11 @@
 		where pid=#{pid};
 	</update>
 
-	<!-- 장소 수정 및 삭제-->
+	<!-- 핫플레이스 수정 및 삭제-->
 	<select id="isWriter" parameterType="map" resultType="int" >
 		select count(*)
 		from LikePlace
-		where lid=#{lid} and uid = #{login_id} and l_flag=0;;
+		where lid=#{lid} and peid= #{peid} and l_flag=0;;
 	</select>
 
 	<update id="modifyPlace" parameterType="LikePlaceDto">
@@ -46,6 +46,12 @@
 		set l_image = #{l_image}, l_desc = #{l_desc}
 		where lid=#{lid};
 	</update>
+
+	<select id="getPid" parameterType="int" resultType="int" >
+		select pid
+		from LikePlace
+		where lid=#{lid};
+	</select>
 
 	<update id="deletePlace" parameterType="int">
 		update LikePlace
@@ -90,25 +96,25 @@
 
 	<!-- 게시글 리스트 -->
 	<select id="getPostListNew" parameterType="string" resultType="map" >
-		select lid, uid, l_like, l_image, l_desc, l_date
+		select lid, l_like, l_image, l_desc, l_date
 		from LikePlace
-		where p_location=#{p_location} and po_flag=0
+		where p_location=#{p_location} and l_flag=0
 		order by l_date desc;
 	</select>
 
 	<select id="getPostListLike" parameterType="string" resultType="map" >
-		select lid, uid, l_like, l_image, l_desc, l_date
+		select lid, l_like, l_image, l_desc, l_date
 		from LikePlace
-		where p_location=#{p_location} and po_flag=0
+		where p_location=#{p_location} and l_flag=0
 		order by l_like desc;
 	</select>
 
 	<!-- Top5 -->
 	<select id="getTop5" parameterType="string" resultType="map" >
-		select pid
-		from Place
-		where p_location=#{p_location} and p_flag=0
-		order by p_like desc
+		select lid, l_like, l_image, l_desc, l_date
+		from LikePlace
+		where p_location=#{p_location} and l_flag=0
+		order by l_like desc
 		limit 5;
 	</select>
 	

@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/login")
 public class LoginController {
-	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	public static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
 	@Autowired
 	private KakaoUtil kakao;
@@ -78,7 +78,7 @@ public class LoginController {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("글 등록 실패 : {}", e);
+			logger.error("자체로그인 등록 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
@@ -112,7 +112,7 @@ public class LoginController {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("글 등록 실패 : {}", e);
+			logger.error("자체 로그인 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
