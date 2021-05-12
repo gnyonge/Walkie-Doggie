@@ -19,13 +19,13 @@ const actions = {
     .catch(()=>{});
   },
   //user 정보
-  dogRegisterInApi(context) {
-    return rscApi.get('pet/insert')
-    .then ((res) => {
-      return res;
-    })
-    .catch(()=>{});
-  },
+  // dogRegisterInApi(context) {
+  //   return rscApi.get('pet/insert')
+  //   .then ((res) => {
+  //     return res;
+  //   })
+  //   .catch(()=>{});
+  // },
 
   // 반려견 정보 보기
   showDogInfoInApi(context,params) {
