@@ -375,7 +375,7 @@ public class PlaceController {
      * @param : p_location
      * 
      * @return : message,
-     * postList(lid, uid, l_like, l_image, l_desc, l_date)
+     * postList(lid, p_latitude, p_longtitude, l_image, l_desc, l_date, pe_name)
      */
 	@ApiOperation(value = "HotPlace top5", notes = "핫플레이스 TOP5")
     @GetMapping("/top5/{p_location}")
