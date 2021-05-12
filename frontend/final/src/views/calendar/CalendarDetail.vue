@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="d-flex justify-center mt-3">
-      <v-btn rounded @click="todaydiary()" id="btnstyle" :class="{diary: isDiary}">오늘의 일기</v-btn>
-      <v-btn rounded @click="todaywalk()" id="btnstyle" :class="{diary: !isDiary}">산책기록</v-btn>
+      <v-btn rounded @click="todaydiary()" id="btnstyle" :class="{diary: isDiary == 'diary'}">오늘의 일기</v-btn>
+      <v-btn rounded @click="todaywalk()" id="btnstyle" :class="{diary: isDiary == 'walk'}">산책기록</v-btn>
     </div>
     <router-view></router-view>
     
@@ -10,21 +10,31 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   name: "CalendarDetail",
   data () {
       return {
-        isDiary: false,
+        isDiary: '',
       }
     },
+  created() {
+    this.isDiary = this.getDetailBtn
+  }, 
+  computed: {
+    ...mapGetters(['getSelectedDate', 'getDetailBtn'])
+  },
   methods: {
+    ...mapMutations(['setDetailBtn']),
     todaydiary() {
-      this.isDiary = true
-      if (this.$route.path!=='/calendar/detail/todaydiary') this.$router.push({ name: "TodayDiary" })
+      this.isDiary = 'diary'
+      this.setDetailBtn('diary')
+      if (this.$route.path!==`/calendar/detail/todaydiary/${this.getSelectedDate}`) this.$router.push(`/calendar/detail/todaydiary/${this.getSelectedDate}`)
     },
     todaywalk() {
-      this.isDiary = false
-      if (this.$route.path!=='/calendar/detail/todaywalk') this.$router.push({ name: "TodayWalk" })
+      this.isDiary = 'walk'
+      this.setDetailBtn('walk')
+      if (this.$route.path!==`/calendar/detail/todaywalk/${this.getSelectedDate}`) this.$router.push(`/calendar/detail/todaywalk/${this.getSelectedDate}`)
     }
   }
 }

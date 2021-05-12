@@ -2,32 +2,87 @@ import { rscApi } from '@/services/api';
 
 const state = {
   nowTab: 0,
-  selectedDate: ""
+  detailBtn: '',
+  selectedDate: "",
+  prettyDate: "",
+  myDiaryObject: {}
 };
 const getters = {
   getNowTab(state) {
     return state.nowTab
   },
+  getDetailBtn(state) {
+    return state.detailBtn
+  },
   getSelectedDate(state) {
     return state.selectedDate
+  },
+  getPrettyDate(state) {
+    return state.prettyDate
+  },
+  getMyDiaryObject(state) {
+    return state.myDiaryObject
   }
 };
 const mutations = {
   setNowTab(state, now) {
     state.nowTab = now
   },
+  setDetailBtn(state, data) {
+    state.detailBtn = data
+  },
   setSelectedDate(state, date) {
     state.selectedDate = date
+  },
+  setPrettyDate(state, date) {
+    state.prettyDate = date
+  },
+  setMyDiaryObject(state, diary) {
+    state.myDiaryObject = diary
   }
 };
 const actions = {
+  // 사진없는 일기 작성
   createNoPhotoDiaryInApi(context, params) {
     return rscApi.post('diary/insert/np', params)
       .then((res) => {
-        console.log(res, '머시냐')
         return res;
       })
-      .catch(() => {});
+      .catch(() => {
+        console.log('실패')
+      })
+  },
+  // 일기 가져오기
+  getTodayDiaryInApi(context, params) {
+    return rscApi.get(`diary/${params.date}?peid=${params.peid}`)
+      .then((res) => {
+        context.commit('setMyDiaryObject', res.data)
+        return res;
+      })
+      .catch(() => {
+        console.log('실패')
+      })
+  },
+  // 사진없는 일기 수정
+  updateNoPhotoDiaryInApi(context, params) {
+    return rscApi.put('diary/update/np', params)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  },
+  // 일기 삭제
+  deleteTodayDiaryInApi(context, params) {
+    return rscApi.put('diary/delete', params)
+      .then((res) => {
+        console.log('스토어 삭제 성공')
+        return res;
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   },
 };
 
