@@ -25,7 +25,7 @@
         </router-link>
         <!-- 카카오로그인 --> 
         <div class=" d-flex justify-center" style="background: #BDBDBD;">
-          <v-img src="../../../assets/images/카카오로그인버튼.png" class="logo-img" alt="" ></v-img>
+          <v-img src="../../../assets/images/카카오로그인버튼.png" class="logo-img" alt="" @click="kakao()" ></v-img>
         </div>
       </div>
     </div>
@@ -40,7 +40,14 @@ export default {
       email: '',
       password: '',
     }
-  }
+  },
+  methods: {
+    kakao(){
+      window.location.replace(
+        "https://kauth.kakao.com/oauth/authorize?client_id=1bf3f0e4ba92eceb2527659918098b46&redirect_uri=http://localhost:8888/pet/login/kakao&response_type=code"
+      );
+    }
+  },
 }
 </script>
 <style scoped>
