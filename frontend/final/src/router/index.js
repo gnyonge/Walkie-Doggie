@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 import Calendar from '../views/calendar/Calendar.vue'
 import CalendarWrite from '../views/calendar/CalendarWrite.vue'
+import CalendarUpdate from '../views/calendar/CalendarUpdate.vue'
 import CalendarDetail from '../views/calendar/CalendarDetail.vue'
 import TodayDiary from '../views/calendar/TodayDiary.vue'
 import TodayWalk from '../views/calendar/TodayWalk.vue'
@@ -51,17 +52,22 @@ const routes = [
     component: CalendarWrite
   },
   {
+    path: '/calendar/update',
+    name: 'CalendarUpdate',
+    component: CalendarUpdate
+  },
+  {
     path: '/calendar/detail',
     name: 'CalendarDetail',
     component: CalendarDetail,
     children: [
       {
-        path: 'todaydiary',
+        path: 'todaydiary/:date',
         name: 'TodayDiary',
         component: TodayDiary
       },
       {
-        path: 'todaywalk',
+        path: 'todaywalk/:date',
         name: 'TodayWalk',
         component: TodayWalk
       },

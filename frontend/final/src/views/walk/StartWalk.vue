@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'StartWalk',
@@ -134,6 +134,7 @@ export default {
   },
   methods: {
     ...mapMutations(['setNowTab']), 
+    ...mapActions(['doneWalkInApi']),
     // 지도 첫 화면 로드 
     initMap() {
       this.mapContainer = document.getElementById('map');
@@ -266,10 +267,26 @@ export default {
     // 산책종료
     doneWalk() {
       // 백엔드로 정보 보내기 
-      // 실시간 정보 가져오기죽이기 
-      clearInterval(this.walkLoc)
-      this.end = this.getTime()
-      this.calTime()
+      this.doneWalkInApi({
+        peid: "petpetpet1",
+        w_date: this.start, 
+        w_distance: 0,
+        w_flag: 0,
+        w_img: 'http://upload2.inven.co.kr/upload/2019/01/22/bbs/i14549517511.jpg',
+        w_like: this.likecnt,
+        w_time: (this.totalH * 60) + this.totalM,
+        wid: 0,
+        p_location: '장덕동',
+      }).then((res)=> {
+        console.log(res.message)
+        // 실시간 정보 가져오기죽이기 
+        clearInterval(this.walkLoc)
+        this.end = this.getTime()
+        this.calTime()
+      }).catch((error)=> {
+        console.log(error)
+      })
+      
     },
 
     // 멍플레이스로 보내기 
