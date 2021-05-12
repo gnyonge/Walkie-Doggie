@@ -107,28 +107,28 @@ export default {
   },
   methods: {
     ...mapActions(['dogRegisterInApi']),
-    // registerNewDog() {
-    //   console.log('안녕하세용')
-    //   this.dogRegisterInApi({
-    //     pe_age: this.age,
-    //     pe_brithday: this.date,
-    //     pe_disease: this.disease,
-    //     pe_flag: 0,
-    //     pe_name: this.name,
-    //     pe_trauma: this.trauma,
-    //     pe_weight: this.weight,
-    //     peid: "string",
-    //     pr_profile_photo: this.photo,
-    //     uid: "string"
-    //   })
-    //   .then((res) => {
-    //     console.log(res, '반려견 등록 성공 !')
-    //     this.$router.push('/calendar')
+    registerNewDog() {
+      console.log('안녕하세용')
+      this.dogRegisterInApi({
+        pe_age: this.age,
+        pe_brithday: this.date,
+        pe_disease: this.disease,
+        pe_flag: 0,
+        pe_name: this.name,
+        pe_trauma: this.trauma,
+        pe_weight: this.weight,
+        peid: "string",
+        pr_profile_photo: this.photo,
+        uid: "adminadmin123"
+      })
+      .then((res) => {
+        console.log(res, '반려견 등록 성공 !')
+        this.$router.push('/calendar')
         
-    //   }).catch((error)=> {
-    //     console.log(error)
-    //   }) 
-    // },
+      }).catch((error)=> {
+        console.log(error)
+      }) 
+    },
     goback() {
         this.$router.push('/dogregister')
       }
