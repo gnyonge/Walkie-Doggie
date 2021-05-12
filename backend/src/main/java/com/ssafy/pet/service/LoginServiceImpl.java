@@ -15,5 +15,11 @@ public class LoginServiceImpl implements LoginService{
 		// TODO Auto-generated method stub
 		return ldao.check_email(email);
 	}
+	
+	@Override
+	public int insert_kakao(UserDto user) {
+		// TODO Auto-generated method stub
+		return ldao.insert_kakao(user);
+	}
 
 }
