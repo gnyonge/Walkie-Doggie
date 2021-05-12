@@ -25,13 +25,10 @@
         ></v-textarea>
       </div>
       <div id="contentBox">
-        사진 첨부
-      </div>
-      <div id="contentBox">
-        <v-file-input
-          multiple
-          color="#48B9A8"
-        ></v-file-input>
+        <div class="filebox"> 
+          <label for="ex_file">사진 추가</label> 
+          <input type="file" @click="addPhoto()" id="ex_file"> 
+        </div>
       </div>
       <v-divider></v-divider>
       <div id="contentBox">
@@ -99,7 +96,7 @@ export default {
         memoContent: "", // 특이사항 내용
         healthContent: "", // 건강사항 내용 (1개)
         healthArray: [], // 건강사항 내용들 (전체)
-
+        photo: {}
       }
     },
     computed: {
@@ -117,10 +114,13 @@ export default {
           this.memoContent = ""
         }
       },
+      photo(newVal) {
+        console.log(newVal,'요기')
+      },
     },
     methods: {
       ...mapMutations(['setSelectedDate']),
-      ...mapActions(['createNoPhotoDiaryInApi']),
+      ...mapActions(['createNoPhotoDiaryInApi', 'createTempURLInApi']),
       addHealth() {
       if (this.healthContent.replace(/(\s*)/g, "").length > 0) {
         this.healthArray.push(this.healthContent);
@@ -134,19 +134,82 @@ export default {
       goback() {
         this.$router.push('/calendar')
       },
-      createDiary() {
-        this.createNoPhotoDiaryInApi({
-          d_date: this.getSelectedDate,
-          d_flag: 0,
-          d_img: "string",
-          d_memo: this.diaryContent,
-          d_special: this.memoContent,
-          d_walk: 0,
-          peid: "petpetpetpet1"
-        }).then(() => {
-          this.$router.push(`/calendar/detail/todaydiary/${this.getSelectedDate}`)
-          console.log('성공이다아앙')
+      addPhoto() {
+        var t = this
+        var photo = document.getElementById('ex_file')
+        
+        photo.addEventListener('change', function(event) {
+          const formData = new FormData()
+          t.photo = event.target.files[0]
+          console.log(t.photo,'t.photo 확인')
+          formData.append('file', t.photo)
+          t.createTempURLInApi(formData)
+          .then((res) => {
+            console.log(res,'성공입니다')
+          }).catch((error) => {
+            console.error(error)
+          })
         })
+      },
+
+
+
+
+      createDiary() {
+        var camera = document.getElementById('camera')
+        // var t = this
+        // const formData= new FormData()
+
+        camera.addEventListener('change', function(e) {
+        console.log(e, '요깅')
+        // var file = e.target.files[0]
+        // console.log(file, '요기요')
+        // formData.append('file', file)
+
+        // t.makeTempPhotoUrlInApi(
+        //   form
+        // ).then(()=> {
+        //   console.log('업로드한 사진 미리보기 성공')
+        // }).catch((error)=>{
+        //   console.log(error)
+        // })
+        // 백엔드 서버에서 이미지 주소 받아서 넣기 
+        // t.photo_url = t.getTempPhotoURL
+      })
+      
+        // let diary = {
+        //     d_date: this.getSelectedDate,
+        //     d_flag: 0,
+        //     d_img: "string",
+        //     d_memo: this.diaryContent,
+        //     d_special: this.memoContent,
+        //     d_walk: 0,
+        //     peid: "petpetpetpet1"
+        //   }
+
+        // let health_list = []
+        // for (let i in this.healthArray) {
+        //   health_list.push({
+        //     h_content: this.healthArray[i],
+        //     h_date: this.getSelectedDate,
+        //     h_flag: 0,
+        //     hid: 0,
+        //     peid: "petpetpetpet1"
+        //   })
+        // }
+        
+        
+        // formData.append(
+        //   'diary',
+        //   new Blob([JSON.stringify(diary)], { type: 'application/json' })
+        // )
+        // formData.append(
+        //   'health_list',
+        //   new Blob([JSON.stringify(health_list)], { type: 'application/json' })
+        // )
+        // this.createNoPhotoDiaryInApi(formData).then(() => {
+        //   this.$router.push(`/calendar/detail/todaydiary/${this.getSelectedDate}`)
+        // })
       }
     }
 }
@@ -159,5 +222,29 @@ export default {
 }
 .v-label, .v-chip__content {
   margin: 0px;
+}
+.filebox label {
+  display: inline-block; 
+  padding: .5em .75em; 
+  color: #323232; 
+  font-size: inherit; 
+  line-height: normal; 
+  vertical-align: middle; 
+  background-color: #BAF1E4; 
+  cursor: pointer; 
+  border: 1px solid #ebebeb; 
+  border-bottom-color: #e2e2e2; 
+  border-radius: .25em; 
+  } 
+.filebox input[type="file"] {
+  /* 파일 필드 숨기기 */ 
+  position: absolute; 
+  width: 1px; 
+  height: 1px; 
+  padding: 0; 
+  margin: -1px; 
+  overflow: hidden; 
+  clip:rect(0,0,0,0); 
+  border: 0; 
 }
 </style>

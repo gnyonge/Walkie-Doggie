@@ -60,7 +60,10 @@ const actions = {
       .then((res)=> {
         // tempPhotoURL 갱신 
         context.commit('setTempPhotoURL', res.url)
-        console.log(res)
+        console.log(res.url, '여기요')
+      })
+      .catch((error) => {
+        console.error(error,'에러')
       })
   },
   // 좋아요 사진, 위도, 경도, 의견 백엔드 전송
