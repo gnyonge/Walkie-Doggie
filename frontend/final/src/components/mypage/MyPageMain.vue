@@ -41,11 +41,11 @@
               >
                 <v-list-item-title @click="goto()">{{ item.title }}</v-list-item-title>
               </v-list-item> -->
-              <v-list-item class="d-flex"
+              <v-list-item class=""
               >
-                <v-list-item-title @click="goto('infochangelocation')">지역 수정</v-list-item-title>
+                <v-list-item-title @click="goto('infochangelocation')" style="margin-top:10px">지역 수정</v-list-item-title>
                 <v-list-item-title @click="goto('infochangepw')">계정 설정</v-list-item-title>
-                <v-list-item-title @click="goto('')">지역 수정</v-list-item-title>
+                <v-list-item-title @click="goto('')">?A?A?A?A?A??A</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>

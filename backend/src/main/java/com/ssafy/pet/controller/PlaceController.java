@@ -52,45 +52,73 @@ public class PlaceController {
 	@Autowired
     private PlaceService placeService;
 
+    /*
+     * 기능: 산책 중 특정 장소 좋아요 클릭
+     * 
+     * developer: 윤수민
+     * 
+     * @param file
+     * 
+     * @return message, url
+	 * 
+     */
+    @ApiOperation(value = "Like place/ Insert HotPlace image", notes = "좋아요 이미지 업로드")
+    @PostMapping("/imageUpload")
+    public ResponseEntity<Map<String, Object>> imageUpload( MultipartFile file) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        
+        try {
+			logger.info("place/imageUpload 호출 성공");
+
+            String originName = file.getOriginalFilename(); // 파일 이름 가져오기
+
+            String ext = originName.substring(originName.lastIndexOf('.')); // 파일 확장명 가져오기
+            String saveFileName = UUID.randomUUID().toString() + ext; // 암호화해서 파일확장넣어주기
+            String path = System.getProperty("user.dir"); // 경로설정해주고
+
+            File tempfile = new File(path, saveFileName); // 경로에 파일만들어주고
+
+            String line = "diary/";
+
+            saveFileName = line + saveFileName;
+
+            file.transferTo(tempfile);
+            s3util.setS3Client().putObject(new PutObjectRequest(bucket, saveFileName, tempfile)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+            String url = s3util.setS3Client().getUrl(bucket, saveFileName).toString();
+            tempfile.delete();
+
+            resultMap.put("url", url);
+            resultMap.put("message", "이미지 업로드 성공하였습니다.");
+			status = HttpStatus.ACCEPTED;
+			
+        } catch (Exception e) {
+            logger.error("이미지 업로드 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
 	/*
      * 기능: 산책 중 특정 장소 좋아요 클릭
      * 
      * developer: 윤수민
      * 
-     * @param p_latitude, p_longtitude, peid, uid, l_desc, file
+     * @param pid, peid, l_desc, l_image, p_location
      * 
      * @return message
 	 * 
      */
     @ApiOperation(value = "Like place/ Insert HotPlace post", notes = "산책 중 특정 장소 좋아요 클릭")
     @PostMapping("/likePlace")
-    public ResponseEntity<Map<String, Object>> likePlace(@RequestPart MultipartFile file, @RequestPart Map<String, Object> param) {
+    public ResponseEntity<Map<String, Object>> likePlace( @RequestBody Map<String, Object> param) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         
         try {
 			logger.info("place/likePlace 호출 성공");
-            
-            if(file != null){
-				String originName = file.getOriginalFilename(); // 파일 이름 가져오기
-
-				String ext = originName.substring(originName.lastIndexOf('.')); // 파일 확장명 가져오기
-				String saveFileName = UUID.randomUUID().toString() + ext; // 암호화해서 파일확장넣어주기
-				String path = System.getProperty("user.dir"); // 경로설정해주고
-
-				File tempfile = new File(path, saveFileName); // 경로에 파일만들어주고
-
-				String line = "diary/";
-
-				saveFileName = line + saveFileName;
-
-				file.transferTo(tempfile);
-				s3util.setS3Client().putObject(new PutObjectRequest(bucket, saveFileName, tempfile)
-						.withCannedAcl(CannedAccessControlList.PublicRead));
-				String url = s3util.setS3Client().getUrl(bucket, saveFileName).toString();
-				tempfile.delete();
-				param.put("l_image", url);
-			}
 
 			// 등록된 장소인지 먼저 확인
 			Integer pid = placeService.checkPlace(param); 
@@ -146,14 +174,14 @@ public class PlaceController {
      * 
      * developer: 윤수민
      * 
-     * @param : LikePlaceDto(lid,l_image,l_desc), login_id
+     * @param : LikePlaceDto(lid,l_image,l_desc), peid
      * 
      * @return : message
      */
 	@ApiOperation(value = "Modify HotPlace post", notes = "핫플레이스 게시글 수정")
-    @PutMapping("/modify/{login_id}")
+    @PutMapping("/modify/{peid}")
     public ResponseEntity<Map<String, Object>> modifyPlace(@RequestBody LikePlaceDto likePlaceDto,
-            @PathVariable("login_id") String login_id) {
+            @PathVariable("peid") String peid) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         
@@ -161,7 +189,7 @@ public class PlaceController {
 			logger.info("place/modify 호출 성공");
             Map<String, Object> map = new HashMap<>();
             map.put("lid", likePlaceDto.getLid());
-            map.put("login_id", login_id);
+            map.put("peid", peid);
             if (placeService.isWriter(map) != 0) { // 로그인한 계정이 작성자가 맞는 경우
                 if (placeService.modifyPlace(likePlaceDto) == 1) {
 					logger.info("=====> 장소 게시글 수정 성공");
@@ -187,14 +215,14 @@ public class PlaceController {
      * 
      * developer: 윤수민
      * 
-     * @param : lid, login_id
+     * @param : lid, peid
      * 
      * @return : message
      */
 	@ApiOperation(value = "Delete HotPlace post", notes = "핫플레이스 게시글 삭제")
-    @DeleteMapping("/delete/{login_id}")
-    public ResponseEntity<Map<String, Object>> deletePlace(@RequestParam(value = "lid") int lid, @RequestParam(value = "pid") int pid,
-            @PathVariable("login_id") String login_id) {
+    @DeleteMapping("/delete/{peid}")
+    public ResponseEntity<Map<String, Object>> deletePlace(@RequestParam(value = "lid") int lid,
+            @PathVariable("peid") String peid) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
         
@@ -202,11 +230,12 @@ public class PlaceController {
 			logger.info("place/delete 호출성공");
             Map<String, Object> map = new HashMap<>();
             map.put("lid", lid);
-            map.put("login_id", login_id);
+            map.put("peid", peid);
             if (placeService.isWriter(map) != 0) { // 로그인한 계정이 작성자가 맞는 경우
                 if (placeService.deletePlace(lid) >= 1) {
 					logger.info("=====> 장소 게시글 삭제 성공");
 
+                    int pid = placeService.getPid(lid);
 					int result = placeService.minusPlace(pid);
 					if(result != 0){
 						resultMap.put("message", "장소 게시글 삭제 완료하였습니다.");
@@ -307,21 +336,21 @@ public class PlaceController {
         try {
 			logger.info("place/list 호출성공");
 
-            if(sort.equals("new")){ // 최신순 정렬
-                List<Map<String, Object>> postList = placeService.getPostListNew(p_location);
+            if(sort.equals("pop")){ // 인기순 정렬
+                List<Map<String, Object>> postList = placeService.getPostListLike(p_location);
                 if(postList != null){
                     resultMap.put("postList", postList);
-                    resultMap.put("message", "최신순 핫플레이스 게시글 리스트 호출 성공하였습니다.");
+                    resultMap.put("message", "좋아요순 핫플레이스 게시글 리스트 호출 성공하였습니다.");
                     status = HttpStatus.ACCEPTED;
                 }else{
                     resultMap.put("message", "핫플레이스 게시글 리스트가 없습니다.");
                     status = HttpStatus.NOT_FOUND;
                 }
-            }else{ // 좋아요순 정렬
-                List<Map<String, Object>> postList = placeService.getPostListLike(p_location);
+            }else{ // 최신순 정렬
+                List<Map<String, Object>> postList = placeService.getPostListNew(p_location);
                 if(postList != null){
                     resultMap.put("postList", postList);
-                    resultMap.put("message", "좋아요순 핫플레이스 게시글 리스트 호출 성공하였습니다.");
+                    resultMap.put("message", "최신순 핫플레이스 게시글 리스트 호출 성공하였습니다.");
                     status = HttpStatus.ACCEPTED;
                 }else{
                     resultMap.put("message", "핫플레이스 게시글 리스트가 없습니다.");

@@ -37,12 +37,11 @@ var handleAddress = (data) => {
   }
 
   console.log(fullAddress) // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+  console.log(extraAddress)
 }
 export default {
     data () {
     return {
-      nickname: '',
-      zip: '', addr1: '', addr2: ''
     }
   },
   components: {

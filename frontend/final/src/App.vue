@@ -1,7 +1,9 @@
 <template>
   <v-app id="back">
     <TopNav id="top"/>
-    <router-view style="padding-top: 70px; padding-bottom: 90px;"></router-view>
+    <transition mode="out-in">
+      <router-view style="padding-top: 70px; padding-bottom: 90px;"></router-view>
+    </transition>
     <BottomNav id="bottom"/>
   </v-app>
 </template>
