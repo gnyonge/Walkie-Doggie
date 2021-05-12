@@ -38,6 +38,7 @@ import com.ssafy.pet.util.JWTUtil;
 import com.ssafy.pet.util.MailUtils;
 import com.ssafy.pet.util.S3Util;
 import com.ssafy.pet.util.SecurityUtil;
+import com.ssafy.pet.util.UidUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -65,22 +66,9 @@ public class UserController {
 	
 	@Autowired
 	private SecurityUtil securityutil;
-
-	private String MakeUid() {
-		StringBuffer made = new StringBuffer();
-
-		for (int i = 0; i < 6; i++) {
-			char a = (char) ((Math.random() * 26) + 97); // 소문자
-			int ann = (int) (Math.random() * 9) + 1; // 숫자
-			made.append(a);
-			made.append(ann);
-		}
-
-		char b = (char) ((Math.random() * 26) + 97);
-		made.append(b);
-		String line = made.toString();
-		return line;
-	}
+	
+	@Autowired
+	private UidUtil uidutil;
 
 	// 회원가입하기
 	@ApiOperation(value = "User Signup", notes = "자체로그인 회원가입")
@@ -91,7 +79,7 @@ public class UserController {
 
 		try {
 			logger.info("=====> 자체 회원가입 시작");
-			user.setUid(MakeUid());
+			user.setUid(uidutil.MakeUid());
 
 			int result = userservice.signup(user);
 
@@ -169,7 +157,7 @@ public class UserController {
 				EmailAuthDto auth = userservice.checkAuth(mail);//이거왜한거야? 궁금하네 망할  아  밑에 있꾸나
 				//인증메일은 받은게 처음인지 여러번 누른애인지 확인하는거
 				
-				String code = MakeUid();
+				String code = uidutil.MakeUid();
 				System.out.println("메일 코드 : "+code);
 				
 				// 이제 메일을 보내봅시다
