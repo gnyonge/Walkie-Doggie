@@ -133,6 +133,8 @@ public class DiaryController {
 
 			if (result == 1) {
 				logger.info("=====> 기록일지 등록 성공");
+				resultMap.put("diary", diary);
+				resultMap.put("health_list", health_list);
 				resultMap.put("message", "기록일지 등록에 성공하였습니다.");
 				status = HttpStatus.ACCEPTED;
 			} else {
@@ -207,6 +209,8 @@ public class DiaryController {
 
 			if (result == 1) {
 				logger.info("=====> 기록일지 등록 성공");
+				resultMap.put("diary", diary);
+				resultMap.put("health_list", health_list);
 				resultMap.put("message", "기록일지 등록에 성공하였습니다.");
 				status = HttpStatus.ACCEPTED;
 			} else {
@@ -346,6 +350,8 @@ public class DiaryController {
 
 			if (update == 1) {
 				logger.info("=====> 기록일지 수정 성공");
+				resultMap.put("diary", diary);
+				resultMap.put("health_list", health_list);
 				resultMap.put("message", "기록일지 수정에 성공하였습니다.");
 				status = HttpStatus.ACCEPTED;
 			} else {
@@ -420,6 +426,8 @@ public class DiaryController {
 
 			if (result == 1) {
 				logger.info("=====> 기록일지 수정 성공");
+				resultMap.put("diary", diary);
+				resultMap.put("health_list", health_list);
 				resultMap.put("message", "기록일지 수정에 성공하였습니다.");
 				status = HttpStatus.ACCEPTED;
 			} else {

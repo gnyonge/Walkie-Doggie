@@ -1,11 +1,11 @@
 import { rscApi } from '@/services/api';
 
 const state = {
-  nowTab: 0,
-  detailBtn: '',
-  selectedDate: "",
-  prettyDate: "",
-  myDiaryObject: {}
+  nowTab: 0, // BottomNav 탭
+  detailBtn: '', // 다이어리 디테일 버튼
+  selectedDate: "", // 선택된 날짜
+  prettyDate: "", // 보여주기 위해 selectedDate 변환
+  myDiaryObject: {} // 다이어리 전체 객체
 };
 const getters = {
   getNowTab(state) {
@@ -46,6 +46,7 @@ const actions = {
   createNoPhotoDiaryInApi(context, params) {
     return rscApi.post('diary/insert/np', params)
       .then((res) => {
+        console.log('스토어 성공')
         return res;
       })
       .catch(() => {
