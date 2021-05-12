@@ -1,6 +1,7 @@
 package com.ssafy.pet.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -203,6 +204,46 @@ public class WalkController {
 
         } catch (Exception e) {
             logger.error("산책 정보 저장 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+	/*
+     * 기능: 산책중 좋아요 리스트
+     * 
+     * developer: 윤수민
+     * 
+     * @param : lidList<lid>
+     * 
+     * @return : message,
+     * likeList(lid, p_latitude, p_longtitude, l_image, l_desc, l_date, pe_name) 
+     */
+	@ApiOperation(value = "LikeList", notes = "산책중 좋아요 리스트")
+    @GetMapping("/likeList")
+    public ResponseEntity<Map<String, Object>> getLikeist(@RequestParam(value = "lidList") List<Integer> lidList) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        
+        try {
+			logger.info("walk/likeList 호출성공");
+
+			List<Map<String, Object>> likeList = new ArrayList<Map<String, Object>>();
+			for (Integer lid : lidList) {
+				Map<String, Object> likeMap = walkService.getLikeInfo(lid);
+				if(likeMap != null){
+					likeList.add(likeMap);
+				}
+			}
+
+			logger.info("=====> 산책중 좋아요 리스트 호출 성공");
+			resultMap.put("likeList", likeList);
+			resultMap.put("message", "산책중 좋아요 리스트 호출에 성공하였습니다.");
+			status = HttpStatus.ACCEPTED;
+            
+        } catch (Exception e) {
+            logger.error("산책중 좋아요 리스트 호출 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }

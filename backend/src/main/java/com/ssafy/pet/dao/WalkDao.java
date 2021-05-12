@@ -12,6 +12,6 @@ public interface WalkDao {
 
     public int createWalk(WalkDto walkDto);
 
-    public int saveRoute(Map<String, Object> map);
+    public Map<String, Object> getLikeInfo(Integer lid);
 
 }

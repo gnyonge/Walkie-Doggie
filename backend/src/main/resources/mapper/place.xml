@@ -96,17 +96,17 @@
 
 	<!-- 게시글 리스트 -->
 	<select id="getPostListNew" parameterType="string" resultType="map" >
-		select lid, l_like, l_image, l_desc, l_date
-		from LikePlace
-		where p_location=#{p_location} and l_flag=0
-		order by l_date desc;
+		select l.lid, l.l_image, l.l_desc, l.l_date, pl.p_latitude, pl.p_longtitude, p.pe_name
+		from LikePlace as l join Pet as p on l.peid = p.peid join Place as pl on l.pid = pl.pid
+		where l.p_location=#{p_location} and l.l_flag=0
+		order by l.l_date desc;
 	</select>
 
 	<select id="getPostListLike" parameterType="string" resultType="map" >
-		select lid, l_like, l_image, l_desc, l_date
-		from LikePlace
-		where p_location=#{p_location} and l_flag=0
-		order by l_like desc;
+		select l.lid, l.l_image, l.l_desc, l.l_date, pl.p_latitude, pl.p_longtitude, p.pe_name
+		from LikePlace as l join Pet as p on l.peid = p.peid join Place as pl on l.pid = pl.pid
+		where l.p_location=#{p_location} and l.l_flag=0
+		order by l.l_like desc;
 	</select>
 
 	<!-- Top5 -->
