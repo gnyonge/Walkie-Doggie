@@ -105,8 +105,6 @@ export default {
       mylike: [],
       // 멍플레이스
       likePath: [],
-      // 산책로 사진 url
-      walkmap: '',
       
     }
   },
@@ -265,7 +263,6 @@ export default {
         w_date: this.start, 
         w_distance: "1.2",
         w_flag: 0,
-        w_img: this.walkmap,
         w_like: this.likecnt,
         w_time: (this.totalH * 60) + this.totalM,
         wid: 0,
