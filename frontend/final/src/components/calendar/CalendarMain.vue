@@ -32,14 +32,14 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from 'vuex'
+import { mapMutations, mapGetters, mapActions } from 'vuex'
 
 export default {
   name: "CalendarMain",
   data() {
     return {
       value: '',
-      context: null
+      context: null,
     }
   },
   computed: {
@@ -47,11 +47,15 @@ export default {
   },
   methods: {
     ...mapMutations(['setSelectedDate', 'setPrettyDate', 'setDetailBtn']),
-    onContext(ctx) {2020-20-20
+    ...mapActions(['getTodayDiaryInApi']),
+    onContext(ctx) {
       this.context = ctx.activeYMD
       this.setSelectedDate(this.context)
       let prettyDate = this.context.slice(0,4) + '년 ' + this.context.slice(5,7) + '월 ' + this.context.slice(8,10) + '일'
       this.setPrettyDate(prettyDate)
+      this.getTodayDiaryInApi({
+      date: this.getSelectedDate,
+      peid: 'petpetpetpet1'})
       
     },
     goto(name) {
