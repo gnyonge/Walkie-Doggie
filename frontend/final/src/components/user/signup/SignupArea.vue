@@ -71,18 +71,18 @@ export default {
       this.$router.push('/register') // 반려견 등록 페이지로 이동 
     },
     sendCheckEmail() {
-      // this.sendEmailInApi({
-      //   u_email: this.email,
-      //   u_flag: 0,
-      //   u_location: "string",
-      //   u_nickname: this.nickname,
-      //   u_password: this.password,
-      //   u_report: 0,
-      //   uid: "string"
-      // })
-      // .then((res) => {
-      //   console.log(res, '인증번호 메일 보내기  눌렀을 때 성공 !')
-      // })
+      this.sendEmailInApi({
+        u_email: this.email,
+        u_flag: 0,
+        u_location: "string",
+        u_nickname: this.nickname,
+        u_password: this.password,
+        u_report: 0,
+        uid: "string"
+      })
+      .then((res) => {
+        console.log(res, '인증번호 메일 보내기  눌렀을 때 성공 !')
+      })
     },
     
     
