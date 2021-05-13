@@ -20,17 +20,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ssafy.pet.dto.LikePlaceDto;
-import com.ssafy.pet.dto.PlaceDto;
-import com.ssafy.pet.dto.WalkDto;
-import com.ssafy.pet.service.WalkService;
 import com.ssafy.pet.service.PlaceService;
 import com.ssafy.pet.util.S3Util;
 
