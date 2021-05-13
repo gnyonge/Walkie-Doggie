@@ -109,7 +109,7 @@ public class LoginController {
 		HttpStatus status = null;
 
 		try {
-			logger.info("=====> 자체 로그인 시작 our~our~our~login~our~site~our web site~");
+			logger.info("=====> 자체 로그인 시작");
 			UserDto check_user = loginservice.check_email(user.getU_email());
 
 			if (check_user==null) {
@@ -131,9 +131,7 @@ public class LoginController {
 					resultMap.put("message", "아이디나 비밀번호를 확인해주세요");
 				}
 			}
-
 			status = HttpStatus.ACCEPTED;
-
 		} catch (
 
 		Exception e) {
