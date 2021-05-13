@@ -4,7 +4,9 @@
       <v-btn rounded @click="todaydiary()" id="btnstyle" :class="{diary: isDiary == 'diary'}">오늘의 일기</v-btn>
       <v-btn rounded @click="todaywalk()" id="btnstyle" :class="{diary: isDiary == 'walk'}">산책기록</v-btn>
     </div>
-    <router-view></router-view>
+    <transition mode="out-in">
+      <router-view></router-view>
+    </transition>
     
   </div>
 </template>
