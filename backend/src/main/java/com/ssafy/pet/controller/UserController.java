@@ -69,6 +69,7 @@ public class UserController {
 	
 	@Autowired
 	private UidUtil uidutil;
+	//컨트롤러를 찾아서
 
 	// 회원가입하기
 	@ApiOperation(value = "User Signup", notes = "자체로그인 회원가입")
