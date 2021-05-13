@@ -32,6 +32,7 @@
       <!-- 일기 내용 -->
       <div id="contentBox">
         <v-textarea
+          :rules="rules1"
           v-model="diaryContent"
           label="일기 내용"
           outlined
@@ -50,6 +51,7 @@
           hide-details
         ></v-checkbox>
         <v-textarea
+          :rules="rules2"
           class="px-5 mt-5"
           v-model="memoContent"
           v-if="memo"
@@ -90,7 +92,7 @@
       </div>
       <!-- 완료버튼 -->
       <div class="d-flex justify-end">
-        <v-btn id="mainBtn" width="50px" @click="createDiary()">완료</v-btn>
+        <v-btn id="mainBtn" width="50px" @click="createDiary()" :disabled="comfirm == false">완료</v-btn>
       </div>
     </div>
   </div>
@@ -110,11 +112,36 @@ export default {
         healthContent: "", // 건강사항 내용 (1개)
         healthArray: [], // 건강사항 내용들 (전체)
         photo_url: false,
-        file: {}
+        file: {},
+        rules1: [
+        value => !!value || '필수 입력사항입니다!',
+        value => !!value.replace(/(\s*)/g, "") || '공백은 불가해요!',
+        ],
+        rules2: [
+        value => !!value.replace(/(\s*)/g, "") || '공백은 불가해요!',
+        // value => (value || '').length <= 20 || 'Max 20 characters',
+        // value => 
+        ],
       }
     },
     computed: {
-      ...mapGetters(['getSelectedDate', 'getPrettyDate', 'getTempPhotoURL'])
+      ...mapGetters(['getSelectedDate', 'getPrettyDate', 'getTempPhotoURL']),
+      comfirm() {
+        if (this.diaryContent.length < 1) {
+          return false
+        }
+        if (this.memo) {
+          if (this.memoContent.length < 1) {
+            return false
+          }
+        }
+        if (this.health) {
+          if (this.healthArray.length < 1) {
+            return false
+          }
+        }
+        return true
+      }
     },
     watch: {
       health(newVal) {
@@ -128,6 +155,16 @@ export default {
           this.memoContent = ""
         }
       },
+      diaryContent(newVal) {
+        if (newVal.replace(/(\s*)/g, "").length == 0) {
+          this.diaryContent = newVal.replace(/(\s*)/g, "")
+        }
+      },
+      memoContent(newVal) {
+        if (newVal.replace(/(\s*)/g, "").length == 0) {
+          this.memoContent = newVal.replace(/(\s*)/g, "")
+        }
+      }
     },
     methods: {
       ...mapMutations(['setSelectedDate', 'setDetailBtn']),
@@ -195,11 +232,8 @@ export default {
           )
           this.createNoPhotoDiaryInApi(formData).then(() => {
             this.setDetailBtn('diary')
-            this.getTodayDiaryInApi({
-              date: this.getSelectedDate,
-              peid: 'petpetpetpet1'}).then(() => {
-                this.$router.push(`/calendar/detail/todaydiary/${this.getSelectedDate}`)
-              })
+            this.$router.push(`/calendar/detail/todaydiary/${this.getSelectedDate}`)
+              
           })
           
         }
@@ -236,11 +270,7 @@ export default {
 
           this.createWithPhotoDiaryInApi(formData).then(() => {
             this.setDetailBtn('diary')
-            this.getTodayDiaryInApi({
-              date: this.getSelectedDate,
-              peid: 'petpetpetpet1'}).then(() => {
-                this.$router.push(`/calendar/detail/todaydiary/${this.getSelectedDate}`)
-              })
+            this.$router.push(`/calendar/detail/todaydiary/${this.getSelectedDate}`)
           })
         }
       }
@@ -255,6 +285,10 @@ export default {
 }
 .v-label, .v-chip__content {
   margin: 0px;
+}
+.v-messages__message {
+  height: 15px;
+  padding-top: 3px;
 }
 .filebox label {
   display: inline-block; 
