@@ -27,7 +27,7 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
-    public int clickPlace(Map<String, Object> param) {
+    public Integer clickPlace(Map<String, Object> param) {
         return pdao.clickPlace(param);
     }
 
