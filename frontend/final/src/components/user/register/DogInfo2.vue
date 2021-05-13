@@ -91,6 +91,18 @@
         <v-flex class="ph-size">
           <v-text-field name="allergy" label="알레르기" id="allergy" v-model="allergy" type="allergy" required color="#48B9A8"></v-text-field>
         </v-flex>
+        <!-- <div class="mx-4" v-if="al_">
+          <v-chip
+            v-for="(alle, idx) in allergy"
+            :key="idx"
+            class="mx-1 my-1"
+            close
+            color="#BAF1E4"
+            @click:close="deleteAllergy(alle)"
+          >
+            {{ hth }}
+          </v-chip>
+        </div> -->
       </v-form>
       <!-- 반려견 등록 버튼  -->
       <div class="d-flex justify-center">
@@ -170,9 +182,12 @@ export default {
           uid: "adminadmin123",
         }
       // console.log(this.date)
+      // let allergy = []
       let allergy = {
           al_name: String(this.allergy),
-          peid: "petpetpetpet1"
+          peid: "petpetpetpet1",
+          aid: 0,
+          a_flag: 0
       }
       console.log(pet, allergy, this.file)
       formData.append(
