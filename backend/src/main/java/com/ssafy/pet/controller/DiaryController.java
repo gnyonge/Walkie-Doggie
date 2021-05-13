@@ -170,12 +170,12 @@ public class DiaryController {
 			Map<String, Object> map = new HashMap<>();
 			map.put("d_date", d_date);
 			map.put("peid", peid);
-			List<String> image_list = dservice.get_image(map);
+			// List<String> image_list = dservice.get_image(map);
 			List<Map<String, Object>> walk_list = dservice.get_walk(map);
 
 			resultMap.put("Diary", diary); // 기록일지
 			resultMap.put("Health_list", health_list); // 건강 목록
-			resultMap.put("Image_list", image_list); // 산책 경로 목록
+			// resultMap.put("Image_list", image_list); // 산책 경로 목록
 			resultMap.put("Walk_list", walk_list); // 산책 정보 목록
 			resultMap.put("message", "기록일지 가져오기 성공하였습니다.");
 			status = HttpStatus.ACCEPTED;
