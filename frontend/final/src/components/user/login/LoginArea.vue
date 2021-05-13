@@ -16,7 +16,7 @@
         </div>
         <v-form>
           <v-text-field name="email" label="이메일" id="email" v-model="email" type="email" required color="#48B9A8" style="margin-top:40px;"></v-text-field>
-          <v-text-field name="password" label="비밀번호" id="password" v-model="password" type="password" required color="#48B9A8" style="margin-top:20px;"></v-text-field>
+          <v-text-field name="password" label="비밀번호" id="password" v-model="password" type="password" required color="#48B9A8" style="margin-top:20px;" class="font-change"></v-text-field>
         </v-form>
           <div class="d-flex justify-center">
             <v-btn class="login-btn" id="mainBtn" style="width:100%; margin-top:30px; margin-bottom: 30px; font-size: 20px; height:45px; border-radius: 5px;" @click="login()"><b>로그인</b></v-btn>
@@ -92,5 +92,10 @@ export default {
 .ph-size {
   width: 250px;
 }
-
+.font-change {
+  font-family: 'Courier New', Courier, monospace;
+}
+label {
+  font-family: "Jeju Gothic", serif !important;
+}
 </style>

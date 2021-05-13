@@ -9,8 +9,10 @@ const state = {
     // 좋아요 포스팅 
     nowLat: 0,
     nowLon: 0,
-    tempPhotoUrl: '없냐?',
-    areaName: '장덕동', 
+    tempPhotoUrl: '',
+    // 지역설정 관련
+    startArea: '', 
+    areaName: '', 
   },
   // 이동 경로 
   path: [],
@@ -30,19 +32,21 @@ const getters = {
   getTempPhotoURL(state){
     return state.like.tempPhotoUrl
   },
+  getFirstAreaName(state){
+    return state.like.startArea
+  },
   getAreaName(state){
     return state.like.areaName
   },
   getMyPath(state){
     return state.path
-  }
+  },
 };
 const mutations = {
   // 멍플레이스 
   setSelectedItem(state, data){
     state.like.selectedItem = data
   },
-
   // 좋아요 포스팅 
   setNowLat(state, data){
     state.like.nowLat = data
@@ -53,6 +57,10 @@ const mutations = {
   // 임시 사진 url 
   setTempPhotoURL(state, data){
     state.like.tempPhotoUrl = data 
+  },
+  // 산책시작 지역정보 
+  setFirstAreaName(state, data){
+    state.like.startArea = data
   },
   // 지역정보
   setAreaName(state, data){

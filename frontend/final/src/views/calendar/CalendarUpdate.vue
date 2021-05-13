@@ -32,6 +32,7 @@
       <!-- 일기 내용 -->
       <div id="contentBox">
         <v-textarea
+          :rules="rules1"
           v-model="diaryContent"
           label="일기 내용"
           outlined
@@ -50,6 +51,7 @@
           hide-details
         ></v-checkbox>
         <v-textarea
+          :rules="rules2"
           class="px-5 mt-5"
           v-model="memoContent"
           v-if="memo"
@@ -90,7 +92,7 @@
       </div>
       <!-- 완료버튼 -->
       <div class="d-flex justify-end">
-        <v-btn id="mainBtn" width="50px" @click="updateDiary()">완료</v-btn>
+        <v-btn id="mainBtn" width="50px" @click="updateDiary()" :disabled="comfirm == false">완료</v-btn>
       </div>
     </div>
   </div>
@@ -110,7 +112,14 @@ export default {
       healthContent: "", // 건강사항 내용 (1개)
       healthArray: [], // 건강사항 내용들 (전체)
       photo_url: false,
-      file: {}
+      file: false,
+      rules1: [
+        value => !!value || '필수 입력사항입니다!',
+        value => !!value.replace(/(\s*)/g, "") || '공백은 불가해요!',
+      ],
+      rules2: [
+        value => !!value.replace(/(\s*)/g, "") || '공백은 불가해요!',
+        ],
     }
   },
   created() {
@@ -130,7 +139,23 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getSelectedDate', 'getPrettyDate', 'getMyDiaryObject', 'getTempPhotoURL'])
+    ...mapGetters(['getSelectedDate', 'getPrettyDate', 'getMyDiaryObject', 'getTempPhotoURL']),
+    comfirm() {
+        if (this.diaryContent.length < 1) {
+          return false
+        }
+        if (this.memo) {
+          if (this.memoContent.length < 1) {
+            return false
+          }
+        }
+        if (this.health) {
+          if (this.healthArray.length < 1) {
+            return false
+          }
+        }
+        return true
+      }
   },
   watch: {
     health(newVal) {
@@ -144,6 +169,16 @@ export default {
         this.memoContent = ""
       }
     },
+    diaryContent(newVal) {
+        if (newVal.replace(/(\s*)/g, "").length == 0) {
+          this.diaryContent = newVal.replace(/(\s*)/g, "")
+        }
+      },
+      memoContent(newVal) {
+        if (newVal.replace(/(\s*)/g, "").length == 0) {
+          this.memoContent = newVal.replace(/(\s*)/g, "")
+        }
+      }
   },
   methods: {
     ...mapMutations(['setSelectedDate', 'setDetailBtn']),
@@ -181,18 +216,18 @@ export default {
     updateDiary() {
       const formData = new FormData()
       // 사진 없을 때
-      if (!this.photo_url) {
+      if (!this.file) {
         let diary = {
           d_date: this.getSelectedDate,
-        d_flag: 0,
-        d_img: '',
-        d_memo: this.diaryContent,
-        d_special: this.memoContent,
-        d_walk: 0,
-        peid: "petpetpetpet1"
-      }
+          d_flag: 0,
+          d_img: '',
+          d_memo: this.diaryContent,
+          d_special: this.memoContent,
+          d_walk: 0,
+          peid: "petpetpetpet1"
+        }
       let health_list = []
-      for (let i in this.healthArray) {
+      for (let i in this.healthArray) { 
         health_list.push({
           h_content: this.healthArray[i],
           h_date: this.getSelectedDate,
@@ -240,6 +275,7 @@ export default {
               peid: "petpetpetpet1"
             })
           }
+          console.log(health_list,' 사진있을때 ')
           formData.append(
             'diary',
             new Blob([JSON.stringify(diary)], { type: 'application/json' })

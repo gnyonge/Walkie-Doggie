@@ -11,7 +11,7 @@
       </div>
     </div>
     <!-- 일지 안썼을 때-->
-    <div v-if="diary">
+    <div v-if="!diary">
       <div id="myimg"><img id="imgsize" src="@/assets/pet.png"></div>
       <div id="mydiv1" class="font-weight-bold"><div>{{getPrettyDate}}</div></div>
       <v-divider></v-divider>
@@ -102,10 +102,13 @@ export default {
     }
   },
   created() {
-    this.myDiary = this.getMyDiaryObject
-    if (this.getMyDiaryObject.Diary.d_img) {
-      this.photo_url = this.getMyDiaryObject.Diary.d_img
-    }
+    if (this.getMyDiaryObject.Diary != null) {
+          this.diary = true
+          this.myDiary = this.getMyDiaryObject
+          if (this.getMyDiaryObject.Diary.d_img) {
+            this.photo_url = this.getMyDiaryObject.Diary.d_img
+          }
+        }
   },
   computed: {
       ...mapGetters(['getSelectedDate', 'getMyDiaryObject', 'getPrettyDate'])

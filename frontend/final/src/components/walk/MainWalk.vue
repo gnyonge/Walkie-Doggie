@@ -33,7 +33,6 @@
         <v-icon>mdi-fire</v-icon>
       </v-btn> 
     </div>
-    <ImageItem/>
   </div>
 </template>
 
