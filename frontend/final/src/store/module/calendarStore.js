@@ -46,7 +46,9 @@ const actions = {
   createNoPhotoDiaryInApi(context, params) {
     return rscApi.post('diary/insert/np', params)
       .then((res) => {
-        console.log('nophoto작성성공')
+        console.log(res.data, '사진없는 일기작성 리턴값1')
+        context.commit('setMyDiaryObject', res.data)
+        console.log(context.state.myDiaryObject,'사진없는 일기작성 리턴값2')
         return res;
       })
       .catch(() => {
@@ -57,7 +59,7 @@ const actions = {
   createWithPhotoDiaryInApi(context, params) {
     return rscApi.post('diary/insert', params)
       .then((res) => {
-        console.log('withphoto작성성공')
+        context.commit('setMyDiaryObject', res.data)
         return res;
       })
       .catch(() => {
@@ -79,6 +81,7 @@ const actions = {
   updateNoPhotoDiaryInApi(context, params) {
     return rscApi.put('diary/update/np', params)
       .then((res) => {
+        context.commit('setMyDiaryObject', res.data)
         return res;
       })
       .catch((error) => {
@@ -89,6 +92,7 @@ const actions = {
   updateWithPhotoDiaryInApi(context, params) {
     return rscApi.put('diary/update', params)
       .then((res) => {
+        context.commit('setMyDiaryObject', res.data)
         return res;
       })
       .catch((error) => {

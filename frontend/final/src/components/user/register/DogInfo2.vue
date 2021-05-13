@@ -136,7 +136,7 @@ export default {
       var camera = document.getElementById('ex_file')
       var t = this
       camera.addEventListener('change', function(e) {
-        const form = new FormData()
+        const formData = new FormData()
         var file = e.target.files[0]
         t.file = e.target.files[0]
         console.log(file,'파일')
