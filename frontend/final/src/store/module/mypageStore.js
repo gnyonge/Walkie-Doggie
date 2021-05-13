@@ -1,13 +1,19 @@
 import { rscApi } from '@/services/api';
 const state = {
-  dogInfo: []
+  dogInfo: [],
+  
+
 };
 const getters = {
+  
+
 };
 const mutations = {
   setDogInfo(state,info) {
     state.dogInfo = info
-  }
+  },
+  
+
 };
 const actions = {
   // 반려견 등록 
@@ -38,6 +44,8 @@ const actions = {
     })
     .catch(()=>{});
   },
+  
+
 };
 
 export default {

@@ -29,8 +29,8 @@
 		update User set u_flag=1 where uid=#{uid} and u_password=#{password}
 	</update>
 	
-	<select id="checkPass" parameterType="UserDto" resultType="UserDto">
-		select * from User where uid=#{uid} and u_password=#{u_password}
+	<select id="checkPass" parameterType="String" resultType="UserDto">
+		select * from User where uid=#{uid}
 	</select>
 	<update id="changePass" parameterType="map">
 		update User set u_password=#{password} where uid=#{uid}
@@ -52,4 +52,8 @@
 	<update id="updateFlag" parameterType="String">
 		update emailAuth set flag=1 where email=#{email}
 	</update>
+	
+	<select id="checkEmailAuth" parameterType="String" resultType="EmailAuthDto">
+		select * from emailAuth where email=#{email}
+	</select>
 </mapper>

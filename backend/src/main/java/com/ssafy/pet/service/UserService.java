@@ -16,11 +16,13 @@ public interface UserService {
 	List<PetDto> petInfo(String uid);
 	int setAddress(String uid, String address);
 	int leaveUser(String uid, String password);
-	UserDto checkPass(UserDto user);
+	UserDto checkPass(String uid);
 	int changePass(String uid, String pass);
 	EmailAuthDto checkAuth(String email); 
 	int insertAuth(EmailAuthDto temp);
 	int updateAuth(EmailAuthDto temp);
 	int updateFlag(String email);
+	
+	EmailAuthDto checkEmailAuth(String email);
 	
 	}
