@@ -23,5 +23,7 @@ public interface DiaryDao {
     List<String> get_image(Map<String, Object> map); // 산책 경로 목록
 
     List<Map<String, Object>> get_walk(Map<String, Object> map); // 산책 정보 목록
+    
+    List<String> get_all_diary(String peid); // 전체 기록일지 조회
 
 }

@@ -88,10 +88,10 @@ public class DiaryController {
 					hservice.insert_health(dto);
 				}
 			}
-			
+
 			String peid = diary.getPeid();
 			String h_date = diary.getD_date();
-			
+
 			List<HealthDto> new_health_list = hservice.get_health(peid, h_date);
 
 			int result = dservice.insert_diary(diary);
@@ -134,10 +134,10 @@ public class DiaryController {
 					hservice.insert_health(dto);
 				}
 			}
-			
+
 			String peid = diary.getPeid();
 			String h_date = diary.getD_date();
-			
+
 			List<HealthDto> new_health_list = hservice.get_health(peid, h_date);
 
 			int result = dservice.insert_diary(diary);
@@ -238,22 +238,22 @@ public class DiaryController {
 			tempfile.delete();
 
 			diary.setD_img(url);
-			
+
 			String peid = diary.getPeid();
 			String h_date = diary.getD_date();
-			
+
 			List<HealthDto> delete_health_list = hservice.get_health(peid, h_date);
-			
+
 			for (HealthDto delete_dto : delete_health_list) {
 				hservice.delete_health(delete_dto);
 			}
 
 			if (health_list != null) {
-				for (HealthDto dto : health_list) {					
+				for (HealthDto dto : health_list) {
 					hservice.insert_health(dto);
 				}
 			}
-			
+
 			List<HealthDto> new_health_list = hservice.get_health(peid, h_date);
 
 			int update = dservice.update_pic(diary);
@@ -290,22 +290,22 @@ public class DiaryController {
 
 		try {
 			logger.info("=====> 기록일지 수정 시작!");
-			
+
 			String peid = diary.getPeid();
 			String h_date = diary.getD_date();
-			
+
 			List<HealthDto> delete_health_list = hservice.get_health(peid, h_date);
-			
+
 			for (HealthDto delete_dto : delete_health_list) {
 				hservice.delete_health(delete_dto);
 			}
 
 			if (health_list != null) {
-				for (HealthDto dto : health_list) {					
+				for (HealthDto dto : health_list) {
 					hservice.insert_health(dto);
 				}
 			}
-			
+
 			List<HealthDto> new_health_list = hservice.get_health(peid, h_date);
 
 			int result = dservice.update_diary(diary);
@@ -363,6 +363,31 @@ public class DiaryController {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	// 기록일지 전체 조회
+	@ApiOperation(value = "All Diary Show", notes = "기록일지 전체 조회")
+	@GetMapping("/show")
+	public ResponseEntity<Map<String, Object>> get_all_diary(@RequestParam String peid) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+
+		try {
+			logger.info("=====> 기록일지 전체 조회 시작!");
+			List<String> all_diary = dservice.get_all_diary(peid);
+
+			resultMap.put("All_diary", all_diary);
+			resultMap.put("message", "기록일지 가져오기 성공하였습니다.");
+			status = HttpStatus.ACCEPTED;
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("기록일지 조회 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
