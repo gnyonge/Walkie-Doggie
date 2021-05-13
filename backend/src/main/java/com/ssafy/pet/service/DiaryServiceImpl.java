@@ -49,4 +49,9 @@ public class DiaryServiceImpl implements DiaryService {
 	public List<Map<String, Object>> get_walk(Map<String, Object> map) {
 		return ddao.get_walk(map);
 	}
+	
+	@Override
+	public List<String> get_all_diary(String peid) {
+		return ddao.get_all_diary(peid);
+	}
 }

@@ -1,16 +1,12 @@
 import { rscApi } from '@/services/api';
 const state = {
-  // password: '',
+
 };
 const getters = {
-  // getPassword(state) {
-  //   return state.password
-  // },
+
 };
 const mutations = {
-  // setPassword(state,password) {
-  //   state.password = password
-  // },
+
 };
 const actions = {
   // 로그인 
@@ -26,14 +22,17 @@ const actions = {
     })
     .catch(()=>{});
   },
+
   // 회원가입 
   createUserInApi(context,params) {
     return rscApi.post('user/signup',params)
     .then ((res) => {
+      console.log(res, '회원가입')
       return res;
     })
     .catch(()=>{});
   },
+  
   // 인증메일 
   sendEmailInApi(context,params) {
     return rscApi.post('user/sendMail',params)
@@ -42,6 +41,16 @@ const actions = {
     })
     .catch(()=>{});
   },
+
+  // 인증 번호 확인 
+  checkAuthEmailInApi(context,params) {
+    return rscApi.post('user/check/pass',params)
+    .then ((res) => {
+      return res;
+    })
+    .catch(()=>{});
+  },
+  
   // 비밀번호 확인 
   checkPasswordInApi(context,params) {
     return rscApi.post('user/check/pass',params)
