@@ -15,7 +15,7 @@
     <v-form>
       <v-text-field name="nickname" label="닉네임" id="nickname" v-model="nickname" type="nickname" required color="#48B9A8"><v-btn slot="append" id="mainBtn" style="margin:5px; width:80px;">중복 확인</v-btn></v-text-field>
       <v-text-field name="email" label="이메일주소" id="email" v-model="email" type="email" required color="#48B9A8"><v-btn id="mainBtn" slot="append" style="margin:5px; width:120px;" @click="sendCheckEmail()">인증메일 전송</v-btn></v-text-field>
-      <v-text-field name="code" label="인증번호" id="code" v-model="code" type="code" required color="#48B9A8"><v-btn id="mainBtn" slot="append" style="margin:5px; width:60px;">확인</v-btn></v-text-field>
+      <v-text-field name="code" label="인증번호" id="code" v-model="code" type="code" required color="#48B9A8"><v-btn id="mainBtn" slot="append" style="margin:5px; width:60px;" @click="checkAuthEmail()">확인</v-btn></v-text-field>
       <v-text-field name="password" label="비밀번호" id="password" v-model="password" type="password" required color="#48B9A8" class="font-change"></v-text-field>
       <v-text-field name="passwordcheck" label="비밀번호 확인" id="confirmPassword" v-model="confirmPassword" :rules="rules" type="password" required color="#48B9A8" class="font-change"></v-text-field>
       <!-- <v-text-field name="password" label="비밀번호" id="password" v-model="password" :rules="passwordRules" type="password" required color="#48B9A8" class="font-change"></v-text-field> -->
@@ -49,7 +49,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['createUserInApi','sendEmailInApi','checkPasswordInApi']),
+    ...mapActions(['createUserInApi','sendEmailInApi','checkPasswordInApi','checkAuthEmailInApi']),
     goback() {
         this.$router.push('/loginmain')
     },
@@ -81,13 +81,12 @@ export default {
       })
       this.$router.push('/register') // 반려견 등록 페이지로 이동 
     },
+
     // 인증메일 보내기  눌렀을 때 
     // 한번 클릭하면 버튼이 안보이도록 수정해야한다. 
     sendCheckEmail() {
       this.sendEmailInApi({
-        // auth: "string",
         email: this.email,
-        // flag: 0
       })
       .then((res) => {
         console.log(this.email)
@@ -95,7 +94,18 @@ export default {
         //500에러 뜸 
       })
     },
-    
+
+    // 인증 메일 확인 
+    checkAuthEmail() {
+      this.checkAuthEmailInApi({
+        auth: this.code,
+        email: this.email,
+      })
+      .then((res) => {
+        // console.log(auth)
+        console.log(res, '인증번호 확인 버튼 !')
+      })
+    }
     
   }
 }
@@ -124,4 +134,7 @@ export default {
 .font-change {
   font-family: 'Courier New', Courier, monospace;
 }
+/* label {
+  font-family: "Jeju Gothic", serif !important;
+} */
 </style>
