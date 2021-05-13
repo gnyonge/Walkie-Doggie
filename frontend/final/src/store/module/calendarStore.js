@@ -46,7 +46,18 @@ const actions = {
   createNoPhotoDiaryInApi(context, params) {
     return rscApi.post('diary/insert/np', params)
       .then((res) => {
-        console.log('스토어 성공')
+        console.log('nophoto작성성공')
+        return res;
+      })
+      .catch(() => {
+        console.log('실패')
+      })
+  },
+  // 사진있는 일기 작성
+  createWithPhotoDiaryInApi(context, params) {
+    return rscApi.post('diary/insert', params)
+      .then((res) => {
+        console.log('withphoto작성성공')
         return res;
       })
       .catch(() => {
@@ -67,6 +78,16 @@ const actions = {
   // 사진없는 일기 수정
   updateNoPhotoDiaryInApi(context, params) {
     return rscApi.put('diary/update/np', params)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  },
+  // 사진있는 일기 수정
+  updateWithPhotoDiaryInApi(context, params) {
+    return rscApi.put('diary/update', params)
       .then((res) => {
         return res;
       })
