@@ -39,6 +39,7 @@ const getters = {
     return state.like.areaName
   },
   getMyPath(state){
+    console.log(state.path)
     return state.path
   },
 };
@@ -69,6 +70,9 @@ const mutations = {
   // 내가 간 경로 
   setMyPath(state, data){
     state.path.push(data)
+  },
+  deleteMyPath(state){
+    state.path = []
   },
  
 };
