@@ -5,6 +5,9 @@ const state = {
 
 };
 const getters = {
+  getDogInfo(state) {
+    return state.dogInfo
+  },
   
 
 };
@@ -12,7 +15,6 @@ const mutations = {
   setDogInfo(state,info) {
     state.dogInfo = info
   },
-  
 
 };
 const actions = {
