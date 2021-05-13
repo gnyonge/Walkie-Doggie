@@ -27,20 +27,20 @@
 		set
 		d_memo=#{d_memo}, d_special=#{d_special}
 		where
-		d_date=#{d_date}
+		did=#{did}
 	</update>
 
 	<update id="update_pic" parameterType="DiaryDto">
 		update Diary set
 		d_memo=#{d_memo}, d_img=#{d_img}, d_special=#{d_special}
 		where
-		d_date=#{d_date}
+		did=#{did}
 	</update>
 
 	<update id="delete_diary" parameterType="DiaryDto">
 		update Diary set
 		d_flag=1
-		where d_date=#{d_date}
+		where did=#{did}
 	</update>
 
 	<select id="get_image" parameterType="map" resultType="string">
