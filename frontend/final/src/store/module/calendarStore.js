@@ -1,11 +1,11 @@
 import { rscApi } from '@/services/api';
 
 const state = {
-  nowTab: 0,
-  detailBtn: '',
-  selectedDate: "",
-  prettyDate: "",
-  myDiaryObject: {}
+  nowTab: 0, // BottomNav 탭
+  detailBtn: '', // 다이어리 디테일 버튼
+  selectedDate: "", // 선택된 날짜
+  prettyDate: "", // 보여주기 위해 selectedDate 변환
+  myDiaryObject: {} // 다이어리 전체 객체
 };
 const getters = {
   getNowTab(state) {
@@ -46,6 +46,18 @@ const actions = {
   createNoPhotoDiaryInApi(context, params) {
     return rscApi.post('diary/insert/np', params)
       .then((res) => {
+        console.log('nophoto작성성공')
+        return res;
+      })
+      .catch(() => {
+        console.log('실패')
+      })
+  },
+  // 사진있는 일기 작성
+  createWithPhotoDiaryInApi(context, params) {
+    return rscApi.post('diary/insert', params)
+      .then((res) => {
+        console.log('withphoto작성성공')
         return res;
       })
       .catch(() => {
@@ -66,6 +78,16 @@ const actions = {
   // 사진없는 일기 수정
   updateNoPhotoDiaryInApi(context, params) {
     return rscApi.put('diary/update/np', params)
+      .then((res) => {
+        return res;
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  },
+  // 사진있는 일기 수정
+  updateWithPhotoDiaryInApi(context, params) {
+    return rscApi.put('diary/update', params)
       .then((res) => {
         return res;
       })

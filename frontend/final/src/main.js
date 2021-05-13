@@ -7,10 +7,14 @@ import store from './store'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import '@babel/polyfill' //이거 추가 안하면 아래 에러남 
+import VueHtml2Canvas from 'vue-html2canvas';
 
 Vue.prototype.$axios = axios;
 Vue.use(BootstrapVue)
+Vue.use(VueHtml2Canvas);
 Vue.config.productionTip = false
+
 
 new Vue({
   vuetify,

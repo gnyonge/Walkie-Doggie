@@ -1,6 +1,7 @@
 <template>
   <div>
     <div id="mainBox">
+      <!-- 상단 뒤로가기 버튼 -->
       <div class="d-flex justify-space-between">
         <div>
         <v-icon @click="goback()">mdi-arrow-left</v-icon>
@@ -11,9 +12,24 @@
         <div style="width: 24px; background-color: white;">
         </div>
       </div>
+      <!-- 날짜 -->
       <div id="contentBox">
         {{getPrettyDate}}
       </div>
+      <!-- 이미지 -->
+      <div id="contentBox">
+        <v-img
+          v-if="photo_url"
+          height="330"
+          width="100%"
+          :src="photo_url">
+        </v-img>
+        <div class="filebox mt-3"> 
+          <label for="ex_file">사진 추가</label> 
+          <input type="file" accept="image/*" @click="addPhoto()" id="ex_file"> 
+        </div>
+      </div>
+      <!-- 일기 내용 -->
       <div id="contentBox">
         <v-textarea
           v-model="diaryContent"
@@ -24,16 +40,8 @@
           color="#48B9A8"
         ></v-textarea>
       </div>
-      <div id="contentBox">
-        사진 첨부
-      </div>
-      <div id="contentBox">
-        <v-file-input
-          multiple
-          color="#48B9A8"
-        ></v-file-input>
-      </div>
       <v-divider></v-divider>
+      <!-- 특이사항 -->
       <div id="contentBox">
         <v-checkbox
           v-model="memo"
@@ -51,6 +59,7 @@
           color="#48B9A8"
         ></v-textarea>
       </div>
+      <!-- 건강사항 -->
       <div id="contentBox">
         <v-checkbox
           v-model="health"
@@ -79,6 +88,7 @@
           </v-chip>
         </div>
       </div>
+      <!-- 완료버튼 -->
       <div class="d-flex justify-end">
         <v-btn id="mainBtn" width="50px" @click="createDiary()">완료</v-btn>
       </div>
@@ -99,11 +109,12 @@ export default {
         memoContent: "", // 특이사항 내용
         healthContent: "", // 건강사항 내용 (1개)
         healthArray: [], // 건강사항 내용들 (전체)
-
+        photo_url: false,
+        file: {}
       }
     },
     computed: {
-      ...mapGetters(['getSelectedDate', 'getPrettyDate'])
+      ...mapGetters(['getSelectedDate', 'getPrettyDate', 'getTempPhotoURL'])
     },
     watch: {
       health(newVal) {
@@ -119,8 +130,8 @@ export default {
       },
     },
     methods: {
-      ...mapMutations(['setSelectedDate']),
-      ...mapActions(['createNoPhotoDiaryInApi']),
+      ...mapMutations(['setSelectedDate', 'setDetailBtn']),
+      ...mapActions(['createNoPhotoDiaryInApi', 'makeTempPhotoUrlInApi', 'createWithPhotoDiaryInApi', 'getTodayDiaryInApi']),
       addHealth() {
       if (this.healthContent.replace(/(\s*)/g, "").length > 0) {
         this.healthArray.push(this.healthContent);
@@ -132,21 +143,106 @@ export default {
         this.healthArray.splice(index, 1);
       },
       goback() {
+        this.setDetailBtn('diary')
         this.$router.push('/calendar')
       },
-      createDiary() {
-        this.createNoPhotoDiaryInApi({
-          d_date: this.getSelectedDate,
-          d_flag: 0,
-          d_img: "string",
-          d_memo: this.diaryContent,
-          d_special: this.memoContent,
-          d_walk: 0,
-          peid: "petpetpetpet1"
-        }).then(() => {
-          this.$router.push(`/calendar/detail/todaydiary/${this.getSelectedDate}`)
-          console.log('성공이다아앙')
+      addPhoto() {
+        var t = this
+        var photo = document.getElementById('ex_file')
+        photo.addEventListener('change', function(event) {
+          const formData = new FormData()
+          var file = event.target.files[0]
+          t.file = event.target.files[0]
+          formData.append('file', file)
+          t.makeTempPhotoUrlInApi(formData)
+          .then(() => {
+            t.photo_url = t.getTempPhotoURL
+          }).catch((error) => {
+            console.error(error)
+          })
         })
+      },
+      createDiary() {
+        const formData = new FormData()
+        // 사진 없을 때
+        if (!this.photo_url) {
+          let diary = {
+            d_date: this.getSelectedDate,
+            d_flag: 0,
+            d_img: '',
+            d_memo: this.diaryContent,
+            d_special: this.memoContent,
+            d_walk: 0,
+            peid: "petpetpetpet1"
+          }
+          let health_list = []
+          for (let i in this.healthArray) {
+            health_list.push({
+              h_content: this.healthArray[i],
+              h_date: this.getSelectedDate,
+              h_flag: 0,
+              hid: 0,
+              peid: "petpetpetpet1"
+            })
+          }
+          formData.append(
+            'diary',
+            new Blob([JSON.stringify(diary)], { type: 'application/json' })
+          )
+          formData.append(
+            'health_list',
+            new Blob([JSON.stringify(health_list)], { type: 'application/json' })
+          )
+          this.createNoPhotoDiaryInApi(formData).then(() => {
+            this.setDetailBtn('diary')
+            this.getTodayDiaryInApi({
+              date: this.getSelectedDate,
+              peid: 'petpetpetpet1'}).then(() => {
+                this.$router.push(`/calendar/detail/todaydiary/${this.getSelectedDate}`)
+              })
+          })
+          
+        }
+        // 사진 있을 때
+        else {
+          let diary = {
+            d_date: this.getSelectedDate,
+            d_flag: 0,
+            d_img: this.photo_url,
+            d_memo: this.diaryContent,
+            d_special: this.memoContent,
+            d_walk: 0,
+            peid: "petpetpetpet1"
+          }
+          let health_list = []
+          for (let i in this.healthArray) {
+            health_list.push({
+              h_content: this.healthArray[i],
+              h_date: this.getSelectedDate,
+              h_flag: 0,
+              hid: 0,
+              peid: "petpetpetpet1"
+            })
+          }
+          formData.append(
+            'diary',
+            new Blob([JSON.stringify(diary)], { type: 'application/json' })
+          )
+          formData.append(
+            'health_list',
+            new Blob([JSON.stringify(health_list)], { type: 'application/json' })
+          )
+          formData.append('file', this.file)
+
+          this.createWithPhotoDiaryInApi(formData).then(() => {
+            this.setDetailBtn('diary')
+            this.getTodayDiaryInApi({
+              date: this.getSelectedDate,
+              peid: 'petpetpetpet1'}).then(() => {
+                this.$router.push(`/calendar/detail/todaydiary/${this.getSelectedDate}`)
+              })
+          })
+        }
       }
     }
 }
@@ -159,5 +255,29 @@ export default {
 }
 .v-label, .v-chip__content {
   margin: 0px;
+}
+.filebox label {
+  display: inline-block; 
+  padding: .5em .75em; 
+  color: #323232; 
+  font-size: inherit; 
+  line-height: normal; 
+  vertical-align: middle; 
+  background-color: #BAF1E4; 
+  cursor: pointer; 
+  border: 1px solid #ebebeb; 
+  border-bottom-color: #e2e2e2; 
+  border-radius: .25em; 
+  } 
+.filebox input[type="file"] {
+  /* 파일 필드 숨기기 */ 
+  position: absolute; 
+  width: 1px; 
+  height: 1px; 
+  padding: 0; 
+  margin: -1px; 
+  overflow: hidden; 
+  clip:rect(0,0,0,0); 
+  border: 0; 
 }
 </style>

@@ -1,8 +1,17 @@
 <template>
   <div class="register-btn-pd" id="mainBox">
-    <h5 class="text-center mb-5">반려견 등록</h5>
+    <div class="d-flex justify-space-between">
+      <div>
+      <v-icon @click="goto('/register')">mdi-arrow-left</v-icon>
+      </div>
+      <div>
+        반려견 등록
+      </div>
+      <div style="width: 24px; background-color: white;">
+      </div>
+    </div>
       <div class="d-flex justify-center">
-        <div class="circle " @click="goto()">
+        <div class="circle " @click="goto('/dogregisternext')">
           <p>+ 반려견 등록</p>
         </div>
       </div>
@@ -20,8 +29,8 @@
 export default {
   name: "DogInfo",
   methods: {
-    goto() {
-      this.$router.push('/dogregisternext')
+    goto(path) {
+      this.$router.push(path)
     }
   }
 }
