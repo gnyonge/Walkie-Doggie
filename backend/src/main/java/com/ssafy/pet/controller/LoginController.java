@@ -21,6 +21,7 @@ import com.ssafy.pet.dto.UserDto;
 import com.ssafy.pet.service.LoginService;
 import com.ssafy.pet.util.JWTUtil;
 import com.ssafy.pet.util.KakaoUtil;
+import com.ssafy.pet.util.SecurityUtil;
 import com.ssafy.pet.util.UidUtil;
 
 import io.swagger.annotations.Api;
@@ -43,6 +44,9 @@ public class LoginController {
 
 	@Autowired
 	private UidUtil uidutil;
+
+	@Autowired
+	private SecurityUtil securityutil;
 
 	// 카카오 로그인
 	@ApiOperation(value = "KAKAO LOGIN", notes = "카카오 로그인")
@@ -105,25 +109,32 @@ public class LoginController {
 		HttpStatus status = null;
 
 		try {
-			logger.info("=====> 자체 로그인 시작 our~our~our~login~our~site~our web site~");
+			logger.info("=====> 자체 로그인 시작");
 			UserDto check_user = loginservice.check_email(user.getU_email());
 
-			if (check_user.getU_email().equals(user.getU_email())
-					&& check_user.getU_password().equals(user.getU_password())) {
-				check_user.setU_password(null);
-				// 로그인이 맞다는거자나 그럼 토큰을 생성하자
-				String token = jwtutil.create(check_user);
-				res.setHeader("doggie_token", token);
-				logger.info("토큰: {}", token);
-				resultMap.put("doggie_token", token);
-				resultMap.put("user", check_user);
-				resultMap.put("message", "로그인에 성공하였습니다.");
+			if (check_user==null) {
+				resultMap.put("message", "아이디나 비밀번호를 확인해주세요");
 			} else {
-				resultMap.put("message", "로그인에 실패하였습니다.");
+				//아이디나 비밀번호는 있단 ㅇㅒ기군요?
+				String checkPass = check_user.getU_password();
+				String UserPass = securityutil.bytesToHex(securityutil.sha256(user.getU_password()));
+				if (check_user.getU_email().equals(user.getU_email()) && checkPass.equals(UserPass)
+						&& check_user.getU_flag() == 0) {
+					// 로그인이 맞다는거자나 그럼 토큰을 생성하자
+					String token = jwtutil.create(check_user);
+					res.setHeader("doggie_token", token);
+					logger.info("토큰: {}", token);
+					resultMap.put("doggie_token", token);
+					resultMap.put("user", check_user);
+					resultMap.put("message", "로그인에 성공하였습니다.");
+				} else {
+					resultMap.put("message", "아이디나 비밀번호를 확인해주세요");
+				}
 			}
 			status = HttpStatus.ACCEPTED;
+		} catch (
 
-		} catch (Exception e) {
+		Exception e) {
 			// TODO: handle exception
 			logger.error("자체 로그인 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
