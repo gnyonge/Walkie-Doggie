@@ -17,10 +17,11 @@
 		returning pid;
 	</select>
 
-	<insert id="clickPlace" parameterType="map" useGeneratedKeys="true" keyProperty="lid" keyColumn="lid"  >
+	<select id="clickPlace" parameterType="map" resultType="Integer" >
 		insert into LikePlace(pid, peid, l_image, l_desc, p_location, l_like, l_flag, l_date)
-		values(#{pid}, #{peid},  #{l_image}, #{l_desc}, #{p_location}, 0, 0, now());
-	</insert>
+		values(#{pid}, #{peid},  #{l_image}, #{l_desc}, #{p_location}, 0, 0, now())
+		returning lid;
+	</select>
 
 	<select id="checkLike" parameterType="map" resultType="int" >
 		select count(*)

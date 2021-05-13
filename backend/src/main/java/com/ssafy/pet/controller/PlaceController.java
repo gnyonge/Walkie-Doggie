@@ -127,9 +127,10 @@ public class PlaceController {
 				if(pid != 0){		
 					logger.info("=====> 장소 생성 성공");
 					param.put("pid", pid);
-					int result = placeService.clickPlace(param);
+					Integer lid = placeService.clickPlace(param);
 					
 					logger.info("=====> 좋아요 성공");
+                    resultMap.put("lid", lid);
 					resultMap.put("message", "장소 생성 후 좋아요 성공하였습니다.");
 					status = HttpStatus.ACCEPTED;
 				}else{
@@ -142,12 +143,12 @@ public class PlaceController {
 				param.put("pid", pid);
 				int result = placeService.checkLike(param);
 				if(result == 0){ // 해당 강아지가 해당 장소 좋아요 누른 적 없는 경우
-					int result2 = placeService.clickPlace(param);
-					if (result2 == 1) {
+					Integer lid = placeService.clickPlace(param);
+					if (lid != null) {
 						logger.info("=====> 좋아요 성공");
 						int result3 = placeService.plusPlace(pid);
-						
 						logger.info("=====> 카운트 처리 성공");
+                        resultMap.put("lid", lid);
 						resultMap.put("message", "기존 등록된 장소 좋아요 카운트 처리 성공하였습니다.");
 						status = HttpStatus.ACCEPTED;
 					} else {
