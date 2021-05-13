@@ -86,12 +86,11 @@ export default {
         t.makeTempPhotoUrlInApi(
           form
         ).then(()=> {
-          console.log('업로드한 사진 미리보기 성공')
+          t.photo_url = t.getTempPhotoURL
         }).catch((error)=>{
           console.log(error)
         })
-        // 백엔드 서버에서 이미지 주소 받아서 넣기 
-        t.photo_url = t.getTempPhotoURL
+        
       })
     },
     // 사진, 옵션 정보 백엔드 정보 전송 

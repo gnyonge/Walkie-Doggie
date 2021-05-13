@@ -109,7 +109,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getNowTab', 'setMyPath'])
+    ...mapGetters(['getNowTab', ])
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -130,10 +130,8 @@ export default {
 
   },
   destroyed() {
+    this.setMyPath(Array)
     clearInterval(this.walkLoc)
-    
-  },
-  watch: {
     
   },
   methods: {
@@ -265,17 +263,19 @@ export default {
         w_date: this.start, 
         w_distance: "1.2",
         w_flag: 0,
-        w_img: this.setTempPhotoURL,
         w_like: this.likecnt,
         w_time: (this.totalH * 60) + this.totalM,
         wid: 0,
         p_location: '장덕동',
-      }).then((res)=> {
-        console.log(res.message)
+      }).then(()=> {
         // 실시간 정보 가져오기죽이기 
         clearInterval(this.walkLoc)
         this.end = this.getTime()
         this.calTime()
+        // 저장되어 있던 정보도 지우기 
+        this.setMyPath(Array)
+        this.setNowLon(0)
+        this.setNowLat(0)
       }).catch((error)=> {
         console.log(error)
       })

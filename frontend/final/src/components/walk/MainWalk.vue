@@ -31,7 +31,7 @@
         @click="goToHotPlace"
       >멍플레이스 구경하기
         <v-icon>mdi-fire</v-icon>
-      </v-btn>
+      </v-btn> 
     </div>
     <ImageItem/>
   </div>
@@ -46,7 +46,7 @@ export default {
     },
     goToHotPlace(){
       this.$router.push('/hotplace')
-    }
+    },
   }
 }
 </script>

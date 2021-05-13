@@ -9,7 +9,7 @@ const state = {
     // 좋아요 포스팅 
     nowLat: 0,
     nowLon: 0,
-    tempPhotoUrl: '',
+    tempPhotoUrl: '없냐?',
     areaName: '장덕동', 
   },
   // 이동 경로 
@@ -71,7 +71,6 @@ const actions = {
   },
   // 업로드 사진 미리보기 
   makeTempPhotoUrlInApi(context, params){
-  
     return rscApi.post('place/imageUpload', params)
       .then((res)=> {
         // tempPhotoURL 갱신 
