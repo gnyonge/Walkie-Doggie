@@ -13,11 +13,29 @@
     </div>
     <!-- 회원가입 폼 -->
     <v-form>
-      <v-text-field name="nickname" label="닉네임" id="nickname" v-model="nickname" type="nickname" required color="#48B9A8"><v-btn slot="append" id="mainBtn" style="margin:5px; width:80px;">중복 확인</v-btn></v-text-field>
-      <v-text-field name="email" label="이메일주소" id="email" v-model="email" type="email" required color="#48B9A8"><v-btn id="mainBtn" slot="append" style="margin:5px; width:120px;" @click="sendCheckEmail()">인증메일 전송</v-btn></v-text-field>
-      <v-text-field name="code" label="인증번호" id="code" v-model="code" type="code" required color="#48B9A8"><v-btn id="mainBtn" slot="append" style="margin:5px; width:60px;" @click="checkAuthEmail()">확인</v-btn></v-text-field>
-      <v-text-field name="password" label="비밀번호" id="password" v-model="password" type="password" required color="#48B9A8" class="font-change"></v-text-field>
-      <v-text-field name="passwordcheck" label="비밀번호 확인" id="confirmPassword" v-model="confirmPassword" :rules="rules" type="password" required color="#48B9A8" class="font-change"></v-text-field>
+
+      <v-text-field name="nickname" label="닉네임" id="nickname" v-model="nickname" type="nickname" required color="#48B9A8">
+        <v-btn slot="append" id="mainBtn" style="margin:5px; width:80px;" @click="checkNickname()">중복 확인</v-btn>
+      </v-text-field>
+
+      <div v-if="nickCheck" style="font-size: 12px">
+        사용가능한 닉네임 입니다!
+      </div>
+
+      <v-text-field name="email" label="이메일주소" id="email" v-model="email" type="email" required color="#48B9A8">
+        <v-btn id="mainBtn" slot="append" style="margin:5px; width:120px;" @click="sendCheckEmail()">인증메일 전송</v-btn>
+      </v-text-field>
+      
+      <v-text-field name="code" label="인증번호" id="code" v-model="code" type="code" required color="#48B9A8">
+        <v-btn id="mainBtn" slot="append" style="margin:5px; width:60px;" @click="checkAuthEmail()">확인</v-btn>
+      </v-text-field>
+
+      <v-text-field name="password" label="비밀번호" id="password" v-model="password" type="password"
+       required color="#48B9A8" class="font-change"></v-text-field>
+       
+      <v-text-field name="passwordcheck" label="비밀번호 확인" id="confirmPassword" v-model="confirmPassword" 
+      :rules="rules" type="password" required color="#48B9A8" class="font-change"></v-text-field>
+
       <!-- <v-text-field name="password" label="비밀번호" id="password" v-model="password" :rules="passwordRules" type="password" required color="#48B9A8" class="font-change"></v-text-field> -->
       <!-- <v-text-field name="passwordcheck" label="비밀번호 확인" id="confirmPassword" v-model="confirmPassword" :rules="[confirmPasswordRules, passwordConfirmationRule]" type="password" required color="#48B9A8" class="font-change"></v-text-field> -->
     
@@ -25,14 +43,14 @@
     <!-- 회원가입 완료 버튼  -->
     <!-- 버튼 비활성화 시켜놓고 password랑 confirmPassword가 같을 때만 활성화 되게  -->
     <div class="d-flex justify-center">
-      <v-btn class="" id="mainBtn" style="margin-top: 30px;width: 180px; height: 60px; border-radius: 50px; font-size: 25px" @click="registerUser()">회원가입</v-btn>
+      <v-btn id="mainBtn" style="margin-top: 30px;width: 180px; height: 60px; border-radius: 50px; font-size: 25px" @click="registerUser()">회원가입</v-btn>
     </div>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
-
+import axios from 'axios';
 export default {
   data () {
     return {
@@ -41,6 +59,7 @@ export default {
       code: '',
       confirmPassword: '',
       nickname: '',
+      nickCheck: false,
       // passwordRules: [v=> !!v || "Password is required"],
       // confirmPasswordRules: [v=> !!v || "Password is required"],
       rules: [
@@ -53,7 +72,14 @@ export default {
     goback() {
         this.$router.push('/loginmain')
     },
-    
+    checkNickname() {
+      return axios.get(`http://localhost:8888/pet/user/check/${this.nickname}`)
+      .then((res) => {
+        this.nickCheck = res.data.flag
+      }).catch((error) => {
+        console.error(error)
+      })
+    },
     // 회원가입 눌렀을 때 
     registerUser() {
       // this.checkPasswordInApi({
@@ -134,7 +160,4 @@ export default {
 .font-change {
   font-family: 'Courier New', Courier, monospace;
 }
-/* label {
-  font-family: "Jeju Gothic", serif !important;
-} */
 </style>

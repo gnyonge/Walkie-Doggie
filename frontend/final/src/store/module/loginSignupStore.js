@@ -27,6 +27,7 @@ const actions = {
   createUserInApi(context,params) {
     return rscApi.post('user/signup',params)
     .then ((res) => {
+      console.log(res, '회원가입')
       return res;
     })
     .catch(()=>{});
