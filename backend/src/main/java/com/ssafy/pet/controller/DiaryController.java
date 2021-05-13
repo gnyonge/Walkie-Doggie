@@ -238,15 +238,21 @@ public class DiaryController {
 			tempfile.delete();
 
 			diary.setD_img(url);
-
-			if (health_list != null) {
-				for (HealthDto dto : health_list) {
-					hservice.update_health(dto);
-				}
-			}
 			
 			String peid = diary.getPeid();
 			String h_date = diary.getD_date();
+			
+			List<HealthDto> delete_health_list = hservice.get_health(peid, h_date);
+			
+			for (HealthDto delete_dto : delete_health_list) {
+				hservice.delete_health(delete_dto);
+			}
+
+			if (health_list != null) {
+				for (HealthDto dto : health_list) {					
+					hservice.insert_health(dto);
+				}
+			}
 			
 			List<HealthDto> new_health_list = hservice.get_health(peid, h_date);
 
@@ -284,15 +290,21 @@ public class DiaryController {
 
 		try {
 			logger.info("=====> 기록일지 수정 시작!");
-
-			if (health_list != null) {
-				for (HealthDto dto : health_list) {
-					hservice.update_health(dto);
-				}
-			}
 			
 			String peid = diary.getPeid();
 			String h_date = diary.getD_date();
+			
+			List<HealthDto> delete_health_list = hservice.get_health(peid, h_date);
+			
+			for (HealthDto delete_dto : delete_health_list) {
+				hservice.delete_health(delete_dto);
+			}
+
+			if (health_list != null) {
+				for (HealthDto dto : health_list) {					
+					hservice.insert_health(dto);
+				}
+			}
 			
 			List<HealthDto> new_health_list = hservice.get_health(peid, h_date);
 
