@@ -87,7 +87,6 @@ export default {
       mapContainer: '',
       mapOption: '',
       map: {},
-      startAddress: '',
       // 시간 
       start: '', 
       end: '', 
@@ -110,7 +109,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getNowTab', 'getMyPath', 'getFirstAreaName'])
+    ...mapGetters(['getNowTab', 'getMyPath', 'getFirstAreaName', 'getAreaName'])
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -136,7 +135,7 @@ export default {
     
   },
   methods: {
-    ...mapMutations(['setNowTab', 'setNowLon', 'setNowLat','setMyPath','setFirstAreaName' ]), 
+    ...mapMutations(['setNowTab', 'setNowLon', 'setNowLat','setMyPath','setFirstAreaName','setAreaName' ]), 
     ...mapActions(['doneWalkInApi']),
     // 지도 첫 화면 로드 
     initMap() {
@@ -158,16 +157,10 @@ export default {
         var lat = position.coords.latitude, // 위도
             lon = position.coords.longitude; // 경도
         
-        // 첫 주소 
-        if (this.getFirstAreaName === ''){
-          // 시작 주소 넘겨주기 
-          this.getAddress(lon, lat).then((res)=>{
-            console.log(res)
-           })
-          console.log(this.startAddress, 'getAddress 호출 후')
-        }
+        // 첫위치 위도 -> 주소 
+        this.getAddress(lon, lat)
+        console.log('init')
 
-           
         // 다시 들어올 떄마다 경로 받기 
         this.linePath = this.getMyPath
         this.linePath.push(new kakao.maps.LatLng(lat, lon))
@@ -178,7 +171,11 @@ export default {
        // 마커와 인포윈도우를 표시합니다
         displayMarker(locPosition, message);
   
-        });
+      },function(error) {
+      console.error(error);
+    }, {
+      maximumAge: 0,
+    });
     } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
         var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
             message = 'geolocation을 사용할수 없어요..'
@@ -188,7 +185,7 @@ export default {
     }
    
     var map = this.map
-    
+
     // 지도에 마커와 인포윈도우를 표시하는 함수입니다
     function displayMarker(locPosition, message) {
       // 마커를 생성합니다
@@ -215,17 +212,28 @@ export default {
         marker.setMap(null);}, 3000)
       
       // 지도 중심좌표를 접속위치로 변경합니다
-      map.setCenter(locPosition);   
+      map.setCenter(locPosition);  
       }  
     },
     // 위치 -> 주소 
-    async getAddress(lon, lat){
+    getAddress(lon, lat){
+      console.log('getAdrress내부')
+
       const callback =  (result, status) => {
-      if (status === kakao.maps.services.Status.OK) {
-        var detail = result[0].address.address_name
-        this.startAddress = detail
-        console.log(this.startAddress, 'getAddress내부')
-      } 
+        console.log(this.getFirstAreaName)
+        if (status === kakao.maps.services.Status.OK) {
+          var detail = result[0].address.address_name
+          console.log(detail)
+          console.log('detail아래')
+          if (this.getFirstAreaName === '') {
+            console.log(detail, '123213')
+            console.log('첫 장소 받기 성공')
+            this.setFirstAreaName(detail)
+          }else {
+            console.log('첫 장소 아님')
+            this.setAreaName(detail)
+          }
+        } 
       }
       //주소-좌표 변환 객체 생성 
       var geocoder = new kakao.maps.services.Geocoder();
@@ -233,10 +241,9 @@ export default {
         // 좌표로 법정동 상세 주소 정보를 요청합니다
         geocoder.coord2Address(lon, lat, callback);
       }
-      await searchDetailAddrFromCoords(lon, lat, callback)
-      return this.startAddress
-
+      searchDetailAddrFromCoords(lon, lat, callback)
     },
+    
     // 시간 가져오기 
     getTime() {
       let today = new Date() 
@@ -284,6 +291,7 @@ export default {
     },
     // 산책종료
     doneWalk() {
+      console.log(this.getFirstAreaName, '281')
       // 백엔드로 정보 보내기 
       this.doneWalkInApi({
         peid: "petpetpet1",
