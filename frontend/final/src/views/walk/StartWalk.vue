@@ -75,6 +75,7 @@
   </div>
 </template>
 
+
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 
@@ -86,7 +87,7 @@ export default {
       mapContainer: '',
       mapOption: '',
       map: {},
-      startArea: '장덕동',
+      startAddress: '',
       // 시간 
       start: '', 
       end: '', 
@@ -109,7 +110,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getNowTab', ])
+    ...mapGetters(['getNowTab', 'getMyPath', 'getFirstAreaName'])
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -135,7 +136,7 @@ export default {
     
   },
   methods: {
-    ...mapMutations(['setNowTab', 'setNowLon', 'setNowLat','setMyPath' ]), 
+    ...mapMutations(['setNowTab', 'setNowLon', 'setNowLat','setMyPath','setFirstAreaName' ]), 
     ...mapActions(['doneWalkInApi']),
     // 지도 첫 화면 로드 
     initMap() {
@@ -148,28 +149,33 @@ export default {
       };
 
     this.map = new kakao.maps.Map(this.mapContainer, this.mapOption); // 지도를 생성합니다
-
+    
     // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
     if (navigator.geolocation) {
-      var tmp_this = this
+      var t = this
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
       navigator.geolocation.getCurrentPosition(function(position) { 
         var lat = position.coords.latitude, // 위도
             lon = position.coords.longitude; // 경도
         
-        
-        // 시작 위치 갱신 
-        tmp_this.lat = lat 
-        tmp_this.lon = lon 
-        tmp_this.linePath.push(new kakao.maps.LatLng(lat, lon))
+        // 첫 주소 
+        if (t.getFirstAreaName === ''){
+          // 시작 주소 넘겨주기 
+          t.startAddress = t.getAddress(lon, lat) 
+          console.log(t.startAddress)
+        }
 
+           
+        // 다시 들어올 떄마다 경로 받기 
+        t.linePath = t.getMyPath
+        t.linePath.push(new kakao.maps.LatLng(lat, lon))
+        
         var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
             message = '<div style="padding:5px;">산책 시작.</div>'; // 인포윈도우에 표시될 내용입니다
         
        // 마커와 인포윈도우를 표시합니다
         displayMarker(locPosition, message);
-        
-
+  
         });
     } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
         var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
@@ -209,6 +215,23 @@ export default {
       // 지도 중심좌표를 접속위치로 변경합니다
       map.setCenter(locPosition);   
       }  
+    },
+    // 위치 -> 주소 
+    getAddress(lon, lat){
+      let detail = ''
+      const callback =  (result, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        detail = result[0].address.address_name
+      } 
+      }
+      //주소-좌표 변환 객체 생성 
+      var geocoder = new kakao.maps.services.Geocoder();
+      function searchDetailAddrFromCoords(lon, lat, callback) {
+        // 좌표로 법정동 상세 주소 정보를 요청합니다
+        geocoder.coord2Address(lon, lat, callback);
+      }
+      searchDetailAddrFromCoords(lon, lat, callback)
+
     },
     // 시간 가져오기 
     getTime() {
@@ -266,7 +289,7 @@ export default {
         w_like: this.likecnt,
         w_time: (this.totalH * 60) + this.totalM,
         wid: 0,
-        p_location: '장덕동',
+        p_location: this.startAddress,
       }).then(()=> {
         // 실시간 정보 가져오기죽이기 
         clearInterval(this.walkLoc)
@@ -282,9 +305,8 @@ export default {
       
     },
 
-    // 멍플레이스로 보내기 
+    // 멍플레이스 
     goToHotPlace() {
-      // 핫플레이스 리스트 가져와서 보여주기 
     },
     
     // 메인으로 보내기 
@@ -297,7 +319,6 @@ export default {
     // 움직이는 경로 표시하기 
     navigation(){
       this.walkLoc = setInterval(this.getLocation, 10000)
-      
     },
     
     // 위치 정보 기반 선 표시 
@@ -313,7 +334,7 @@ export default {
       linePath.push(new kakao.maps.LatLng(lat, lon))
 
       // 실시간 위치 정보 vuex로 보내기 
-      t.setMyPath.push(new kakao.maps.LatLng(lat, lon))
+      t.setMyPath(new kakao.maps.LatLng(lat, lon))
 
       // 선 연결 
       var polyline = new kakao.maps.Polyline({
