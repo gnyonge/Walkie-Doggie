@@ -7,5 +7,7 @@ import com.ssafy.pet.dto.UserDto;
 @Mapper
 public interface LoginDao {
 	UserDto check_email(String email);
+	
+	int insert_kakao(UserDto user);
 
 }

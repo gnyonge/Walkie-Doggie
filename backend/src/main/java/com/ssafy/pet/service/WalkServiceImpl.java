@@ -20,8 +20,8 @@ public class WalkServiceImpl implements WalkService{
     }
 
     @Override
-    public int saveRoute(Map<String, Object> map) {
-        return wdao.saveRoute(map);
+    public Map<String, Object> getLikeInfo(Integer lid) {
+        return wdao.getLikeInfo(lid);
     }
 
 }

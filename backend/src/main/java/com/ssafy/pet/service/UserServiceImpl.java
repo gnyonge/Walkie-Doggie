@@ -61,9 +61,9 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public UserDto checkPass(UserDto user) {
+	public UserDto checkPass(String uid) {
 		// TODO Auto-generated method stub
-		return udao.checkPass(user);
+		return udao.checkPass(uid);
 	}
 	@Override
 	public int changePass(String uid, String pass) {
@@ -96,6 +96,12 @@ public class UserServiceImpl implements UserService{
 	public int updateFlag(String email) {
 		// TODO Auto-generated method stub
 		return udao.updateFlag(email);
+	}
+	
+	@Override
+	public EmailAuthDto checkEmailAuth(String email) {
+		// TODO Auto-generated method stub
+		return udao.checkEmailAuth(email);
 	}
 
 

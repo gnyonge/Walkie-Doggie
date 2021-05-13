@@ -36,13 +36,13 @@ public class KakaoUtil {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=1bf3f0e4ba92eceb2527659918098b46");
-            sb.append("&redirect_uri=http://localhost:8888/login/kakao");
+            sb.append("&redirect_uri=http://localhost:8888/pet/login/kakao");
             sb.append("&code=" + authorize_code);
             sb.append("&client_secret=HVjE2cjBAouB82GQXNhYSeZkc0M07dD8");
             bw.write(sb.toString());
             bw.flush();
             
-            //    결과 코드가 200이라면 성공
+            //    결과 코드 확인 // 결과 코드가 200이라면 성공
             int responseCode = conn.getResponseCode();
             System.out.println("responseCode : " + responseCode);
  
@@ -51,7 +51,7 @@ public class KakaoUtil {
             String line = "";
             String result = "";
             
-            while ((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {  //결과 br에 담아서 한줄씩 읽어오기
                 result += line;
             }
             System.out.println("response body : " + result);
@@ -64,6 +64,7 @@ public class KakaoUtil {
             refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
             
             System.out.println("access_token : " + access_Token);
+            //refrash Token
             System.out.println("refresh_token : " + refresh_Token);
             
             br.close();
@@ -76,8 +77,7 @@ public class KakaoUtil {
         return access_Token;
     }
 	
-	public Map<String, Object> getUserInfo (String access_Token) {
-	    
+	public Map<String, Object> getUserInfo (String access_Token) {    
 	    //    요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
 	    Map<String, Object> userInfo = new HashMap<>();
 	    String reqURL = "https://kapi.kakao.com/v2/user/me";

@@ -38,6 +38,7 @@ import com.ssafy.pet.util.JWTUtil;
 import com.ssafy.pet.util.MailUtils;
 import com.ssafy.pet.util.S3Util;
 import com.ssafy.pet.util.SecurityUtil;
+import com.ssafy.pet.util.UidUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -65,22 +66,10 @@ public class UserController {
 	
 	@Autowired
 	private SecurityUtil securityutil;
-
-	private String MakeUid() {
-		StringBuffer made = new StringBuffer();
-
-		for (int i = 0; i < 6; i++) {
-			char a = (char) ((Math.random() * 26) + 97); // 소문자
-			int ann = (int) (Math.random() * 9) + 1; // 숫자
-			made.append(a);
-			made.append(ann);
-		}
-
-		char b = (char) ((Math.random() * 26) + 97);
-		made.append(b);
-		String line = made.toString();
-		return line;
-	}
+	
+	@Autowired
+	private UidUtil uidutil;
+	//컨트롤러를 찾아서
 
 	// 회원가입하기
 	@ApiOperation(value = "User Signup", notes = "자체로그인 회원가입")
@@ -91,20 +80,31 @@ public class UserController {
 
 		try {
 			logger.info("=====> 자체 회원가입 시작");
-			user.setUid(MakeUid());
-
-			int result = userservice.signup(user);
-
-			if (result == 1) {
-				logger.info("=====> 자체회원가입 가능");
-				resultMap.put("message", "회원가입에 성공하였습니다.");
-				status = HttpStatus.ACCEPTED;
-			} else {
-				logger.info("=====> 자체 회원가입 실패");
-				resultMap.put("message", "회원가입에 실패하였습니다.");
-				status = HttpStatus.NOT_FOUND;
+			//이메일 인증이 끝난애인지 확인해보쟈! 
+			EmailAuthDto authdto = userservice.checkEmailAuth(user.getU_email());
+			
+			//인증메일을 보낸 친구인지 인증이 처리된 친구인지
+			if(authdto!=null && authdto.getFlag()==1) { 
+				user.setUid(uidutil.MakeUid());
+				
+				String pass = securityutil.bytesToHex(securityutil.sha256(user.getU_password()));
+				user.setU_password(pass);
+				
+				int result = userservice.signup(user);
+				
+				if (result == 1) {
+					logger.info("=====> 자체회원가입 가능");
+					resultMap.put("message", "회원가입에 성공하였습니다.");
+					status = HttpStatus.ACCEPTED;
+				} else {
+					logger.info("=====> 자체 회원가입 실패");
+					resultMap.put("message", "회원가입에 실패하였습니다.");
+					status = HttpStatus.NOT_FOUND;
+				}
+			}else { //null일때는 인증메일을 보내지도 않은 친구 flag=0일땐 인증을 확인하지않은 친구
+				resultMap.put("message", "이메일 인증 확인해주십시오.");
+				status = HttpStatus.ACCEPTED;	
 			}
-
 		} catch (Exception e) {
 			// TODO: handle exception
 			logger.error("자체 회원가입 실패 : {}", e);
@@ -158,6 +158,7 @@ public class UserController {
 		HttpStatus status = null;
 
 		try {
+			System.out.println("hiru : "+user);
 			String mail = user.getEmail();
 
 			logger.info("=====> 이메일 중복 체크");
@@ -169,7 +170,7 @@ public class UserController {
 				EmailAuthDto auth = userservice.checkAuth(mail);//이거왜한거야? 궁금하네 망할  아  밑에 있꾸나
 				//인증메일은 받은게 처음인지 여러번 누른애인지 확인하는거
 				
-				String code = MakeUid();
+				String code = uidutil.MakeUid();
 				System.out.println("메일 코드 : "+code);
 				
 				// 이제 메일을 보내봅시다
@@ -307,6 +308,7 @@ public class UserController {
 	}
 	
 	// 비밀번호 확인
+	//uid password 필수
 	@ApiOperation(value = "Check Password", notes = "비밀번호 확인")
 	@PostMapping("/check/pass")//user/address
 	public ResponseEntity<Map<String, Object>> CheckPass(@RequestBody UserDto user) {
@@ -315,8 +317,16 @@ public class UserController {
 
 		try {
 			logger.info("=====> 비밀번호 맞는지 확인하기");
-			boolean result = checkPass(user);
-			resultMap.put("message", result);
+			String pass = securityutil.bytesToHex(securityutil.sha256(user.getU_password()));
+			user.setU_password(pass);
+			System.out.println(user.getU_password());
+			
+			UserDto check = userservice.checkPass(user.getUid()); 
+			if(check.getU_password().equals(pass)) {
+				resultMap.put("message", true);
+			}else {
+				resultMap.put("message", false);	
+			}
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -326,17 +336,8 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
-	public boolean checkPass(UserDto user) {
-		UserDto check = userservice.checkPass(user);
-		boolean flag = false;
-		if(check!=null) {
-			flag = true;
-		}
-		return flag;
-	}
-	
 	// 비밀번호 변경
+	//uid, password 필수
 	@ApiOperation(value = "Change Password", notes = "비밀번호 변경")
 	@PutMapping("/change/pass")//user/address
 	public ResponseEntity<Map<String, Object>> changePass(@RequestParam UserDto user,@RequestParam String newPass) {
@@ -345,19 +346,22 @@ public class UserController {
 
 		try {
 			logger.info("=====> 비밀번호 변경하기");
-			boolean result = checkPass(user);
-			if(result==true) {
+			
+			String pass = securityutil.bytesToHex(securityutil.sha256(user.getU_password()));
+			String newOne = securityutil.bytesToHex(securityutil.sha256(newPass));
+			
+			UserDto check = userservice.checkPass(user.getUid());
+			
+			if(check.getU_password().equals(pass)) {
 				//비밀번호 변경가능
-				int res = userservice.changePass(user.getUid(), newPass);
+				int res = userservice.changePass(user.getUid(), newOne);
 				if(res>=1) {
 					resultMap.put("message", "비밀번호 변경에 성공하였습니다.");
 				}else {
 					resultMap.put("message", "비밀번호 변경에 실패하였습니다.");
-				}
+				}				
 			}else {
-				//비밀번호가 맞지 않아서 변경 불가
 				resultMap.put("message", "비밀번호가 맞지않습니다");
-
 			}
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
@@ -378,6 +382,8 @@ public class UserController {
 
 		try {
 			logger.info("=====> 회원탈퇴");
+			String pass = securityutil.bytesToHex(securityutil.sha256(user.getU_password()));
+			user.setU_password(pass);
 			
 			int result = userservice.leaveUser(user.getUid(), user.getU_password());
 			boolean flag = false;

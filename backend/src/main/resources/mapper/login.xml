@@ -7,6 +7,11 @@
 	<select id="check_email" parameterType="String" resultType="UserDto">
 		select * from User where u_email=#{email}
 	</select>
+	
+	<insert id="insert_kakao" parameterType="UserDto">
+		insert into User(uid, u_email, u_nickname)
+		values(#{uid}, #{u_email}, #{u_nickname})
+	</insert>
 
 	
 </mapper>
