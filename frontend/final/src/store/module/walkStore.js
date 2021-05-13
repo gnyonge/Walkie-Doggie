@@ -13,6 +13,8 @@ const state = {
     // 지역설정 관련
     startArea: '', 
     areaName: '', 
+    // 포스팅 후 
+    postingWid: [],
   },
   // 이동 경로 
   path: [],
@@ -41,6 +43,9 @@ const getters = {
   getMyPath(state){
     console.log(state.path)
     return state.path
+  },
+  getPostingWid(state){
+    return state.like.postingWid
   },
 };
 const mutations = {
@@ -71,8 +76,13 @@ const mutations = {
   setMyPath(state, data){
     state.path.push(data)
   },
+  // 경로 삭제
   deleteMyPath(state){
     state.path = []
+  },
+  // posting한 게시글 id 
+  setPostingWid(state, data){
+    state.like.postingWid.push(data)
   },
  
 };
@@ -93,12 +103,12 @@ const actions = {
   sendNowPostInApi(context, params){
     console.log(params)
     return rscApi.post('place/likePlace', params)
-      .then((res) =>{
+      .then(() =>{
         console.log('좋아요 포스팅 성공')
-        console.log(res)
+        // context.commit('setPostingWid', res.data.wid)
       }).catch((error) =>{
-        console.log('포스팅 실패')
-        return error
+        console.log(error, '포스팅 실패')
+        
       })
   },
   // 산책 종료 

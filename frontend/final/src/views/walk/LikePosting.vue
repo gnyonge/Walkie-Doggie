@@ -1,43 +1,48 @@
 <template>
   <div>
-    <div id="mainBox" style="text-align: center;">
-      <!-- 사진받기 -->
-      <v-img
-      id = "photoimg"
-      height="330"
-      max-height="330"
-      :src = photo_url>
-      </v-img>
-      <input 
-        type="file" 
-        name="cameraFile" 
-        id="camera" 
-        accept="image/*" 
-        capture="camera"
-        @click= getPhoto
-        required>
-      <br>
-      <!-- <v-btn  id="button">
-        사진 업로드
-      </v-btn> -->
-      <!-- 사용자 의견 선택옵션 -->
+    <div id="mainBox" >
       <div>
-        <div>왜 좋은가요?</div>
+        <v-icon @click="goback">mdi-arrow-left</v-icon>
+      </div>
+      <div style="text-align: center;">
+        <!-- 사진받기 -->
+        <v-img
+        id = "photoimg"
+        height="330"
+        max-height="330"
+        :src = photo_url>
+        </v-img>
+        <input 
+          type="file" 
+          name="cameraFile" 
+          id="camera" 
+          accept="image/*" 
+          capture="camera"
+          @click= getPhoto
+          required>
+        <br>
+        <!-- <v-btn  id="button">
+          사진 업로드
+        </v-btn> -->
+        <!-- 사용자 의견 선택옵션 -->
         <div>
-          <v-btn text id="likeBox" @click="selectThis(option.name, idx)" :class="{clicked: optionValue == option.name}"
-          v-for="option, idx in selectOptions" :key="idx">
-            {{option.name}}
+          <div>왜 좋은가요?</div>
+          <div>
+            <v-btn text id="likeBox" @click="selectThis(option.name, idx)" :class="{clicked: optionValue == option.name}"
+            v-for="option, idx in selectOptions" :key="idx">
+              {{option.name}}
+            </v-btn>
+          </div>
+        </div>
+        <div>
+          <v-btn
+            class="mt-3"
+            large
+            id="mainBtn"
+            @click="posting">
+            입력완료
           </v-btn>
         </div>
-      </div>
-      <div>
-        <v-btn
-          class="mt-3"
-          large
-          id="mainBtn"
-          @click="posting">
-          입력완료
-        </v-btn>
       </div>
     </div>
   </div>
@@ -51,7 +56,7 @@ export default {
   data() {
     return {
       photo_url: '', 
-      optionValue: 0,
+      optionValue: -1,
       selectOptions: [
         {idx: 0, name: '사진이 잘 나와요!'},
         {idx: 1, name: '휴식 공간이 있어요!'},
@@ -95,26 +100,38 @@ export default {
     },
     // 사진, 옵션 정보 백엔드 정보 전송 
     posting(){
-      
-      this.sendNowPostInApi({
-        p_latitude: this.getNowLat,
-        p_longtitude: this.getNowLon,
-        peid: "petpetpetpet1",
-        l_image: this.getTempPhotoURL,
-        l_desc: this.optionValue,
-        p_location: this.getAreaName
-      }).then(() =>{
-        // 새로운 정보를 받을 수 있도록 값 초기화 
-        this.setNowLat(0)
-        this.setNowLon(0)
-        this.setTempPhotoURL('')
-        console.log('백엔드 전송 성공')
-      }).catch((error) =>{
-        console.log(error)
-      })
+      if(this.photo_url === ''){
+        alert('사진을 업로드 해 주세요!')
+      }else if (this.optionValue === -1){
+        alert('선정이유를 선택해 주세요!')
+      } else {
+        this.sendNowPostInApi({
+          p_latitude: this.getNowLat,
+          p_longtitude: this.getNowLon,
+          peid: "petpetpetpet1",
+          l_image: this.getTempPhotoURL,
+          l_desc: this.optionValue,
+          p_location: this.getAreaName
+        }).then(() =>{
+          this.deleteAll
+          this.$router.push('/startwalk')
+          console.log('백엔드 전송 성공')
+        }).catch((error) =>{
+          console.log(error)
+        })
+        }
+      },
+
+    goback(){
+      this.deleteAll
       this.$router.push('/startwalk')
     },
-    
+    deleteAll(){
+      // 새로운 정보를 받을 수 있도록 값 초기화 
+      this.setNowLat(0)
+      this.setNowLon(0)
+      this.setTempPhotoURL('')
+    },
   },
 }
 </script>
