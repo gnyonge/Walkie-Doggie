@@ -152,23 +152,25 @@ export default {
     
     // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
     if (navigator.geolocation) {
-      var t = this
+      
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-      navigator.geolocation.getCurrentPosition(function(position) { 
+      navigator.geolocation.getCurrentPosition((position)=> { 
         var lat = position.coords.latitude, // 위도
             lon = position.coords.longitude; // 경도
         
         // 첫 주소 
-        if (t.getFirstAreaName === ''){
+        if (this.getFirstAreaName === ''){
           // 시작 주소 넘겨주기 
-          t.startAddress = t.getAddress(lon, lat) 
-          console.log(t.startAddress)
+          this.getAddress(lon, lat).then((res)=>{
+            console.log(res)
+           })
+          console.log(this.startAddress, 'getAddress 호출 후')
         }
 
            
         // 다시 들어올 떄마다 경로 받기 
-        t.linePath = t.getMyPath
-        t.linePath.push(new kakao.maps.LatLng(lat, lon))
+        this.linePath = this.getMyPath
+        this.linePath.push(new kakao.maps.LatLng(lat, lon))
         
         var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
             message = '<div style="padding:5px;">산책 시작.</div>'; // 인포윈도우에 표시될 내용입니다
@@ -217,11 +219,12 @@ export default {
       }  
     },
     // 위치 -> 주소 
-    getAddress(lon, lat){
-      let detail = ''
+    async getAddress(lon, lat){
       const callback =  (result, status) => {
       if (status === kakao.maps.services.Status.OK) {
-        detail = result[0].address.address_name
+        var detail = result[0].address.address_name
+        this.startAddress = detail
+        console.log(this.startAddress, 'getAddress내부')
       } 
       }
       //주소-좌표 변환 객체 생성 
@@ -230,7 +233,8 @@ export default {
         // 좌표로 법정동 상세 주소 정보를 요청합니다
         geocoder.coord2Address(lon, lat, callback);
       }
-      searchDetailAddrFromCoords(lon, lat, callback)
+      await searchDetailAddrFromCoords(lon, lat, callback)
+      return this.startAddress
 
     },
     // 시간 가져오기 
