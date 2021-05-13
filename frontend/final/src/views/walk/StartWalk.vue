@@ -139,7 +139,7 @@ export default {
     
   },
   methods: {
-    ...mapMutations(['setNowTab', 'setNowLon', 'setNowLat','setMyPath','setFirstAreaName','setAreaName', 'deleteMyPath' ]), 
+    ...mapMutations(['setNowTab', 'setNowLon', 'setNowLat','setMyPath','setFirstAreaName','setAreaName', 'deleteMyPath','setTempPhotoURL' ]), 
     ...mapActions(['doneWalkInApi']),
     // 지도 첫 화면 로드 
     initMap() {
@@ -163,8 +163,7 @@ export default {
             lon = position.coords.longitude; // 경도
         
         // 첫위치 위도 -> 주소 
-        // this.getAddress(lon, lat)
-        this.getAddress(126.8045334656282,35.180609537422264)
+        this.getAddress(lon, lat)
         console.log('init')
 
         // 다시 들어올 떄마다 경로 받기 
@@ -226,16 +225,12 @@ export default {
       const callback =  (result, status) => {
         console.log(this.getFirstAreaName)
         if (status === kakao.maps.services.Status.OK) {
-          var detail = result[0].address.address_name
-          console.log(detail)
-          console.log('detail아래')
+          var address = result[0].address.address_name
+          var detail = address.split(' ')
           if (this.getFirstAreaName === '') {
-            console.log(detail, '123213')
-            console.log('첫 장소 받기 성공')
-            this.setFirstAreaName(detail)
+            this.setFirstAreaName(detail[2])
           }else {
-            console.log('첫 장소 아님')
-            this.setAreaName(detail)
+            this.setAreaName(detail[2])
           }
         } 
       }
@@ -295,7 +290,7 @@ export default {
     },
     // 산책종료
     doneWalk() {
-      console.log(this.getFirstAreaName, '281')
+      this.end = this.getTime()
       // 백엔드로 정보 보내기 
       this.doneWalkInApi({
         peid: "petpetpet1",
@@ -305,16 +300,18 @@ export default {
         w_like: this.likecnt,
         w_time: (this.totalH * 60) + this.totalM,
         wid: 0,
-        p_location: this.startAddress,
+        p_location: this.getFirstAreaName,
       }).then(()=> {
         // 실시간 정보 가져오기죽이기 
         clearInterval(this.walkLoc)
-        this.end = this.getTime()
         this.calTime()
         // 저장되어 있던 정보도 지우기 
-        this.setMyPath(Array)
+        this.deleteMyPath()
         this.setNowLon(0)
         this.setNowLat(0)
+        this.setFirstAreaName('')
+        this.setTempPhotoURL('')
+        this.setAreaName('')
       }).catch((error)=> {
         console.log(error)
       })
@@ -329,7 +326,6 @@ export default {
     gotoMain(){
       // 하단바 색상 변경 
       this.setNowTab(0)
-      this.setFirstAreaName('')
       this.$router.push('/calendar')
     },
 

@@ -103,6 +103,7 @@ const actions = {
   },
   // 산책 종료 
   doneWalkInApi(context, params){
+    console.log(params)
     return rscApi.post('walk/insert', params)
       .then((res) => {
         console.log(res)
