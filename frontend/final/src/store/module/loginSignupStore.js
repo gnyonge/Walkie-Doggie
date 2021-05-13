@@ -1,10 +1,16 @@
 import { rscApi } from '@/services/api';
 const state = {
+  // password: '',
 };
 const getters = {
+  // getPassword(state) {
+  //   return state.password
+  // },
 };
 const mutations = {
-  
+  // setPassword(state,password) {
+  //   state.password = password
+  // },
 };
 const actions = {
   // 로그인 

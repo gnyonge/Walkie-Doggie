@@ -325,7 +325,7 @@ public class PlaceController {
      * @param : p_location, sort(new,popular)
      * 
      * @return : message,
-     * postList(lid, uid, l_like, l_image, l_desc, l_date)
+     * postList(lid, p_latitude, p_longtitude, l_image, l_desc, l_date, pe_name) 
      */
 	@ApiOperation(value = "HotPlace postList", notes = "핫플레이스 게시글 리스트")
     @GetMapping("/list/{p_location}")

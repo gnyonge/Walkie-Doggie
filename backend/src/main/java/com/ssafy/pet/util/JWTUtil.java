@@ -35,7 +35,7 @@ public class JWTUtil {
 		jwtBuilder.setSubject("doggie_token") // 토큰의 제목 설정
 				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * EXPIRE_MINUTES)) // 유효기간
 				.claim("user", user) // 정보 저장
-				.claim("message", "환영합니다. " + user.getU_nickname()); // 담고 싶은 정보 설정.
+				.claim("message", "환영합니다. "); // 담고 싶은 정보 설정.
 
 		// signature 설정 - secret key를 이용한 암호화
 		jwtBuilder.signWith(SignatureAlgorithm.HS256, this.generateKey());
@@ -96,7 +96,6 @@ public class JWTUtil {
 		logger.info("value : {}", value);
 
 		return (String) value.get("uid");
-		
 	}
 
 }
