@@ -39,7 +39,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Calendar
+    component: LoginMain,
   },
   {
     path: '/calendar',

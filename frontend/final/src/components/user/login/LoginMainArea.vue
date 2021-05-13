@@ -1,21 +1,16 @@
-	
-오후 2:41
-
-
-
 <template>
   <div class="logo-center">
     <div class="login-btn-group">  
       <!-- 1. 서비스로고 -->
-      <div class="logo mt-10">
+      <div class="logo" style="margin-top: 60px">
         <v-img src="../../../assets/images/서비스로고.png" class="logo-img" alt=""></v-img>
       </div>
       <!-- 2. 로그인 회원가입 버튼 --> 
       <div class="login-btn-pd">
-        <router-link to="/login"><v-btn class="login-btn" id="mainBtn" style="margin-top: 30px;margin-bottom:40px;">로그인</v-btn></router-link>
+        <v-btn class="login-btn" id="mainBtn" style="margin-top: 30px;margin-bottom:40px; width: 180px; height: 60px; border-radius: 50px; font-size: 25px" @click="goto('/login')">로그인</v-btn>
       </div>
       <div class="signup-btn-pd">
-        <router-link to="/signup"><v-btn class="signup-btn" id="mainBtn">회원가입</v-btn></router-link> 
+        <v-btn class="signup-btn" id="mainBtn" style="width: 180px; height: 60px; border-radius: 50px; font-size: 25px" @click="goto('/signup')">회원가입</v-btn>
       </div>
     </div>
   </div>
@@ -23,19 +18,19 @@
 
 <script>
 export default {
-  
+  methods: {
+    goto(path) {
+      this.$router.push(path)
+    }
+  },
 }
 </script>
 <style scoped>
 .logo {
-  width: 200px;
-  height: 200px; 
+  width: 250px;
+  height: 250px; 
   border-radius: 70%;
   overflow: hidden;
-  /* margin-top: ; */
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
   
 }
 .logo-img {

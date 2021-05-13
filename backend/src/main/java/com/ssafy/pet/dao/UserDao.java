@@ -20,10 +20,12 @@ public interface UserDao {
 	List<PetDto> petInfo(String uid);
 	int setAddress(Map<String, Object> map);
 	int leaveUser(Map<String, Object> map);
-	UserDto checkPass(UserDto user);
+	UserDto checkPass(String uid);
 	int changePass(Map<String, Object> map);
 	EmailAuthDto checkAuth(String email);
 	int insertAuth(EmailAuthDto temp);
 	int updateAuth(EmailAuthDto temp);
 	int updateFlag(String email);
+	
+	EmailAuthDto checkEmailAuth(String email);
 }

@@ -23,37 +23,36 @@
 
     <!-- 일지 썼을 때-->
     <div v-else>
-      <div id="contentBox">
+      <div id="contentBox" v-if="photo_url">
         <v-img
           id="diaryBox"
           width="100%"
-          src="@/assets/diarydogs.jpg"
+          height="100%"
+          :src="photo_url"
         ></v-img>
       </div>
       <div class="d-flex justify-center" id="contentBox">
         <div class="mt-2 font-weight-bold" style="font-size: 22px;">{{getPrettyDate}}</div>
       </div>
       <v-divider></v-divider>
-      <div id="contentBox">{{getMyDiaryObject.Diary.d_memo}}</div>
-      <div v-if="getMyDiaryObject.Diary.d_special">
-        <v-divider></v-divider>
+      <div id="contentBox">{{myDiary.Diary.d_memo}}</div>
+      <div v-if="myDiary.Diary.d_special">
         <div id="contentBox" class="font-weight-bold" style="font-size: 17px;">특이사항</div>
         <div id="contentBox">
-          기침을 한다 좀 더 지켜보자!
+          {{myDiary.Diary.d_special}}
         </div>
       </div>
-      <div v-if="getMyDiaryObject.Health_list.length != 0">
-        <v-divider></v-divider>
+      <div v-if="myDiary.Health_list.length != 0">
         <div id="contentBox" class="font-weight-bold" style="font-size: 17px;">건강사항</div>
         <div id="contentBox">
           <v-chip
             id="chips"
-            v-for="(hth, idx) in healthArray"
+            v-for="(hth, idx) in myDiary.Health_list"
             :key="idx"
             class="mx-1 my-1"
             color="#BAF1E4"
           >
-            {{ hth }}
+            {{ hth.h_content }}
           </v-chip>
         </div>
       </div>
@@ -98,15 +97,15 @@ export default {
       multiLine: true,
       snackbar: false,
       diary: false,
-      healthArray: ['예방접종 1차', '심장사상충 약'],
+      myDiary: {},
+      photo_url: false
     }
   },
   created() {
-    this.getTodayDiaryInApi({
-      date: this.getSelectedDate,
-      peid: 'petpetpetpet1'}).then((res) => {
-        console.log(res.data)
-      })
+    this.myDiary = this.getMyDiaryObject
+    if (this.getMyDiaryObject.Diary.d_img) {
+      this.photo_url = this.getMyDiaryObject.Diary.d_img
+    }
   },
   computed: {
       ...mapGetters(['getSelectedDate', 'getMyDiaryObject', 'getPrettyDate'])
@@ -117,19 +116,51 @@ export default {
       this.$router.push(path)
     },
     deleteDiary() {
-      this.deleteTodayDiaryInApi({
-        d_date: this.getSelectedDate, 
-        d_flag: 0,
-        d_img: "string",
-        d_memo: this.getMyDiaryObject.Diary.d_memo,
-        d_special: this.getMyDiaryObject.Diary.d_special,
-        d_walk: 0,
-        peid: "petpetpetpet1",
-      }).then((res) => {
-        console.log(res)
-      })
-      this.snackbar = false
-      this.$router.push('/calendar')
+      const formData = new FormData()
+      let diary = {}
+      if (!this.photo_url) {
+        diary = {
+            d_date: this.getSelectedDate,
+            d_flag: 0,
+            d_img: '',
+            d_memo: this.diaryContent,
+            d_special: this.memoContent,
+            d_walk: 0,
+            peid: "petpetpetpet1"
+          }
+      } else {
+        diary = {
+            d_date: this.getSelectedDate,
+            d_flag: 0,
+            d_img: this.photo_url,
+            d_memo: this.diaryContent,
+            d_special: this.memoContent,
+            d_walk: 0,
+            peid: "petpetpetpet1"
+          }
+      }
+      let health_list = []
+          for (let i in this.healthArray) {
+            health_list.push({
+              h_content: this.healthArray[i],
+              h_date: this.getSelectedDate,
+              h_flag: 0,
+              hid: 0,
+              peid: "petpetpetpet1"
+            })
+          }
+          formData.append(
+            'diary',
+            new Blob([JSON.stringify(diary)], { type: 'application/json' })
+          )
+          formData.append(
+            'health_list',
+            new Blob([JSON.stringify(health_list)], { type: 'application/json' })
+          )
+          this.deleteTodayDiaryInApi(formData).then(() => {
+            this.snackbar = false
+            this.$router.push('/calendar')
+          })
     }
   }
 }
@@ -153,5 +184,17 @@ export default {
   box-shadow: 5px 5px 5px #E5E5E5;
   padding: 20px;
 }
-
+.filebox label {
+  display: inline-block; 
+  padding: .5em .75em; 
+  color: #323232; 
+  font-size: inherit; 
+  line-height: normal; 
+  vertical-align: middle; 
+  background-color: #BAF1E4; 
+  cursor: pointer; 
+  border: 1px solid #ebebeb; 
+  border-bottom-color: #e2e2e2; 
+  border-radius: .25em; 
+  } 
 </style>

@@ -24,7 +24,6 @@
       <div>
         <div>왜 좋은가요?</div>
         <div>
-          <div v-if="optionValue">"{{ optionValue }}"</div>
           <v-btn text id="likeBox" @click="selectThis(option.name, idx)" :class="{clicked: optionValue == option.name}"
           v-for="option, idx in selectOptions" :key="idx">
             {{option.name}}
@@ -67,50 +66,53 @@ export default {
     camera.click()
   },
   computed: {
-      ...mapGetters(['getNowLat', 'getNowLon', 'getAreaName', 'getTempPhotoURL'])
+      ...mapGetters(['getNowLat', 'getNowLon', 'getAreaName', 'getTempPhotoURL',])
   },
   methods:{
-    ...mapMutations([]),
-    ...mapActions(['sendNowPost', 'makeTempPhotoUInApi', 'sendNowPostInApi']),
+    ...mapMutations(['setNowLat', 'setNowLon', 'setTempPhotoURL']),
+    ...mapActions(['sendNowPost', 'makeTempPhotoUrlInApi', 'sendNowPostInApi', ]),
     selectThis(name, idx) {
       this.optionValue = name
       this.isClicked = idx
     },
+    //사용자 업로드 사진 주소 백엔드 전송 후 보여주기 
+    getPhoto(){
+      var camera = document.getElementById('camera')
+      var t = this
+      camera.addEventListener('change', function(e) {
+        const form = new FormData()
+        var file = e.target.files[0]
+        form.append('file', file)
+        t.makeTempPhotoUrlInApi(
+          form
+        ).then(()=> {
+          t.photo_url = t.getTempPhotoURL
+        }).catch((error)=>{
+          console.log(error)
+        })
+        
+      })
+    },
     // 사진, 옵션 정보 백엔드 정보 전송 
     posting(){
-      this.makeTempPhotoUInApi({
+      
+      this.sendNowPostInApi({
         p_latitude: this.getNowLat,
-        p_longtitude: this.getNowLat,
-        peid: "string",
+        p_longtitude: this.getNowLon,
+        peid: "petpetpetpet1",
         l_image: this.getTempPhotoURL,
-        l_desc: "string",
+        l_desc: this.optionValue,
         p_location: this.getAreaName
-      }).then((res) =>{
-        console.log(res, '백엔드 전송 성공')
+      }).then(() =>{
+        // 새로운 정보를 받을 수 있도록 값 초기화 
+        this.setNowLat(0)
+        this.setNowLon(0)
+        this.setTempPhotoURL('')
+        console.log('백엔드 전송 성공')
       }).catch((error) =>{
         console.log(error)
       })
       this.$router.push('/startwalk')
-    },
-    //사용자 업로드 사진 주소 백엔드 전송 후 보여주기 
-    getPhoto(){
-      var camera = document.getElementById('camera')
-      
-      camera.addEventListener('change', function(e) {
-        // console.log(e.target.files[0])
-        var file = e.target.files[0]
-        this.makeTempPhotoUInApi({
-          file: file
-        }).then(()=> {
-          console.log('업로드한 사진 미리보기 성공')
-        }).catch((error)=>{
-          console.log(error)
-        })
-        console.log(URL.createObjectURL(file))
-        // 백엔드 서버에서 이미지 주소 받아서 넣기 
-
-        this.photo_url = file
-      })
     },
     
   },

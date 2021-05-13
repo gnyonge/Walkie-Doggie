@@ -1,53 +1,68 @@
 import { rscApi } from '@/services/api';
 
 const state = {
-  // 멍플레이스 
-  selectedItem: null ,
-  // 좋아요 포스팅 
-  nowLat: 0,
-  nowLon: 0,
-  tempPhotoUrl: '',
-  areaName: '장덕동', 
-  
+  dog: {
+    // 멍플레이스 
+    selectedItem: null ,
+  },
+  like: {
+    // 좋아요 포스팅 
+    nowLat: 0,
+    nowLon: 0,
+    tempPhotoUrl: '없냐?',
+    areaName: '장덕동', 
+  },
+  // 이동 경로 
+  path: [],
 };
 const getters = {
+  // 멍플레이스 
   getSelectedItem(state) {
-    return state.selectedItem
+    return state.dog.selectedItem
   },
+  // 좋아요 포스팅 
   getNowLat(state){
-    return state.nowLat
+    return state.like.nowLat
   },
   getNowLon(state){
-    return state.nowLon
+    return state.like.nowLon
   },
   getTempPhotoURL(state){
-    return state.tempPhotoUrl
+    return state.like.tempPhotoUrl
   },
   getAreaName(state){
-    return state.areaName
+    return state.like.areaName
+  },
+  getMyPath(state){
+    return state.path
   }
 };
 const mutations = {
   // 멍플레이스 
   setSelectedItem(state, data){
-    state.selectedItem = data
+    state.like.selectedItem = data
   },
 
   // 좋아요 포스팅 
   setNowLat(state, data){
-    state.nowLat = data
+    state.like.nowLat = data
   },
   setNowLon(state, data){
-    state.nowLon = data 
+    state.like.nowLon = data 
   },
   // 임시 사진 url 
   setTempPhotoURL(state, data){
-    state.tempPhotoUrl = data 
+    state.like.tempPhotoUrl = data 
   },
   // 지역정보
   setAreaName(state, data){
-    state.areaName = data
-  }
+    state.like.areaName = data
+  },
+  // 내가 간 경로 
+  setMyPath(state, data){
+    state.path.push(data)
+  },
+ 
 };
 const actions = {
   // 멍플레이스 리스트 가져오기
@@ -59,12 +74,12 @@ const actions = {
     return rscApi.post('place/imageUpload', params)
       .then((res)=> {
         // tempPhotoURL 갱신 
-        context.commit('setTempPhotoURL', res.url)
-        console.log(res)
+        context.commit('setTempPhotoURL', res.data.url)
       })
   },
   // 좋아요 사진, 위도, 경도, 의견 백엔드 전송
-  sendNowPostInApi(params){
+  sendNowPostInApi(context, params){
+    console.log(params)
     return rscApi.post('place/likePlace', params)
       .then((res) =>{
         console.log('좋아요 포스팅 성공')
@@ -75,7 +90,7 @@ const actions = {
       })
   },
   // 산책 종료 
-  doneWalkInApi(params){
+  doneWalkInApi(context, params){
     return rscApi.post('walk/insert', params)
       .then((res) => {
         console.log(res)

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -26,9 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.ssafy.pet.dto.DiaryDto;
 import com.ssafy.pet.dto.HealthDto;
 import com.ssafy.pet.service.DiaryService;
@@ -61,45 +57,9 @@ public class DiaryController {
 	@ApiOperation(value = "Diary Insert", notes = "기록일지 등록")
 	@PostMapping("/insert")
 	public ResponseEntity<Map<String, Object>> insert_diary(@RequestPart MultipartFile file,
-			@RequestPart Map<String, Object> diary_map) {
+			@RequestPart DiaryDto diary, @RequestPart List<HealthDto> health_list) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); // 파라미터Map에서 DTO에 들어있지 않는 변수가 있어도 무시함.
-		
-		List<HealthDto> health_list = mapper.convertValue(diary_map.get("health_list"),
-				TypeFactory.defaultInstance().constructCollectionType(List.class, HealthDto.class));
-		
-		DiaryDto diary = new DiaryDto(null, null, null, null, null, 0, 0);
-		
-		String str = diary_map.get("diary").toString();
-		String str1 = str.substring(1, str.length() - 1);
-		System.out.println(str1);
-		String[] strArr = str1.split(",");
-		
-		String[] strDdate = strArr[0].split("=");
-		diary.setD_date(strDdate[1]);
-		
-		String[] strDflag = strArr[1].split("=");
-		int d_flag = Integer.parseInt(strDflag[1]);
-		diary.setD_flag(d_flag);
-		
-		String[] strDimg = strArr[2].split("=");
-		diary.setD_img(strDimg[1]);
-		
-		String[] strDmemo = strArr[3].split("=");
-		diary.setD_memo(strDmemo[1]);
-		
-		String[] strDspecial = strArr[4].split("=");
-		diary.setD_special(strDspecial[1]);
-		
-		String[] strDwalk = strArr[5].split("=");
-		int d_walk = Integer.parseInt(strDwalk[1]);
-		diary.setD_walk(d_walk);
-		
-		String[] strDpeid = strArr[6].split("=");
-		diary.setPeid(strDpeid[1]);
 
 		try {
 			logger.info("=====> 기록일지 등록 시작!");
@@ -122,8 +82,8 @@ public class DiaryController {
 			tempfile.delete();
 
 			diary.setD_img(url);
-			
-			if(health_list != null) {
+
+			if (health_list != null) {
 				for (HealthDto dto : health_list) {
 					hservice.insert_health(dto);
 				}
@@ -155,51 +115,16 @@ public class DiaryController {
 	// 기록일지 사진없이 등록하기
 	@ApiOperation(value = "Diary Insert (NO FILE)", notes = "기록일지 등록 사진없이")
 	@PostMapping("/insert/np")
-	public ResponseEntity<Map<String, Object>> insert_diary_nopic(@RequestBody Map<String, Object> diary_map) {
+	public ResponseEntity<Map<String, Object>> insert_diary_nopic(@RequestPart DiaryDto diary,
+			@RequestPart List<HealthDto> health_list) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); // 파라미터Map에서 DTO에 들어있지 않는 변수가 있어도 무시함.
-		
-		List<HealthDto> health_list = mapper.convertValue(diary_map.get("health_list"),
-				TypeFactory.defaultInstance().constructCollectionType(List.class, HealthDto.class));
-		
-		DiaryDto diary = new DiaryDto(null, null, null, null, null, 0, 0);
-		
-		String str = diary_map.get("diary").toString();
-		String str1 = str.substring(1, str.length() - 1);
-		System.out.println(str1);
-		String[] strArr = str1.split(",");
-		
-		String[] strDdate = strArr[0].split("=");
-		diary.setD_date(strDdate[1]);
-		
-		String[] strDflag = strArr[1].split("=");
-		int d_flag = Integer.parseInt(strDflag[1]);
-		diary.setD_flag(d_flag);
-		
-		String[] strDimg = strArr[2].split("=");
-		diary.setD_img(strDimg[1]);
-		
-		String[] strDmemo = strArr[3].split("=");
-		diary.setD_memo(strDmemo[1]);
-		
-		String[] strDspecial = strArr[4].split("=");
-		diary.setD_special(strDspecial[1]);
-		
-		String[] strDwalk = strArr[5].split("=");
-		int d_walk = Integer.parseInt(strDwalk[1]);
-		diary.setD_walk(d_walk);
-		
-		String[] strDpeid = strArr[6].split("=");
-		diary.setPeid(strDpeid[1]);
 
 		try {
 			logger.info("=====> 기록일지 등록 시작! 사진없이!");
 			System.out.println(diary);
-			
-			if(health_list != null) {
+
+			if (health_list != null) {
 				for (HealthDto dto : health_list) {
 					hservice.insert_health(dto);
 				}
@@ -269,46 +194,10 @@ public class DiaryController {
 	@ApiOperation(value = "Diary Update", notes = "기록일지 수정")
 	@PutMapping("/update")
 	public ResponseEntity<Map<String, Object>> update_diary(@RequestPart MultipartFile file,
-			@RequestPart Map<String, Object> diary_map) {
+			@RequestPart DiaryDto diary, @RequestPart List<HealthDto> health_list) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); // 파라미터Map에서 DTO에 들어있지 않는 변수가 있어도 무시함.
-		
-		List<HealthDto> health_list = mapper.convertValue(diary_map.get("health_list"),
-				TypeFactory.defaultInstance().constructCollectionType(List.class, HealthDto.class));
-		
-		DiaryDto diary = new DiaryDto(null, null, null, null, null, 0, 0);
-		
-		String str = diary_map.get("diary").toString();
-		String str1 = str.substring(1, str.length() - 1);
-		System.out.println(str1);
-		String[] strArr = str1.split(",");
-		
-		String[] strDdate = strArr[0].split("=");
-		diary.setD_date(strDdate[1]);
-		
-		String[] strDflag = strArr[1].split("=");
-		int d_flag = Integer.parseInt(strDflag[1]);
-		diary.setD_flag(d_flag);
-		
-		String[] strDimg = strArr[2].split("=");
-		diary.setD_img(strDimg[1]);
-		
-		String[] strDmemo = strArr[3].split("=");
-		diary.setD_memo(strDmemo[1]);
-		
-		String[] strDspecial = strArr[4].split("=");
-		diary.setD_special(strDspecial[1]);
-		
-		String[] strDwalk = strArr[5].split("=");
-		int d_walk = Integer.parseInt(strDwalk[1]);
-		diary.setD_walk(d_walk);
-		
-		String[] strDpeid = strArr[6].split("=");
-		diary.setPeid(strDpeid[1]);
-		
+
 		try {
 			logger.info("=====> 기록일지 수정 시작!");
 			int result = dservice.update_diary(diary);
@@ -339,13 +228,13 @@ public class DiaryController {
 			tempfile.delete();
 
 			diary.setD_img(url);
-			
-			if(health_list != null) {
+
+			if (health_list != null) {
 				for (HealthDto dto : health_list) {
 					hservice.update_health(dto);
 				}
 			}
-			
+
 			int update = dservice.update_pic(diary);
 
 			if (update == 1) {
@@ -373,55 +262,20 @@ public class DiaryController {
 	// 기록일지 사진없이 수정하기
 	@ApiOperation(value = "Diary Update (NO FILE)", notes = "기록일지 수정 사진없이")
 	@PutMapping("/update/np")
-	public ResponseEntity<Map<String, Object>> update_diary_nopic(@RequestBody Map<String, Object> diary_map) {
+	public ResponseEntity<Map<String, Object>> update_diary_nopic(@RequestPart DiaryDto diary,
+			@RequestPart List<HealthDto> health_list) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); // 파라미터Map에서 DTO에 들어있지 않는 변수가 있어도 무시함.
-		
-		List<HealthDto> health_list = mapper.convertValue(diary_map.get("health_list"),
-				TypeFactory.defaultInstance().constructCollectionType(List.class, HealthDto.class));
-		
-		DiaryDto diary = new DiaryDto(null, null, null, null, null, 0, 0);
-		
-		String str = diary_map.get("diary").toString();
-		String str1 = str.substring(1, str.length() - 1);
-		System.out.println(str1);
-		String[] strArr = str1.split(",");
-		
-		String[] strDdate = strArr[0].split("=");
-		diary.setD_date(strDdate[1]);
-		
-		String[] strDflag = strArr[1].split("=");
-		int d_flag = Integer.parseInt(strDflag[1]);
-		diary.setD_flag(d_flag);
-		
-		String[] strDimg = strArr[2].split("=");
-		diary.setD_img(strDimg[1]);
-		
-		String[] strDmemo = strArr[3].split("=");
-		diary.setD_memo(strDmemo[1]);
-		
-		String[] strDspecial = strArr[4].split("=");
-		diary.setD_special(strDspecial[1]);
-		
-		String[] strDwalk = strArr[5].split("=");
-		int d_walk = Integer.parseInt(strDwalk[1]);
-		diary.setD_walk(d_walk);
-		
-		String[] strDpeid = strArr[6].split("=");
-		diary.setPeid(strDpeid[1]);
-		
+
 		try {
 			logger.info("=====> 기록일지 수정 시작!");
-			
-			if(health_list != null) {
+
+			if (health_list != null) {
 				for (HealthDto dto : health_list) {
 					hservice.update_health(dto);
 				}
 			}
-			
+
 			int result = dservice.update_diary(diary);
 
 			if (result == 1) {
@@ -449,50 +303,15 @@ public class DiaryController {
 	// 기록일지 삭제하기
 	@ApiOperation(value = "Diary Delete", notes = "기록일지 삭제")
 	@PutMapping("/delete")
-	public ResponseEntity<Map<String, Object>> delete_diary(@RequestBody Map<String, Object> diary_map) {
+	public ResponseEntity<Map<String, Object>> delete_diary(@RequestPart DiaryDto diary,
+			@RequestPart List<HealthDto> health_list) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false); // 파라미터Map에서 DTO에 들어있지 않는 변수가 있어도 무시함.
-		
-		List<HealthDto> health_list = mapper.convertValue(diary_map.get("health_list"),
-				TypeFactory.defaultInstance().constructCollectionType(List.class, HealthDto.class));
-		
-		DiaryDto diary = new DiaryDto(null, null, null, null, null, 0, 0);
-		
-		String str = diary_map.get("diary").toString();
-		String str1 = str.substring(1, str.length() - 1);
-		System.out.println(str1);
-		String[] strArr = str1.split(",");
-		
-		String[] strDdate = strArr[0].split("=");
-		diary.setD_date(strDdate[1]);
-		
-		String[] strDflag = strArr[1].split("=");
-		int d_flag = Integer.parseInt(strDflag[1]);
-		diary.setD_flag(d_flag);
-		
-		String[] strDimg = strArr[2].split("=");
-		diary.setD_img(strDimg[1]);
-		
-		String[] strDmemo = strArr[3].split("=");
-		diary.setD_memo(strDmemo[1]);
-		
-		String[] strDspecial = strArr[4].split("=");
-		diary.setD_special(strDspecial[1]);
-		
-		String[] strDwalk = strArr[5].split("=");
-		int d_walk = Integer.parseInt(strDwalk[1]);
-		diary.setD_walk(d_walk);
-		
-		String[] strDpeid = strArr[6].split("=");
-		diary.setPeid(strDpeid[1]);
 
 		try {
 			logger.info("=====> 기록일지 삭제 시작!");
-			
-			if(health_list != null) {
+
+			if (health_list != null) {
 				for (HealthDto dto : health_list) {
 					hservice.delete_health(dto);
 				}
