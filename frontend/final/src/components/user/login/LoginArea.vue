@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -41,7 +41,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['loginNormalInApi']),
+    ...mapActions(['loginNormalInApi']),
     kakao(){
       window.location.replace(
         "https://kauth.kakao.com/oauth/authorize?client_id=1bf3f0e4ba92eceb2527659918098b46&redirect_uri=http://localhost:8888/pet/login/kakao&response_type=code"
@@ -55,15 +55,19 @@ export default {
         u_email: this.email,
         u_flag: 0,
         u_location: "string",
-        u_nickname: this.nickname,
+        u_nickname: "string",
         u_password: this.password,
         u_report: 0,
-        uid: "string"
+        uid: "adminadmin123"
       })
       .then((res) => {
         console.log(res, '로그인버튼 눌렀을 때 성공 !')
+        this.$router.push('/calendar')
       })
-      this.$router.push('/calendar') // 반려견 등록 페이지로 이동 
+      .catch((error) => {
+        console.log(error)
+      })
+       // 반려견 등록 페이지로 이동 
     },
   },
 }

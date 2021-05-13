@@ -10,7 +10,9 @@ const actions = {
   // 로그인 
   // - 자체 로그인 
   loginNormalInApi(context, params) {
+    console.log(params)
     return rscApi.post('login/signin',params)
+
     .then ((res)=> {
       // context.commit('setSelectedDate',res.data);
       return res;

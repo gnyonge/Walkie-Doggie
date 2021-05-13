@@ -138,50 +138,55 @@ export default {
       camera.addEventListener('change', function(e) {
         const form = new FormData()
         var file = e.target.files[0]
-        form.append('file', file)
+        t.file = e.target.files[0]
+        console.log(file,'파일')
+        formData.append('file', file)
         t.makeTempPhotoUrlInApi(
-          form
+          formData
         ).then(()=> {
-          console.log('업로드한 사진 미리보기 성공')
+          console.log('then')
+          t.photo_url = t.getTempPhotoURL
         }).catch((error)=>{
           console.log(error)
         })
         // 백엔드 서버에서 이미지 주소 받아서 넣기 
-        t.photo_url = t.getTempPhotoURL
+        
+        console.log(t.photo_url, 'url')
       })
     },
     registerNewDog() {
       console.log('안녕하세용')
-      let formData = new FormData()
+      const formData = new FormData()
       let pet = {
-          pe_age: this.age,
-          pe_brithday: this.date,
-          pe_disease: this.disease,
+          pe_age: String(this.age),
+          pe_brithday: String(this.date),
+          pe_disease: String(this.disease),
           pe_flag: 0,
-          pe_name: this.name,
-          pe_trauma: this.trauma,
-          pe_weight: this.weight,
+          pe_name: String(this.name),
+          pe_trauma: String(this.trauma),
+          pe_weight: String(this.weight),
           peid: "petpetpetpet1",
           pr_profile_photo: this.photo_url,
           uid: "adminadmin123",
         }
       // console.log(this.date)
-      
       let allergy = {
-          al_name: this.allergy,
+          al_name: String(this.allergy),
           peid: "petpetpetpet1"
       }
+      console.log(pet, allergy, this.file)
       formData.append(
         'pet',
         new Blob([JSON.stringify(pet)], { type: 'application/json' })
       )
-      formData.append('file', this.file);
+      formData.append('file', this.file)
       formData.append(
         'allergy',
         new Blob([JSON.stringify(allergy)], { type: 'application/json' })
       )
       this.dogRegisterInApi(formData).then(() => {
         // this.$router.push('/calendar')
+        console.log('hihihi')
       })
     },        
   }
