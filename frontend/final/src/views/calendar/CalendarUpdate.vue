@@ -218,6 +218,7 @@ export default {
       // 사진 없을 때
       if (!this.file) {
         let diary = {
+          did: this.getMyDiaryObject.Diary.did,
           d_date: this.getSelectedDate,
           d_flag: 0,
           d_img: '',
@@ -257,6 +258,7 @@ export default {
       // 사진 있을 때
       else {
         let diary = {
+            did: this.getMyDiaryObject.Diary.did,
             d_date: this.getSelectedDate,
             d_flag: 0,
             d_img: this.photo_url,

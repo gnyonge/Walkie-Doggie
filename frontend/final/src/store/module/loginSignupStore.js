@@ -44,7 +44,7 @@ const actions = {
 
   // 인증 번호 확인 
   checkAuthEmailInApi(context,params) {
-    return rscApi.post('user/check/pass',params)
+    return rscApi.post('user/checkMail',params)
     .then ((res) => {
       return res;
     })

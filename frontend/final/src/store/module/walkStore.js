@@ -13,9 +13,13 @@ const state = {
     // 지역설정 관련
     startArea: '', 
     areaName: '', 
+    // 포스팅 후 
+    postingWid: [],
   },
   // 이동 경로 
   path: [],
+  // 핫플레이스 전체리스트, top5 담는 곳
+  hotPlace: [],
 };
 const getters = {
   // 멍플레이스 
@@ -39,7 +43,16 @@ const getters = {
     return state.like.areaName
   },
   getMyPath(state){
+    console.log(state.path)
     return state.path
+  },
+
+  getPostingWid(state){
+    return state.like.postingWid
+    },
+  getHotPlace(state) {
+    return state.hotPlace
+
   },
 };
 const mutations = {
@@ -70,7 +83,19 @@ const mutations = {
   setMyPath(state, data){
     state.path.push(data)
   },
+  // 경로 삭제
+  deleteMyPath(state){
+    state.path = []
+  },
+  // posting한 게시글 id 
+  setPostingWid(state, data){
+    state.like.postingWid.push(data)
+  },
  
+  setHotPlace(state, data) {
+    state.hotPlace = data
+  },
+
 };
 const actions = {
   // 멍플레이스 리스트 가져오기
@@ -89,22 +114,39 @@ const actions = {
   sendNowPostInApi(context, params){
     console.log(params)
     return rscApi.post('place/likePlace', params)
-      .then((res) =>{
+      .then(() =>{
         console.log('좋아요 포스팅 성공')
-        console.log(res)
+        // context.commit('setPostingWid', res.data.wid)
       }).catch((error) =>{
-        console.log('포스팅 실패')
-        return error
+        console.log(error, '포스팅 실패')
+        
       })
   },
   // 산책 종료 
   doneWalkInApi(context, params){
+    console.log(params)
     return rscApi.post('walk/insert', params)
       .then((res) => {
         console.log(res)
       }).catch((error) =>{
         console.log(error)
       })
+  },
+  // 핫플레이스 전체 리스트 받아오기
+  getHotPlaceListInApi(context, place) {
+    var pop = 'pop'
+    return rscApi.get(`place/list/${place}?sort=${pop}`)
+    .then((res) => {
+      context.commit('setHotPlace', res.data.postList)
+    })
+  },
+  // 핫플레이스 TOP 5 받아오기
+  getTop5ListInApi(context, place) {
+    return rscApi.get(`place/top5/${place}`)
+    .then((res) => {
+      console.log(res.data.postList, 'top5')
+      context.commit('setHotPlace', res.data.postList)
+    })
   },
 };
 
