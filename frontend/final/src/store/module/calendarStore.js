@@ -81,6 +81,7 @@ const actions = {
   updateNoPhotoDiaryInApi(context, params) {
     return rscApi.put('diary/update/np', params)
       .then((res) => {
+        console.log(res.data, '수정 리턴값1')
         context.commit('setMyDiaryObject', res.data)
         return res;
       })
@@ -92,6 +93,7 @@ const actions = {
   updateWithPhotoDiaryInApi(context, params) {
     return rscApi.put('diary/update', params)
       .then((res) => {
+        console.log(res.data, '수정 리턴값2')
         context.commit('setMyDiaryObject', res.data)
         return res;
       })

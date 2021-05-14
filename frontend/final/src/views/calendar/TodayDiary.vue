@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 export default {
   name: "TodayDiary",
   data() {
@@ -114,15 +114,18 @@ export default {
       ...mapGetters(['getSelectedDate', 'getMyDiaryObject', 'getPrettyDate'])
     },
   methods: {
+    ...mapMutations(['setMyDiaryObject']),
     ...mapActions(['getTodayDiaryInApi', 'deleteTodayDiaryInApi']),
     go(path) {
       this.$router.push(path)
     },
     deleteDiary() {
       const formData = new FormData()
+      console.log('hid화이팅1', this.getMyDiaryObject.Health_list)
       let diary = {}
       if (!this.photo_url) {
         diary = {
+            did: this.getMyDiaryObject.Diary.did,
             d_date: this.getSelectedDate,
             d_flag: 0,
             d_img: '',
@@ -131,8 +134,10 @@ export default {
             d_walk: 0,
             peid: "petpetpetpet1"
           }
+          console.log('hid화이팅2')
       } else {
         diary = {
+            did: this.getMyDiaryObject.Diary.did,
             d_date: this.getSelectedDate,
             d_flag: 0,
             d_img: this.photo_url,
@@ -142,16 +147,19 @@ export default {
             peid: "petpetpetpet1"
           }
       }
+      console.log('hid화이팅3')
       let health_list = []
-          for (let i in this.healthArray) {
+          for (let i in this.getMyDiaryObject.Health_list) {
             health_list.push({
-              h_content: this.healthArray[i],
+              h_content: this.getMyDiaryObject.Health_list[i].h_content,
               h_date: this.getSelectedDate,
               h_flag: 0,
-              hid: 0,
+              hid: this.getMyDiaryObject.Health_list[i].hid,
               peid: "petpetpetpet1"
             })
+            console.log('hid화이팅ㅇㄹㄴㅇㄹ')
           }
+          
           formData.append(
             'diary',
             new Blob([JSON.stringify(diary)], { type: 'application/json' })
@@ -160,7 +168,10 @@ export default {
             'health_list',
             new Blob([JSON.stringify(health_list)], { type: 'application/json' })
           )
+          console.log('hid화이팅4')
           this.deleteTodayDiaryInApi(formData).then(() => {
+            console.log('hid화이팅5')
+            this.setMyDiaryObject(null)
             this.snackbar = false
             this.$router.push('/calendar')
           })

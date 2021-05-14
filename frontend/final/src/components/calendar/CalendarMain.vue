@@ -24,7 +24,7 @@
         <v-btn id="mainBtn" width="100px" class="ml-3" @click="goto('write')">일기쓰기</v-btn>
       </div>
       <div v-if="value" id="writebtns">
-        <div><p class="my-0">산책 기록 보러가기</p></div>
+        <div><p class="my-0">산책기록 보실래요?</p></div>
         <v-btn id="mainBtn" width="100px" class="ml-3" @click="goto(`detail/todaywalk/${getSelectedDate}`)">산책기록</v-btn>
       </div>
     </div>

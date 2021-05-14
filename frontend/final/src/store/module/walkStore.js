@@ -18,6 +18,8 @@ const state = {
   },
   // 이동 경로 
   path: [],
+  // 핫플레이스 전체리스트, top5 담는 곳
+  hotPlace: [],
 };
 const getters = {
   // 멍플레이스 
@@ -44,8 +46,13 @@ const getters = {
     console.log(state.path)
     return state.path
   },
+
   getPostingWid(state){
     return state.like.postingWid
+    },
+  getHotPlace(state) {
+    return state.hotPlace
+
   },
 };
 const mutations = {
@@ -85,6 +92,10 @@ const mutations = {
     state.like.postingWid.push(data)
   },
  
+  setHotPlace(state, data) {
+    state.hotPlace = data
+  },
+
 };
 const actions = {
   // 멍플레이스 리스트 가져오기
@@ -120,6 +131,22 @@ const actions = {
       }).catch((error) =>{
         console.log(error)
       })
+  },
+  // 핫플레이스 전체 리스트 받아오기
+  getHotPlaceListInApi(context, place) {
+    var pop = 'pop'
+    return rscApi.get(`place/list/${place}?sort=${pop}`)
+    .then((res) => {
+      context.commit('setHotPlace', res.data.postList)
+    })
+  },
+  // 핫플레이스 TOP 5 받아오기
+  getTop5ListInApi(context, place) {
+    return rscApi.get(`place/top5/${place}`)
+    .then((res) => {
+      console.log(res.data.postList, 'top5')
+      context.commit('setHotPlace', res.data.postList)
+    })
   },
 };
 
