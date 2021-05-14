@@ -4,13 +4,14 @@
     <transition mode="out-in">
       <router-view style="padding-top: 70px; padding-bottom: 90px;"></router-view>
     </transition>
-    <BottomNav id="bottom"/>
+    <BottomNav id="bottom" v-if="getNowTab != 1"/>
   </v-app>
 </template>
 
 <script>
 import TopNav from './components/TopNav';
 import BottomNav from './components/BottomNav';
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'App',
@@ -23,6 +24,10 @@ export default {
   data: () => ({
     //
   }),
+  computed: {
+    ...mapGetters(['getNowTab'])
+  },
+
 };
 </script>
 <style>
