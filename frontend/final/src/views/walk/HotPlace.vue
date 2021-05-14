@@ -4,71 +4,86 @@
       <!-- 지도 -->
       <div id="map"></div>
     </div>
-    
+    <div class="m-4">
+      <DropDown />
+    </div>
     <ImageList />
   </div>
 </template>
 
 <script>
-import { mapGetters} from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import ImageList from '@/components/walk/ImageList'
+import DropDown from '@/components/walk/DropDown'
 
 export default {
   name: 'HotPlace',
   components: {
     ImageList,
+    DropDown,
   },
   computed: {
-    ...mapGetters(['getSelectedItem'])
+    ...mapGetters(['getSelectedItem', 'getHotPlace'])
   },
   data(){
     return{
       map: {},
       positions: [ // 일단 더미 데이터
-        {
-          title: '마킹한 곳 ', 
-          lat: 35.17104466433188,
-          lon: 126.80083721411596,
-          imageSrc: "@/assets/diarydogs.jpg"
-        },
-        {
-          title: '생태연못', 
-          lat: 35.17243177736109, 
-          lon: 126.80249585904436,
-          imageSrc: 'https://t1.daumcdn.net/liveboard/holapet/0e5f90af436e4c218343073164a5f657.JPG'
-        },
-        {
-          title: '텃밭', 
-          lat: 35.17378144379576,
-          lon: 126.80402040469657,
-          imageSrc: 'https://lh3.googleusercontent.com/proxy/DZtjLulmXwRts3LBz1d_t6tcvwDjL2RUt7kXXJS7bSplRfQDYT6RMEBmSdeb4q3WljgZqSQDnoDDaIQMHoR_odQQREu0kWFTnnipF0UMKdXfoR4jeCmPTdLB7YMDKwN3LPx1DYzmoeue-nwzAt_H6xcNCI-4ugdYYdtPUvYbIgM'
-        },
-        {
-          title: '왜 마지막만 나와',
-          lat: 35.17220631984472, 
-          lon: 126.80086444891174,
-          imageSrc: 'https://cbmpress.sfo2.digitaloceanspaces.com/vlife/1613865410_dmlhUINL_258ccfc67b9d31c9a6414eb0663033ea96d4be54.png'
-        }
+        // {
+        //   title: '사진이 잘 나와요!', 
+        //   lat: 35.17104466433188,
+        //   lon: 126.80083721411596,
+        //   imageSrc: "@/assets/diarydogs.jpg"
+        // },
+        // {
+        //   title: '휴식 공간이 있어요!', 
+        //   lat: 35.17243177736109, 
+        //   lon: 126.80249585904436,
+        //   imageSrc: 'https://t1.daumcdn.net/liveboard/holapet/0e5f90af436e4c218343073164a5f657.JPG'
+        // },
+        // {
+        //   title: '마킹을 했어요!', 
+        //   lat: 35.17378144379576,
+        //   lon: 126.80402040469657,
+        //   imageSrc: 'https://lh3.googleusercontent.com/proxy/DZtjLulmXwRts3LBz1d_t6tcvwDjL2RUt7kXXJS7bSplRfQDYT6RMEBmSdeb4q3WljgZqSQDnoDDaIQMHoR_odQQREu0kWFTnnipF0UMKdXfoR4jeCmPTdLB7YMDKwN3LPx1DYzmoeue-nwzAt_H6xcNCI-4ugdYYdtPUvYbIgM'
+        // },
+        // {
+        //   title: '날씨가 좋아요!',
+        //   lat: 35.17220631984472, 
+        //   lon: 126.80086444891174,
+        //   imageSrc: 'https://cbmpress.sfo2.digitaloceanspaces.com/vlife/1613865410_dmlhUINL_258ccfc67b9d31c9a6414eb0663033ea96d4be54.png'
+        // }
       ],
     }
   },
   mounted() {
-    // 백엔드 서버에서 멍플레이스 정보 요청(axios)
-    // 카카오 map 
-    if (window.kakao && window.kakao.maps) {
-    this.initMap();
-    // 핀 꽂기 
-    this.pin()
-    } else {
-    const script = document.createElement('script');
-    // global kakao
-    script.onload = () => kakao.maps.load(this.initMap);
-    script.src = 'https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6985aa694c9e9631fa03de6f22217f30';
-    document.head.appendChild(script);
-    }
-    
+    var place = '장덕동'
+    this.getHotPlaceListInApi(place).then(() =>{
+      var hotplace = this.getHotPlace
+      for (var i of hotplace) {
+          this.positions.push({
+          title: i.lid,
+          lat: i.p_latitude,
+          lon: i.p_longtitude,
+          imageSrc: 'https://t1.daumcdn.net/liveboard/holapet/0e5f90af436e4c218343073164a5f657.JPG'
+        })
+          // 카카오 map 
+          if (window.kakao && window.kakao.maps) {
+            this.initMap();
+            // 핀 꽂기 
+            this.pin()
+          } else {
+          const script = document.createElement('script');
+          // global kakao
+          script.onload = () => kakao.maps.load(this.initMap);
+          script.src = 'https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=6985aa694c9e9631fa03de6f22217f30';
+          document.head.appendChild(script);
+          }
+      }
+    })
   },
   methods: {
+    ...mapActions(['getHotPlaceListInApi']),
     // 지도 첫 화면 로드 
     initMap() {
       this.mapContainer = document.getElementById('map');
@@ -124,7 +139,7 @@ export default {
       // aixios로 위치정보 가져오기
       var map = this.map
       var positions = this.positions
-      
+      console.log(positions, '포지션')
       for (var i = 0 ; i < positions.length; i++){
         // 마커 이미지의 이미지 크기 입니다
         var imageSize = new kakao.maps.Size(31, 35); 
@@ -159,6 +174,7 @@ export default {
       }
       marker.setMap(map)
     },
+    
   },
 }
 </script>

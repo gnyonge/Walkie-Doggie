@@ -13,10 +13,14 @@
     <div id="myimg"><img id="imgsize" src="@/assets/pet.png"></div>
     <div id="mydiv1" class="font-weight-bold"><div>{{getPrettyDate}}</div></div>
     <v-divider></v-divider>
-    <div id="mydiv2" class="mt-8"><div><v-icon>mdi-check</v-icon>오늘 0번 산책했어요 !</div></div>
-    <div id="mydiv2"><div><v-icon>mdi-check</v-icon>경로(캡쳐 사진)!</div></div>
-    <div id="mydiv2"><div><v-icon>mdi-check</v-icon>오늘 0km 산책했어요 !</div></div>
-    <div id="mydiv2"><div><v-icon>mdi-check</v-icon>오늘 0분 산책했어요 !</div></div>
+    <div v-if="getMyDiaryObject.Walk_list[0].count != 0">
+      <div id="mydiv2" class="mt-8"><div><v-icon>mdi-check</v-icon>오늘 {{getMyDiaryObject.Walk_list[0].count}}번 산책했어요 !</div></div>
+      <div id="mydiv2"><div><v-icon>mdi-check</v-icon>오늘 {{getMyDiaryObject.Walk_list[0].distance}}km 산책했어요 !</div></div>
+      <div id="mydiv2"><div><v-icon>mdi-check</v-icon>오늘 {{getMyDiaryObject.Walk_list[0].time}}분 산책했어요 !</div></div>
+    </div>
+    <div v-else>
+      <div id="mydiv2" class="mt-8"><div><v-icon>mdi-check</v-icon>오늘 산책을 안했어요 😢</div></div>
+    </div>
   </div>
 </template>
 
@@ -24,8 +28,13 @@
 import { mapGetters } from 'vuex'
 export default {
   name: "TodayWalk",
+  data() {
+    return {
+      
+    }
+  },
   computed: {
-      ...mapGetters(['getSelectedDate', 'getPrettyDate'])
+      ...mapGetters(['getSelectedDate', 'getPrettyDate', 'getMyDiaryObject'])
     },
   methods: {
     goback() {

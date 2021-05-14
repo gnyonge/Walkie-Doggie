@@ -109,11 +109,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getNowTab', 'getMyPath', 'getFirstAreaName', 'getAreaName'])
+    ...mapGetters(['getNowTab', 'getMyPath', 'getFirstAreaName', 'getAreaName', ])
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
       this.initMap();
+      console.log(this.getMyPath)
     } else {
       const script = document.createElement('script');
       // global kakao
@@ -129,13 +130,16 @@ export default {
     this.navigation()
 
   },
-  destroyed() {
-    this.setMyPath(Array)
+  beforeDestroy() {
     clearInterval(this.walkLoc)
+    console.log(this.getMyPath, '지워졌냐고')
+    this.deleteMyPath()
+    console.log(this.getMyPath, '지워졌다')
+    
     
   },
   methods: {
-    ...mapMutations(['setNowTab', 'setNowLon', 'setNowLat','setMyPath','setFirstAreaName','setAreaName' ]), 
+    ...mapMutations(['setNowTab', 'setNowLon', 'setNowLat','setMyPath','setFirstAreaName','setAreaName', 'deleteMyPath' ]), 
     ...mapActions(['doneWalkInApi']),
     // 지도 첫 화면 로드 
     initMap() {
@@ -146,8 +150,9 @@ export default {
         draggable: true,
         level: 5
       };
-
-    this.map = new kakao.maps.Map(this.mapContainer, this.mapOption); // 지도를 생성합니다
+    
+      this.linePath = this.getMyPath
+      this.map = new kakao.maps.Map(this.mapContainer, this.mapOption); // 지도를 생성합니다
     
     // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
     if (navigator.geolocation) {
@@ -158,7 +163,8 @@ export default {
             lon = position.coords.longitude; // 경도
         
         // 첫위치 위도 -> 주소 
-        this.getAddress(lon, lat)
+        // this.getAddress(lon, lat)
+        this.getAddress(126.8045334656282,35.180609537422264)
         console.log('init')
 
         // 다시 들어올 떄마다 경로 받기 
@@ -217,8 +223,6 @@ export default {
     },
     // 위치 -> 주소 
     getAddress(lon, lat){
-      console.log('getAdrress내부')
-
       const callback =  (result, status) => {
         console.log(this.getFirstAreaName)
         if (status === kakao.maps.services.Status.OK) {
@@ -325,6 +329,7 @@ export default {
     gotoMain(){
       // 하단바 색상 변경 
       this.setNowTab(0)
+      this.setFirstAreaName('')
       this.$router.push('/calendar')
     },
 
@@ -347,7 +352,7 @@ export default {
 
       // 실시간 위치 정보 vuex로 보내기 
       t.setMyPath(new kakao.maps.LatLng(lat, lon))
-
+      
       // 선 연결 
       var polyline = new kakao.maps.Polyline({
         path: linePath, // 선을 구성하는 좌표배열 
