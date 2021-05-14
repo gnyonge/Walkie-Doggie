@@ -39,8 +39,8 @@
                 v-for="(item, i) in items"
                 :key="i"
               >
-                <v-list-item-title @click="goto()">{{ item.title }}</v-list-item-title>
-              </v-list-item> -->
+      //           <v-list-item-title @click="goto()">{{ item.title }}</v-list-item-title>
+      //         </v-list-item> -->
               <v-list-item class=""
               >
                 <v-list-item-title @click="goto('infochangelocation')" style="margin-top:10px">지역 수정</v-list-item-title>
@@ -122,7 +122,7 @@
 
 <script>
 // import InfoChange from "../../views/mypage/InfoChange.vue"
-
+import { mapActions } from "vuex"
 export default {
   // components: { InfoChange },
   name: "MyPageMain",
@@ -133,7 +133,11 @@ export default {
       //   { title: '로그아웃' ,m_url: ''},
       // ],
     }),
+  created() {
+    this.getUserInfoInApi()
+  },
   methods: {
+    ...mapActions(['getUserInfoInApi','getAddressInApi']),
     goto(m_url) {
       this.$router.push(`/${m_url}`)
     },
