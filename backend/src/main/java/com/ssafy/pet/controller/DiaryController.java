@@ -95,12 +95,12 @@ public class DiaryController {
 			List<HealthDto> new_health_list = hservice.get_health(peid, h_date);
 
 			int result = dservice.insert_diary(diary);
-			
+
 			Map<String, Object> map = new HashMap<>();
 			map.put("d_date", h_date);
 			map.put("peid", peid);
 			List<Map<String, Object>> walk_list = dservice.get_walk(map);
-			
+
 			DiaryDto new_diary = dservice.get_diary(peid, h_date);
 
 			if (result == 1) {
@@ -149,12 +149,12 @@ public class DiaryController {
 			List<HealthDto> new_health_list = hservice.get_health(peid, h_date);
 
 			int result = dservice.insert_diary(diary);
-			
+
 			Map<String, Object> map = new HashMap<>();
 			map.put("d_date", h_date);
 			map.put("peid", peid);
 			List<Map<String, Object>> walk_list = dservice.get_walk(map);
-			
+
 			DiaryDto new_diary = dservice.get_diary(peid, h_date);
 
 			if (result == 1) {
@@ -224,7 +224,8 @@ public class DiaryController {
 
 		try {
 			logger.info("=====> 기록일지 수정 시작!");
-			int result = dservice.update_diary(diary);
+
+			dservice.update_diary(diary);
 
 			String del_img = diary.getD_img();
 
@@ -269,7 +270,7 @@ public class DiaryController {
 			}
 
 			List<HealthDto> new_health_list = hservice.get_health(peid, h_date);
-			
+
 			Map<String, Object> map = new HashMap<>();
 			map.put("d_date", h_date);
 			map.put("peid", peid);
@@ -327,7 +328,7 @@ public class DiaryController {
 			}
 
 			List<HealthDto> new_health_list = hservice.get_health(peid, h_date);
-			
+
 			Map<String, Object> map = new HashMap<>();
 			map.put("d_date", h_date);
 			map.put("peid", peid);
@@ -416,7 +417,7 @@ public class DiaryController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	// 기록일지 전체 조회
 	@ApiOperation(value = "Walk Show", notes = "기록일지 산책 조회")
 	@GetMapping("/{d_date}/walk")
@@ -426,7 +427,7 @@ public class DiaryController {
 
 		try {
 			logger.info("=====> 기록일지 산책 조회 시작!");
-			
+
 			Map<String, Object> map = new HashMap<>();
 			map.put("d_date", d_date);
 			map.put("peid", peid);
