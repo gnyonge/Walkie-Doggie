@@ -37,6 +37,7 @@ const actions = {
   sendEmailInApi(context,params) {
     return rscApi.post('user/sendMail',params)
     .then ((res) => {
+      console.log(res, '메일전송')
       return res;
     })
     .catch(()=>{});

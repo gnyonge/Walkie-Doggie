@@ -14,13 +14,13 @@
       class="my-5"
       max-width="344"
       outlined
-      v-for="i, idx in 3" 
+      v-for="i, idx in allHealthList" 
       :key="idx"
     >
       <v-list-item three-line id="healthDiv">
         <v-list-item-content>
           <div>
-            2월 1일
+            {{i}}
           </div>
           <v-list-item-subtitle>
             <li>예방접종 1차</li>
@@ -38,9 +38,28 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex'
 export default {
   name: "HealthArea",
+  data() {
+    return {
+      allHealthList: {},
+    }
+  },
+  created() {
+    this.allHealthListInApi(this.getDogInfo.pet.peid)
+    // .then(() => {
+    //   for (let i of this.getAllHealthList) {
+    //     if this.allHealthList
+    //   }
+    //   console.log(this.allHealthList, '어어')
+    // })
+  },
+  computed: {
+    ...mapGetters(['getDogInfo', 'getAllHealthList'])
+  },
   methods: {
+    ...mapActions(['allHealthListInApi']),
     goback() {
       this.$router.push('/mypage')
     }

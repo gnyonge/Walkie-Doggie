@@ -43,7 +43,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getPrettyDate', 'getSelectedDate', 'getMyDiaryObject'])
+    ...mapGetters(['getPrettyDate', 'getSelectedDate', 'getMyDiaryObject', 'getDogInfo'])
   },
   methods: {
     ...mapMutations(['setSelectedDate', 'setPrettyDate', 'setDetailBtn']),
@@ -55,7 +55,7 @@ export default {
       this.setPrettyDate(prettyDate)
       this.getTodayDiaryInApi({
       date: this.getSelectedDate,
-      peid: 'petpetpetpet1'}).then(()=> {
+      peid: this.getDogInfo.pet.peid}).then(()=> {
         console.log(this.getMyDiaryObject,' 날짜선택')
         if (this.getMyDiaryObject.Diary != null) {
           this.setDetailBtn('diary')
@@ -64,7 +64,7 @@ export default {
       })
       this.getTodayWalkInApi({
         date: this.getSelectedDate,
-        peid: 'petpetpetpet1'})
+        peid: this.getDogInfo.pet.peid})
       
     },
     goto(name) {
