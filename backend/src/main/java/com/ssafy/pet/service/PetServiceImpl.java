@@ -54,4 +54,16 @@ public class PetServiceImpl implements PetService {
 		// TODO Auto-generated method stub
 		return pdao.insert_allergy(allergy);
 	}
+	
+	@Override
+	public List<AllergyDto> show_allergy(String peid) {
+		// TODO Auto-generated method stub
+		return pdao.show_allergy(peid);
+	}
+	
+	@Override
+	public int delete_allergy(AllergyDto allergy) {
+		// TODO Auto-generated method stub
+		return pdao.delete_allergy(allergy);
+	}
 }
