@@ -28,4 +28,17 @@ public class DataServiceImpl implements DataService{
         return ddao.getPWalkCount(peid);
     }
 
+    // 총 산책 시간
+    @Override
+    public int getLTotalTime(String location) {
+        return ddao.getLTotalTime(location);
+    }
+
+    @Override
+    public int getPTotalTime(String peid) {
+        return ddao.getPTotalTime(peid);
+    }
+    
+    // 산책 시간대
+
 }

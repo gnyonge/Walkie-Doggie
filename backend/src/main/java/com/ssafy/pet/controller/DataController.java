@@ -55,12 +55,36 @@ public class DataController {
 				if(l_walk_count != 0){
 					logger.info("=====> 지역별 산책 횟수 호출 성공");
 					resultMap.put("l_walk_count", l_walk_count);
+				}else{
+					logger.info("=====> 지역별 산책 횟수 0");
+					resultMap.put("l_walk_count", 0);
 				}
-				// int p_walk_count = dataService.getPWalkCount(peid);
+				int p_walk_count = dataService.getPWalkCount(peid);
+				if(p_walk_count != 0){
+					logger.info("=====> 내 산책 횟수 호출 성공");
+					resultMap.put("p_walk_count", p_walk_count);
+				}else{
+					logger.info("=====> 내 산책 횟수 0");
+					resultMap.put("p_walk_count", 0);
+				}
 
 				// 총 산책 시간
-				int l_total_time;
-				int p_total_time;
+				int l_total_time = dataService.getLTotalTime(location);
+				if(l_total_time != 0){
+					logger.info("=====> 지역별 총 산책 시간 호출 성공");
+					resultMap.put("l_total_time", l_total_time);
+				}else{
+					logger.info("=====> 지역별 총 산책 시간 0");
+					resultMap.put("l_total_time", 0);
+				}
+				int p_total_time = dataService.getPTotalTime(peid);
+				if(p_total_time != 0){
+					logger.info("=====> 내 총 산책 시간 호출 성공");
+					resultMap.put("p_total_time", p_total_time);
+				}else{
+					logger.info("=====> 내 총 산책 시간 0");
+					resultMap.put("p_total_time", 0);
+				}
 
 				// 산책 시간대
 				int l_walk_time;
