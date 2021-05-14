@@ -46,7 +46,6 @@ const getters = {
     console.log(state.path)
     return state.path
   },
-
   getPostingWid(state){
     return state.like.postingWid
     },
@@ -91,11 +90,14 @@ const mutations = {
   setPostingWid(state, data){
     state.like.postingWid.push(data)
   },
- 
+  //멍플레이스 전체글 
   setHotPlace(state, data) {
     state.hotPlace = data
   },
-
+  // 내가 쓴 게시글들 wid 지우기
+  deletePostingWid(state){
+    state.like.postingWid = []
+  },
 };
 const actions = {
   // 멍플레이스 리스트 가져오기
@@ -114,9 +116,9 @@ const actions = {
   sendNowPostInApi(context, params){
     console.log(params)
     return rscApi.post('place/likePlace', params)
-      .then(() =>{
+      .then((res) =>{
         console.log('좋아요 포스팅 성공')
-        // context.commit('setPostingWid', res.data.wid)
+        context.commit('setPostingWid', res.data.wid)
       }).catch((error) =>{
         console.log(error, '포스팅 실패')
         
