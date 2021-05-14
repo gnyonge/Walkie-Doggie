@@ -11,4 +11,14 @@
 		where p.peid=#{peid} and p.pe_flag=0;
 	</select>
 
+	<!-- 산책 횟수 -->
+	<select id="getLWalkCount" parameterType="string" resultType="int" >
+		select count(wid) / count(peid)
+		from Walk
+		where w_location=#{location} and w_flag=0 and w_date > (NOW() - INTERVAL 7 DAY);;
+	</select>
+
+	<!-- 총 산책 시간 -->
+
+	<!-- 산책 시간대 -->
 </mapper>

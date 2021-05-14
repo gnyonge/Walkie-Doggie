@@ -1,38 +1,19 @@
 package com.ssafy.pet.controller;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.ssafy.pet.dto.PlaceDto;
-import com.ssafy.pet.dto.WalkDto;
 import com.ssafy.pet.service.DataService;
-import com.ssafy.pet.service.WalkService;
-import com.ssafy.pet.util.S3Util;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -71,7 +52,11 @@ public class DataController {
 			if(location != null){
 				// 산책 횟수
 				int l_walk_count = dataService.getLWalkCount(location); 
-				int p_walk_count = dataService.getPWalkCount(peid);
+				if(l_walk_count != 0){
+					logger.info("=====> 지역별 산책 횟수 호출 성공");
+					resultMap.put("l_walk_count", l_walk_count);
+				}
+				// int p_walk_count = dataService.getPWalkCount(peid);
 
 				// 총 산책 시간
 				int l_total_time;
@@ -81,12 +66,15 @@ public class DataController {
 				int l_walk_time;
 				int p_walk_time;
 
+				resultMap.put("message", "통계정보 호출 성공하였습니다.");
+				status = HttpStatus.ACCEPTED;
+
 			}else{
 				logger.info("=====> 지역정보 없음");
                 resultMap.put("message", "지역정보가 없습니다.");
 				status = HttpStatus.NOT_FOUND;
             }
-			}
+			
 
 
 
