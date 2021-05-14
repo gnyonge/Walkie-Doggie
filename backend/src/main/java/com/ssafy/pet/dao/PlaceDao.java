@@ -43,6 +43,8 @@ public interface PlaceDao {
 
     public void minusPost(int lid);
 
+    public Map<String, Object> getDetail(int lid);
+
     // 게시글 리스트
     public List<Map<String, Object>> getPostListNew(String p_location);
 

@@ -131,15 +131,11 @@ export default {
 
   },
   beforeDestroy() {
+    // 실시간 정보 멈춤
     clearInterval(this.walkLoc)
-    console.log(this.getMyPath, '지워졌냐고')
-    this.deleteMyPath()
-    console.log(this.getMyPath, '지워졌다')
-    
-    
   },
   methods: {
-    ...mapMutations(['setNowTab', 'setNowLon', 'setNowLat','setMyPath','setFirstAreaName','setAreaName', 'deleteMyPath' ]), 
+    ...mapMutations(['setNowTab', 'setNowLon', 'setNowLat','setMyPath','setFirstAreaName','setAreaName', 'deleteMyPath','setTempPhotoURL' ]), 
     ...mapActions(['doneWalkInApi']),
     // 지도 첫 화면 로드 
     initMap() {
@@ -154,6 +150,7 @@ export default {
       this.linePath = this.getMyPath
       this.map = new kakao.maps.Map(this.mapContainer, this.mapOption); // 지도를 생성합니다
     
+ 
     // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
     if (navigator.geolocation) {
       
@@ -163,8 +160,7 @@ export default {
             lon = position.coords.longitude; // 경도
         
         // 첫위치 위도 -> 주소 
-        // this.getAddress(lon, lat)
-        this.getAddress(126.8045334656282,35.180609537422264)
+        this.getAddress(lon, lat)
         console.log('init')
 
         // 다시 들어올 떄마다 경로 받기 
@@ -177,11 +173,7 @@ export default {
        // 마커와 인포윈도우를 표시합니다
         displayMarker(locPosition, message);
   
-      },function(error) {
-      console.error(error);
-    }, {
-      maximumAge: 0,
-    });
+      });
     } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
         var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
             message = 'geolocation을 사용할수 없어요..'
@@ -226,16 +218,12 @@ export default {
       const callback =  (result, status) => {
         console.log(this.getFirstAreaName)
         if (status === kakao.maps.services.Status.OK) {
-          var detail = result[0].address.address_name
-          console.log(detail)
-          console.log('detail아래')
+          var address = result[0].address.address_name
+          var detail = address.split(' ')
           if (this.getFirstAreaName === '') {
-            console.log(detail, '123213')
-            console.log('첫 장소 받기 성공')
-            this.setFirstAreaName(detail)
+            this.setFirstAreaName(detail[2])
           }else {
-            console.log('첫 장소 아님')
-            this.setAreaName(detail)
+            this.setAreaName(detail[2])
           }
         } 
       }
@@ -295,26 +283,26 @@ export default {
     },
     // 산책종료
     doneWalk() {
-      console.log(this.getFirstAreaName, '281')
+      this.end = this.getTime()
       // 백엔드로 정보 보내기 
       this.doneWalkInApi({
-        peid: "petpetpet1",
+        peid: "petpetpetpet1",
         w_date: this.start, 
         w_distance: "1.2",
-        w_flag: 0,
         w_like: this.likecnt,
         w_time: (this.totalH * 60) + this.totalM,
-        wid: 0,
-        p_location: this.startAddress,
+        p_location: this.getFirstAreaName,
       }).then(()=> {
         // 실시간 정보 가져오기죽이기 
         clearInterval(this.walkLoc)
-        this.end = this.getTime()
         this.calTime()
         // 저장되어 있던 정보도 지우기 
-        this.setMyPath(Array)
+        this.deleteMyPath()
         this.setNowLon(0)
         this.setNowLat(0)
+        this.setFirstAreaName('')
+        this.setTempPhotoURL('')
+        this.setAreaName('')
       }).catch((error)=> {
         console.log(error)
       })
@@ -329,7 +317,6 @@ export default {
     gotoMain(){
       // 하단바 색상 변경 
       this.setNowTab(0)
-      this.setFirstAreaName('')
       this.$router.push('/calendar')
     },
 

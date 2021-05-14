@@ -272,7 +272,7 @@ public class UserController {
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			logger.error("메일 중복 체크 실패 : {}", e);
+			logger.error("마이페이지 실패 : {}", e);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			e.printStackTrace();
 		}
@@ -300,7 +300,7 @@ public class UserController {
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			logger.error("메일 중복 체크 실패 : {}", e);
+			logger.error("지역 등록 실패 : {}", e);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			e.printStackTrace();
 		}
@@ -330,7 +330,7 @@ public class UserController {
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			logger.error("메일 중복 체크 실패 : {}", e);
+			logger.error("비밀번호 체크 실패 : {}", e);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			e.printStackTrace();
 		}
@@ -398,7 +398,7 @@ public class UserController {
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			logger.error("메일 중복 체크 실패 : {}", e);
+			logger.error("회원 탈퇴 실패 : {}", e);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			e.printStackTrace();
 		}
