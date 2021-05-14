@@ -91,18 +91,33 @@
         <v-flex class="ph-size">
           <v-text-field name="allergy" label="알레르기" id="allergy" v-model="allergy" type="allergy" required color="#48B9A8"></v-text-field>
         </v-flex>
-        <!-- <div class="mx-4" v-if="al_">
+        <div >
+        <!-- <v-checkbox
+          v-model="h"
+          label="건강사항"
+          color="#48B9A8"
+          hide-details
+        ></v-checkbox> -->
+        <v-text-field
+          color="#48B9A8"
+          @keydown.enter="addAllergy()"
+          v-model="allergyContent"
+          class="px-5"
+          v-if="alle_"
+          label="입력 후 enter"
+        ></v-text-field>
+        <div class="mx-4" v-if="alle_">
           <v-chip
-            v-for="(alle, idx) in allergy"
+            v-for="(all_, idx) in Allergy"
             :key="idx"
             class="mx-1 my-1"
             close
             color="#BAF1E4"
-            @click:close="deleteAllergy(alle)"
+            @click:close="deleteAllergy(all_)"
           >
-            {{ hth }}
+            {{ all_ }}
           </v-chip>
-        </div> -->
+        </div></div>
       </v-form>
       <!-- 반려견 등록 버튼  -->
       <div class="d-flex justify-center">
@@ -124,7 +139,7 @@ export default {
       age: '',
       weight: '',
       trauma: '',
-      allergy:'',
+      
       disease:'',
       photo_url: require('../../../assets/images/서비스로고.png'),
 
@@ -133,8 +148,19 @@ export default {
       modal: false,
       menu2: false,
       file: '',
+
+      allergy: [],
+      allergyContent: '',
+      alle_: false,
     }
   },
+  watch: {
+      alle_(newVal) {
+        if (!newVal) {
+          this.allergyContent = ""
+          this.allergy = []
+        }
+      },
   computed: {
     ...mapGetters(['getTempPhotoURL'])
   },
@@ -142,6 +168,16 @@ export default {
     ...mapActions(['dogRegisterInApi', 'makeTempPhotoUrlInApi']),
     goback() {
       this.$router.push('/dogregister')
+    },
+    addAllergy() {
+      if (this.allergyContent.replace(/(\s*)/g, "").length > 0) {
+        this.Allergy.push(this.allergyContent);
+        this.allergyContent = "";
+        }
+      },
+    deleteAllergy(all_) {
+      const index = this.allergy.indexOf(all_);
+      this.allergy.splice(index, 1);
     },
     //사용자 업로드 사진 주소 백엔드 전송 후 보여주기 
     getPhoto(){
@@ -167,45 +203,47 @@ export default {
       })
     },
     registerNewDog() {
-      console.log('안녕하세용')
-      const formData = new FormData()
-      let pet = {
-          pe_age: String(this.age),
-          pe_brithday: String(this.date),
-          pe_disease: String(this.disease),
-          pe_flag: 0,
-          pe_name: String(this.name),
-          pe_trauma: String(this.trauma),
-          pe_weight: String(this.weight),
-          peid: "petpetpetpet1",
-          pr_profile_photo: this.photo_url,
-          uid: "adminadmin123",
-        }
-      // console.log(this.date)
-      // let allergy = []
-      let allergy = {
-          al_name: String(this.allergy),
-          peid: "petpetpetpet1",
-          aid: 0,
-          a_flag: 0
-      }
-      console.log(pet, allergy, this.file)
-      formData.append(
-        'pet',
-        new Blob([JSON.stringify(pet)], { type: 'application/json' })
-      )
-      formData.append('file', this.file)
-      formData.append(
-        'allergy',
-        new Blob([JSON.stringify(allergy)], { type: 'application/json' })
-      )
-      this.dogRegisterInApi(formData).then(() => {
-        // this.$router.push('/calendar')
-        console.log('hihihi')
-      })
+    //   console.log('안녕하세용')
+    //   const formData = new FormData()
+    //   let pet = {
+    //       pe_age: String(this.age),
+    //       pe_brithday: String(this.date),
+    //       pe_disease: String(this.disease),
+    //       pe_flag: 0,
+    //       pe_name: String(this.name),
+    //       pe_trauma: String(this.trauma),
+    //       pe_weight: String(this.weight),
+    //       peid: "petpetpetpet1",
+    //       pr_profile_photo: this.photo_url,
+    //       uid: "adminadmin123",
+    //     }
+    //   // console.log(this.date)
+    //   let allergy = []
+    //   for (let i in this.allergy) {
+    //       allergy.push({
+    //         al_name: this.allergy[i],
+    //         peid: "petpetpetpet1",
+    //         aid: 0,
+    //         a_flag: 0
+    //     })
+    //   }
+    //   console.log(pet, allergy, this.file)
+    //   formData.append(
+    //     'pet',
+    //     new Blob([JSON.stringify(pet)], { type: 'application/json' })
+    //   )
+    //   formData.append('file', this.file)
+    //   formData.append(
+    //     'allergy',
+    //     new Blob([JSON.stringify(allergy)], { type: 'application/json' })
+    //   )
+    //   this.dogRegisterInApi(formData).then(() => {
+    //     // this.$router.push('/calendar')
+    //     console.log('hihihi')
+    //   })
     },        
-  }
-}
+  },
+  }}
 </script>
 <style scoped>
 .filebox label {
