@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -29,7 +28,6 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ssafy.pet.dto.AllergyDto;
 import com.ssafy.pet.dto.HealthDto;
 import com.ssafy.pet.dto.PetDto;
-import com.ssafy.pet.dto.UserDto;
 import com.ssafy.pet.service.PetService;
 import com.ssafy.pet.util.S3Util;
 import com.ssafy.pet.util.UidUtil;
@@ -49,7 +47,7 @@ public class PetController {
 
 	@Autowired
 	private S3Util s3util;
-	
+
 	@Autowired
 	private UidUtil uidutil;
 
@@ -89,13 +87,14 @@ public class PetController {
 	// 반려견 등록
 	@ApiOperation(value = "Pet Regist", notes = "반려견 등록")
 	@PostMapping("/insert")
-	public ResponseEntity<Map<String, Object>> regist_pet(@RequestPart MultipartFile file, @RequestPart PetDto pet, @RequestPart List<AllergyDto> allergy) {
+	public ResponseEntity<Map<String, Object>> regist_pet(@RequestPart MultipartFile file, @RequestPart PetDto pet,
+			@RequestPart List<AllergyDto> allergy) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
 			logger.info("=====> 반려견 등록 시작");
-			
+
 			String peid = uidutil.MakeUid();
 
 			pet.setPeid(peid);// 반려견 peid 설정
@@ -117,21 +116,21 @@ public class PetController {
 				s3util.setS3Client().putObject(new PutObjectRequest(bucket, saveFileName, tempfile)
 						.withCannedAcl(CannedAccessControlList.PublicRead));
 				String url = s3util.setS3Client().getUrl(bucket, saveFileName).toString();
-				pet.setPr_profile_photo(url);
+				pet.setPe_profile_photo(url);
 				tempfile.delete();
 			} else {
-				pet.setPr_profile_photo(null);
+				pet.setPe_profile_photo(null);
 			}
-			
+
 			int result = petservice.regist_pet(pet);
-			
-			if(allergy!=null) {
-				for(AllergyDto all : allergy) {
+
+			if (allergy != null) {
+				for (AllergyDto all : allergy) {
 					all.setPeid(peid);
 					petservice.insert_allergy(all);
-				}				
+				}
 			}
-			
+
 			List<AllergyDto> new_allergy_list = petservice.show_allergy(peid);
 
 			if (result == 1) {
@@ -211,33 +210,53 @@ public class PetController {
 	// 반려견 정보 수정
 	@ApiOperation(value = "Pet Info Update", notes = "반려견 정보 수정")
 	@PutMapping("/update")
-	public ResponseEntity<Map<String, Object>> modify_post(@RequestPart MultipartFile file, @RequestPart PetDto pet, @RequestPart List<AllergyDto> allergy) {
+	public ResponseEntity<Map<String, Object>> modify_post(@RequestPart MultipartFile file, @RequestPart PetDto pet,
+			@RequestPart List<AllergyDto> allergy) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
 			logger.info("=====> 사진, 내용 수정");
-			// 0. flag가 1이면 수정이 안돼 => 1일때 보여는주는데 수정은 안되는걸로 했자나!
-			// 1. 사진 등록 안했고 지금도 등록을 안해
-			// 2. 사진 등록 않쌔어 지금 사진 바꿀꺼야
-			// 3. 사진 등록 했고 지금 등록 안해서 사진 안바꿀꺼야
-			// 4. 사진 등록 했고 지금 등록 된 사진으로 바꿀꺼야
 			PetDto old = petservice.show_pet(pet.getPeid());
 
-			// 강아지 정보를 볼때 ... flag가 1인지 확인해주면 되자나
-
 			if (file == null) {
-				// 파일등록 안할때는 등록할께 없으니 그냥 넘어가도 됩니다~!
-			} else {
-				// 파일 등록했을때
-				if (old.getPr_profile_photo() != null) {
-					// 원래 있던 사진이 있는데 사진을 바꾼데 그럼 삭제하고 가져오면 되지
-					// 1. 원래있던 사진을 삭제하자!
-					s3util.setS3Client().deleteObject(new DeleteObjectRequest(bucket, old.getPr_profile_photo()));
-					// 2, 삭제하고 이제 등록!
-				} else {
-					// 원래 있던 사진이 없어서 그냥 등록만 해주면 돼!
+
+				if (old.getPe_profile_photo() != null) {
+					s3util.setS3Client().deleteObject(new DeleteObjectRequest(bucket, old.getPe_profile_photo()));
 				}
+
+				String peid = pet.getPeid();
+
+				List<AllergyDto> delete_allergy = petservice.show_allergy(peid);
+
+				for (AllergyDto all : delete_allergy) {
+					petservice.delete_allergy(all);
+				}
+
+				for (AllergyDto all : allergy) {
+					petservice.insert_allergy(all);
+				}
+
+				List<AllergyDto> new_allergy_list = petservice.show_allergy(peid);
+
+				int result = petservice.update_pet(pet);
+
+				if (result == 1) {
+					logger.info("=====> 반려견 정보 수정 성공");
+					resultMap.put("pet", pet);
+					resultMap.put("allergy", new_allergy_list);
+					resultMap.put("message", "반려견 정보 수정에 성공하였습니다.");
+					status = HttpStatus.ACCEPTED;
+				} else {
+					resultMap.put("message", "반려견 정보 수정에 실패하였습니다.");
+					status = HttpStatus.ACCEPTED;
+				}
+
+			} else {
+				if (old.getPe_profile_photo() != null) {
+					s3util.setS3Client().deleteObject(new DeleteObjectRequest(bucket, old.getPe_profile_photo()));
+				}
+
 				String originName = file.getOriginalFilename(); // 파일 이름 가져오기
 
 				String ext = originName.substring(originName.lastIndexOf('.')); // 파일 확장명 가져오기
@@ -256,12 +275,28 @@ public class PetController {
 				String url = s3util.setS3Client().getUrl(bucket, saveFileName).toString();
 				tempfile.delete();
 
-				pet.setPr_profile_photo(url); // 사진 등록했꼬
+				pet.setPe_profile_photo(url);
+
+				String peid = pet.getPeid();
+
+				List<AllergyDto> delete_allergy = petservice.show_allergy(peid);
+
+				for (AllergyDto all : delete_allergy) {
+					petservice.delete_allergy(all);
+				}
+
+				for (AllergyDto all : allergy) {
+					petservice.insert_allergy(all);
+				}
+
+				List<AllergyDto> new_allergy_list = petservice.show_allergy(peid);
 
 				int result = petservice.update_pet(pet);
 
 				if (result == 1) {
-					System.out.println("=====> 수정 성공");
+					logger.info("=====> 반려견 정보 수정 성공");
+					resultMap.put("pet", pet);
+					resultMap.put("allergy", new_allergy_list);
 					resultMap.put("message", "반려견 정보 수정에 성공하였습니다.");
 					status = HttpStatus.ACCEPTED;
 				} else {
@@ -270,9 +305,7 @@ public class PetController {
 				}
 			}
 
-		} catch (
-
-		Exception e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.error("반려견 정보 수정 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
@@ -284,19 +317,20 @@ public class PetController {
 	// 계정삭제
 	@ApiOperation(value = "Leave Pet", notes = "반려견 삭제")
 	@PutMapping("/leave")
-	public ResponseEntity<Map<String, Object>> leave_pet(@RequestPart PetDto pet, @RequestPart List<AllergyDto> allergy) {
+	public ResponseEntity<Map<String, Object>> leave_pet(@RequestPart PetDto pet,
+			@RequestPart List<AllergyDto> allergy) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
 			logger.info("=====> 반려견탈퇴");
-			
+
 			if (allergy != null) {
 				for (AllergyDto all : allergy) {
 					petservice.delete_allergy(all);
 				}
 			}
-			
+
 			int result = petservice.leave_pet(pet.getPeid());
 			boolean flag = false;
 			if (result >= 1) {

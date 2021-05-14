@@ -1,47 +1,60 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-	
+
 <mapper namespace="com.ssafy.pet.dao.PetDao">
 
-	<select id="check_add" parameterType="String" resultType="String">
+	<select id="check_add" parameterType="String"
+		resultType="String">
 		select u_location from User where uid=#{uid}
 	</select>
-	
+
 	<insert id="regist_pet" parameterType="PetDto">
-		insert into Pet(peid, uid, pe_name, pe_profile_photo, pe_age,pe_weight, pe_trauma, pe_disease, pe_birthday)
-		values(#{peid},#{uid}, #{pe_name},#{pe_profile_photo},#{pe_age},#{pe_weight},#{pe_trauma},#{pe_disease},#{pe_birthday})
+		insert into Pet(peid, uid,
+		pe_name, pe_profile_photo, pe_age,pe_weight, pe_trauma, pe_disease,
+		pe_birthday)
+		values(#{peid},#{uid},
+		#{pe_name},#{pe_profile_photo},#{pe_age},#{pe_weight},#{pe_trauma},#{pe_disease},#{pe_birthday})
 	</insert>
-	
-	<select id="show_health" parameterType="String" resultType="HealthDto">
+
+	<select id="show_health" parameterType="String"
+		resultType="HealthDto">
 		select * from Health where peid=#{peid}
 	</select>
-	
+
 	<select id="show_pet" parameterType="String" resultType="PetDto">
-		select * from Pet where peid=#{peid}
+		select *
+		from Pet where peid=#{peid}
 	</select>
-	
+
 	<update id="leave_pet" parameterType="String">
-		update Pet set pe_flag=1 where peid=#{peid}
-	</update>
-	
-	<update id="update_pet" parameterType="PetDto">
-		update Pet set pe_profile_photo=#{pe_profile_photo}, pe_age=#{pe_age}, 
-		pe_weight=#{pe_weight}, pe_trauma=#{pe_trauma}, pe_disease=#{pe_disease}, pe_birthday=#{pe_birthday}
+		update Pet set pe_flag=1
 		where peid=#{peid}
 	</update>
-	
+
+	<update id="update_pet" parameterType="PetDto">
+		update Pet set
+		pe_profile_photo=#{pe_profile_photo}, pe_age=#{pe_age},
+		pe_weight=#{pe_weight}, pe_trauma=#{pe_trauma},
+		pe_disease=#{pe_disease}, pe_birthday=#{pe_birthday}
+		where peid=#{peid}
+	</update>
+
 	<insert id="insert_allergy" parameterType="AllergyDto">
-		insert into Allergy(peid, al_name)
-		values(#{peid}, #{al_name})
+		insert into
+		Allergy(aid, peid, al_name, al_flag)
+		values(#{aid},#{peid}, #{al_name},
+		#{al_flag})
 	</insert>
-	
-	<select id="show_allergy" parameterType="String" resultType="AllergyDto">
+
+	<select id="show_allergy" parameterType="String"
+		resultType="AllergyDto">
 		select * from Allergy where peid=#{peid} and al_flag=0
 	</select>
-	
+
 	<update id="delete_allergy" parameterType="String">
-		update Allergy set a_flag=1 where aid=#{aid}
+		update Allergy set
+		al_flag=1 where aid=#{aid}
 	</update>
 
 </mapper>

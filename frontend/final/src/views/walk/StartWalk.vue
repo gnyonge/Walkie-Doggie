@@ -109,11 +109,23 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getNowTab', 'getMyPath', 'getFirstAreaName', 'getAreaName', ])
+    ...mapGetters(['getNowTab', 'getMyPath', 'getFirstAreaName', 'getAreaName', 'getPostingWid' ])
   },
   mounted() {
+    // 첫화면과 구별 
     if (window.kakao && window.kakao.maps) {
       this.initMap();
+      if( this.getFirstAreaName === '') {
+        // 시작 시간 가져오기 
+        this.startTime() 
+        // 실시간 위치 정보 
+        this.navigation()
+      } else { // 좋아요 포스팅 이후 
+        // 다시 들어올 떄마다 경로 받기 
+        this.linePath = this.getMyPath
+        this.getLocation()
+        this.mylike = this.getPostingWid
+      }
       console.log(this.getMyPath)
     } else {
       const script = document.createElement('script');
@@ -123,19 +135,23 @@ export default {
       document.head.appendChild(script);
     }
 
-    // 시작 시간 가져오기 
-    this.startTime() 
-    
-    // 실시간 위치 정보 
-    this.navigation()
-
   },
   beforeDestroy() {
     // 실시간 정보 멈춤
     clearInterval(this.walkLoc)
+    this.deletePostingWid
   },
   methods: {
-    ...mapMutations(['setNowTab', 'setNowLon', 'setNowLat','setMyPath','setFirstAreaName','setAreaName', 'deleteMyPath','setTempPhotoURL' ]), 
+    ...mapMutations([
+      'setNowTab', 
+      'setNowLon', 
+      'setNowLat',
+      'setMyPath',
+      'setFirstAreaName',
+      'setAreaName', 
+      'deleteMyPath',
+      'setTempPhotoURL',
+      'deletePostingWid']), 
     ...mapActions(['doneWalkInApi']),
     // 지도 첫 화면 로드 
     initMap() {
@@ -151,67 +167,85 @@ export default {
       this.map = new kakao.maps.Map(this.mapContainer, this.mapOption); // 지도를 생성합니다
     
  
-    // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
-    if (navigator.geolocation) {
-      
-      // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-      navigator.geolocation.getCurrentPosition((position)=> { 
-        var lat = position.coords.latitude, // 위도
-            lon = position.coords.longitude; // 경도
+      // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
+      if (navigator.geolocation) {
         
-        // 첫위치 위도 -> 주소 
-        this.getAddress(lon, lat)
-        console.log('init')
-
-        // 다시 들어올 떄마다 경로 받기 
-        this.linePath = this.getMyPath
-        this.linePath.push(new kakao.maps.LatLng(lat, lon))
+        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+        navigator.geolocation.getCurrentPosition((position)=> { 
+          var lat = position.coords.latitude, // 위도
+              lon = position.coords.longitude; // 경도
+          
+          // 첫위치 위도 -> 주소 
+          this.getAddress(lon, lat)
+          console.log('init')
+          this.linePath.push(new kakao.maps.LatLng(lat, lon))
+          // 첫위치 마커 표시
+          if(this.getFirstAreaName === ''){
+            
+            var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+                message = '<div style="padding:5px;">산책 시작.</div>'; // 인포윈도우에 표시될 내용입니다
+            
+            // 마커와 인포윈도우를 표시합니다
+            displayMarker(locPosition, message);
+          }else{ // 좋아요 표시 후 마커 
+            var middlelocPosition = new kakao.maps.LatLng(lat, lon)
+            middleDisplayMarker(middlelocPosition);
+          } 
+        });
+      } else { // HTML5의 GeoLocation을 사용할 수 없을때 
+          var errorlocPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
+          errormessage = 'geolocation을 사용할수 없어요..'
         
-        var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-            message = '<div style="padding:5px;">산책 시작.</div>'; // 인포윈도우에 표시될 내용입니다
+          displayMarker(errorlocPosition, errormessage);
+      }
+    
+      var map = this.map
+
+      // 지도에 마커와 인포윈도우를 표시하는 함수입니다
+      function displayMarker(locPosition, message) {
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({  
+            map: map, 
+            position: locPosition
+        }); 
+
+        var iwContent = message, // 인포윈도우에 표시할 내용
+            iwRemoveable = true;
+
+        // 인포윈도우를 생성합니다
+        var infowindow = new kakao.maps.InfoWindow({
+            content : iwContent,
+            removable : iwRemoveable
+        });
+          
+        // 인포윈도우를 마커위에 표시합니다 
+        infowindow.open(map, marker);
+
+        // message창 3초 후에 종료 
+        setTimeout(function(){ 
+          infowindow.close()
+          marker.setMap(null);}, 3000
+        )
         
-       // 마커와 인포윈도우를 표시합니다
-        displayMarker(locPosition, message);
-  
-      });
-    } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-        var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
-            message = 'geolocation을 사용할수 없어요..'
-      
-        displayMarker(locPosition, message);
-
-    }
-   
-    var map = this.map
-
-    // 지도에 마커와 인포윈도우를 표시하는 함수입니다
-    function displayMarker(locPosition, message) {
-      // 마커를 생성합니다
-      var marker = new kakao.maps.Marker({  
-          map: map, 
-          position: locPosition
-      }); 
-
-      var iwContent = message, // 인포윈도우에 표시할 내용
-          iwRemoveable = true;
-
-      // 인포윈도우를 생성합니다
-      var infowindow = new kakao.maps.InfoWindow({
-          content : iwContent,
-          removable : iwRemoveable
-      });
-        
-      // 인포윈도우를 마커위에 표시합니다 
-      infowindow.open(map, marker);
-
-      // message창 3초 후에 종료 
-      setTimeout(function(){ 
-        infowindow.close()
-        marker.setMap(null);}, 3000)
-      
-      // 지도 중심좌표를 접속위치로 변경합니다
-      map.setCenter(locPosition);  
+        // 지도 중심좌표를 접속위치로 변경합니다
+        map.setCenter(locPosition);  
       }  
+      // 중간에 찍어주는 위치 
+      function middleDisplayMarker(markerPosition){
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({
+        position: markerPosition
+        });
+        // 마커가 지도 위에 표시되도록 설정합니다
+        marker.setMap(map);
+
+        setTimeout(function(){ 
+          marker.setMap(null);}, 3000
+        )
+        
+        // 지도 중심좌표를 접속위치로 변경합니다
+        map.setCenter(markerPosition);  
+      }
     },
     // 위치 -> 주소 
     getAddress(lon, lat){
@@ -297,7 +331,8 @@ export default {
         clearInterval(this.walkLoc)
         this.calTime()
         // 저장되어 있던 정보도 지우기 
-        this.deleteMyPath()
+        this.deletePostingWid
+        this.deleteMyPath
         this.setNowLon(0)
         this.setNowLat(0)
         this.setFirstAreaName('')
