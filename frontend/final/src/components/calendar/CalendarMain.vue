@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     ...mapMutations(['setSelectedDate', 'setPrettyDate', 'setDetailBtn']),
-    ...mapActions(['getTodayDiaryInApi']),
+    ...mapActions(['getTodayDiaryInApi', 'getTodayWalkInApi']),
     onContext(ctx) {
       this.context = ctx.activeYMD
       this.setSelectedDate(this.context)
@@ -62,6 +62,9 @@ export default {
           this.$router.push(`/calendar/detail/todaydiary/${this.getSelectedDate}`)
         }
       })
+      this.getTodayWalkInApi({
+        date: this.getSelectedDate,
+        peid: 'petpetpetpet1'})
       
     },
     goto(name) {
