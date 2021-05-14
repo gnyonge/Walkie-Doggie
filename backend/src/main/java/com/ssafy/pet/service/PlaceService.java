@@ -44,6 +44,8 @@ public interface PlaceService {
     public List<Map<String, Object>> getPostListNew(String p_location);
 
     public List<Map<String, Object>> getPostListLike(String p_location);
+    
+    public Map<String, Object> getDetail(int lid);
 
     // Top5
     public List<Map<String, Object>> getTop5(String p_location);
