@@ -22,6 +22,22 @@ const mutations = {
   }
 };
 const actions = {
+  // 지역 등록 
+  getAddressInApi(context,params) {
+    return rscApi.get('user/address',params)
+    .then((res)=> {
+      console.log(res,'주소 받아오기!!!')
+      return res;
+    })
+  },
+  // 유저 인포 불러오기 
+  getUserInfoInApi(context,params) {
+    return rscApi.get('user/info',params)
+    .then((res)=> {
+      console.log(res, '유저 인포 받아오기 !!')
+      return res;
+    })
+  },
   // 반려견 등록 
   dogRegisterInApi(context, params) {
     return rscApi.post('pet/insert', params)

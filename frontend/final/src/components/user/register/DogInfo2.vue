@@ -11,17 +11,8 @@
       </div>
     </div>
       <!-- 프로필 사진 업로드 -->
-      <!-- 사진추가 안했을때 -->
-      <div class="d-flex justify-center" v-if="dephoto">
-        <v-avatar width="100px" height="100px">
-          <img
-            src="@/assets/images/서비스로고.png"
-            alt="프로필 사진" 
-          >
-        </v-avatar>
-      </div>
       <!-- 사진추가 했을때 -->
-      <div class="d-flex justify-center" v-else>
+      <div class="d-flex justify-center">
         <v-avatar width="100px" height="100px">
           <img
             :src="photo_url"
@@ -129,7 +120,7 @@
       </v-form>
       <!-- 반려견 등록 버튼  -->
       <div class="d-flex justify-center">
-        <v-btn id="mainBtn" @click="registerNewDog()">반려견 등록</v-btn>
+        <v-btn id="mainBtn" @click="registerNewDog()" :disabled="!file">반려견 등록</v-btn>
       </div>
       </div>
       
@@ -151,8 +142,7 @@ export default {
       allergy:'',
       disease:'',
       photo: '',
-      photo_url: '',
-      dephoto: true,
+      photo_url: require('../../../assets/images/서비스로고.png'),
 
       date: new Date().toISOString().substr(0, 10),
       menu: false,
@@ -202,19 +192,15 @@ export default {
         formData.append('file', t.file)
         t.makeTempPhotoUrlInApi(
           formData
-        )
-        // 백엔드 서버에서 이미지 주소 받아서 넣기 
-        t.photo_url = t.getTempPhotoURL
-        t.dephoto = false
+        ).then (()=> {
+          t.photo_url = t.getTempPhotoURL
+        })    
       })
     },
     registerNewDog() {
       console.log('가입눌렀음')
       const formData = new FormData()
-      let pet
-      console.log(this.age, this.date, this.disease, this.name, this.trauma, this.weight, this.photo_url, 'ㅇㅇㄱㅇㄱㅇ')
-      if (this.dephoto) {
-          pet = {
+      let pet = {
           pe_age: this.age,
           pe_brithday: this.date,
           pe_disease: this.disease,
@@ -223,23 +209,10 @@ export default {
           pe_trauma: this.trauma,
           pe_weight: this.weight,
           peid: "petpetpetpet1",
-          pe_profile_photo: '',
-          uid: "adminadmin123",
-        }
-      } else {
-        pet = {
-          pe_age: this.age,
-          pe_birthday: this.date,
-          pe_disease: this.disease,
-          pe_flag: 0,
-          pe_name: this.name,
-          pe_trauma: this.trauma,
-          pe_weight: this.weight,
-          peid: "petpetpetpet1",
           pe_profile_photo: this.photo_url,
           uid: "adminadmin123",
-      }
-          
+        }
+     
       let allergy = []
       for (let i in this.allergyArray) {
         allergy.push({
@@ -259,11 +232,10 @@ export default {
         new Blob([JSON.stringify(allergy)], { type: 'application/json' })
       )
       this.dogRegisterInApi(formData).then(() => {
-        this.$router.push('/mypage')
+        this.$router.push('/calendar')
       })
     }}
   }
-}
 </script>
 
 <style scoped>

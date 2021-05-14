@@ -41,6 +41,7 @@
                 v-for="(item, i) in items"
                 :key="i"
               >
+
                 <v-list-item-title @click="goto()">{{ item.title }}</v-list-item-title>
               </v-list-item> -->
               <v-list-item>
@@ -124,8 +125,8 @@
 </template>
 
 <script>
-// import InfoChange from "../../views/mypage/InfoChange.vue"
 import {mapGetters,mapActions} from 'vuex'
+
 export default {
   // components: { InfoChange },
   name: "MyPageMain",
@@ -139,6 +140,7 @@ export default {
       allergy: [],
     }),
   created() {
+    this.getUserInfoInApi()
     this.showDogInfoInApi(this.getDogInfo.pet.peid)
     .then(() => {
       this.pet = this.getDogInfo.pet
@@ -149,7 +151,7 @@ export default {
     ...mapGetters(['getDogInfo'])
   },
   methods: {
-    ...mapActions(['showDogInfoInApi']),
+    ...mapActions(['showDogInfoInApi','getUserInfoInApi','getAddressInApi']),
     goto(m_url) {
       this.$router.push(`/${m_url}`)
     },
