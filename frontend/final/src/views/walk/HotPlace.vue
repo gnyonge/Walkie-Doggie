@@ -33,14 +33,26 @@ export default {
   },
   mounted() {
     var place = '장덕동'
+    // 멍플레이스 게시글들 받기 
     this.getHotPlaceListInApi(place).then(() =>{
       var hotplace = this.getHotPlace
       for (var i of hotplace) {
+          let img = ''
+          if(i.l_desc === '사진이 잘 나와요!'){
+            img = 'https://i.ibb.co/XWGzFdp/nicephoto.png'
+          }else if(i.l_desc === '날씨가 좋아요!'){
+            img = 'https://i.ibb.co/LhFSjwN/niceweather.png'
+          }else if(i.l_desc === '마킹을 했어요!') {
+            img = ' https://i.ibb.co/W2s6GbW/marking.png'
+          }else{ // 휴식 공간이 있어요!
+            img = 'https://i.ibb.co/pybCvBz/resting.png'
+          } 
+
           this.positions.push({
           title: i.lid,
           lat: i.p_latitude,
           lon: i.p_longtitude,
-          imageSrc: 'https://t1.daumcdn.net/liveboard/holapet/0e5f90af436e4c218343073164a5f657.JPG'
+          imageSrc: img
         })
           // 카카오 map 
           if (window.kakao && window.kakao.maps) {
@@ -111,7 +123,7 @@ export default {
     },
     // 핀 꽂기
     pin() {
-      // aixios로 위치정보 가져오기
+      
       var map = this.map
       var positions = this.positions
       console.log(positions, '포지션')
@@ -141,7 +153,7 @@ export default {
         // 마커 선택후 해당 정보 자식 컴포넌트로 전송 
 
         
-        // 선정 이유 
+        // 해당 게시글 wid
         console.log(marker.getTitle())
         // 위도경도 출력 
         console.log(marker.getPosition())

@@ -102,14 +102,14 @@ export default {
       // 실시간 위치 
       walkLoc : '',
       linePath: [], 
-      mylike: [],
+      myLikePath: [],
       // 멍플레이스
       likePath: [],
       
     }
   },
   computed: {
-    ...mapGetters(['getNowTab', 'getMyPath', 'getFirstAreaName', 'getAreaName', 'getPostingWid' ])
+    ...mapGetters(['getNowTab', 'getMyPath', 'getFirstAreaName', 'getAreaName', 'getMyPostingContent' ])
   },
   mounted() {
     // 첫화면과 구별 
@@ -117,16 +117,18 @@ export default {
       this.initMap();
       if( this.getFirstAreaName === '') {
         // 시작 시간 가져오기 
-        this.startTime() 
+        this.start = this.startTime() 
+        this.start = '시간' 
         // 실시간 위치 정보 
         this.navigation()
       } else { // 좋아요 포스팅 이후 
         // 다시 들어올 떄마다 경로 받기 
         this.linePath = this.getMyPath
         this.getLocation()
-        this.mylike = this.getPostingWid
+        // 내가 쓴 글 핀으로 보여주기
+        this.getMyPlaceListInApi()
+        this.myLikePoint() 
       }
-      console.log(this.getMyPath)
     } else {
       const script = document.createElement('script');
       // global kakao
@@ -152,7 +154,7 @@ export default {
       'deleteMyPath',
       'setTempPhotoURL',
       'deletePostingWid']), 
-    ...mapActions(['doneWalkInApi']),
+    ...mapActions(['doneWalkInApi', 'getMyPlaceListInApi']),
     // 지도 첫 화면 로드 
     initMap() {
       this.mapContainer = document.getElementById('map');
@@ -177,7 +179,7 @@ export default {
           
           // 첫위치 위도 -> 주소 
           this.getAddress(lon, lat)
-          console.log('init')
+         
           this.linePath.push(new kakao.maps.LatLng(lat, lon))
           // 첫위치 마커 표시
           if(this.getFirstAreaName === ''){
@@ -190,6 +192,7 @@ export default {
           }else{ // 좋아요 표시 후 마커 
             var middlelocPosition = new kakao.maps.LatLng(lat, lon)
             middleDisplayMarker(middlelocPosition);
+            this.getMyPlaceListInApi()
           } 
         });
       } else { // HTML5의 GeoLocation을 사용할 수 없을때 
@@ -250,7 +253,6 @@ export default {
     // 위치 -> 주소 
     getAddress(lon, lat){
       const callback =  (result, status) => {
-        console.log(this.getFirstAreaName)
         if (status === kakao.maps.services.Status.OK) {
           var address = result[0].address.address_name
           var detail = address.split(' ')
@@ -288,7 +290,7 @@ export default {
       this.beforeH = today.getHours()
       this.beforeM = today.getMinutes()
       let dateTime = date + ' ' + time
-      this.start = dateTime
+      return dateTime
     }, 
     // 산책시간 계산 
     calTime(){
@@ -311,9 +313,70 @@ export default {
         t.$router.push('/likeposting')
       })
     },
+    // 핀꽂기
+    pin(positionslist){
+      var map = this.map
+      var positions = positionslist
+      console.log(positions, '포지션')
+      for (var i = 0 ; i < positions.length; i++){
+        // 마커 이미지의 이미지 크기 입니다
+        var imageSize = new kakao.maps.Size(31, 35); 
+        var imageOption = {offset: new kakao.maps.Point(27, 69)};
+        // 마커 이미지 생성 
+        var markerImage = new kakao.maps.MarkerImage(positions[i].imageSrc, imageSize, imageOption);
+        //위치 정보 갱신 
+        var latlng = new kakao.maps.LatLng(positions[i].lat, positions[i].lon)
+        
+        // 마커생성 
+        var marker = new kakao.maps.Marker({
+        map: map, // 마커를 표시할 지도
+        position: latlng, // 마커를 표시할 위치
+        title : positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        image : markerImage // 마커 이미지 
+        });
+        
+        // 마커에 클릭이벤트를 등록합니다
+        kakao.maps.event.addListener(marker, 'click', getMakerInfo(map, marker))  
+      }
+      //  마커 클릭시 해당 정보 가져오는 함수 
+      function getMakerInfo(map, marker){
+        return function(){
+        // 마커 선택후 해당 정보 자식 컴포넌트로 전송 
+
+        
+        // 해당 게시글 wid
+        console.log(marker.getTitle())
+        // 위도경도 출력 
+        console.log(marker.getPosition())
+        }
+      }
+      marker.setMap(map)
+     
+    },
+    // 형식 변환 
+    formatConversion(post){
+      var posts = post 
+      //여기서 부터 안됨 
+      var newPosition = []
+      for ( var i of posts){
+        // 
+        newPosition.push({
+          title: i.lid,
+          lat: i.p_latitude,
+          lon: i.p_longtitude,
+          imageSrc: 'https://t1.daumcdn.net/cfile/tistory/994EF84C5A4A349F19'
+        })
+      }
+      return newPosition
+    },
     // 나의 좋아요에 핀 꽂기 
     myLikePoint(){
-      
+      // return 값을 변환 
+      var newPosistion = this.formatConversion(this.getMyPostingContent)
+      this.pin(newPosistion)
+    },
+    // 멍플레이스 
+    goToHotPlace() {
     },
     // 산책종료
     doneWalk() {
@@ -331,8 +394,8 @@ export default {
         clearInterval(this.walkLoc)
         this.calTime()
         // 저장되어 있던 정보도 지우기 
-        this.deletePostingWid
-        this.deleteMyPath
+        this.deletePostingWid()
+        this.deleteMyPath()
         this.setNowLon(0)
         this.setNowLat(0)
         this.setFirstAreaName('')
@@ -344,9 +407,6 @@ export default {
       
     },
 
-    // 멍플레이스 
-    goToHotPlace() {
-    },
     
     // 메인으로 보내기 
     gotoMain(){
