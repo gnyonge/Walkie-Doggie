@@ -18,7 +18,7 @@ public class PetDto {
 	private String peid;
 	private String uid;
 	private String pe_name;
-	private String pr_profile_photo;
+	private String pe_profile_photo;
 	private String pe_age;
 	private String pe_weight;
 	private String pe_trauma;
