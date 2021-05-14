@@ -5,7 +5,8 @@ const state = {
   detailBtn: '', // 다이어리 디테일 버튼
   selectedDate: "", // 선택된 날짜
   prettyDate: "", // 보여주기 위해 selectedDate 변환
-  myDiaryObject: {} // 다이어리 전체 객체
+  myDiaryObject: {}, // 다이어리 전체 객체
+  myWalkObject: {},
 };
 const getters = {
   getNowTab(state) {
@@ -22,7 +23,10 @@ const getters = {
   },
   getMyDiaryObject(state) {
     return state.myDiaryObject
-  }
+  },
+  getMyWalkObject(state) {
+    return state.myWalkObject
+  },
 };
 const mutations = {
   setNowTab(state, now) {
@@ -39,7 +43,10 @@ const mutations = {
   },
   setMyDiaryObject(state, diary) {
     state.myDiaryObject = diary
-  }
+  },
+  setMyWalkObject(state, walk) {
+    state.myWalkObject = walk
+  },
 };
 const actions = {
   // 사진없는 일기 작성
@@ -71,6 +78,17 @@ const actions = {
     return rscApi.get(`diary/${params.date}?peid=${params.peid}`)
       .then((res) => {
         context.commit('setMyDiaryObject', res.data)
+        return res;
+      })
+      .catch(() => {
+        console.log('실패')
+      })
+  },
+  getTodayWalkInApi(context, params) {
+    return rscApi.get(`diary/${params.date}/walk?peid=${params.peid}`)
+      .then((res) => {
+        context.commit('setMyWalkObject', res.data)
+        console.log(res.data, '산책')
         return res;
       })
       .catch(() => {

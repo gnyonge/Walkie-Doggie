@@ -13,10 +13,10 @@
     <div id="myimg"><img id="imgsize" src="@/assets/pet.png"></div>
     <div id="mydiv1" class="font-weight-bold"><div>{{getPrettyDate}}</div></div>
     <v-divider></v-divider>
-    <div v-if="getMyDiaryObject.Walk_list[0].count != 0">
-      <div id="mydiv2" class="mt-8"><div><v-icon>mdi-check</v-icon>오늘 {{getMyDiaryObject.Walk_list[0].count}}번 산책했어요 !</div></div>
-      <div id="mydiv2"><div><v-icon>mdi-check</v-icon>오늘 {{getMyDiaryObject.Walk_list[0].distance}}km 산책했어요 !</div></div>
-      <div id="mydiv2"><div><v-icon>mdi-check</v-icon>오늘 {{getMyDiaryObject.Walk_list[0].time}}분 산책했어요 !</div></div>
+    <div v-if="getMyWalkObject.Walk_list[0].count != 0">
+      <div id="mydiv2" class="mt-8"><div><v-icon>mdi-check</v-icon>오늘 {{getMyWalkObject.Walk_list[0].count}}번 산책했어요 !</div></div>
+      <div id="mydiv2"><div><v-icon>mdi-check</v-icon>오늘 {{getMyWalkObject.Walk_list[0].distance}}km 산책했어요 !</div></div>
+      <div id="mydiv2"><div><v-icon>mdi-check</v-icon>오늘 {{getMyWalkObject.Walk_list[0].time}}분 산책했어요 !</div></div>
     </div>
     <div v-else>
       <div id="mydiv2" class="mt-8"><div><v-icon>mdi-check</v-icon>오늘 산책을 안했어요 😢</div></div>
@@ -34,7 +34,7 @@ export default {
     }
   },
   computed: {
-      ...mapGetters(['getSelectedDate', 'getPrettyDate', 'getMyDiaryObject'])
+      ...mapGetters(['getSelectedDate', 'getPrettyDate', 'getMyWalkObject'])
     },
   methods: {
     goback() {

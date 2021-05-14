@@ -125,7 +125,7 @@ export default {
       }
     },
     computed: {
-      ...mapGetters(['getSelectedDate', 'getPrettyDate', 'getTempPhotoURL']),
+      ...mapGetters(['getSelectedDate', 'getPrettyDate', 'getTempPhotoURL', 'getDogInfo']),
       comfirm() {
         if (this.diaryContent.length < 1) {
           return false
@@ -211,7 +211,7 @@ export default {
             d_memo: this.diaryContent,
             d_special: this.memoContent,
             d_walk: 0,
-            peid: "petpetpetpet1"
+            peid: this.getDogInfo.pet.peid
           }
           let health_list = []
           for (let i in this.healthArray) {
@@ -220,7 +220,7 @@ export default {
               h_date: this.getSelectedDate,
               h_flag: 0,
               hid: 0,
-              peid: "petpetpetpet1"
+              peid: this.getDogInfo.pet.peid
             })
           }
           formData.append(
@@ -248,7 +248,7 @@ export default {
             d_memo: this.diaryContent,
             d_special: this.memoContent,
             d_walk: 0,
-            peid: "petpetpetpet1"
+            peid: this.getDogInfo.pet.peid
           }
           let health_list = []
           for (let i in this.healthArray) {
@@ -257,7 +257,7 @@ export default {
               h_date: this.getSelectedDate,
               h_flag: 0,
               hid: 0,
-              peid: "petpetpetpet1"
+              peid: this.getDogInfo.pet.peid
             })
           }
           formData.append(
