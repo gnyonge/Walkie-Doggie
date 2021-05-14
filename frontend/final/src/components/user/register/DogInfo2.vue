@@ -11,7 +11,17 @@
       </div>
     </div>
       <!-- 프로필 사진 업로드 -->
-      <div class="d-flex justify-center">
+      <!-- 사진추가 안했을때 -->
+      <div class="d-flex justify-center" v-if="dephoto">
+        <v-avatar width="100px" height="100px">
+          <img
+            src="@/assets/images/서비스로고.png"
+            alt="프로필 사진" 
+          >
+        </v-avatar>
+      </div>
+      <!-- 사진추가 했을때 -->
+      <div class="d-flex justify-center" v-else>
         <v-avatar width="100px" height="100px">
           <img
             :src="photo_url"
@@ -22,18 +32,18 @@
       <div class="d-flex justify-center">
         <div class="filebox mt-3"> 
           <label for="ex_file">업로드 <v-icon>mdi-camera</v-icon></label> 
-          <input type="file" id="ex_file" accept="image/*" @click="getPhoto" ref="imageInput"> 
+          <input type="file" id="ex_file" accept="image/*" @click="getPhoto()" ref="imageInput"> 
         </div>
       </div> 
       <div>
         <v-form>
         <!-- 이름  -->
         <v-flex class="ph-size">
-          <v-text-field name="name" label="강아지이름" id="name" v-model="name" type="name" required color="#48B9A8"></v-text-field>
+          <v-text-field label="강아지이름" id="name" v-model="name" type="name" required color="#48B9A8"></v-text-field>
         </v-flex>
         <!-- 나이 -->
         <v-flex class="ph-size">
-          <v-text-field name="age" label="나이(생일)" id="age" v-model="age" type="age" required color="#48B9A8"></v-text-field>
+          <v-text-field label="나이(생일)" id="age" v-model="age" type="age" required color="#48B9A8"></v-text-field>
         </v-flex>
         <!-- 생일-달력 -->
         <v-dialog
@@ -77,57 +87,56 @@
         </v-dialog>
         <!-- 체중 -->
         <v-flex class="ph-size">
-          <v-text-field name="weight" label="체중(kg)" id="weight" v-model="weight" type="weight" required color="#48B9A8"></v-text-field>
+          <v-text-field label="체중(kg)" id="weight" v-model="weight" type="weight" required color="#48B9A8"></v-text-field>
         </v-flex>
         <!-- 질병 -->
         <v-flex class="ph-size">
-          <v-text-field name="disease" label="선천적 질병" id="disease" v-model="disease" type="disease" required color="#48B9A8"></v-text-field>
+          <v-text-field label="선천적 질병" id="disease" v-model="disease" type="disease" required color="#48B9A8"></v-text-field>
         </v-flex>
         <!-- 트라우마 -->
         <v-flex class="ph-size">
-          <v-text-field name="trauma" label="트라우마" id="trauma" v-model="trauma" type="trauma" required color="#48B9A8"></v-text-field>
+          <v-text-field label="트라우마" id="trauma" v-model="trauma" type="trauma" required color="#48B9A8"></v-text-field>
         </v-flex>
-        <!-- 알레르기 -->
-        <v-flex class="ph-size">
-          <v-text-field name="allergy" label="알레르기" id="allergy" v-model="allergy" type="allergy" required color="#48B9A8"></v-text-field>
-        </v-flex>
-        <div >
-        <!-- <v-checkbox
-          v-model="h"
-          label="건강사항"
+
+        <div id="contentBox">
+        <v-checkbox
+          v-model="alle"
+          label="알러지"
           color="#48B9A8"
           hide-details
-        ></v-checkbox> -->
+        ></v-checkbox>
         <v-text-field
           color="#48B9A8"
           @keydown.enter="addAllergy()"
           v-model="allergyContent"
           class="px-5"
-          v-if="alle_"
+          v-if="alle"
           label="입력 후 enter"
         ></v-text-field>
-        <div class="mx-4" v-if="alle_">
+        <div class="mx-4" v-if="alle">
           <v-chip
-            v-for="(all_, idx) in Allergy"
+            v-for="(alg, idx) in allergyArray"
             :key="idx"
             class="mx-1 my-1"
             close
             color="#BAF1E4"
-            @click:close="deleteAllergy(all_)"
+            @click:close="deleteAllergy(alg)"
           >
-            {{ all_ }}
+            {{ alg }}
           </v-chip>
-        </div></div>
+        </div>
+      </div>
       </v-form>
       <!-- 반려견 등록 버튼  -->
       <div class="d-flex justify-center">
-        <v-btn id="mainBtn" @click="registerNewDog">반려견 등록</v-btn>
+        <v-btn id="mainBtn" @click="registerNewDog()">반려견 등록</v-btn>
       </div>
       </div>
       
   </div>
 
 </template>
+
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
@@ -139,30 +148,33 @@ export default {
       age: '',
       weight: '',
       trauma: '',
-      
+      allergy:'',
       disease:'',
-      photo_url: require('../../../assets/images/서비스로고.png'),
+      photo: '',
+      photo_url: '',
+      dephoto: true,
 
       date: new Date().toISOString().substr(0, 10),
       menu: false,
       modal: false,
       menu2: false,
-      file: '',
+      file: null,
 
-      allergy: [],
+      alle: false,
       allergyContent: '',
-      alle_: false,
+      allergyArray: [],
     }
   },
-  watch: {
-      alle_(newVal) {
-        if (!newVal) {
-          this.allergyContent = ""
-          this.allergy = []
-        }
-      },
   computed: {
     ...mapGetters(['getTempPhotoURL'])
+  },
+  watch: {
+      alle(newVal) {
+        if (!newVal) {
+          this.allergyContent = ""
+          this.allergyArray = []
+        }
+      },
   },
   methods: {
     ...mapActions(['dogRegisterInApi', 'makeTempPhotoUrlInApi']),
@@ -171,80 +183,89 @@ export default {
     },
     addAllergy() {
       if (this.allergyContent.replace(/(\s*)/g, "").length > 0) {
-        this.Allergy.push(this.allergyContent);
+        this.allergyArray.push(this.allergyContent);
         this.allergyContent = "";
         }
       },
-    deleteAllergy(all_) {
-      const index = this.allergy.indexOf(all_);
-      this.allergy.splice(index, 1);
-    },
-    //사용자 업로드 사진 주소 백엔드 전송 후 보여주기 
+    deleteAllergy(alg) {
+        const index = this.allergyArray.indexOf(alg);
+        this.allergyArray.splice(index, 1);
+      },
     getPhoto(){
       var camera = document.getElementById('ex_file')
       var t = this
       camera.addEventListener('change', function(e) {
-        const formData = new FormData()
+        let formData = new FormData()
         var file = e.target.files[0]
         t.file = e.target.files[0]
         console.log(file,'파일')
-        formData.append('file', file)
+        formData.append('file', t.file)
         t.makeTempPhotoUrlInApi(
           formData
-        ).then(()=> {
-          console.log('then')
-          t.photo_url = t.getTempPhotoURL
-        }).catch((error)=>{
-          console.log(error)
-        })
+        )
         // 백엔드 서버에서 이미지 주소 받아서 넣기 
-        
-        console.log(t.photo_url, 'url')
+        t.photo_url = t.getTempPhotoURL
+        t.dephoto = false
       })
     },
     registerNewDog() {
-    //   console.log('안녕하세용')
-    //   const formData = new FormData()
-    //   let pet = {
-    //       pe_age: String(this.age),
-    //       pe_brithday: String(this.date),
-    //       pe_disease: String(this.disease),
-    //       pe_flag: 0,
-    //       pe_name: String(this.name),
-    //       pe_trauma: String(this.trauma),
-    //       pe_weight: String(this.weight),
-    //       peid: "petpetpetpet1",
-    //       pr_profile_photo: this.photo_url,
-    //       uid: "adminadmin123",
-    //     }
-    //   // console.log(this.date)
-    //   let allergy = []
-    //   for (let i in this.allergy) {
-    //       allergy.push({
-    //         al_name: this.allergy[i],
-    //         peid: "petpetpetpet1",
-    //         aid: 0,
-    //         a_flag: 0
-    //     })
-    //   }
-    //   console.log(pet, allergy, this.file)
-    //   formData.append(
-    //     'pet',
-    //     new Blob([JSON.stringify(pet)], { type: 'application/json' })
-    //   )
-    //   formData.append('file', this.file)
-    //   formData.append(
-    //     'allergy',
-    //     new Blob([JSON.stringify(allergy)], { type: 'application/json' })
-    //   )
-    //   this.dogRegisterInApi(formData).then(() => {
-    //     // this.$router.push('/calendar')
-    //     console.log('hihihi')
-    //   })
-    },        
-  },
-  }}
+      console.log('가입눌렀음')
+      const formData = new FormData()
+      let pet
+      console.log(this.age, this.date, this.disease, this.name, this.trauma, this.weight, this.photo_url, 'ㅇㅇㄱㅇㄱㅇ')
+      if (this.dephoto) {
+          pet = {
+          pe_age: this.age,
+          pe_brithday: this.date,
+          pe_disease: this.disease,
+          pe_flag: 0,
+          pe_name: this.name,
+          pe_trauma: this.trauma,
+          pe_weight: this.weight,
+          peid: "petpetpetpet1",
+          pe_profile_photo: '',
+          uid: "adminadmin123",
+        }
+      } else {
+        pet = {
+          pe_age: this.age,
+          pe_birthday: this.date,
+          pe_disease: this.disease,
+          pe_flag: 0,
+          pe_name: this.name,
+          pe_trauma: this.trauma,
+          pe_weight: this.weight,
+          peid: "petpetpetpet1",
+          pe_profile_photo: this.photo_url,
+          uid: "adminadmin123",
+      }
+          
+      let allergy = []
+      for (let i in this.allergyArray) {
+        allergy.push({
+          aid: 0,
+          peid: "petpetpetpet1",
+          al_name: this.allergyArray[i],
+          al_flag: 0
+          })
+      }
+      formData.append(
+        'pet',
+        new Blob([JSON.stringify(pet)], { type: 'application/json' })
+      )
+      formData.append('file', this.file);
+      formData.append(
+        'allergy',
+        new Blob([JSON.stringify(allergy)], { type: 'application/json' })
+      )
+      this.dogRegisterInApi(formData).then(() => {
+        this.$router.push('/mypage')
+      })
+    }}
+  }
+}
 </script>
+
 <style scoped>
 .filebox label {
   display: inline-block; 

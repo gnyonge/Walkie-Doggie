@@ -103,7 +103,7 @@ export default {
         uid: "string"
       })
       .then((res) => {
-        console.log(res.data, '회원가입버튼 눌렀을 때 성공 !')
+        console.log(res, '회원가입버튼 눌렀을 때 성공 !')
       })
       this.$router.push('/register') // 반려견 등록 페이지로 이동 
     },
