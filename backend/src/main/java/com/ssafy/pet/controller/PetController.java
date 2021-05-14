@@ -95,8 +95,10 @@ public class PetController {
 
 		try {
 			logger.info("=====> 반려견 등록 시작");
+			
+			String peid = uidutil.MakeUid();
 
-			pet.setPeid(uidutil.MakeUid());// 반려견 peid 설정
+			pet.setPeid(peid);// 반려견 peid 설정
 
 			if (file != null) {
 				String originName = file.getOriginalFilename(); // 파일 이름 가져오기
@@ -120,16 +122,22 @@ public class PetController {
 			} else {
 				pet.setPr_profile_photo(null);
 			}
-
+			
 			int result = petservice.regist_pet(pet);
+			
 			if(allergy!=null) {
 				for(AllergyDto all : allergy) {
+					all.setPeid(peid);
 					petservice.insert_allergy(all);
 				}				
 			}
+			
+			List<AllergyDto> new_allergy_list = petservice.show_allergy(peid);
 
 			if (result == 1) {
 				logger.info("=====> 반려견 등록 성공");
+				resultMap.put("pet", pet);
+				resultMap.put("allergy", new_allergy_list);
 				resultMap.put("message", "반려견 등록에 성공하였습니다.");
 				status = HttpStatus.ACCEPTED;
 			} else {
@@ -149,7 +157,7 @@ public class PetController {
 
 	// 반려견 정보 보기
 	@ApiOperation(value = "Show Pet", notes = "반려견 정보 보기")
-	@GetMapping("show")
+	@GetMapping("/show")
 	public ResponseEntity<Map<String, Object>> showPet(@RequestParam String peid) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
@@ -158,9 +166,11 @@ public class PetController {
 			logger.info("=====> 반려견 정보 보기");
 
 			PetDto pet = petservice.show_pet(peid);
+			List<AllergyDto> allergy = petservice.show_allergy(peid);
 
 			resultMap.put("pet", pet);
-			resultMap.put("message", "SUCCESS");
+			resultMap.put("allergy", allergy);
+			resultMap.put("message", "반려견 정보 가져오기에 성공하였습니다.");
 			status = HttpStatus.ACCEPTED;
 
 		} catch (Exception e) {
@@ -186,7 +196,7 @@ public class PetController {
 			List<HealthDto> listHealth = petservice.show_health(peid);
 
 			resultMap.put("listHealth", listHealth);
-			resultMap.put("message", "SUCCESS");
+			resultMap.put("message", "반려견 건강 내역 가져오기에 성공하였습니다.");
 			status = HttpStatus.ACCEPTED;
 
 		} catch (Exception e) {
@@ -201,7 +211,7 @@ public class PetController {
 	// 반려견 정보 수정
 	@ApiOperation(value = "Pet Info Update", notes = "반려견 정보 수정")
 	@PutMapping("/update")
-	public ResponseEntity<Map<String, Object>> modify_post(@RequestPart MultipartFile file, @RequestPart PetDto pet) {
+	public ResponseEntity<Map<String, Object>> modify_post(@RequestPart MultipartFile file, @RequestPart PetDto pet, @RequestPart List<AllergyDto> allergy) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
@@ -264,7 +274,7 @@ public class PetController {
 
 		Exception e) {
 			// TODO Auto-generated catch block
-			logger.error("글 수정 실패 : {}", e);
+			logger.error("반려견 정보 수정 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
@@ -274,12 +284,19 @@ public class PetController {
 	// 계정삭제
 	@ApiOperation(value = "Leave Pet", notes = "반려견 삭제")
 	@PutMapping("/leave")
-	public ResponseEntity<Map<String, Object>> leave_pet(@RequestBody PetDto pet) {
+	public ResponseEntity<Map<String, Object>> leave_pet(@RequestPart PetDto pet, @RequestPart List<AllergyDto> allergy) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
 			logger.info("=====> 반려견탈퇴");
+			
+			if (allergy != null) {
+				for (AllergyDto all : allergy) {
+					petservice.delete_allergy(all);
+				}
+			}
+			
 			int result = petservice.leave_pet(pet.getPeid());
 			boolean flag = false;
 			if (result >= 1) {

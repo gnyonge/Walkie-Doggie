@@ -35,5 +35,13 @@
 		insert into Allergy(peid, al_name)
 		values(#{peid}, #{al_name})
 	</insert>
+	
+	<select id="show_allergy" parameterType="String" resultType="AllergyDto">
+		select * from Allergy where peid=#{peid} and al_flag=0
+	</select>
+	
+	<update id="delete_allergy" parameterType="String">
+		update Allergy set a_flag=1 where aid=#{aid}
+	</update>
 
 </mapper>

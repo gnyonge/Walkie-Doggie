@@ -20,17 +20,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ssafy.pet.dto.LikePlaceDto;
-import com.ssafy.pet.dto.PlaceDto;
-import com.ssafy.pet.dto.WalkDto;
-import com.ssafy.pet.service.WalkService;
 import com.ssafy.pet.service.PlaceService;
 import com.ssafy.pet.util.S3Util;
 
@@ -239,7 +234,7 @@ public class PlaceController {
                     int pid = placeService.getPid(lid);
 					int result = placeService.minusPlace(pid);
 					if(result != 0){
-						resultMap.put("message", "장소 게시글 삭제 완료하였습니다.");
+						resultMap.put("message", "장소 게시글 삭제 성공 후 카운트 처리 완료하였습니다.");
 						status = HttpStatus.ACCEPTED;
 					}else{
 						resultMap.put("message", "장소 게시글 삭제 성공 후 카운트 처리에 실패하였습니다.");
@@ -399,6 +394,43 @@ public class PlaceController {
             
         } catch (Exception e) {
             logger.error("top5 호출 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+    /*
+     * 기능: 핫플레이스 포스트 디테일
+     * 
+     * developer: 윤수민
+     * 
+     * @param : lid
+     * 
+     * @return : message,
+     * postList(lid, p_latitude, p_longtitude, l_image, l_desc, l_date, pe_name)
+     */
+	@ApiOperation(value = "HotPlace detail", notes = "핫플레이스 디테일")
+    @GetMapping("/detail/{lid}")
+    public ResponseEntity<Map<String, Object>> getDetail(@PathVariable("lid") int lid) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        
+        try {
+			logger.info("place/detail 호출성공");
+
+            Map<String, Object> postDetail = placeService.getDetail(lid);
+            if(postDetail != null){
+                resultMap.put("postDetail", postDetail);
+                resultMap.put("message", "핫플레이스 디테일 호출 성공하였습니다.");
+                status = HttpStatus.ACCEPTED;
+            }else{
+                resultMap.put("message", "핫플레이스가 없습니다.");
+                status = HttpStatus.NOT_FOUND;
+            }
+            
+        } catch (Exception e) {
+            logger.error("핫플레이스 디테일 호출 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
