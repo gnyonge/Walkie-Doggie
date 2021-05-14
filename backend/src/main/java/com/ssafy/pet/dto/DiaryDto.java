@@ -2,6 +2,7 @@ package com.ssafy.pet.dto;
 
 public class DiaryDto {
 
+	private int did;
 	private String peid;
 	private String d_memo;
 	private String d_img;
@@ -10,8 +11,10 @@ public class DiaryDto {
 	private int d_walk;
 	private int d_flag;
 
-	public DiaryDto(String peid, String d_memo, String d_img, String d_date, String d_special, int d_walk, int d_flag) {
+	public DiaryDto(int did, String peid, String d_memo, String d_img, String d_date, String d_special, int d_walk,
+			int d_flag) {
 		super();
+		this.did = did;
 		this.peid = peid;
 		this.d_memo = d_memo;
 		this.d_img = d_img;
@@ -19,6 +22,14 @@ public class DiaryDto {
 		this.d_special = d_special;
 		this.d_walk = d_walk;
 		this.d_flag = d_flag;
+	}
+
+	public int getDid() {
+		return did;
+	}
+
+	public void setDid(int did) {
+		this.did = did;
 	}
 
 	public String getPeid() {
@@ -79,8 +90,8 @@ public class DiaryDto {
 
 	@Override
 	public String toString() {
-		return "DiaryDto [peid=" + peid + ", d_memo=" + d_memo + ", d_img=" + d_img + ", d_date=" + d_date
-				+ ", d_special=" + d_special + ", d_walk=" + d_walk + ", d_flag=" + d_flag + "]";
+		return "DiaryDto [did=" + did + ", peid=" + peid + ", d_memo=" + d_memo + ", d_img=" + d_img + ", d_date="
+				+ d_date + ", d_special=" + d_special + ", d_walk=" + d_walk + ", d_flag=" + d_flag + "]";
 	}
 
 }

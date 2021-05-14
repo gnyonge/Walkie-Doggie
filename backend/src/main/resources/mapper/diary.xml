@@ -6,17 +6,20 @@
 
 	<insert id="insert_diary" parameterType="DiaryDto">
 		insert into
-		Diary(peid,
+		Diary(did,
+		peid,
 		d_memo,
 		d_img, d_date, d_special, d_walk, d_flag)
-		values(#{peid},
+		values(#{did},
+		#{peid},
 		#{d_memo},
 		#{d_img}, #{d_date}, #{d_special}, #{d_walk}, 0)
 	</insert>
 
 	<select id="get_diary" parameterType="String"
 		resultType="DiaryDto">
-		select * from Diary where d_date=#{d_date} and peid=#{peid} and d_flag=0
+		select * from Diary where d_date=#{d_date} and peid=#{peid}
+		and d_flag=0
 	</select>
 
 	<update id="update_diary" parameterType="DiaryDto">
@@ -24,33 +27,43 @@
 		set
 		d_memo=#{d_memo}, d_special=#{d_special}
 		where
-		d_date=#{d_date}
+		did=#{did}
 	</update>
 
 	<update id="update_pic" parameterType="DiaryDto">
 		update Diary set
 		d_memo=#{d_memo}, d_img=#{d_img}, d_special=#{d_special}
 		where
-		d_date=#{d_date}
+		did=#{did}
 	</update>
 
 	<update id="delete_diary" parameterType="DiaryDto">
 		update Diary set
 		d_flag=1
-		where d_date=#{d_date}
+		where did=#{did}
 	</update>
 
 	<select id="get_image" parameterType="map" resultType="string">
-		select w_img
-		from Walk 
-		where peid=#{peid} and date(w_date)=#{d_date} and w_flag=0
-		order by w_date asc;
+		select
+		w_img
+		from Walk
+		where peid=#{peid} and date(w_date)=#{d_date} and
+		w_flag=0
+		order by w_date
+		asc;
 	</select>
 
 	<select id="get_walk" parameterType="map" resultType="map">
-		select count(*) as count, sum(w_distance) as distance, sum(w_time) as time
-		from Walk 
+		select
+		count(*) as count, sum(w_distance) as distance, sum(w_time) as time
+		from Walk
 		where peid=#{peid} and date(w_date)=#{d_date} and w_flag=0;
+	</select>
+
+	<select id="get_all_diary" parameterType="String"
+		resultType="String">
+		select date_format(d_date, '%Y-%m-%d') from Diary where
+		peid=#{peid} and d_flag=0
 	</select>
 
 </mapper>

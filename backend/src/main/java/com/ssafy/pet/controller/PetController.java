@@ -32,6 +32,7 @@ import com.ssafy.pet.dto.PetDto;
 import com.ssafy.pet.dto.UserDto;
 import com.ssafy.pet.service.PetService;
 import com.ssafy.pet.util.S3Util;
+import com.ssafy.pet.util.UidUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -48,25 +49,12 @@ public class PetController {
 
 	@Autowired
 	private S3Util s3util;
+	
+	@Autowired
+	private UidUtil uidutil;
 
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;
-
-	private String MakeUid() {
-		StringBuffer made = new StringBuffer();
-
-		for (int i = 0; i < 6; i++) {
-			char a = (char) ((Math.random() * 26) + 97); // 소문자
-			int ann = (int) (Math.random() * 9) + 1; // 숫자
-			made.append(a);
-			made.append(ann);
-		}
-
-		char b = (char) ((Math.random() * 26) + 97);
-		made.append(b);
-		String line = made.toString();
-		return line;
-	}
 
 	@ApiOperation(value = "Check Pet Regist", notes = "반려견 등록 가능 여부 확인")
 	@GetMapping("/check/add")
@@ -108,7 +96,7 @@ public class PetController {
 		try {
 			logger.info("=====> 반려견 등록 시작");
 
-			pet.setPeid(MakeUid()); // 반려견 peid 설정
+			pet.setPeid(uidutil.MakeUid());// 반려견 peid 설정
 
 			if (file != null) {
 				String originName = file.getOriginalFilename(); // 파일 이름 가져오기
@@ -134,9 +122,10 @@ public class PetController {
 			}
 
 			int result = petservice.regist_pet(pet);
-			
-			for(AllergyDto all : allergy) {
-				petservice.insert_allergy(all);
+			if(allergy!=null) {
+				for(AllergyDto all : allergy) {
+					petservice.insert_allergy(all);
+				}				
 			}
 
 			if (result == 1) {
