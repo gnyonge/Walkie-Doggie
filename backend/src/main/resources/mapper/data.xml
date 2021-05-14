@@ -4,4 +4,11 @@
 	
 <mapper namespace="com.ssafy.pet.dao.DataDao">
 
+	<!-- 지역명 -->
+	<select id="getLocation" parameterType="string" resultType="string" >
+		select u.u_location
+		from User as u join Pet as p on u.uid = p.uid 
+		where p.peid=#{peid} and p.pe_flag=0;
+	</select>
+
 </mapper>
