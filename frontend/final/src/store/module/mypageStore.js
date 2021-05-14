@@ -19,22 +19,14 @@ const mutations = {
 };
 const actions = {
   // 반려견 등록 
-  dogRegisterInApi(context,params) {
-    return rscApi.post('pet/insert',params)
+  dogRegisterInApi(context, params) {
+    return rscApi.post('pet/insert', params)
     .then ((res) => {
+      console.log(res, '반려경 등록 성공!!')
       return res;
     })
     .catch(()=>{});
   },
-  //user 정보
-  // dogRegisterInApi(context) {
-  //   return rscApi.get('pet/insert')
-  //   .then ((res) => {
-  //     return res;
-  //   })
-  //   .catch(()=>{});
-  // },
-
   // 반려견 정보 보기
   showDogInfoInApi(context,params) {
     return rscApi.get('pet/show',params)

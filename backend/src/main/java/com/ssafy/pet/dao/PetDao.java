@@ -18,5 +18,7 @@ public interface PetDao {
 	int leave_pet(String peid);
 	int update_pet(PetDto pet);
 	int insert_allergy(AllergyDto allergy);
+	List<AllergyDto> show_allergy(String peid);
+	int delete_allergy(AllergyDto allergy);
 
 }
