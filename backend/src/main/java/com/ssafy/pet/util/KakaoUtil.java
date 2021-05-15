@@ -36,7 +36,7 @@ public class KakaoUtil {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=1bf3f0e4ba92eceb2527659918098b46");
-            sb.append("&redirect_uri=http://localhost:8888/pet/login/kakao");
+            sb.append("&redirect_uri=http://localhost:8080/login");
             sb.append("&code=" + authorize_code);
             sb.append("&client_secret=HVjE2cjBAouB82GQXNhYSeZkc0M07dD8");
             bw.write(sb.toString());
