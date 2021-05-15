@@ -87,8 +87,22 @@ public class DataController {
 				}
 
 				// 산책 시간대
-				int l_walk_time;
-				int p_walk_time;
+				int l_walk_time = dataService.getLWalkTime(location);
+				if(l_walk_time != 0){
+					logger.info("=====> 지역별 산책 시간대 호출 성공");
+					resultMap.put("l_walk_time", l_walk_time);
+				}else{
+					logger.info("=====> 지역별 산책 시간대 0");
+					resultMap.put("l_walk_time", 0);
+				}
+				int p_walk_time = dataService.getPWalkTime(peid);
+				if(p_walk_time != 0){
+					logger.info("=====> 내 산책 시간대 호출 성공");
+					resultMap.put("p_walk_time", p_walk_time);
+				}else{
+					logger.info("=====> 내 산책 시간대 0");
+					resultMap.put("p_walk_time", 0);
+				}
 
 				resultMap.put("message", "통계정보 호출 성공하였습니다.");
 				status = HttpStatus.ACCEPTED;

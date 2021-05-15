@@ -16,8 +16,11 @@ public interface DataDao {
     // 총 산책 시간
     int getLTotalTime(String location);
     
-    int getPTotalTime(String peid);
+    int getPTotalTime(String peid);    
 
     // 산책 시간대
+    int getLWalkTime(String location);
+    
+    int getPWalkTime(String peid);
     
 }

@@ -38,4 +38,16 @@
 	</select>
 
 	<!-- 산책 시간대 -->
+	<select id="getLWalkTime" parameterType="string" resultType="int" >
+		select avg(hour(w_date))
+		from Walk
+		where w_location=#{location} and w_flag=0 and w_date > (NOW() - INTERVAL 7 DAY);
+	</select>
+
+	<select id="getPWalkTime" parameterType="string" resultType="int" >
+		select sum(w_time) 
+		from Walk
+		where peid=#{peid} and w_flag=0 and w_date > (NOW() - INTERVAL 7 DAY);
+	</select>
+
 </mapper>

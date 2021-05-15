@@ -11,10 +11,13 @@ public interface DataService {
     int getPWalkCount(String peid);
 
     // 총 산책 시간
-    int getPTotalTime(String peid);
-
     int getLTotalTime(String location);
 
+    int getPTotalTime(String peid);
+
     // 산책 시간대
-    
+    int getLWalkTime(String location);
+
+    int getPWalkTime(String peid);
+
 }
