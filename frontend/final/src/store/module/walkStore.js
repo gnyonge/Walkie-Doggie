@@ -14,12 +14,17 @@ const state = {
     startArea: '', 
     areaName: '', 
     // 포스팅 후 
-    postingWid: [],
   },
   // 이동 경로 
   path: [],
   // 핫플레이스 전체리스트, top5 담는 곳
   hotPlace: [],
+  postingWid: [31, 32],
+  myPostingContent: [],
+  // 시작 시간 관련 
+  startTime: '',
+  beforeH: '', 
+  beforeM: '', 
 };
 const getters = {
   // 멍플레이스 
@@ -48,10 +53,21 @@ const getters = {
   },
   getPostingWid(state){
     return state.like.postingWid
-    },
+  },
   getHotPlace(state) {
     return state.hotPlace
-
+  },
+  getMyPostingContent(state){
+    return state.myPostingContent
+  },
+  getStartTime(state){
+    return state.startTime
+  },
+  getbeforeH(state){
+    return state.beforeH
+  },
+  getbeforeM(state){
+    return state.beforeM
   },
 };
 const mutations = {
@@ -88,7 +104,7 @@ const mutations = {
   },
   // posting한 게시글 id 
   setPostingWid(state, data){
-    state.like.postingWid.push(data)
+    state.postingWid.push(data)
   },
   //멍플레이스 전체글 
   setHotPlace(state, data) {
@@ -96,14 +112,23 @@ const mutations = {
   },
   // 내가 쓴 게시글들 wid 지우기
   deletePostingWid(state){
-    state.like.postingWid = []
+    state.postingWid = []
+  },
+  //내가 쓴 게시글 요청 return값 
+  setMyPostingContent(state, data){
+    state.myPostingContent = data
+  },
+  setStartTime(state, data){
+    state.startTime = data 
+  },
+  setbeforeH(state, data){
+    state.beforeH = data 
+  },
+  setbeforeM(state, data){
+    state.beforeM = data 
   },
 };
 const actions = {
-  // 멍플레이스 리스트 가져오기
-  getPostsInApi(){
-    // return rscApi.
-  },
   // 업로드 사진 미리보기 
   makeTempPhotoUrlInApi(context, params){
     return rscApi.post('place/imageUpload', params)
@@ -114,11 +139,10 @@ const actions = {
   },
   // 좋아요 사진, 위도, 경도, 의견 백엔드 전송
   sendNowPostInApi(context, params){
-    console.log(params)
     return rscApi.post('place/likePlace', params)
-      .then((res) =>{
+      .then(() =>{
         console.log('좋아요 포스팅 성공')
-        context.commit('setPostingWid', res.data.wid)
+        // context.commit('setPostingWid', res.data.wid)
       }).catch((error) =>{
         console.log(error, '포스팅 실패')
         
@@ -132,6 +156,18 @@ const actions = {
         console.log(res)
       }).catch((error) =>{
         console.log(error)
+      })
+  },
+  // 내가 쓴 게시글 리스트 받아오기 
+  getMyPlaceListInApi(context){
+    let myPlaceList = {
+      lidList: state.postingWid.join(",")
+    }
+    return rscApi.get('walk/likeList', {params: myPlaceList})
+      .then((res) => {
+        context.commit('setMyPostingContent', res.data.likeList)
+      }).catch((error) =>{
+        console.log(error, '내가 쓴 게시글 가져오기 실패')
       })
   },
   // 핫플레이스 전체 리스트 받아오기
@@ -150,6 +186,7 @@ const actions = {
       context.commit('setHotPlace', res.data.postList)
     })
   },
+  
 };
 
 export default {

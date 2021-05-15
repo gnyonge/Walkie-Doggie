@@ -1,27 +1,29 @@
 <template>
-  <div class="">
-    <div class="">  
+  <div>
+    <div>  
       <!-- 1. 프로필 박스 -->
-      <div class="d-flex ml-3 mr-3 mt-5 justify-center">
-        <!-- 1. 프로필 사진 --> 
-        <div class="mt-5">
-          <v-img src="../../assets/images/서비스로고.png" 
-          class="rounded-circle" height="158"
-          max-height="120"
-          max-width="120" alt="">
-          </v-img>
-        </div>
-        <!-- 2. 인적사항 --> 
-        <div class="mt-3 ml-4">
-          <p style="font-size: 20px">이름</p>
-          <p>나이: 2살</p>
-          <p>몸무게: 2.2kg</p>
-          <p>특이사항: 닭고기 알레르기</p>
-        </div>
-        <!-- 햄버거버튼 -->
-        <v-menu
+      <div class="mx-3 mt-3">
+        <div class="ml-3 d-flex">
+          <!-- 1. 프로필 사진 --> 
+          <div class="mt-5">
+            <v-img :src="pet.pe_profile_photo" 
+            class="rounded-circle"
+            max-height="130"
+            max-width="130" alt="프로필사진">
+            </v-img>
+          </div>
+          <!-- 2. 인적사항 --> 
+          <div class="mt-3 ml-5" style="width: 148px; word-break:break-all;">
+            <p style="font-size: 20px">{{pet.pe_name}}</p>
+            <p>나이: {{pet.pe_age}}살</p>
+            <p>몸무게: {{pet.pe_weight}}kg</p>
+            <p>특이사항: {{pet.pe_trauma}}, {{pet.pe_disease}}</p>
+          </div>
+          <!-- 햄버거버튼 -->
+          <v-menu
             bottom
             left
+            class="d-inline"
           >
             <template v-slot:activator="{ on, attrs }">
               <v-btn
@@ -39,17 +41,19 @@
                 v-for="(item, i) in items"
                 :key="i"
               >
+
                 <v-list-item-title @click="goto()">{{ item.title }}</v-list-item-title>
               </v-list-item> -->
-              <v-list-item class=""
-              >
+              <v-list-item>
                 <v-list-item-title @click="goto('infochangelocation')" style="margin-top:10px">지역 수정</v-list-item-title>
                 <v-list-item-title @click="goto('infochangepw')">계정 설정</v-list-item-title>
                 <v-list-item-title @click="goto('')">?A?A?A?A?A??A</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
+        </div>
       </div>
+        
       <!-- 버튼 그룹 --> 
       <div class="d-flex">
         <!-- 건강 버튼-->
@@ -102,7 +106,7 @@
               
             </div>
             <!-- 강아지 추가 페이지로 이동 -->
-            <div class="d-flex justify-center width:200px;" id="mainBox">
+            <div class="mt-3">
               <v-btn
               class="mx-2"
               fab
@@ -114,14 +118,14 @@
                 </v-icon>
               </v-btn>
             </div>
-            <div class="space"></div>
+            <!-- <div class="space"></div> -->
           </div>
         </div>
       </div>
 </template>
 
 <script>
-// import InfoChange from "../../views/mypage/InfoChange.vue"
+import {mapGetters,mapActions} from 'vuex'
 
 export default {
   // components: { InfoChange },
@@ -132,8 +136,23 @@ export default {
       //   { title: '계정 관리' ,m_url: 'infochangepassword' },
       //   { title: '로그아웃' ,m_url: ''},
       // ],
+      pet: {},
+      allergy: [],
     }),
+  created() {
+    // this.getUserInfoInApi(this.getUser.uid) 명세서 확인필요
+    console.log(this.getDogInfo.pet.peid,'peid')
+    this.showDogInfoInApi(this.getDogInfo.pet.peid)
+    .then(() => {
+      this.pet = this.getDogInfo.pet
+      this.allergy = this.getDogInfo.allergy
+    })
+  },
+  computed: {
+    ...mapGetters(['getDogInfo','getUser'])
+  },
   methods: {
+    ...mapActions(['showDogInfoInApi','getUserInfoInApi','getAddressInApi']),
     goto(m_url) {
       this.$router.push(`/${m_url}`)
     },

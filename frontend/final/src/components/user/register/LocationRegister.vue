@@ -1,7 +1,14 @@
 <template>
+<div id="mainBox">
+    <div class="d-flex justify-center">
+      <div>
+        반려견 등록
+      </div>
+      <div style="width: 24px; background-color: white;">
+      </div>
+    </div>
   <div class="register-btn-pd">
     <v-flex class="ph-size">
-      <h1 class="text-center mb-5 mt-5">반려견 등록</h1>
       <!-- <v-text-field name="nickname" label="주소" id="nickname" v-model="nickname" type="nickname" required></v-text-field>
       <div class="d-flex justify-center">
         <router-link to="#"><v-btn class="register-btn">지역설정</v-btn></router-link> 
@@ -10,12 +17,21 @@
     <DaumPostcode
       :on-complete=handleAddress
     />
-    <div class="register-btn-pd">
-        <v-btn class="register-btn" @click="goto()">지역 설정</v-btn>
+    <div class="mt-3">
+      지번 주소를 동까지 입력해주세요.
+    </div>
+      <v-text-field 
+      label="(예: '광주 광산구 장덕동')" 
+      id="address" 
+      v-model="address" 
+      type="address" required>
+      </v-text-field>
+    <div class="register-btn-pd d-flex justify-center mt-5">
+        <v-btn class="" id="mainBtn" @click="setAddress()">지역 설정</v-btn>
     </div>
     </v-flex>
   </div>
-
+</div>
 </template>
 
 <script >
@@ -25,14 +41,33 @@ var handleAddress = (data) => {
   let fullAddress = data.address
   let extraAddress = ''
   if (data.addressType === 'R') {
-    if (data.bname !== '') {
-      extraAddress += data.bname
-    }
-    if (data.buildingName !== '') {
-      extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName)
-    }
-    fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '')
+    fullAddress = data.jibunAddress
   }
+  // 띄어쓰기 2후 마지막 글자가 동이이면 저장 
+  // 아니면 -> 세번 후 저장!!! 
+  // 그런데도 동이 없으면 면까지만?? 
+
+
+  // if (data.addressType === 'R') {
+  //   if (data.bname !== '') {
+  //     extraAddress += data.bname
+  //   }
+  //   if (data.buildingName !== '') {
+  //     extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName)
+  //   }
+  //   fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '')
+  // }
+  // let fullAddress = data.address
+  // let extraAddress = ''
+  // if (data.addressType === 'R') {
+  //   if (data.bname !== '') {
+  //     extraAddress += data.bname
+  //   }
+  //   if (data.buildingName !== '') {
+  //     extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName)
+  //   }
+  //   fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '')
+  // }
 
   console.log(fullAddress) // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
   console.log(extraAddress)
@@ -40,10 +75,14 @@ var handleAddress = (data) => {
 export default {
   data () {
     return {
+      address: ''
     }
   },
   components: {
     DaumPostcode
+  },
+  created() {
+    
   },
   mounted() {
       let recaptchaScript = document.createElement('script')
@@ -52,47 +91,19 @@ export default {
     },
   methods: {
     handleAddress,
+    setAddress() {
+      // address 
+      // this.goto()
+    },
     goto() {
       this.$router.push('/dogregister')
     }
   }
-//   methods: { showApi() { 
-//     new window.daum.Postcode({ 
-//       oncomplete: (data) => { 
-//         // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분. 
-//         // 도로명 주소의 노출 규칙에 따라 주소를 조합한다. 
-//         // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다. 
-//         let fullRoadAddr = data.roadAddress; // 도로명 주소 변수 
-//         let extraRoadAddr = ''; // 도로명 조합형 주소 변수 
-//         // 법정동명이 있을 경우 추가한다. (법정리는 제외) 
-//         // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다. 
-//         if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){ 
-//           extraRoadAddr += data.bname; 
-//           }
-//         // 건물명이 있고, 공동주택일 경우 추가한다. 
-//         if(data.buildingName !== '' && data.apartment === 'Y'){ 
-//           extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName); 
-//           } 
-//         // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다. 
-//         if(extraRoadAddr !== ''){ extraRoadAddr = ' (' + extraRoadAddr + ')'; } 
-//         // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다. 
-//         if(fullRoadAddr !== ''){ fullRoadAddr += extraRoadAddr; } 
-//         // 우편번호와 주소 정보를 해당 필드에 넣는다. 
-//         this.zip = data.zonecode; 
-//         //5자리 새우편번호 사용 
-//         this.addr1 = fullRoadAddr; 
-//         } 
-//         }).embed(this.$refs.embed) 
-//         }
-// }
 }
 </script>
 <style scoped>
 .register-btn {
   width: 200px;
-}
-.register-btn-pd{
-  /* padding: 30px; */
 }
 .txt_example {
   font-size: 30px !important;

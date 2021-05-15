@@ -144,10 +144,6 @@ export default {
 .login-btn {
   width: 250px;
 }
-.login-btn-pd{
-  /* padding: 30px; */
-  /* margin-top: 120px; */
-}
 .klogin-btn {
   width: 250px;
   border-radius: 5px;

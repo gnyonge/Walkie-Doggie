@@ -13,7 +13,6 @@
     </div>
     <!-- 회원가입 폼 -->
     <v-form>
-
       <v-text-field name="nickname" label="닉네임" id="nickname" v-model="nickname" type="nickname" required color="#48B9A8">
         <v-btn slot="append" id="mainBtn" style="margin:5px; width:80px;" @click="checkNickname()">중복 확인</v-btn>
       </v-text-field>

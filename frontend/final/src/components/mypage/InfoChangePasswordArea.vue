@@ -7,12 +7,12 @@
       <v-form>
         <h5 class="text-center mb-5 mt-5">비밀번호 설정</h5>
         <v-text-field name="password" label="기존 비밀번호" id="password" v-model="password" type="password" required color="#48B9A8"></v-text-field>
-        <v-text-field name="newpassword" label="새로운 비밀번호" id="newpassword" v-model="newpassword" type="newpassword" required color="#48B9A8"></v-text-field>
-        <v-text-field name="newpasswordcheck" label="새로운 비밀번호 확인" id="newpasswordcheck" v-model="passwordcheck" type="newpasswordcheck" required color="#48B9A8"></v-text-field>
+        <v-text-field name="newpassword" label="새로운 비밀번호" id="newpassword" v-model="newpassword" type="password" required color="#48B9A8"></v-text-field>
+        <v-text-field name="newpasswordcheck" label="새로운 비밀번호 확인" id="newpasswordcheck" v-model="newpasswordcheck" type="password" required color="#48B9A8"></v-text-field>
       </v-form>
       <router-link to="/mypage">
         <div class="d-flex justify-center mt-5">
-          <v-btn class="" id="mainBtn" style="width:250px; margin-top:20px; margin-bottom: 20px;"><b>변경</b></v-btn>
+          <v-btn class="" id="mainBtn" style="width:250px; margin-top:20px; margin-bottom: 20px;" @click="changePassword()"><b>변경</b></v-btn>
         </div>
       </router-link>
     </div>
@@ -24,11 +24,26 @@
 </template>
 
 <script>
-
+import { mapActions } from 'vuex'
 export default {
+  data () {
+    return {
+      password: '',
+      newpassword: '',
+      newpasswordcheck: '',
+
+    }
+  },
   methods: {
+    ...mapActions(['loginNormalInApi']),
     goback() {
       this.$router.push('/mypage')
+    },
+    changePassword() {
+      this.checkPasswordInApi({
+        u_password: "string",
+        uid: "string"
+      })
     }
   }
 }
