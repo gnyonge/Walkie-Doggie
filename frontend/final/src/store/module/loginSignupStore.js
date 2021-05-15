@@ -1,7 +1,7 @@
 import { rscApi } from '@/services/api';
 const state = {
   token: '',
-  user: {},
+  user: {}, //강아지정보 미포함
 };
 const getters = {
   getToken(state) {

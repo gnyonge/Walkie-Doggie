@@ -96,7 +96,7 @@
             <div class="mt-5" id="mainBox" style="background-color:#BAF1E4;">
               <div class="d-flex justify-end">
                 <!-- 설정버튼 클릭 시 dogchange 페이지로 이동 -->
-                <v-icon @click="gotoDogChange()">mdi-cog-outline</v-icon>
+                <v-icon @click="goto('dogchange')">mdi-cog-outline</v-icon>
               </div>
               <div>
                 <v-img src="../../assets/images/서비스로고.png" 
@@ -117,6 +117,7 @@
               fab
               dark
               color="#BAF1E4"
+              @click="goto('dogregister')"
             >
                 <v-icon>
                   mdi-plus
@@ -133,7 +134,6 @@
 import {mapGetters,mapActions} from 'vuex'
 
 export default {
-  // components: { InfoChange },
   name: "MyPageMain",
   data: () => ({
       // items: [
@@ -143,11 +143,10 @@ export default {
       // ],
       pet: {},
       allergy: [],
-      photo: false
+      photo: false, // 프로필 사진 유무
     }),
   created() {
-    // this.getUserInfoInApi(this.getUser.uid) 명세서 확인필요
-    console.log(this.getDogInfo.pet.peid,'peid')
+    // this.getUserInfoInApi(this.getUser.uid)
     this.showDogInfoInApi(this.getDogInfo.pet.peid)
     .then(() => {
       this.pet = this.getDogInfo.pet
@@ -162,15 +161,9 @@ export default {
   },
   methods: {
     ...mapActions(['showDogInfoInApi','getUserInfoInApi','getAddressInApi']),
-    goto(m_url) {
-      this.$router.push(`/${m_url}`)
+    goto(path) {
+      this.$router.push(`/${path}`)
     },
-    gotoDogChange() {
-      this.$router.push('/dogchange')
-    },
-    goback() {
-      this.$router.push('/mypage')
-    }
   }
   
 }
