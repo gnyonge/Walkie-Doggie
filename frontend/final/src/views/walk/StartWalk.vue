@@ -126,7 +126,7 @@ export default {
     // 좋아요 작성시 해당 리스트 가져오기 
     if(this.getPostingWid.length !== 0){
       console.log('내 게시글 정보 가져오냐')
-      this.getMyPlaceListInApi()
+      this.getMyPlaceListInApi(this.getPostingWid)
     }
     console.log(this.getFirstAreaName)
     // 첫화면과 구별 
@@ -142,7 +142,7 @@ export default {
         // 다시 들어올 떄마다 경로 받기 
         this.linePath = this.getMyPath
         this.getLocation()
-        // 내가 쓴 글 핀으로 보여주기
+        // 내가 쓴 게시글들을 핀으로 보여주기
         this.myLikePoint() 
       }
     } else {
@@ -376,8 +376,10 @@ export default {
         console.log(marker.getPosition())
         }
       }
-
-      marker.setMap(map)
+      if (marker !== undefined){
+        marker.setMap(map)
+      }
+      
       console.log('pin 함수 안에 setMap 있냐')
     },
     // 형식 변환 
