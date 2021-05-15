@@ -221,8 +221,8 @@ public class WalkController {
      * likeList(lid, p_latitude, p_longtitude, l_image, l_desc, l_date, pe_name) 
      */
 	@ApiOperation(value = "LikeList", notes = "산책중 좋아요 리스트")
-    @GetMapping("/likeList")
-    public ResponseEntity<Map<String, Object>> getLikeist(@RequestParam(value = "lidList") List<Integer> lidList) {
+    @PostMapping("/likeList")
+    public ResponseEntity<Map<String, Object>> getLikeist(@RequestBody List<Integer> lidList) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         
