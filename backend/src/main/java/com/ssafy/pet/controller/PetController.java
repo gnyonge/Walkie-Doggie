@@ -214,10 +214,10 @@ public class PetController {
 		try {
 			logger.info("=====> 사진, 내용 수정");
 			PetDto old = petservice.show_pet(pet.getPeid());
-			
-			if (old.getPe_profile_photo() != "") {	
+
+			if (old.getPe_profile_photo() != "") {
 			} else if (old.getPe_profile_photo() != null) {
-				s3util.setS3Client().deleteObject(new DeleteObjectRequest(bucket, old.getPe_profile_photo()));
+					s3util.setS3Client().deleteObject(new DeleteObjectRequest(bucket, old.getPe_profile_photo()));
 			}
 
 			String originName = file.getOriginalFilename(); // 파일 이름 가져오기
@@ -385,9 +385,13 @@ public class PetController {
 				}
 			}
 
+			logger.info("알러지 추가");
+
 			List<AllergyDto> new_allergy_list = petservice.show_allergy(peid);
 
 			int result = petservice.update_pet(pet);
+
+			logger.info("pet 업데이트");
 
 			if (result == 1) {
 				logger.info("=====> 반려견 정보 수정 성공");

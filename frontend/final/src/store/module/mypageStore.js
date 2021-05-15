@@ -24,13 +24,13 @@ const mutations = {
 };
 const actions = {
   // 지역 등록 
-  getAddressInApi(context,params) {
-    return rscApi.get('user/address',params)
-    .then((res)=> {
-      console.log(res,'주소 받아오기!!!')
-      return res;
-    })
-  },
+  // getAddressInApi(context,params) {
+  //   return rscApi.get('user/address',params)
+  //   .then((res)=> {
+  //     console.log(res,'주소 받아오기!!!')
+  //     return res;
+  //   })
+  // },
   // 유저 인포 불러오기 (강아지정보 포함)
   getUserInfoInApi(context, params) {
     return rscApi.get(`user/info?uid=${params}`)
@@ -97,8 +97,18 @@ const actions = {
     }).catch((error)=> {
       console.error(error)
     })
+  },
+  // 반려견 정보 삭제
+  deletePetInApi(context, params) {
+    return rscApi.put('pet/leave', params)
+    .then((res) => {
+      context.commit('setDogInfo', null)
+      console.log(res, '펫 삭제 완료')
+    })
+    .catch((error) => {
+      console.error(error)
+    })
   }
-
 };
 
 export default {

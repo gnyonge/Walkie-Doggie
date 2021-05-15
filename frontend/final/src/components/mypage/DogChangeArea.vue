@@ -145,7 +145,7 @@
               color="red"
               text
               v-bind="attrs"
-              @click="deleteDiary()"
+              @click="deletePet()"
             >
               YES
             </v-btn>
@@ -208,7 +208,7 @@ export default {
     ...mapGetters(['getTempPhotoURL', 'getDogInfo'])
   },
   methods: {
-    ...mapActions(['makeTempPhotoUrlInApi', 'updateDogInfoInApi', 'NoPhotoUpdateDogInfoInApi']),
+    ...mapActions(['makeTempPhotoUrlInApi', 'updateDogInfoInApi', 'NoPhotoUpdateDogInfoInApi', 'deletePetInApi']),
     goback() {
         this.$router.push('/mypage')
       },
@@ -340,6 +340,62 @@ export default {
           })
       }
       
+    },
+    deletePet() {
+      const formData = new FormData()
+      let pet = {}
+      // 사진 없을 때
+      if (!this.photo) {
+        pet = {
+          pe_age: this.age,
+          pe_birthday: this.date,
+          pe_disease: this.disease,
+          pe_flag: 0,
+          pe_name: this.name,
+          pe_trauma: this.trauma,
+          pe_weight: this.weight,
+          peid: this.getDogInfo.pet.peid,
+          pe_profile_photo: '',
+          uid: this.getDogInfo.pet.uid
+        }
+      }
+      // 사진 있을 때
+      else {
+        pet = {
+          pe_age: this.age,
+          pe_birthday: this.date,
+          pe_disease: this.disease,
+          pe_flag: 0,
+          pe_name: this.name,
+          pe_trauma: this.trauma,
+          pe_weight: this.weight,
+          peid: this.getDogInfo.pet.peid,
+          pe_profile_photo: this.photo_url,
+          uid: this.getDogInfo.pet.uid
+        }
+      }
+      let allergy = []
+        for (let i in this.getDogInfo.allergy) {
+          allergy.push({
+            aid: this.getDogInfo.allergy[i].aid,
+            peid: this.getDogInfo.pet.peid,
+            al_name: this.getDogInfo.allergy[i].al_name,
+            al_flag: 0,
+          })
+        }
+      formData.append(
+        'pet',
+        new Blob([JSON.stringify(pet)], { type: 'application/json' })
+      )
+      formData.append(
+        'allergy',
+        new Blob([JSON.stringify(allergy)], { type: 'application/json' })
+      )
+
+      this.deletePetInApi(formData).then(() => {
+        this.snackbar = false
+        this.$router.push('/mypage')
+      })
     }  
   }
 }

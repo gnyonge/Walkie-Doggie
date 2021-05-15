@@ -1,4 +1,5 @@
 import { rscApi } from '@/services/api';
+import qs from "qs";
 
 const state = {
   dog: {
@@ -48,7 +49,6 @@ const getters = {
     return state.like.areaName
   },
   getMyPath(state){
-    console.log(state.path)
     return state.path
   },
   getPostingWid(state){
@@ -141,9 +141,7 @@ const actions = {
   sendNowPostInApi(context, params){
     return rscApi.post('place/likePlace', params)
       .then((res) =>{
-        console.log('좋아요 포스팅 성공')
-        console.log(res.data.wid, 'walkstore')
-        context.commit('setPostingWid', res.data.wid)
+        context.commit('setPostingWid', res.data.lid)
       }).catch((error) =>{
         console.log(error, '포스팅 실패')
         
@@ -161,11 +159,9 @@ const actions = {
   },
   // 내가 쓴 게시글 리스트 받아오기 
   getMyPlaceListInApi(context){
-    let myPlaceList = {
-      lidList: state.postingWid.join(",")
-    }
-    return rscApi.get('walk/likeList', {params: myPlaceList})
+    return rscApi.get('walk/likeList',state.postingWid)
       .then((res) => {
+        console.log(res.data.likeList, 'res.data.likeList')
         context.commit('setMyPostingContent', res.data.likeList)
       }).catch((error) =>{
         console.log(error, '내가 쓴 게시글 가져오기 실패')
