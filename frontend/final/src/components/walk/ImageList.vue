@@ -54,9 +54,10 @@ export default {
     ...mapGetters(['getSelectedItem', 'getHotPlace'])
   },
   methods: {
-    ...mapMutations(['setSelectedItem']),
+    ...mapMutations(['setSelectedItem', 'setNowTab']),
     goback() {
-      this.$router.push('/walk')
+      this.$router.push('/calendar')
+      this.setNowTab(0)
     },
     clickItem(i){
       this.setSelectedItem(i)

@@ -72,8 +72,7 @@ export default {
     },
     //나의 게시글 삭제 
     deleteMyPosting(){
-      // let peid = this.getDogInfo.pet.peid
-      let peid = 'w4s2b6b5c6t2y'
+      let peid = this.getDogInfo.pet.peid
       let lid = this.getSelectedItem.lid
       this.deleteMyPostingInApi({peid, lid})
         .then((res)=> {
