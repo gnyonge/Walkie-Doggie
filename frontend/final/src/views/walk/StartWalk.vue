@@ -301,15 +301,16 @@ export default {
       let date = today.getFullYear() + '년' + (today.getMonth() + 1 ) + '월' + today.getDate() + '일'
       let time = today.getHours() + '시' + today.getMinutes() + '분'
       this.beforeH = today.getHours()
-      
+      this.setbeforeH(this.beforeH)
       this.beforeM = today.getMinutes()
+      this.setbeforeM(this.beforeM)
       let dateTime = date + ' ' + time
       return dateTime
     }, 
     // 산책시간 계산 
     calTime(){
-      this.totalH = this.afterH - this.beforeH
-      this.totalM = this.afterM - this.beforeM
+      this.totalH = this.afterH - this.getbeforeH
+      this.totalM = this.afterM - this.getbeforeM
     },
     // 좋아요
     like() {
