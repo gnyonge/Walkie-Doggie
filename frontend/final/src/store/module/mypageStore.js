@@ -48,16 +48,47 @@ const actions = {
     })
     .catch(()=>{});
   },
+  // 반려견 등록 사진없음
+  NoPhotoDogRegisterInApi(context, params) {
+    return rscApi.post('pet/insert/np', params)
+    .then ((res) => {
+      context.commit('setDogInfo', res.data);
+      console.log(res.data, '반려견 등록 성공!!')
+      return res;
+    })
+    .catch(()=>{});
+  },
   // 반려견 정보 보기
   showDogInfoInApi(context, params) {
     return rscApi.get(`pet/show?peid=${params}`)
     .then ((res)=> {
-      context.commit('setDogInfo',res.data);
+      context.commit('setDogInfo', res.data);
       console.log(res,'반려견정보보기')
       return res;
     })
     .catch(()=>{});
   },
+  // 반려견 정보 수정
+  updateDogInfoInApi(context, params) {
+    return rscApi.put('pet/update', params)
+    .then ((res)=> {
+      context.commit('setDogInfo', res.data);
+      console.log(res.data,'반려견 수정완료 후 정보보기', state.dogInfo)
+      return res;
+    })
+    .catch(()=>{});
+  },
+  // 반려견 정보 수정
+  NoPhotoUpdateDogInfoInApi(context, params) {
+    return rscApi.put('pet/update/np', params)
+    .then ((res)=> {
+      context.commit('setDogInfo', res.data);
+      console.log(res.data,'반려견 수정완료 후 정보보기', state.dogInfo)
+      return res;
+    })
+    .catch(()=>{});
+  },
+  // 마이페이지 메인 > 건강
   allHealthListInApi(context, params) {
     return rscApi.get(`pet/health/${params}`)
     .then((res) => {

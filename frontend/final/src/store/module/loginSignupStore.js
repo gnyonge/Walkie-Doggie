@@ -23,16 +23,19 @@ const mutations = {
 const actions = { 
   // 로그인 
   // - 자체 로그인 
-  loginNormalInApi(context, params) {
+  loginNormalInApi({commit, state}, params) {
     return rscApi.post('login/signin',params)
     .then ((res)=> {
-      context.commit('setToken',res.data.doggie_token);
-      context.commit('setUser',res.data.user);
-      console.log(res, '로그인')
+      commit('setToken',res.data.doggie_token);
+      commit('setUser',res.data.user);
+      console.log('로그인완료', res.data.user)
+      console.log('유저되나요', state.user, state.token)
       return res.data.message;
       // get이라면 다르게 해줘야 한다. 
     })
-    .catch(()=>{});
+    .catch((error)=>{
+      console.log(error)
+    });
   },
 
   // 회원가입 
