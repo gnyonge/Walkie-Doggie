@@ -53,6 +53,7 @@ export default {
       this.setSelectedDate(this.context)
       let prettyDate = this.context.slice(0,4) + '년 ' + this.context.slice(5,7) + '월 ' + this.context.slice(8,10) + '일'
       this.setPrettyDate(prettyDate)
+
       this.getTodayDiaryInApi({
       date: this.getSelectedDate,
       peid: this.getDogInfo.pet.peid}).then(()=> {
@@ -62,6 +63,7 @@ export default {
           this.$router.push(`/calendar/detail/todaydiary/${this.getSelectedDate}`)
         }
       })
+      
       this.getTodayWalkInApi({
         date: this.getSelectedDate,
         peid: this.getDogInfo.pet.peid})
