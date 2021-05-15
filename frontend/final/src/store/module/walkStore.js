@@ -21,6 +21,10 @@ const state = {
   hotPlace: [],
   postingWid: [31, 32],
   myPostingContent: [],
+  // 시작 시간 관련 
+  startTime: '',
+  beforeH: '', 
+  beforeM: '', 
 };
 const getters = {
   // 멍플레이스 
@@ -55,6 +59,15 @@ const getters = {
   },
   getMyPostingContent(state){
     return state.myPostingContent
+  },
+  getStartTime(state){
+    return state.startTime
+  },
+  getbeforeH(state){
+    return state.beforeH
+  },
+  getbeforeM(state){
+    return state.beforeM
   },
 };
 const mutations = {
@@ -104,7 +117,16 @@ const mutations = {
   //내가 쓴 게시글 요청 return값 
   setMyPostingContent(state, data){
     state.myPostingContent = data
-  }
+  },
+  setStartTime(state, data){
+    state.startTime = data 
+  },
+  setbeforeH(state, data){
+    state.beforeH = data 
+  },
+  setbeforeM(state, data){
+    state.beforeM = data 
+  },
 };
 const actions = {
   // 업로드 사진 미리보기 
