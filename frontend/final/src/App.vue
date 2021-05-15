@@ -4,7 +4,7 @@
     <transition mode="out-in">
       <router-view style="padding-top: 70px; padding-bottom: 90px;"></router-view>
     </transition>
-    <BottomNav id="bottom" v-if="getNowTab != 1"/>
+    <BottomNav id="bottom"/>
   </v-app>
 </template>
 

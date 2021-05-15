@@ -111,7 +111,7 @@ export default {
         }
   },
   computed: {
-      ...mapGetters(['getSelectedDate', 'getMyDiaryObject', 'getPrettyDate'])
+      ...mapGetters(['getSelectedDate', 'getMyDiaryObject', 'getPrettyDate', 'getDogInfo'])
     },
   methods: {
     ...mapMutations(['setMyDiaryObject']),
@@ -132,7 +132,7 @@ export default {
             d_memo: this.diaryContent,
             d_special: this.memoContent,
             d_walk: 0,
-            peid: "petpetpetpet1"
+            peid: this.getDogInfo.pet.peid
           }
           console.log('hid화이팅2')
       } else {
@@ -144,7 +144,7 @@ export default {
             d_memo: this.diaryContent,
             d_special: this.memoContent,
             d_walk: 0,
-            peid: "petpetpetpet1"
+            peid: this.getDogInfo.pet.peid
           }
       }
       console.log('hid화이팅3')
@@ -155,7 +155,7 @@ export default {
               h_date: this.getSelectedDate,
               h_flag: 0,
               hid: this.getMyDiaryObject.Health_list[i].hid,
-              peid: "petpetpetpet1"
+              peid: this.getDogInfo.pet.peid
             })
             console.log('hid화이팅ㅇㄹㄴㅇㄹ')
           }

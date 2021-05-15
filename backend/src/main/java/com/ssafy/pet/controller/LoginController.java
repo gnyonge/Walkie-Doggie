@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.ssafy.pet.dto.UserDto;
 import com.ssafy.pet.service.LoginService;
@@ -48,6 +49,18 @@ public class LoginController {
 	@Autowired
 	private SecurityUtil securityutil;
 
+	@GetMapping("/oauth")
+	public RedirectView kakaoConnect() {
+		StringBuffer url = new StringBuffer();
+		url.append("https://kauth.kakao.com/oauth/authorize?");
+		url.append("client_id=1bf3f0e4ba92eceb2527659918098b46");
+		url.append("&redirect_uri=http://localhost:8080/login");
+		url.append("&response_type=code");
+		RedirectView rv = new RedirectView(); 
+		rv.setUrl(url.toString());
+		return rv;
+	}
+	
 	// 카카오 로그인
 	@ApiOperation(value = "KAKAO LOGIN", notes = "카카오 로그인")
 	@GetMapping("/kakao")
@@ -57,6 +70,9 @@ public class LoginController {
 
 		try {
 			logger.info("=====> 카카오 로그인 시작");
+			for(String name : res.getHeaderNames()) {
+				System.out.println(name + " " + res.getHeader(name));
+			}
 			String access_Token = kakao.getAccessToken(code);
 
 			Map<String, Object> userInfo = kakao.getUserInfo(access_Token);
@@ -100,7 +116,6 @@ public class LoginController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-
 	// 자체 로그인
 	@ApiOperation(value = "SYSTEM LOGIN", notes = "자체 로그인")
 	@PostMapping("/signin")
