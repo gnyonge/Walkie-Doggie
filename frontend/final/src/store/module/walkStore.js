@@ -172,10 +172,9 @@ const actions = {
       })
   },
   // 핫플레이스 전체 리스트 받아오기
-  getHotPlaceListInApi(context) {
-    var place1 = '산정동'
+  getHotPlaceListInApi(context, place) {
     var pop = 'pop'
-    return rscApi.get(`place/list/${place1}?sort=${pop}`)
+    return rscApi.get(`place/list/${place}?sort=${pop}`)
     .then((res) => {
       context.commit('setHotPlace', res.data.postList)
     })
