@@ -24,13 +24,13 @@ const mutations = {
 };
 const actions = {
   // 지역 등록 
-  getAddressInApi(context,params) {
-    return rscApi.get('user/address',params)
-    .then((res)=> {
-      console.log(res,'주소 받아오기!!!')
-      return res;
-    })
-  },
+  // getAddressInApi(context,params) {
+  //   return rscApi.get('user/address',params)
+  //   .then((res)=> {
+  //     console.log(res,'주소 받아오기!!!')
+  //     return res;
+  //   })
+  // },
   // 유저 인포 불러오기 (강아지정보 포함)
   getUserInfoInApi(context, params) {
     return rscApi.get(`user/info?uid=${params}`)

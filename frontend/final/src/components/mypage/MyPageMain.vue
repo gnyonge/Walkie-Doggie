@@ -136,11 +136,6 @@ import {mapGetters,mapActions} from 'vuex'
 export default {
   name: "MyPageMain",
   data: () => ({
-      // items: [
-      //   { title: '지역 수정' , m_url: 'infochangelocation'},
-      //   { title: '계정 관리' ,m_url: 'infochangepassword' },
-      //   { title: '로그아웃' ,m_url: ''},
-      // ],
       pet: {},
       allergy: [],
       photo: false, // 프로필 사진 유무
@@ -160,7 +155,7 @@ export default {
     ...mapGetters(['getDogInfo','getUser']) 
   },
   methods: {
-    ...mapActions(['showDogInfoInApi','getUserInfoInApi','getAddressInApi']),
+    ...mapActions(['showDogInfoInApi','getUserInfoInApi']),
     goto(path) {
       this.$router.push(`/${path}`)
     },

@@ -2,6 +2,7 @@ import { rscApi } from '@/services/api';
 const state = {
   token: '',
   user: {}, //강아지정보 미포함
+  add: ''
 };
 const getters = {
   getToken(state) {
@@ -9,6 +10,9 @@ const getters = {
   },
   getUser(state) {
     return state.user
+  },
+  getAddress(state) {
+    return state.add
   }
 };
 const mutations = {
@@ -17,6 +21,9 @@ const mutations = {
   },
   setUser(state,user) {
     state.user = user
+  },
+  setAddress(state,add) {
+    state.add = add
   }
 
 };
@@ -73,6 +80,16 @@ const actions = {
   checkPasswordInApi(context,params) {
     return rscApi.post('user/check/pass',params)
     .then ((res) => {
+      return res;
+    })
+    .catch(()=>{});
+  },
+
+  // 지역등록
+  setAddressInApi(context,params) {
+    return rscApi.get(`user/address?add=${params.add}&uid=${params.uid}`)
+    .then ((res) => {
+      console.log(res, '주소성공!!!!!!!!!!!')
       return res;
     })
     .catch(()=>{});
