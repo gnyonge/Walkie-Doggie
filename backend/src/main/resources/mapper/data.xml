@@ -13,7 +13,7 @@
 
 	<!-- 산책 횟수 -->
 	<select id="getLWalkCount" parameterType="string" resultType="int" >
-		select count(wid) / count(peid)
+		select count(wid) / count(distinct peid)
 		from Walk
 		where w_location=#{location} and w_flag=0 and w_date > (NOW() - INTERVAL 7 DAY);
 	</select>
@@ -26,7 +26,7 @@
 
 	<!-- 총 산책 시간 -->
 	<select id="getLTotalTime" parameterType="string" resultType="int" >
-		select sum(w_time) / count(peid)
+		select sum(w_time) / count(distinct peid)
 		from Walk
 		where w_location=#{location} and w_flag=0 and w_date > (NOW() - INTERVAL 7 DAY);
 	</select>
@@ -45,7 +45,7 @@
 	</select>
 
 	<select id="getPWalkTime" parameterType="string" resultType="int" >
-		select sum(w_time) 
+		select avg(hour(w_date))
 		from Walk
 		where peid=#{peid} and w_flag=0 and w_date > (NOW() - INTERVAL 7 DAY);
 	</select>
