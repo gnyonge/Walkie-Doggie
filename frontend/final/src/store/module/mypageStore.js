@@ -55,7 +55,6 @@ const actions = {
       context.commit('setDogInfo',res.data);
       console.log(res,'반려견정보보기')
       return res;
-      // get이라면 다르게 해줘야 한다. 
     })
     .catch(()=>{});
   },
