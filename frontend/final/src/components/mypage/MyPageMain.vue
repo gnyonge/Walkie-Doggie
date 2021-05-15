@@ -9,7 +9,12 @@
             <v-img :src="pet.pe_profile_photo" 
             class="rounded-circle"
             max-height="130"
-            max-width="130" alt="프로필사진">
+            max-width="130" alt="프로필사진" v-if="photo">
+            </v-img>
+            <v-img src="@/assets/images/서비스로고.png" 
+            class="rounded-circle"
+            max-height="130"
+            max-width="130" alt="프로필사진" v-else>
             </v-img>
           </div>
           <!-- 2. 인적사항 --> 
@@ -138,6 +143,7 @@ export default {
       // ],
       pet: {},
       allergy: [],
+      photo: false
     }),
   created() {
     // this.getUserInfoInApi(this.getUser.uid) 명세서 확인필요
@@ -145,6 +151,9 @@ export default {
     this.showDogInfoInApi(this.getDogInfo.pet.peid)
     .then(() => {
       this.pet = this.getDogInfo.pet
+      if (this.getDogInfo.pet.pe_profile_photo.length != 0) {
+        this.photo = true
+      }
       this.allergy = this.getDogInfo.allergy
     })
   },
