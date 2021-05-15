@@ -172,9 +172,10 @@ const actions = {
       })
   },
   // 핫플레이스 전체 리스트 받아오기
-  getHotPlaceListInApi(context, place) {
+  getHotPlaceListInApi(context) {
+    var place1 = '산정동'
     var pop = 'pop'
-    return rscApi.get(`place/list/${place}?sort=${pop}`)
+    return rscApi.get(`place/list/${place1}?sort=${pop}`)
     .then((res) => {
       context.commit('setHotPlace', res.data.postList)
     })
@@ -201,8 +202,9 @@ const actions = {
 
   },
   // 내 게시글 삭제
-  deleteMyPostingInApi(context, {peid, lid}){
-    return rscApi.put(`place/delete/${peid}`, lid)
+  deleteMyPostingInApi(context, params){
+    console.log(params)
+    return rscApi.delete(`place/delete/${params.peid}?lid=${params.lid}`)
       .then((res)=>{
         console.log('내 게시글 삭제 성공')
         return res
