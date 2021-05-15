@@ -372,19 +372,17 @@ public class PetController {
 			logger.info("=====> 사진, 내용 수정");
 
 			String peid = pet.getPeid();
-
-			logger.info("peid");
-
+			
 			List<AllergyDto> delete_allergy = petservice.show_allergy(peid);
 
 			for (AllergyDto all : delete_allergy) {
 				petservice.delete_allergy(all);
 			}
-
-			logger.info("알러지 삭제");
-
-			for (AllergyDto all : allergy) {
-				petservice.insert_allergy(all);
+			
+			if (allergy != null) {
+				for (AllergyDto all : allergy) {
+					petservice.insert_allergy(all);
+				}
 			}
 
 			logger.info("알러지 추가");

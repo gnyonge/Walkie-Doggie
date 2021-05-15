@@ -18,6 +18,9 @@
           <v-text-field label="이메일" v-model="email" type="email" required color="#48B9A8" style="margin-top:40px;"></v-text-field>
           <v-text-field label="비밀번호" v-model="password" type="password" required color="#48B9A8" style="margin-top:20px;" class="font-change"></v-text-field>
         </v-form>
+        <div style="color:red; font-size:14px" v-if="check">
+          아이디나 비밀번호를 확인해주세요.
+        </div>
           <div class="d-flex justify-center">
             <v-btn class="login-btn" id="mainBtn" style="width:100%; margin-top:30px; margin-bottom: 30px; font-size: 20px; height:45px; border-radius: 5px;" @click="login()"><b>로그인</b></v-btn>
           </div>
@@ -43,7 +46,8 @@ export default {
       id:"1bf3f0e4ba92eceb2527659918098b46",
       uri:"http://localhost:8080/login",
       type:"code",
-      address:"https://kauth.kakao.com"
+      address:"https://kauth.kakao.com",
+      check: false,
     }
   },
     created() {
@@ -117,6 +121,15 @@ export default {
       this.loginNormalInApi({
         u_email: this.email,
         u_password: this.password,
+      })
+      .then((res) => {
+        console.log(res,"로그인 성공")
+        if(res == "로그인에 성공하였습니다.") {
+          this.$router.push('/calendar')
+        }
+        else {
+          this.check = true
+        }
       })
       
        // 반려견 등록 페이지로 이동 
