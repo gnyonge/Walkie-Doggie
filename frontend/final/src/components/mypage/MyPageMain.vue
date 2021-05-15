@@ -2,14 +2,14 @@
   <div>
     <div>  
       <!-- 1. 프로필 박스 -->
-      <div class="mx-3 mt-3">
+      <div class="mx-3 mt-3" id="mainBox">
         <div class="ml-3 d-flex">
           <!-- 1. 프로필 사진 --> 
-          <div class="mt-5">
+          <div class="mt-10">
             <v-img :src="pet.pe_profile_photo" 
             class="rounded-circle"
-            max-height="130"
-            max-width="130" alt="프로필사진" v-if="photo">
+            height="130"
+            width="130" alt="프로필사진" v-if="photo">
             </v-img>
             <v-img src="@/assets/images/서비스로고.png" 
             class="rounded-circle"
@@ -18,20 +18,17 @@
             </v-img>
           </div>
           <!-- 2. 인적사항 --> 
-          <div class="mt-3 ml-5" style="width: 148px; word-break:break-all;">
+          <div class="mt-3 ml-3" style="width: 148px; word-break:break-all;">
             <p style="font-size: 20px">{{pet.pe_name}}</p>
-            <p>나이: {{pet.pe_age}}살</p>
-            <p>몸무게: {{pet.pe_weight}}kg</p>
-            <p>특이사항: {{pet.pe_trauma}}, {{pet.pe_disease}}</p>
+            <p><b>나이:</b> {{pet.pe_age}}살</p>
+            <p><b>몸무게:</b> {{pet.pe_weight}}kg</p>
+            <p><b>특이사항:</b> {{pet.pe_trauma}}, {{pet.pe_disease}}</p>
           </div>
           <!-- 햄버거버튼 -->
-          <v-menu
-            bottom
-            left
-            class="d-inline"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
+          <div class="text-center">
+            <v-menu offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
                 color="#BAF1E4"
                 icon
                 v-bind="attrs"
@@ -39,23 +36,17 @@
               >
                 <v-icon size="40px">mdi-menu</v-icon>
               </v-btn>
-            </template>
-
-            <v-list width="100px">
-              <!-- <v-list-item
-                v-for="(item, i) in items"
-                :key="i"
-              >
-
-                <v-list-item-title @click="goto()">{{ item.title }}</v-list-item-title>
-              </v-list-item> -->
-              <v-list-item>
-                <v-list-item-title @click="goto('infochangelocation')" style="margin-top:10px">지역 수정</v-list-item-title>
-                <v-list-item-title @click="goto('infochangepw')">계정 설정</v-list-item-title>
-                <v-list-item-title @click="goto('')">?A?A?A?A?A??A</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-for="(item, index) in items"
+                  :key="index"
+                >
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </div>
         </div>
       </div>
         
@@ -89,7 +80,7 @@
       <div class="ml-5 mt-3">
         <h5><b>강아지 계정 관리</b> </h5>
       </div>
-        <div class="frame" >
+        
           <div class="card-list">
             <!-- 한 마리당 하나의 카드 -->
             <!-- 카드 클릭시 대표 강아지 설정 변경  -->
@@ -127,7 +118,7 @@
             <!-- <div class="space"></div> -->
           </div>
         </div>
-      </div>
+ 
 </template>
 
 <script>
@@ -136,14 +127,13 @@ import {mapGetters,mapActions} from 'vuex'
 export default {
   name: "MyPageMain",
   data: () => ({
-      // items: [
-      //   { title: '지역 수정' , m_url: 'infochangelocation'},
-      //   { title: '계정 관리' ,m_url: 'infochangepassword' },
-      //   { title: '로그아웃' ,m_url: ''},
-      // ],
       pet: {},
       allergy: [],
       photo: false, // 프로필 사진 유무
+      items: [
+        { title: '지역 설정' },
+        { title: '계정 관리' },
+      ],
     }),
   created() {
     // this.getUserInfoInApi(this.getUser.uid)
@@ -160,7 +150,7 @@ export default {
     ...mapGetters(['getDogInfo','getUser']) 
   },
   methods: {
-    ...mapActions(['showDogInfoInApi','getUserInfoInApi','getAddressInApi']),
+    ...mapActions(['showDogInfoInApi','getUserInfoInApi']),
     goto(path) {
       this.$router.push(`/${path}`)
     },
@@ -169,15 +159,6 @@ export default {
 }
 </script>
 <style scoped>
-p {
-  color: black;
-}
-
-.frame {
-  width: 360px;
-  overflow: auto;
-}
-
 .card-list {
   display: flex;
   padding-left: 10px;
@@ -195,6 +176,5 @@ p {
   flex-shrink: 0;
   width: 200px;
   height: 200px;
-/*   background-color: white; */
 }
 </style>
