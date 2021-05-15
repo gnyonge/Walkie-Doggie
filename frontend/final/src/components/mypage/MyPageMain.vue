@@ -157,7 +157,7 @@ export default {
     })
   },
   computed: {
-    ...mapGetters(['getDogInfo','getUser'])
+    ...mapGetters(['getDogInfo','getUser']) 
   },
   methods: {
     ...mapActions(['showDogInfoInApi','getUserInfoInApi','getAddressInApi']),
