@@ -214,8 +214,9 @@ public class PetController {
 		try {
 			logger.info("=====> 사진, 내용 수정");
 			PetDto old = petservice.show_pet(pet.getPeid());
-
-			if (old.getPe_profile_photo() != null) {
+			
+			if (old.getPe_profile_photo() != "") {	
+			} else if (old.getPe_profile_photo() != null) {
 				s3util.setS3Client().deleteObject(new DeleteObjectRequest(bucket, old.getPe_profile_photo()));
 			}
 
@@ -371,15 +372,17 @@ public class PetController {
 			logger.info("=====> 사진, 내용 수정");
 
 			String peid = pet.getPeid();
-
+			
 			List<AllergyDto> delete_allergy = petservice.show_allergy(peid);
 
 			for (AllergyDto all : delete_allergy) {
 				petservice.delete_allergy(all);
 			}
-
-			for (AllergyDto all : allergy) {
-				petservice.insert_allergy(all);
+			
+			if (allergy != null) {
+				for (AllergyDto all : allergy) {
+					petservice.insert_allergy(all);
+				}
 			}
 
 			List<AllergyDto> new_allergy_list = petservice.show_allergy(peid);
