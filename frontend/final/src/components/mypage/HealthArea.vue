@@ -14,24 +14,23 @@
       class="my-5"
       max-width="344"
       outlined
-      v-for="i, idx in allHealthList" 
-      :key="idx"
+      v-for="arr, date in allHealthList" :key="date.idx"
     >
       <v-list-item three-line id="healthDiv">
         <v-list-item-content>
           <div>
-            {{i}}
+            {{date}}
           </div>
-          <v-list-item-subtitle>
-            <li>예방접종 1차</li>
-            <li>심장사상충 약</li>
+          <v-list-item-subtitle v-for="i in arr" :key="i.idx">
+            <li class="mt-1">{{i}}</li>
           </v-list-item-subtitle>
         </v-list-item-content>
-        <v-list-item-avatar
-          tile
-          size="60"
-          color="grey"
-        ></v-list-item-avatar>
+        <v-list-item-avatar tile size="70">
+          <img
+            src="@/assets/health.png"
+            alt="건강사진"
+          >
+        </v-list-item-avatar>
       </v-list-item>
     </div>
   </div>
@@ -48,12 +47,17 @@ export default {
   },
   created() {
     this.allHealthListInApi(this.getDogInfo.pet.peid)
-    // .then(() => {
-    //   for (let i of this.getAllHealthList) {
-    //     if this.allHealthList
-    //   }
-    //   console.log(this.allHealthList, '어어')
-    // })
+    .then(() => {
+      let tempList = {}
+      for (let i of this.getAllHealthList) { 
+        if (Object.keys(tempList).includes(i.h_date.slice(0,10))) {
+          tempList[i.h_date.slice(0, 10)].push(i.h_content)
+        } else {
+          tempList[i.h_date.slice(0, 10)] = [i.h_content]
+        }
+      }
+      this.allHealthList = tempList
+    })
   },
   computed: {
     ...mapGetters(['getDogInfo', 'getAllHealthList'])

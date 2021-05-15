@@ -140,7 +140,8 @@ export default {
       allergy: [],
     }),
   created() {
-    this.getUserInfoInApi()
+    // this.getUserInfoInApi(this.getUser.uid) 명세서 확인필요
+    console.log(this.getDogInfo.pet.peid,'peid')
     this.showDogInfoInApi(this.getDogInfo.pet.peid)
     .then(() => {
       this.pet = this.getDogInfo.pet
@@ -148,7 +149,7 @@ export default {
     })
   },
   computed: {
-    ...mapGetters(['getDogInfo'])
+    ...mapGetters(['getDogInfo','getUser'])
   },
   methods: {
     ...mapActions(['showDogInfoInApi','getUserInfoInApi','getAddressInApi']),
