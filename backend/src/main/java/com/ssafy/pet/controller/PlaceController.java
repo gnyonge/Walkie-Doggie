@@ -48,7 +48,7 @@ public class PlaceController {
     private PlaceService placeService;
 
     /*
-     * 기능: 산책 중 특정 장소 좋아요 클릭
+     * 기능: 산책 중 특정 장소 좋아요 이미지 업로드
      * 
      * developer: 윤수민
      * 

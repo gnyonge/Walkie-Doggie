@@ -33,19 +33,82 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { rscApi } from '@/services/api';
+
 export default {
   data () {
     return {
       email: '',
       password: '',
+      id:"1bf3f0e4ba92eceb2527659918098b46",
+      uri:"http://localhost:8080/login",
+      type:"code",
+      address:"https://kauth.kakao.com"
     }
+  },
+    created() {
+        let code = this.getParameter('code');
+    console.log(code);
+    if(code != undefined) {
+      rscApi.get(`login/kakao?code=${code}`)
+      .then(({data}) => {
+        console.log(data);
+        // doggie_token을 cookie로 저장
+        this.$router.push(`/calendar`)
+      })
+      .catch(()=>{
+          this.$router.push(`/login`)
+
+      }) 
+    }   
   },
   methods: {
     ...mapActions(['loginNormalInApi']),
+            getParameter(name) { 
+      var ret; 
+      var url = location.href; 
+      // get 파라미터 값을 가져올 수 있는 ? 를 기점으로 slice 한 후 split 으로 나눔 
+      var params = (url.slice(url.indexOf('?') + 1, url.length)).split('&'); 
+      // 나누어진 값의 비교를 통해 paramName 으로 요청된 데이터의 값만 
+      for (var i = 0; i < params.length; i++) { 
+        var varName = params[i].split('=')[0]; 
+        if (varName == name) {
+            ret = params[i].split('=')[1];
+            return ret;
+        } 
+      }
+    },
     kakao(){
-      window.location.replace(
-        "https://kauth.kakao.com/oauth/authorize?client_id=1bf3f0e4ba92eceb2527659918098b46&redirect_uri=http://localhost:8888/pet/login/kakao&response_type=code"
-      );
+        //  window.Kakao.Auth.login({
+        //             scope : 'account_email, profile',
+        //             success: (auth) =>{
+        //               console.log(auth.access_token)
+        //             },
+        //             fail : function(err) {
+        //                console.log('에러', err);
+        //             }
+        //         });
+      // axios
+      // .get(`${this.address}/oauth/authorize`,{
+      //   params:{
+      //     client_id:this.id,
+      //     redirect_uri:this.uri,
+      //     response_type:this.type
+      //   }
+      // })
+      // .then(res=>{
+      //   console.log("hihihi");
+      //   console.log(res.data);
+      //   // this.$router.put("/calendar");
+      // })
+      // .catch(()=>{
+      //   console.log("FAILURE")
+      // })
+      window.location.replace("http://localhost:8888/pet/login/oauth")
+      // window.location.replace("https://kauth.kakao.com/oauth/authorize?client_id=1bf3f0e4ba92eceb2527659918098b46&redirect_uri=http://localhost:8080&response_type=code")
+      // const URL = new URL("https://kauth.kakao.com/oauth/authorize?client_id=1bf3f0e4ba92eceb2527659918098b46&redirect_uri=http://localhost:8888/pet/login/kakao&response_type=code")
+      // window.location.assign(URL);
+      
     },
     goback() {
       this.$router.push('/')

@@ -39,3 +39,5 @@ build/
 
 ### Backend ###
 ./backend/application.pid
+
+package-lock.json
