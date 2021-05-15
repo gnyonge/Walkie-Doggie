@@ -109,19 +109,28 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getNowTab', 'getMyPath', 'getFirstAreaName', 'getAreaName', 'getMyPostingContent' ])
+    ...mapGetters([
+      'getNowTab', 
+      'getMyPath', 
+      'getFirstAreaName', 
+      'getAreaName', 
+      'getMyPostingContent',
+      'getStartTime',
+      'getbeforeH',
+      'setbeforeM' ])
   },
   mounted() {
+    console.log(this.getFirstAreaName)
     // 첫화면과 구별 
     if (window.kakao && window.kakao.maps) {
       this.initMap();
       if( this.getFirstAreaName === '') {
         // 시작 시간 가져오기 
-        this.start = this.startTime() 
-        this.start = '시간' 
+        this.setStartTime(this.startTime())
         // 실시간 위치 정보 
         this.navigation()
       } else { // 좋아요 포스팅 이후 
+        console.log(this.start)
         // 다시 들어올 떄마다 경로 받기 
         this.linePath = this.getMyPath
         this.getLocation()
@@ -153,7 +162,10 @@ export default {
       'setAreaName', 
       'deleteMyPath',
       'setTempPhotoURL',
-      'deletePostingWid']), 
+      'deletePostingWid',
+      'setStartTime',
+      'setbeforeH',
+      'setbeforeM' ]), 
     ...mapActions(['doneWalkInApi', 'getMyPlaceListInApi']),
     // 지도 첫 화면 로드 
     initMap() {
@@ -275,6 +287,7 @@ export default {
     // 시간 가져오기 
     getTime() {
       let today = new Date() 
+      console.log(today)
       let date = today.getFullYear() + '년' + (today.getMonth() + 1 ) + '월' + today.getDate() + '일'
       let time = today.getHours() + '시' + today.getMinutes() + '분'
       this.afterH = today.getHours()
@@ -288,6 +301,7 @@ export default {
       let date = today.getFullYear() + '년' + (today.getMonth() + 1 ) + '월' + today.getDate() + '일'
       let time = today.getHours() + '시' + today.getMinutes() + '분'
       this.beforeH = today.getHours()
+      
       this.beforeM = today.getMinutes()
       let dateTime = date + ' ' + time
       return dateTime
@@ -380,11 +394,12 @@ export default {
     },
     // 산책종료
     doneWalk() {
+      this.start = this.getStartTime
       this.end = this.getTime()
       // 백엔드로 정보 보내기 
       this.doneWalkInApi({
         peid: "petpetpetpet1",
-        w_date: this.start, 
+        w_date: this.getStartTime, 
         w_distance: "1.2",
         w_like: this.likecnt,
         w_time: (this.totalH * 60) + this.totalM,
