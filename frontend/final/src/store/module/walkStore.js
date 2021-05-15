@@ -201,8 +201,9 @@ const actions = {
 
   },
   // 내 게시글 삭제
-  deleteMyPostingInApi(context, {peid, lid}){
-    return rscApi.put(`place/delete/${peid}`, lid)
+  deleteMyPostingInApi(context, params){
+    console.log(params)
+    return rscApi.delete(`place/delete/${params.peid}?lid=${params.lid}`)
       .then((res)=>{
         console.log('내 게시글 삭제 성공')
         return res

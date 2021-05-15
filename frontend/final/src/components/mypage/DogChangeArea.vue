@@ -11,7 +11,7 @@
       <div style="width: 24px; background-color: white;">
       </div>
     </div>
-    <div class="d-flex justify-center" style="font-size: 30px;">두부</div>
+    <div class="d-flex justify-center" style="font-size: 30px;">{{getDogInfo.pet.pe_name}}</div>
     <div class="d-flex justify-center">
         <v-avatar width="100px" height="100px">
           <img
@@ -247,7 +247,7 @@ export default {
         if (!this.photo) {
           pet = {
           pe_age: this.age,
-          pe_brithday: this.date,
+          pe_birthday: this.date,
           pe_disease: this.disease,
           pe_flag: 0,
           pe_name: this.name,
@@ -257,12 +257,13 @@ export default {
           pe_profile_photo: '',
           uid: this.getDogInfo.pet.uid
           }
+          console.log(this.photo_url,'2')
         } 
         // 프사있었는데 변경안함
         else {
           pet = {
           pe_age: this.age,
-          pe_brithday: this.date,
+          pe_birthday: this.date,
           pe_disease: this.disease,
           pe_flag: 0,
           pe_name: this.name,
@@ -272,8 +273,8 @@ export default {
           pe_profile_photo: this.photo_url,
           uid: this.getDogInfo.pet.uid
           }
+          console.log(this.photo_url,'3')
         }
-        
         let allergy = []
         for (let i in this.allergyArray) {
             allergy.push({
@@ -293,17 +294,17 @@ export default {
             new Blob([JSON.stringify(allergy)], { type: 'application/json' })
           )
 
-          this.NoPhotoUpdateDogInfoInApi(formData).then((res) => {
-            console.log(res, '사진추가없이 수정완료')
+          this.NoPhotoUpdateDogInfoInApi(formData).then(() => {
             this.$router.push('/mypage')
-              
+            console.log('사진추가안함')
           })
       } 
-      // 사진 추가나 변경없음
+      // 사진 추가함
       else {
+        console.log(this.photo_url,'4')
         let pet = {
           pe_age: this.age,
-          pe_brithday: this.date,
+          pe_birthday: this.date,
           pe_disease: this.disease,
           pe_flag: 0,
           pe_name: this.name,
@@ -313,12 +314,13 @@ export default {
           pe_profile_photo: this.photo_url,
           uid: this.getDogInfo.pet.uid
         }
+        
         let allergy = []
         for (let i in this.allergyArray) {
             allergy.push({
-            aid: i,
+            aid: 0,
             peid: this.getDogInfo.pet.peid,
-            al_name: '',
+            al_name: this.allergyArray[i],
             al_flag: 0,
           })
         }

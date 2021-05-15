@@ -1,5 +1,6 @@
 import { rscApi } from '@/services/api';
 const state = {
+  userInfo: {}, //강아지정보 포함
   dogInfo: [],
   allHealthList: [],
 
@@ -30,15 +31,15 @@ const actions = {
       return res;
     })
   },
-  // 유저 인포 불러오기 
-  getUserInfoInApi(context,params) {
-    return rscApi.get('user/info',params)
+  // 유저 인포 불러오기 (강아지정보 포함)
+  getUserInfoInApi(context, params) {
+    return rscApi.get(`user/info?uid=${params}`)
     .then((res)=> {
       console.log(res, '유저 인포 받아오기 !!')
       return res;
     })
   },
-  // 반려견 등록 
+  // 반려견 등록 사진있음
   dogRegisterInApi(context, params) {
     return rscApi.post('pet/insert', params)
     .then ((res) => {
@@ -68,7 +69,7 @@ const actions = {
     })
     .catch(()=>{});
   },
-  // 반려견 정보 수정
+  // 반려견 정보 수정 사진 있음
   updateDogInfoInApi(context, params) {
     return rscApi.put('pet/update', params)
     .then ((res)=> {
@@ -78,7 +79,7 @@ const actions = {
     })
     .catch(()=>{});
   },
-  // 반려견 정보 수정
+  // 반려견 정보 수정 사진추가없음
   NoPhotoUpdateDogInfoInApi(context, params) {
     return rscApi.put('pet/update/np', params)
     .then ((res)=> {

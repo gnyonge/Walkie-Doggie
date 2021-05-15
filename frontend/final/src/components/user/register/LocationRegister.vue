@@ -47,29 +47,8 @@ var handleAddress = (data) => {
   // 아니면 -> 세번 후 저장!!! 
   // 그런데도 동이 없으면 면까지만?? 
 
+  console.log(fullAddress) // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)' 주소 세번째 꺼로 가져오기 
 
-  // if (data.addressType === 'R') {
-  //   if (data.bname !== '') {
-  //     extraAddress += data.bname
-  //   }
-  //   if (data.buildingName !== '') {
-  //     extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName)
-  //   }
-  //   fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '')
-  // }
-  // let fullAddress = data.address
-  // let extraAddress = ''
-  // if (data.addressType === 'R') {
-  //   if (data.bname !== '') {
-  //     extraAddress += data.bname
-  //   }
-  //   if (data.buildingName !== '') {
-  //     extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName)
-  //   }
-  //   fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '')
-  // }
-
-  console.log(fullAddress) // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
   console.log(extraAddress)
 }
 export default {
