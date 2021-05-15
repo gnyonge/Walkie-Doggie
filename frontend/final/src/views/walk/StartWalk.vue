@@ -117,9 +117,15 @@ export default {
       'getMyPostingContent',
       'getStartTime',
       'getbeforeH',
-      'setbeforeM' ])
+      'getbeforeM',
+      'getPostingWid',
+      'getDogInfo' ])
   },
   mounted() {
+    // 좋아요 작성시 해당 리스트 가져오기 
+    if(this.getPostingWid.length !==0){
+      this.getMyPlaceListInApi()
+    }
     console.log(this.getFirstAreaName)
     // 첫화면과 구별 
     if (window.kakao && window.kakao.maps) {
@@ -135,7 +141,7 @@ export default {
         this.linePath = this.getMyPath
         this.getLocation()
         // 내가 쓴 글 핀으로 보여주기
-        this.getMyPlaceListInApi()
+        console.log('144 왜 setMap어딨어')
         this.myLikePoint() 
       }
     } else {
@@ -165,7 +171,8 @@ export default {
       'deletePostingWid',
       'setStartTime',
       'setbeforeH',
-      'setbeforeM' ]), 
+      'setbeforeM',
+      ]), 
     ...mapActions(['doneWalkInApi', 'getMyPlaceListInApi']),
     // 지도 첫 화면 로드 
     initMap() {
@@ -204,7 +211,7 @@ export default {
           }else{ // 좋아요 표시 후 마커 
             var middlelocPosition = new kakao.maps.LatLng(lat, lon)
             middleDisplayMarker(middlelocPosition);
-            this.getMyPlaceListInApi()
+          
           } 
         });
       } else { // HTML5의 GeoLocation을 사용할 수 없을때 
@@ -301,15 +308,16 @@ export default {
       let date = today.getFullYear() + '년' + (today.getMonth() + 1 ) + '월' + today.getDate() + '일'
       let time = today.getHours() + '시' + today.getMinutes() + '분'
       this.beforeH = today.getHours()
-      
+      this.setbeforeH(this.beforeH)
       this.beforeM = today.getMinutes()
+      this.setbeforeM(this.beforeM)
       let dateTime = date + ' ' + time
       return dateTime
     }, 
     // 산책시간 계산 
     calTime(){
-      this.totalH = this.afterH - this.beforeH
-      this.totalM = this.afterM - this.beforeM
+      this.totalH = this.afterH - this.getbeforeH
+      this.totalM = this.afterM - this.getbeforeM
     },
     // 좋아요
     like() {
@@ -332,6 +340,7 @@ export default {
       var map = this.map
       var positions = positionslist
       console.log(positions, '포지션')
+
       for (var i = 0 ; i < positions.length; i++){
         // 마커 이미지의 이미지 크기 입니다
         var imageSize = new kakao.maps.Size(31, 35); 
@@ -368,17 +377,25 @@ export default {
      
     },
     // 형식 변환 
-    formatConversion(post){
-      var posts = post 
-      //여기서 부터 안됨 
+    formatConversion(posts){
       var newPosition = []
       for ( var i of posts){
-        // 
+        // 조건에 맞는 핀 이미지 연결 
+        let img = ''
+        if(i.l_desc === '사진이 잘 나와요!'){
+          img = 'https://i.ibb.co/XWGzFdp/nicephoto.png'
+        }else if(i.l_desc === '날씨가 좋아요!'){
+          img = 'https://i.ibb.co/LhFSjwN/niceweather.png'
+        }else if(i.l_desc === '마킹을 했어요!') {
+          img = ' https://i.ibb.co/W2s6GbW/marking.png'
+        }else{ // 휴식 공간이 있어요!
+          img = 'https://i.ibb.co/pybCvBz/resting.png'
+        } 
         newPosition.push({
           title: i.lid,
           lat: i.p_latitude,
           lon: i.p_longtitude,
-          imageSrc: 'https://t1.daumcdn.net/cfile/tistory/994EF84C5A4A349F19'
+          imageSrc: img
         })
       }
       return newPosition
@@ -386,6 +403,7 @@ export default {
     // 나의 좋아요에 핀 꽂기 
     myLikePoint(){
       // return 값을 변환 
+      console.log(this.getMyPostingContent)
       var newPosistion = this.formatConversion(this.getMyPostingContent)
       this.pin(newPosistion)
     },
@@ -398,12 +416,12 @@ export default {
       this.end = this.getTime()
       // 백엔드로 정보 보내기 
       this.doneWalkInApi({
-        peid: "petpetpetpet1",
+        peid: this.getDogInfo.pet.peid,
         w_date: this.getStartTime, 
         w_distance: "1.2",
         w_like: this.likecnt,
         w_time: (this.totalH * 60) + this.totalM,
-        p_location: this.getFirstAreaName,
+        w_location: this.getFirstAreaName,
       }).then(()=> {
         // 실시간 정보 가져오기죽이기 
         clearInterval(this.walkLoc)

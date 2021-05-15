@@ -22,7 +22,7 @@
       </div>
       <div class="d-flex justify-center">
         <div class="filebox mt-3"> 
-          <label for="ex_file">업로드 <v-icon>mdi-camera</v-icon></label> 
+          <label for="ex_file">업로드 <v-icon class="pt-1">mdi-camera</v-icon></label> 
           <input type="file" id="ex_file" accept="image/*" @click="getPhoto()" ref="imageInput"> 
         </div>
       </div> 
@@ -34,7 +34,7 @@
         </v-flex>
         <!-- 나이 -->
         <v-flex class="ph-size">
-          <v-text-field label="나이(생일)" id="age" v-model="age" type="age" required color="#48B9A8"></v-text-field>
+          <v-text-field label="나이" id="age" v-model="age" type="age" required color="#48B9A8"></v-text-field>
         </v-flex>
         <!-- 생일-달력 -->
         <v-dialog
@@ -119,8 +119,8 @@
       </div>
       </v-form>
       <!-- 반려견 등록 버튼  -->
-      <div class="d-flex justify-center">
-        <v-btn id="mainBtn" @click="registerNewDog()" :disabled="!file">반려견 등록</v-btn>
+      <div class="d-flex justify-center mt-9">
+        <v-btn id="mainBtn" @click="registerNewDog()">반려견 등록</v-btn>
       </div>
       </div>
       
@@ -156,7 +156,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getTempPhotoURL'])
+    ...mapGetters(['getTempPhotoURL', 'getUser'])
   },
   watch: {
       alle(newVal) {
@@ -167,7 +167,7 @@ export default {
       },
   },
   methods: {
-    ...mapActions(['dogRegisterInApi', 'makeTempPhotoUrlInApi']),
+    ...mapActions(['dogRegisterInApi', 'makeTempPhotoUrlInApi', 'NoPhotoDogRegisterInApi']),
     goback() {
       this.$router.push('/dogregister')
     },
@@ -198,42 +198,82 @@ export default {
       })
     },
     registerNewDog() {
-      console.log('가입눌렀음')
       const formData = new FormData()
-      let pet = {
+      // 사진 없을 때
+      if (!this.file) {
+        let pet = {
           pe_age: this.age,
-          pe_brithday: this.date,
+          pe_birthday: this.date,
           pe_disease: this.disease,
           pe_flag: 0,
           pe_name: this.name,
           pe_trauma: this.trauma,
           pe_weight: this.weight,
-          peid: "petpetpetpet1",
-          pe_profile_photo: this.photo_url,
-          uid: "adminadmin123",
+          peid: 'string',
+          pe_profile_photo: '',
+          uid: this.getUser.uid,
         }
-     
-      let allergy = []
-      for (let i in this.allergyArray) {
-        allergy.push({
-          aid: 0,
-          peid: "petpetpetpet1",
-          al_name: this.allergyArray[i],
-          al_flag: 0
+        let allergy = []
+        for (let i in this.allergyArray) {
+          allergy.push({
+            aid: 0,
+            peid: "string",
+            al_name: this.allergyArray[i],
+            al_flag: 0
+            })
+        }
+        formData.append(
+            'pet',
+            new Blob([JSON.stringify(pet)], { type: 'application/json' })
+          )
+          formData.append(
+            'allergy',
+            new Blob([JSON.stringify(allergy)], { type: 'application/json' })
+          )
+          this.NoPhotoDogRegisterInApi(formData).then(() => {
+            this.$router.push('/mypage')
+              
           })
+      } 
+      // 사진 있을 때
+      else {
+        let pet = {
+          pe_age: this.age,
+          pe_birthday: this.date,
+          pe_disease: this.disease,
+          pe_flag: 0,
+          pe_name: this.name,
+          pe_trauma: this.trauma,
+          pe_weight: this.weight,
+          peid: 'string',
+          pe_profile_photo: this.photo_url,
+          uid: this.getUser.uid,
+        }
+        let allergy = []
+        for (let i in this.allergyArray) {
+          allergy.push({
+            aid: 0,
+            peid: "string",
+            al_name: this.allergyArray[i],
+            al_flag: 0
+            })
+        }
+        formData.append(
+          'pet',
+          new Blob([JSON.stringify(pet)], { type: 'application/json' })
+        )
+        formData.append('file', this.file);
+        formData.append(
+          'allergy',
+          new Blob([JSON.stringify(allergy)], { type: 'application/json' })
+        )
+        this.dogRegisterInApi(formData).then(() => {
+          this.$router.push('/mypage')
+        })
+
       }
-      formData.append(
-        'pet',
-        new Blob([JSON.stringify(pet)], { type: 'application/json' })
-      )
-      formData.append('file', this.file);
-      formData.append(
-        'allergy',
-        new Blob([JSON.stringify(allergy)], { type: 'application/json' })
-      )
-      this.dogRegisterInApi(formData).then(() => {
-        this.$router.push('/calendar')
-      })
+      
+      
     }}
   }
 </script>

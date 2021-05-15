@@ -61,6 +61,7 @@ export default {
     clickItem(i){
       this.setSelectedItem(i)
       console.log(i)
+      console.log(this.getSelectedItem)
     },
   }
 }

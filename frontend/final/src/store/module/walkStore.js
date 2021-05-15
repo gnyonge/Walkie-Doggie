@@ -19,7 +19,7 @@ const state = {
   path: [],
   // 핫플레이스 전체리스트, top5 담는 곳
   hotPlace: [],
-  postingWid: [31, 32],
+  postingWid: [],
   myPostingContent: [],
   // 시작 시간 관련 
   startTime: '',
@@ -52,7 +52,7 @@ const getters = {
     return state.path
   },
   getPostingWid(state){
-    return state.like.postingWid
+    return state.postingWid
   },
   getHotPlace(state) {
     return state.hotPlace
@@ -73,7 +73,7 @@ const getters = {
 const mutations = {
   // 멍플레이스 
   setSelectedItem(state, data){
-    state.like.selectedItem = data
+    state.dog.selectedItem = data
   },
   // 좋아요 포스팅 
   setNowLat(state, data){
@@ -140,9 +140,10 @@ const actions = {
   // 좋아요 사진, 위도, 경도, 의견 백엔드 전송
   sendNowPostInApi(context, params){
     return rscApi.post('place/likePlace', params)
-      .then(() =>{
+      .then((res) =>{
         console.log('좋아요 포스팅 성공')
-        // context.commit('setPostingWid', res.data.wid)
+        console.log(res.data.wid, 'walkstore')
+        context.commit('setPostingWid', res.data.wid)
       }).catch((error) =>{
         console.log(error, '포스팅 실패')
         
@@ -186,7 +187,29 @@ const actions = {
       context.commit('setHotPlace', res.data.postList)
     })
   },
-  
+  // 핫플 포스트 디테일 
+  setClickPostDetailInAPI(context, lid){
+    return rscApi.get(`place/detail/${lid}`)
+      .then((res)=> {
+        context.commit('setSelectedItem', res.data.postDetail)
+      }).catch((error)=>{
+        console.log(error)
+      })
+  },
+  // 내 게시글 수정 
+  editMyPostingInApi(){
+
+  },
+  // 내 게시글 삭제
+  deleteMyPostingInApi(context, {peid, lid}){
+    return rscApi.put(`place/delete/${peid}`, lid)
+      .then((res)=>{
+        console.log('내 게시글 삭제 성공')
+        return res
+      }).catch((error)=>{
+        console.log(error)
+      })
+  }, 
 };
 
 export default {

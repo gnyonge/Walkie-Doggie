@@ -60,7 +60,7 @@
         <v-btn color="#48B9A8" text width="50px" @click="go('/calendar/update')">수정</v-btn>
         <!-- 삭제 확인 창 -->
         <v-btn
-          color="#48B9A8" text width="50px"
+          color="red" text width="50px"
           @click="snackbar = true"
         >
           삭제

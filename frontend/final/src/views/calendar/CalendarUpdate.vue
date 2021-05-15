@@ -229,7 +229,7 @@ export default {
         }
       let health_list = []
       for (let i in this.healthArray) { 
-        health_list.push({
+          health_list.push({
           h_content: this.healthArray[i],
           h_date: this.getSelectedDate,
           h_flag: 0,
