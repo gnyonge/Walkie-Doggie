@@ -122,8 +122,10 @@ export default {
       'getDogInfo' ])
   },
   mounted() {
+    console.log(this.getPostingWid, 'startwalk mounted에서 찍는 getPostingwid')
     // 좋아요 작성시 해당 리스트 가져오기 
-    if(this.getPostingWid.length !==0){
+    if(this.getPostingWid.length !== 0){
+      console.log('내 게시글 정보 가져오냐')
       this.getMyPlaceListInApi()
     }
     console.log(this.getFirstAreaName)
@@ -141,7 +143,6 @@ export default {
         this.linePath = this.getMyPath
         this.getLocation()
         // 내가 쓴 글 핀으로 보여주기
-        console.log('144 왜 setMap어딨어')
         this.myLikePoint() 
       }
     } else {
@@ -316,6 +317,10 @@ export default {
     }, 
     // 산책시간 계산 
     calTime(){
+      if (this.afterH > this.getbeforeH){
+        this.afterH -= 1 
+        this.afterM += 60
+      }
       this.totalH = this.afterH - this.getbeforeH
       this.totalM = this.afterM - this.getbeforeM
     },
@@ -339,8 +344,6 @@ export default {
     pin(positionslist){
       var map = this.map
       var positions = positionslist
-      console.log(positions, '포지션')
-
       for (var i = 0 ; i < positions.length; i++){
         // 마커 이미지의 이미지 크기 입니다
         var imageSize = new kakao.maps.Size(31, 35); 
@@ -373,8 +376,9 @@ export default {
         console.log(marker.getPosition())
         }
       }
+
       marker.setMap(map)
-     
+      console.log('pin 함수 안에 setMap 있냐')
     },
     // 형식 변환 
     formatConversion(posts){
@@ -402,8 +406,6 @@ export default {
     },
     // 나의 좋아요에 핀 꽂기 
     myLikePoint(){
-      // return 값을 변환 
-      console.log(this.getMyPostingContent)
       var newPosistion = this.formatConversion(this.getMyPostingContent)
       this.pin(newPosistion)
     },
