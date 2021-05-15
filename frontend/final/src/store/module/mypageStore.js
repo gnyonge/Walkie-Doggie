@@ -97,8 +97,18 @@ const actions = {
     }).catch((error)=> {
       console.error(error)
     })
+  },
+  // 반려견 정보 삭제
+  deletePetInApi(context, params) {
+    return rscApi.put('pet/leave', params)
+    .then((res) => {
+      context.commit('setDogInfo', null)
+      console.log(res, '펫 삭제 완료')
+    })
+    .catch((error) => {
+      console.error(error)
+    })
   }
-
 };
 
 export default {
