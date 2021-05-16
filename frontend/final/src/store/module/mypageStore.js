@@ -1,9 +1,8 @@
 import { rscApi } from '@/services/api';
 const state = {
-  userInfo: {}, //강아지정보 포함
-  dogInfo: [],
-  allHealthList: [],
-
+  myDogListInfo: {}, // 유저의 강아지들 정보
+  dogInfo: [], // 특정 강아지 한마리의 정보
+  allHealthList: [], // 특정 강아지 한마리가 쓴 일기의 건강상태 모음집
 };
 const getters = {
   getDogInfo(state) {
@@ -11,8 +10,10 @@ const getters = {
   },
   getAllHealthList(state) {
     return state.allHealthList
+  },
+  getMyDogListInfo(state) {
+    return state.myDogListInfo
   }
-
 };
 const mutations = {
   setDogInfo(state,info) {
@@ -20,6 +21,9 @@ const mutations = {
   },
   setAllHealthList(state, list) {
     state.allHealthList = list
+  },
+  setMyDogListInfo(state, list) {
+    state.myDogListInfo = list
   }
 };
 const actions = {
@@ -35,7 +39,8 @@ const actions = {
   getUserInfoInApi(context, params) {
     return rscApi.get(`user/info?uid=${params}`)
     .then((res)=> {
-      console.log(res, '유저 인포 받아오기 !!')
+      context.commit('setMyDogListInfo', res.data.petList)
+      console.log(res.data.petList, '유저 인포 받아오기 !!')
       return res;
     })
   },
