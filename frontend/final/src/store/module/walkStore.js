@@ -169,7 +169,8 @@ const actions = {
       })
   },
   // 핫플레이스 전체 리스트 받아오기
-  getHotPlaceListInApi(context, place) {
+  getHotPlaceListInApi(context) {
+    var place = '광주 광산구 산정동'
     var pop = 'pop'
     return rscApi.get(`place/list/${place}?sort=${pop}`)
     .then((res) => {

@@ -85,6 +85,16 @@ const actions = {
     .catch(()=>{});
   },
 
+  // 비밀번호 변경
+  changePasswordInApi(context,params) {
+    return rscApi.put('user/change/pass',params)
+    .then ((res) => {
+      console.log(res, '변경 성공?')
+      return res;
+    })
+    .catch(()=>{});
+  },
+ 
   // 지역등록
   setAddressInApi(context,params) {
     return rscApi.get(`user/address?add=${params.add}&uid=${params.uid}`)

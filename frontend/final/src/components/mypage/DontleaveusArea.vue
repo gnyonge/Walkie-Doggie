@@ -19,7 +19,7 @@
       </div>
       <div v-if="check">
         <v-form class="mt-10">
-        <v-text-field name="password" label="기존 비밀번호" id="password" v-model="password" type="password" required color="#48B9A8">
+        <v-text-field name="password" label="기존 비밀번호" id="password" v-model="password" type="password" required color="#48B9A8" class="font-change">
           <v-btn @click="checkpw()" slot="append" style="margin:5px; width:60px;" id="mainBtn">확인</v-btn>
         </v-text-field>
       </v-form>
@@ -128,5 +128,8 @@ p {
   background-color: white;
   border: 1px solid #E5E5E5;
   box-shadow: 3px 3px 3px #E5E5E5;
+}
+.font-change {
+  font-family: 'Courier New', Courier, monospace;
 }
 </style>

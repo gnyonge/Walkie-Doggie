@@ -10,7 +10,7 @@
         <v-icon @click="goback()">mdi-close</v-icon>
       </div>
     </div>
-      <div class="d-flex justify-center mb-3">모델 : {{getSelectedItem.pe_name}}</div>
+      <div class="d-flex justify-center mb-3">작성자 : {{getSelectedItem.pe_name}}</div>
       <div class="d-flex justify-center mb-3">{{getSelectedItem.l_desc}}</div>
       <v-img
         id="diaryBox"
