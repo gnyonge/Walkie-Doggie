@@ -49,7 +49,6 @@ const actions = {
   createUserInApi(context,params) {
     return rscApi.post('user/signup',params)
     .then ((res) => {
-      context.commit('setUser',res.data)
       console.log(res.data, '회원가입 후 res 확인')
       return res;
     })
