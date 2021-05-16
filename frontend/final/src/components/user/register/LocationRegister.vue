@@ -17,12 +17,12 @@
       주소는 동단위까지 입력됩니다.
       <p style="font-size:14px">(예: '광주 광산구 장덕동')</p>
     </div>
-    <div>
-      {{address}}
+    <div style="font-size:18px;">
+      입력된 주소: <b>{{address}}</b>
     </div>
       
     <div class="register-btn-pd d-flex justify-center mt-5">
-        <v-btn class="" id="mainBtn" @click="setAddress()">지역 설정</v-btn>
+        <v-btn class="" id="mainBtn" @click="setAddress()" :disabled="confirm == false">지역 설정</v-btn>
     </div>
     </v-flex>
   </div>
@@ -75,7 +75,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getUser'])
+    ...mapGetters(['getUser']),
+    confirm() {
+        if (this.address.length < 1) {
+          return false
+        }
+        return true
+      }
   },
   watch: {
     address(newVal) {

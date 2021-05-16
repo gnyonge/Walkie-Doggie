@@ -1,5 +1,4 @@
 import { rscApi } from '@/services/api';
-import qs from "qs";
 
 const state = {
   dog: {
