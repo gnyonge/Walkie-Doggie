@@ -159,6 +159,9 @@ export default {
     goto(path) {
       this.$router.push(`/${path}`)
     },
+    moveto(path) {
+      this.$router.push(`/${path}`)
+    },
     selectDog(peid) {
       this.showDogInfoInApi(peid) // 선택한 펫 정보 가져오기
       .then(() => {
