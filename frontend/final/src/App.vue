@@ -70,7 +70,7 @@ export default {
   border-radius: 20px;
   padding: 10px;
   width: 130px;
-  box-shadow: 1px 3px 0 rgb(0,0,0,0.3);
+  box-shadow: 3px 3px 0 rgb(0,0,0,0.3);
   background-color: #BAF1E4;
   color: #323232;
 }

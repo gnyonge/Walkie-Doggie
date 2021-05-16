@@ -123,6 +123,7 @@ const actions = {
   deleteTodayDiaryInApi(context, params) {
     return rscApi.put('diary/delete', params)
       .then((res) => {
+        context.commit('setMyDiaryObject', null)
         console.log('스토어 삭제 성공')
         return res;
       })

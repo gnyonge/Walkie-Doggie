@@ -48,7 +48,6 @@ const getters = {
     return state.like.areaName
   },
   getMyPath(state){
-    console.log(state.path)
     return state.path
   },
   getPostingWid(state){
@@ -141,9 +140,9 @@ const actions = {
   sendNowPostInApi(context, params){
     return rscApi.post('place/likePlace', params)
       .then((res) =>{
-        console.log('좋아요 포스팅 성공')
-        console.log(res.data.wid, 'walkstore')
-        context.commit('setPostingWid', res.data.wid)
+        console.log(res)
+        context.commit('setPostingWid', res.data.lid)
+        console.log(state.postingWid, '게시글이 올라가고 해당 lid가 찍히냐')
       }).catch((error) =>{
         console.log(error, '포스팅 실패')
         
@@ -160,19 +159,18 @@ const actions = {
       })
   },
   // 내가 쓴 게시글 리스트 받아오기 
-  getMyPlaceListInApi(context){
-    let myPlaceList = {
-      lidList: state.postingWid.join(",")
-    }
-    return rscApi.get('walk/likeList', {params: myPlaceList})
+  getMyPlaceListInApi(context, params){
+    return rscApi.post('walk/likeList',params)
       .then((res) => {
+        console.log(res, 'res.data.likeList')
         context.commit('setMyPostingContent', res.data.likeList)
       }).catch((error) =>{
         console.log(error, '내가 쓴 게시글 가져오기 실패')
       })
   },
   // 핫플레이스 전체 리스트 받아오기
-  getHotPlaceListInApi(context, place) {
+  getHotPlaceListInApi(context) {
+    var place = '광주 광산구 산정동'
     var pop = 'pop'
     return rscApi.get(`place/list/${place}?sort=${pop}`)
     .then((res) => {

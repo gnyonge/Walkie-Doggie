@@ -119,12 +119,15 @@ export default {
       'getbeforeH',
       'getbeforeM',
       'getPostingWid',
-      'getDogInfo' ])
+      'getDogInfo',
+    ])
   },
   mounted() {
+    console.log(this.getPostingWid, 'startwalk mounted에서 찍는 getPostingwid')
     // 좋아요 작성시 해당 리스트 가져오기 
-    if(this.getPostingWid.length !==0){
-      this.getMyPlaceListInApi()
+    if(this.getPostingWid.length !== 0){
+      console.log('내 게시글 정보 가져오냐')
+      this.getMyPlaceListInApi(this.getPostingWid)
     }
     console.log(this.getFirstAreaName)
     // 첫화면과 구별 
@@ -140,8 +143,7 @@ export default {
         // 다시 들어올 떄마다 경로 받기 
         this.linePath = this.getMyPath
         this.getLocation()
-        // 내가 쓴 글 핀으로 보여주기
-        console.log('144 왜 setMap어딨어')
+        // 내가 쓴 게시글들을 핀으로 보여주기
         this.myLikePoint() 
       }
     } else {
@@ -172,8 +174,10 @@ export default {
       'setStartTime',
       'setbeforeH',
       'setbeforeM',
-      ]), 
-    ...mapActions(['doneWalkInApi', 'getMyPlaceListInApi']),
+    ]), 
+    ...mapActions([
+      'doneWalkInApi', 
+      'getMyPlaceListInApi']),
     // 지도 첫 화면 로드 
     initMap() {
       this.mapContainer = document.getElementById('map');
@@ -195,14 +199,12 @@ export default {
         navigator.geolocation.getCurrentPosition((position)=> { 
           var lat = position.coords.latitude, // 위도
               lon = position.coords.longitude; // 경도
-          
-          // 첫위치 위도 -> 주소 
-          this.getAddress(lon, lat)
-         
+   
           this.linePath.push(new kakao.maps.LatLng(lat, lon))
           // 첫위치 마커 표시
           if(this.getFirstAreaName === ''){
-            
+            // 첫위치 위도 -> 주소 
+            this.getAddress(lon, lat)
             var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
                 message = '<div style="padding:5px;">산책 시작.</div>'; // 인포윈도우에 표시될 내용입니다
             
@@ -271,14 +273,19 @@ export default {
     },
     // 위치 -> 주소 
     getAddress(lon, lat){
+      var fullAddress = ''
       const callback =  (result, status) => {
         if (status === kakao.maps.services.Status.OK) {
           var address = result[0].address.address_name
           var detail = address.split(' ')
           if (this.getFirstAreaName === '') {
-            this.setFirstAreaName(detail[2])
+            fullAddress = this.makeFullAd(detail)
+            console.log(fullAddress, '첫주소 설정')
+            this.setFirstAreaName(fullAddress)
           }else {
-            this.setAreaName(detail[2])
+            fullAddress = this.makeFullAd(detail)
+            console.log(fullAddress, '첫주소 설정')
+            this.setAreaName(fullAddress)
           }
         } 
       }
@@ -290,7 +297,26 @@ export default {
       }
       searchDetailAddrFromCoords(lon, lat, callback)
     },
-    
+    // 동까지 저장하는 함수 
+    makeFullAd(detail){
+      let sAddress = []
+      // 주소의 동까지 저장 
+      for (let i in detail) {
+        // 인덱스
+        // console.log(i)  
+        let checkAddress = detail[i]
+        if(checkAddress.charAt(checkAddress.length-1) !== '동'){ 
+          sAddress.push(checkAddress)
+        }else {
+          sAddress.push(checkAddress)
+          break
+        }
+      }
+      // console.log(sAddress, '동까지 저장')
+      const finalAddress = sAddress.join(" ");
+      console.log(finalAddress, '전달할 최종 주소')
+      return finalAddress
+    },
     // 시간 가져오기 
     getTime() {
       let today = new Date() 
@@ -316,6 +342,10 @@ export default {
     }, 
     // 산책시간 계산 
     calTime(){
+      if (this.afterH > this.getbeforeH){
+        this.afterH -= 1 
+        this.afterM += 60
+      }
       this.totalH = this.afterH - this.getbeforeH
       this.totalM = this.afterM - this.getbeforeM
     },
@@ -328,6 +358,8 @@ export default {
       navigator.geolocation.getCurrentPosition(function(position) { 
         var lat = position.coords.latitude, // 위도
             lon = position.coords.longitude; // 경도
+        // 여기서 주소 변환해서 넘겨 줘야 할듯
+        t.getAddress(lon, lat)
         
         t.setNowLat(lat) 
         t.setNowLon(lon)
@@ -339,8 +371,6 @@ export default {
     pin(positionslist){
       var map = this.map
       var positions = positionslist
-      console.log(positions, '포지션')
-
       for (var i = 0 ; i < positions.length; i++){
         // 마커 이미지의 이미지 크기 입니다
         var imageSize = new kakao.maps.Size(31, 35); 
@@ -373,8 +403,11 @@ export default {
         console.log(marker.getPosition())
         }
       }
-      marker.setMap(map)
-     
+      if (marker !== undefined){
+        marker.setMap(map)
+      }
+      
+      console.log('pin 함수 안에 setMap 있냐')
     },
     // 형식 변환 
     formatConversion(posts){
@@ -402,8 +435,6 @@ export default {
     },
     // 나의 좋아요에 핀 꽂기 
     myLikePoint(){
-      // return 값을 변환 
-      console.log(this.getMyPostingContent)
       var newPosistion = this.formatConversion(this.getMyPostingContent)
       this.pin(newPosistion)
     },

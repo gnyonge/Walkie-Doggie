@@ -1,9 +1,8 @@
 import { rscApi } from '@/services/api';
 const state = {
-  userInfo: {}, //강아지정보 포함
-  dogInfo: [],
-  allHealthList: [],
-
+  myDogListInfo: {}, // 유저의 강아지들 정보
+  dogInfo: [], // 특정 강아지 한마리의 정보
+  allHealthList: [], // 특정 강아지 한마리가 쓴 일기의 건강상태 모음집
 };
 const getters = {
   getDogInfo(state) {
@@ -11,8 +10,10 @@ const getters = {
   },
   getAllHealthList(state) {
     return state.allHealthList
+  },
+  getMyDogListInfo(state) {
+    return state.myDogListInfo
   }
-
 };
 const mutations = {
   setDogInfo(state,info) {
@@ -20,22 +21,26 @@ const mutations = {
   },
   setAllHealthList(state, list) {
     state.allHealthList = list
+  },
+  setMyDogListInfo(state, list) {
+    state.myDogListInfo = list
   }
 };
 const actions = {
   // 지역 등록 
-  getAddressInApi(context,params) {
-    return rscApi.get('user/address',params)
-    .then((res)=> {
-      console.log(res,'주소 받아오기!!!')
-      return res;
-    })
-  },
+  // getAddressInApi(context,params) {
+  //   return rscApi.get('user/address',params)
+  //   .then((res)=> {
+  //     console.log(res,'주소 받아오기!!!')
+  //     return res;
+  //   })
+  // },
   // 유저 인포 불러오기 (강아지정보 포함)
   getUserInfoInApi(context, params) {
     return rscApi.get(`user/info?uid=${params}`)
     .then((res)=> {
-      console.log(res, '유저 인포 받아오기 !!')
+      context.commit('setMyDogListInfo', res.data.petList)
+      console.log(res.data.petList, '유저 인포 받아오기 !!')
       return res;
     })
   },
@@ -97,8 +102,18 @@ const actions = {
     }).catch((error)=> {
       console.error(error)
     })
-  }
-
+  },
+  // 반려견 정보 삭제
+  deletePetInApi(context, params) {
+    return rscApi.put('pet/leave', params)
+    .then((res) => {
+      context.commit('setDogInfo', null)
+      console.log(res, '펫 삭제 완료')
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+  },
 };
 
 export default {
