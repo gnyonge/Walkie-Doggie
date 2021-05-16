@@ -1,6 +1,7 @@
 package com.ssafy.pet.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -18,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.ssafy.pet.dto.PetDto;
 import com.ssafy.pet.dto.UserDto;
 import com.ssafy.pet.service.LoginService;
+import com.ssafy.pet.service.UserService;
 import com.ssafy.pet.util.JWTUtil;
 import com.ssafy.pet.util.KakaoUtil;
 import com.ssafy.pet.util.SecurityUtil;
@@ -39,6 +42,9 @@ public class LoginController {
 
 	@Autowired
 	private LoginService loginservice;
+	
+	@Autowired
+	private UserService userservice;
 
 	@Autowired
 	private JWTUtil jwtutil;
@@ -56,11 +62,11 @@ public class LoginController {
 		url.append("client_id=1bf3f0e4ba92eceb2527659918098b46");
 		url.append("&redirect_uri=http://localhost:8080/login");
 		url.append("&response_type=code");
-		RedirectView rv = new RedirectView(); 
+		RedirectView rv = new RedirectView();
 		rv.setUrl(url.toString());
 		return rv;
 	}
-	
+
 	// 카카오 로그인
 	@ApiOperation(value = "KAKAO LOGIN", notes = "카카오 로그인")
 	@GetMapping("/kakao")
@@ -70,7 +76,7 @@ public class LoginController {
 
 		try {
 			logger.info("=====> 카카오 로그인 시작");
-			for(String name : res.getHeaderNames()) {
+			for (String name : res.getHeaderNames()) {
 				System.out.println(name + " " + res.getHeader(name));
 			}
 			String access_Token = kakao.getAccessToken(code);
@@ -116,6 +122,7 @@ public class LoginController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+
 	// 자체 로그인
 	@ApiOperation(value = "SYSTEM LOGIN", notes = "자체 로그인")
 	@PostMapping("/signin")
@@ -127,10 +134,10 @@ public class LoginController {
 			logger.info("=====> 자체 로그인 시작");
 			UserDto check_user = loginservice.check_email(user.getU_email());
 
-			if (check_user==null) {
+			if (check_user == null) {
 				resultMap.put("message", "아이디나 비밀번호를 확인해주세요");
 			} else {
-				//아이디나 비밀번호는 있단 ㅇㅒ기군요?
+				// 아이디나 비밀번호는 있단 ㅇㅒ기군요?
 				String checkPass = check_user.getU_password();
 				String UserPass = securityutil.bytesToHex(securityutil.sha256(user.getU_password()));
 				if (check_user.getU_email().equals(user.getU_email()) && checkPass.equals(UserPass)
@@ -145,6 +152,57 @@ public class LoginController {
 				} else {
 					resultMap.put("message", "아이디나 비밀번호를 확인해주세요");
 				}
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (
+
+		Exception e) {
+			// TODO: handle exception
+			logger.error("자체 로그인 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	@ApiOperation(value = "VUE KAKAO LOGIN", notes = "카카오 로그인 처리")
+	@PostMapping("/ksign")
+	public ResponseEntity<Map<String, Object>> vue_login(@RequestBody UserDto user, HttpServletResponse res) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+
+		try {
+			logger.info("=====> 카카오 정보 로그인 시작");
+			UserDto check_user = loginservice.check_email(user.getU_email());
+
+			System.out.println(check_user);
+			if (check_user != null && check_user.getU_password() != null) {
+				resultMap.put("message", "회원가입이 되어있는 이메일입니다.");
+
+			} else {
+				if (check_user == null) {
+					// 처음온 친구구나?
+					logger.info("처음 카카오 로그인");
+
+					String uid = uidutil.MakeUid();
+					check_user = new UserDto(uid, user.getU_email(), user.getU_nickname());
+					int result = loginservice.insert_kakao(check_user);
+					resultMap.put("message", "1");
+				} else {
+					// 이미 회원이시군요?
+					logger.info("기존 카카오로 로그인헀던 회원");
+					
+					List<PetDto> list = userservice.petInfo(check_user.getUid());
+					resultMap.put("list", list);
+					resultMap.put("message", "2");
+					
+					
+				}
+				String token = jwtutil.create(check_user);
+				res.setHeader("doggie_token", token);
+				logger.info("토큰: {}", token);
+				resultMap.put("doggie_token", token);
+				resultMap.put("user", check_user);
 			}
 			status = HttpStatus.ACCEPTED;
 		} catch (
