@@ -254,17 +254,17 @@ public class UserController {
 	// mypage 마이페이지
 	@ApiOperation(value = "Mypage Info", notes = "마이페이지")
 	@GetMapping("/info")//user/info
-	public ResponseEntity<Map<String, Object>> myInfo(@RequestParam String uid) {
+	public ResponseEntity<Map<String, Object>> myInfo(HttpServletRequest req, @RequestParam String uid) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-//		String jwt = req.getHeader("doggie_token");
+		String jwt = req.getHeader("doggie_token");
 
 		try {
 			logger.info("=====> 마이페이지");
 			
-//			resultMap.putAll(jwtutil.get(req.getHeader("doggie_token")));
-//			String juid = jwtutil.getUserId(jwt);
-//			System.out.println("uid : "+uid);
+			resultMap.putAll(jwtutil.get(req.getHeader("doggie_token")));
+			String juid = jwtutil.getUserId(jwt);
+			System.out.println("uid : "+uid);
 			
 			List<PetDto> list = userservice.petInfo(uid);
 			resultMap.put("petList", list);

@@ -21,16 +21,23 @@ public class BackendApplication implements WebMvcConfigurer {
 		SpringApplication.run(BackendApplication.class, args);
 	}
 
-	// // JWTInterceptor를 설치한다. 경로 조건을 설정한다.
-	// @Override
-	// public void addInterceptors(InterceptorRegistry registry) {
-	// 	registry.addInterceptor(jwtInterceptor).addPathPatterns("/**") // 기본 적용 경로
-	// 			.excludePathPatterns(Arrays.asList("/user/confirm/**"))// 회원 관련 인터셉터 제외
-	// 			.excludePathPatterns(Arrays.asList("/login/**"))
-	// 			// 스웨거도 인터셉터 제외
-	// 			.excludePathPatterns("/swagger-resources/**").excludePathPatterns("/swagger-ui.html#/**")
-	// 			.excludePathPatterns("/v2/api-docs?group=V1").excludePathPatterns("/webjars/**");
-	// }
+	// JWTInterceptor를 설치한다. 경로 조건을 설정한다.
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(jwtInterceptor).addPathPatterns("/**") // 기본 적용 경로
+				.excludePathPatterns("/")
+				.excludePathPatterns(Arrays.asList("/user/confirm/**"))// 회원 관련 인터셉터 제외
+				.excludePathPatterns(Arrays.asList("/login/**"))
+				// 스웨거도 인터셉터 제외
+				.excludePathPatterns("/pet/swagger-resources/**").excludePathPatterns("/pet/swagger-ui.html/")
+				.excludePathPatterns("/pet/v2/api-docs?group=V1/**").excludePathPatterns("/pet/webjars/**").
+				excludePathPatterns(
+                    "/v2/api-docs",
+                    "/swagger-resources/**",
+                    "/swagger-ui.html",
+                    "/webjars/**"
+            );
+	}
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
