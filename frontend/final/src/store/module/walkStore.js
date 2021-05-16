@@ -117,6 +117,10 @@ const mutations = {
   setMyPostingContent(state, data){
     state.myPostingContent = data
   },
+  // 내가 쓴 게시글 내용 지우기 
+  deletePostingContent(state){
+    state.myPostingContent = []
+  },
   setStartTime(state, data){
     state.startTime = data 
   },
@@ -162,15 +166,16 @@ const actions = {
   getMyPlaceListInApi(context, params){
     return rscApi.post('walk/likeList',params)
       .then((res) => {
-        console.log(res, 'res.data.likeList')
-        context.commit('setMyPostingContent', res.data.likeList)
+        console.log(res.data.likeList, 'res.data.likeList')
+        // commit('setMyPostingContent', res.data.likeList)
+        // console.log(state.myPostingContent, 'my postingcontent에 어떤 형식으로 들어가니')
+        return res
       }).catch((error) =>{
         console.log(error, '내가 쓴 게시글 가져오기 실패')
       })
   },
   // 핫플레이스 전체 리스트 받아오기
-  getHotPlaceListInApi(context) {
-    var place = '광주 광산구 산정동'
+  getHotPlaceListInApi(context, place) {
     var pop = 'pop'
     return rscApi.get(`place/list/${place}?sort=${pop}`)
     .then((res) => {

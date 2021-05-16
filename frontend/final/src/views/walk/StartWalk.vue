@@ -120,14 +120,22 @@ export default {
       'getbeforeM',
       'getPostingWid',
       'getDogInfo',
+      'getMyPostingContent'
     ])
   },
   mounted() {
     console.log(this.getPostingWid, 'startwalk mounted에서 찍는 getPostingwid')
+    console.log(this.getMyPostingContent, 'getmyposting엔 뭐가 들었냐')
     // 좋아요 작성시 해당 리스트 가져오기 
     if(this.getPostingWid.length !== 0){
       console.log('내 게시글 정보 가져오냐')
       this.getMyPlaceListInApi(this.getPostingWid)
+      .then((res) => {
+        console.log(res.data.likeList, '여기서 set할게요')
+        this.setMyPostingContent(res.data.likeList)
+        console.log(this.getMyPostingContent, '여기떠야됨진짜;;')
+
+      })
     }
     console.log(this.getFirstAreaName)
     // 첫화면과 구별 
@@ -138,6 +146,7 @@ export default {
         this.setStartTime(this.startTime())
         // 실시간 위치 정보 
         this.navigation()
+
       } else { // 좋아요 포스팅 이후 
         console.log(this.start)
         // 다시 들어올 떄마다 경로 받기 
@@ -174,6 +183,8 @@ export default {
       'setStartTime',
       'setbeforeH',
       'setbeforeM',
+      'deletePostingContent',
+      'setMyPostingContent',
     ]), 
     ...mapActions([
       'doneWalkInApi', 
@@ -284,7 +295,7 @@ export default {
             this.setFirstAreaName(fullAddress)
           }else {
             fullAddress = this.makeFullAd(detail)
-            console.log(fullAddress, '첫주소 설정')
+            console.log(fullAddress, '좋아요 후 주소 설정')
             this.setAreaName(fullAddress)
           }
         } 
@@ -314,7 +325,6 @@ export default {
       }
       // console.log(sAddress, '동까지 저장')
       const finalAddress = sAddress.join(" ");
-      console.log(finalAddress, '전달할 최종 주소')
       return finalAddress
     },
     // 시간 가져오기 
@@ -435,8 +445,8 @@ export default {
     },
     // 나의 좋아요에 핀 꽂기 
     myLikePoint(){
-      var newPosistion = this.formatConversion(this.getMyPostingContent)
-      this.pin(newPosistion)
+      var newPosition = this.formatConversion(this.getMyPostingContent)
+      this.pin(newPosition)
     },
     // 멍플레이스 
     goToHotPlace() {
@@ -458,6 +468,7 @@ export default {
         clearInterval(this.walkLoc)
         this.calTime()
         // 저장되어 있던 정보도 지우기 
+        this.deletePostingContent()
         this.deletePostingWid()
         this.deleteMyPath()
         this.setNowLon(0)
