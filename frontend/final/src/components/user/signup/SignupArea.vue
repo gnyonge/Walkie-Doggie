@@ -96,9 +96,9 @@ export default {
         uid: "string"
       })
       .then((res) => {
-        console.log(res, '회원가입버튼 눌렀을 때 성공 !')
         this.loginNormalInApi({
-
+          u_email: res.data.email,
+          u_password: res.data.password,
         })
       })
       this.$router.push('/register') // 반려견 등록 페이지로 이동 
@@ -113,7 +113,6 @@ export default {
       .then((res) => {
         console.log(this.email)
         console.log(res, '인증번호 메일 보내기 눌렀을 때 성공 !')
-        //500에러 뜸 
       })
     },
 

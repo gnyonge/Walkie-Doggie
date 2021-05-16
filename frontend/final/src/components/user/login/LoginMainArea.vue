@@ -9,13 +9,15 @@
       <div class="login-btn-pd">
         <v-btn class="login-btn" id="mainBtn" style="margin-top: 30px;margin-bottom:40px; width: 180px; height: 60px; border-radius: 50px; font-size: 25px" @click="goto('/login')">로그인</v-btn>
       </div>
+      
       <div class="signup-btn-pd">
-        <v-btn class="signup-btn" id="mainBtn" style="width: 180px; height: 60px; border-radius: 50px; font-size: 25px" @click="goto('/signup')">회원가입</v-btn>
+        <v-btn class="signup-btn" id="mainBtn" style="margin-bottom:40px;  width: 180px; height: 60px; border-radius: 50px; font-size: 25px" @click="goto('/signup')">회원가입</v-btn>
       </div>
+      <!-- 선 넣기 !!!!!!!! -->
       <!-- 카카오로그인 --> 
-        <div class=" d-flex justify-center" style="background: #BDBDBD; border-radius: 5px; box-shadow: 1px 3px 0 rgb(0,0,0,0.3);">
-          <v-img src="../../../assets/images/카카오로그인버튼.png" class="logo-img" alt="" @click="kakao()" ></v-img>
-        </div>
+      <div class="signup-btn-pd" >
+        <v-img src="../../../assets/images/kakao_login_medium_narrow.png" style="border-radius: 12px;" class="logo-img" alt="" @click="kakao()" ></v-img>
+      </div>
     </div>
   </div>
 </template>
@@ -62,5 +64,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
+hr {
+  color: black;
+}
 </style>
