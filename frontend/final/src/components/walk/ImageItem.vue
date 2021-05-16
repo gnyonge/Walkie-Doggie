@@ -10,7 +10,7 @@
         <v-icon @click="goback()">mdi-close</v-icon>
       </div>
     </div>
-      <div class="d-flex justify-center mb-3">모델 : {{getSelectedItem.pe_name}}</div>
+      <div class="d-flex justify-center mb-3">작성자 : {{getSelectedItem.pe_name}}</div>
       <div class="d-flex justify-center mb-3">{{getSelectedItem.l_desc}}</div>
       <v-img
         id="diaryBox"
@@ -72,8 +72,7 @@ export default {
     },
     //나의 게시글 삭제 
     deleteMyPosting(){
-      // let peid = this.getDogInfo.pet.peid
-      let peid = 'w4s2b6b5c6t2y'
+      let peid = this.getDogInfo.pet.peid
       let lid = this.getSelectedItem.lid
       this.deleteMyPostingInApi({peid, lid})
         .then((res)=> {

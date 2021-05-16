@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: "TodayDiary",
   data() {
@@ -114,7 +114,6 @@ export default {
       ...mapGetters(['getSelectedDate', 'getMyDiaryObject', 'getPrettyDate', 'getDogInfo'])
     },
   methods: {
-    ...mapMutations(['setMyDiaryObject']),
     ...mapActions(['getTodayDiaryInApi', 'deleteTodayDiaryInApi']),
     go(path) {
       this.$router.push(path)
@@ -171,7 +170,6 @@ export default {
           console.log('hid화이팅4')
           this.deleteTodayDiaryInApi(formData).then(() => {
             console.log('hid화이팅5')
-            this.setMyDiaryObject(null)
             this.snackbar = false
             this.$router.push('/calendar')
           })

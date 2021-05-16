@@ -80,31 +80,46 @@ public class UserController {
 
 		try {
 			logger.info("=====> 자체 회원가입 시작");
-			//이메일 인증이 끝난애인지 확인해보쟈! 
-			EmailAuthDto authdto = userservice.checkEmailAuth(user.getU_email());
-			
-			//인증메일을 보낸 친구인지 인증이 처리된 친구인지
-			if(authdto!=null && authdto.getFlag()==1) { 
-				user.setUid(uidutil.MakeUid());
+			String r_email = user.getU_email();
+			String r_pass = user.getU_password();
+
+			logger.info("=====> 이메일 중복 체크");
+
+			UserDto checkEmail = userservice.checkEmail(r_email);
+
+			if(checkEmail == null){
+				//이메일 인증이 끝난애인지 확인해보쟈! 
+				EmailAuthDto authdto = userservice.checkEmailAuth(user.getU_email());
 				
-				String pass = securityutil.bytesToHex(securityutil.sha256(user.getU_password()));
-				user.setU_password(pass);
-				
-				int result = userservice.signup(user);
-				
-				if (result == 1) {
-					logger.info("=====> 자체회원가입 가능");
-					resultMap.put("message", "회원가입에 성공하였습니다.");
-					status = HttpStatus.ACCEPTED;
-				} else {
-					logger.info("=====> 자체 회원가입 실패");
-					resultMap.put("message", "회원가입에 실패하였습니다.");
-					status = HttpStatus.NOT_FOUND;
+				//인증메일을 보낸 친구인지 인증이 처리된 친구인지
+				if(authdto!=null && authdto.getFlag()==1) { 
+					user.setUid(uidutil.MakeUid());
+					
+					String pass = securityutil.bytesToHex(securityutil.sha256(user.getU_password()));
+					user.setU_password(pass);
+					
+					int result = userservice.signup(user);
+					
+					if (result == 1) {
+						logger.info("=====> 자체회원가입 가능");
+						resultMap.put("message", "회원가입에 성공하였습니다.");
+						resultMap.put("email",r_email);
+						resultMap.put("password", r_pass);
+						status = HttpStatus.ACCEPTED;
+					} else {
+						logger.info("=====> 자체 회원가입 실패");
+						resultMap.put("message", "회원가입에 실패하였습니다.");
+						status = HttpStatus.NOT_FOUND;
+					}
+				}else { //null일때는 인증메일을 보내지도 않은 친구 flag=0일땐 인증을 확인하지않은 친구
+					resultMap.put("message", "이메일 인증 확인해주십시오.");
+					status = HttpStatus.ACCEPTED;	
 				}
-			}else { //null일때는 인증메일을 보내지도 않은 친구 flag=0일땐 인증을 확인하지않은 친구
-				resultMap.put("message", "이메일 인증 확인해주십시오.");
-				status = HttpStatus.ACCEPTED;	
+			}else{
+				resultMap.put("message", "이미 가입된 이메일입니다.");
+				status = HttpStatus.ACCEPTED;
 			}
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			logger.error("자체 회원가입 실패 : {}", e);
