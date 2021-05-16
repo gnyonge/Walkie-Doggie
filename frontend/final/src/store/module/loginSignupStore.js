@@ -25,7 +25,6 @@ const mutations = {
   setAddress(state,add) {
     state.add = add
   }
-
 };
 const actions = { 
   // 로그인 
@@ -35,6 +34,7 @@ const actions = {
     .then ((res)=> {
       commit('setToken',res.data.doggie_token);
       commit('setUser',res.data.user);
+      console.log(res.data, '로그인 후 res확인')
       console.log('로그인완료', res.data.user)
       console.log('유저되나요', state.user, state.token)
       return res.data.message;
@@ -49,9 +49,7 @@ const actions = {
   createUserInApi(context,params) {
     return rscApi.post('user/signup',params)
     .then ((res) => {
-      console.log(res)
-      context.commit('setUser',res.data);
-      console.log(res, '회원가입')
+      console.log(res.data, '회원가입 후 res 확인')
       return res;
     })
     .catch(()=>{});

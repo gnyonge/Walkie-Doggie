@@ -62,11 +62,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getSelectedItem', 'getDogInfo'])
+    ...mapGetters(['getSelectedItem', 'getDogInfo', 'getUser'])
   },
   methods: {
     ...mapMutations(['setSelectedItem']),
-    ...mapActions(['deleteMyPostingInApi']),
+    ...mapActions(['deleteMyPostingInApi', 'getHotPlaceListInApi']),
     goback() {
      this.setSelectedItem(null)
     },
@@ -75,8 +75,9 @@ export default {
       let peid = this.getDogInfo.pet.peid
       let lid = this.getSelectedItem.lid
       this.deleteMyPostingInApi({peid, lid})
-        .then((res)=> {
-          console.log(res)
+        .then(()=> {
+          this.setSelectedItem(null)
+          this.getHotPlaceListInApi(this.getUser.u_location)
         })
     },
   },

@@ -26,7 +26,7 @@ export default {
     DropDown,
   },
   computed: {
-    ...mapGetters(['getSelectedItem', 'getHotPlace'])
+    ...mapGetters(['getSelectedItem', 'getHotPlace', 'getUser'])
   },
   data(){
     return{
@@ -35,7 +35,7 @@ export default {
     }
   },
   mounted() {
-    var place = '장덕동'
+    var place = this.getUser.u_location
     // 멍플레이스 게시글들 받기 
     this.getHotPlaceListInApi(place).then(() =>{
       var hotplace = this.getHotPlace
@@ -73,7 +73,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions(['getHotPlaceListInApi', 'setClickPostDetailInAPI']),
+    ...mapActions(['getHotPlaceListInApi', 'setClickPostDetailInAPI', ]),
     // 지도 첫 화면 로드 
     initMap() {
       this.mapContainer = document.getElementById('map');
