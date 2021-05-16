@@ -57,9 +57,6 @@ export default {
   /* padding: 30px; */
   margin-top: 30px;
 }
-.signup-btn-pd{
-  /* padding: 30px; */
-}
 .logo-center {
   display: flex;
   justify-content: center;
