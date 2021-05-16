@@ -14,6 +14,7 @@ Vue.prototype.$axios = axios;
 Vue.use(BootstrapVue)
 Vue.use(VueHtml2Canvas);
 Vue.config.productionTip = false
+window.Kakao.init("5ff8ab5b5a612a7420974029c652a757");
 
 
 new Vue({
