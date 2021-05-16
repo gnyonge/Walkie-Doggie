@@ -113,7 +113,7 @@ export default {
           l_desc: this.optionValue,
           p_location: this.getAreaName
         }).then(() =>{
-          this.deleteAll
+          this.deleteAll()
           this.$router.push('/startwalk')
           console.log('백엔드 전송 성공')
         }).catch((error) =>{
@@ -123,7 +123,7 @@ export default {
       },
 
     goback(){
-      this.deleteAll
+      this.deleteAll()
       this.$router.push('/startwalk')
     },
     deleteAll(){

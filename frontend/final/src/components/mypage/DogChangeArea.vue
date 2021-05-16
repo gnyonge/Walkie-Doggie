@@ -208,7 +208,8 @@ export default {
     ...mapGetters(['getTempPhotoURL', 'getDogInfo'])
   },
   methods: {
-    ...mapActions(['makeTempPhotoUrlInApi', 'updateDogInfoInApi', 'NoPhotoUpdateDogInfoInApi', 'deletePetInApi']),
+    ...mapActions(['makeTempPhotoUrlInApi', 'updateDogInfoInApi', 'NoPhotoUpdateDogInfoInApi', 
+    'deletePetInApi', 'getUserInfoInApi']),
     goback() {
         this.$router.push('/mypage')
       },
@@ -393,6 +394,7 @@ export default {
       )
 
       this.deletePetInApi(formData).then(() => {
+        this.showDogInfoInApi(this.getUser.uid)
         this.snackbar = false
         this.$router.push('/mypage')
       })

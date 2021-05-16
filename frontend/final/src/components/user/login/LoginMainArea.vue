@@ -12,6 +12,10 @@
       <div class="signup-btn-pd">
         <v-btn class="signup-btn" id="mainBtn" style="width: 180px; height: 60px; border-radius: 50px; font-size: 25px" @click="goto('/signup')">회원가입</v-btn>
       </div>
+      <!-- 카카오로그인 --> 
+        <div class=" d-flex justify-center" style="background: #BDBDBD; border-radius: 5px; box-shadow: 1px 3px 0 rgb(0,0,0,0.3);">
+          <v-img src="../../../assets/images/카카오로그인버튼.png" class="logo-img" alt="" @click="kakao()" ></v-img>
+        </div>
     </div>
   </div>
 </template>
@@ -52,9 +56,6 @@ export default {
 .login-btn-pd{
   /* padding: 30px; */
   margin-top: 30px;
-}
-.signup-btn-pd{
-  /* padding: 30px; */
 }
 .logo-center {
   display: flex;
