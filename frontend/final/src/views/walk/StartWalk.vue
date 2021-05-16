@@ -199,15 +199,12 @@ export default {
         navigator.geolocation.getCurrentPosition((position)=> { 
           var lat = position.coords.latitude, // 위도
               lon = position.coords.longitude; // 경도
-          
-          
-          // 첫위치 위도 -> 주소 
-          this.getAddress(lon, lat)
-          
+   
           this.linePath.push(new kakao.maps.LatLng(lat, lon))
           // 첫위치 마커 표시
           if(this.getFirstAreaName === ''){
-            
+            // 첫위치 위도 -> 주소 
+            this.getAddress(lon, lat)
             var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
                 message = '<div style="padding:5px;">산책 시작.</div>'; // 인포윈도우에 표시될 내용입니다
             
@@ -276,28 +273,21 @@ export default {
     },
     // 위치 -> 주소 
     getAddress(lon, lat){
-      const callback = (result, status) => {
-        if (status === kakao.maps.services.Status.Ok) {
+      var fullAddress = ''
+      const callback =  (result, status) => {
+        if (status === kakao.maps.services.Status.OK) {
           var address = result[0].address.address_name
           var detail = address.split(' ')
-          var fullAddress = []
-          console.log(detail)
-          for(var i in detail) {
-            fullAddress.push(detail[i])
-            if(detail[i].charAt(detail[i].length-1) === '동' || 
-              detail[i].charAt(detail[i].length-1) === '읍' ||
-              detail[i].charAr(detail[i].length-1) === '면' ){
-                break
-            }
-            if(this.getFirstAreaName === ''){
-              this.setFirstAreaName(fullAddress.join(" "))
-              console.log(this.getFirstAreaName, '좋아요 전 주소')
-            }else{
-              this.setAreaName(fullAddress.join(" "))
-              console.log(this.getAreaName, '좋아요 이후 주소')
-            }
+          if (this.getFirstAreaName === '') {
+            fullAddress = this.makeFullAd(detail)
+            console.log(fullAddress, '첫주소 설정')
+            this.setFirstAreaName(fullAddress)
+          }else {
+            fullAddress = this.makeFullAd(detail)
+            console.log(fullAddress, '첫주소 설정')
+            this.setAreaName(fullAddress)
           }
-        }
+        } 
       }
       //주소-좌표 변환 객체 생성 
       var geocoder = new kakao.maps.services.Geocoder();
@@ -307,7 +297,26 @@ export default {
       }
       searchDetailAddrFromCoords(lon, lat, callback)
     },
-    
+    // 동까지 저장하는 함수 
+    makeFullAd(detail){
+      let sAddress = []
+      // 주소의 동까지 저장 
+      for (let i in detail) {
+        // 인덱스
+        // console.log(i)  
+        let checkAddress = detail[i]
+        if(checkAddress.charAt(checkAddress.length-1) !== '동'){ 
+          sAddress.push(checkAddress)
+        }else {
+          sAddress.push(checkAddress)
+          break
+        }
+      }
+      // console.log(sAddress, '동까지 저장')
+      const finalAddress = sAddress.join(" ");
+      console.log(finalAddress, '전달할 최종 주소')
+      return finalAddress
+    },
     // 시간 가져오기 
     getTime() {
       let today = new Date() 
@@ -349,6 +358,8 @@ export default {
       navigator.geolocation.getCurrentPosition(function(position) { 
         var lat = position.coords.latitude, // 위도
             lon = position.coords.longitude; // 경도
+        // 여기서 주소 변환해서 넘겨 줘야 할듯
+        t.getAddress(lon, lat)
         
         t.setNowLat(lat) 
         t.setNowLon(lon)
