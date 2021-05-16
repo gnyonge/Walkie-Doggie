@@ -99,30 +99,30 @@ export default {
   methods: {
     ...mapActions(['setAddressInApi']),
     handleAddress(data) {
-  let fullAddress = data.address
-  let fAddress = [] // 띄어쓰기 기준으로 나누어 단어 저장
-  let sAddress = [] // '동' 으로 끝나는 단어 저장 
+      let fullAddress = data.address
+      let fAddress = [] // 띄어쓰기 기준으로 나누어 단어 저장
+      let sAddress = [] // '동' 으로 끝나는 단어 저장 
 
   
-    fullAddress = data.jibunAddress
+      fullAddress = data.jibunAddress
 
-    // 띄어쓰기 기준으로 나누어 fAddress에 저장
-    fAddress = fullAddress.split(' ');
-    // console.log(fAddress, '주소 나누기 성공') 
-    // 예: ["광주", "광산구", "장덕동", "992-8"]
-    
-    // 리스트 돌면서 마지막 단어가 '동'인 부분 저장 
-    // 주소의 동까지 저장 
-    for (let i in fAddress) {
-      // 인덱스
-      // console.log(i)  
-      let checkAddress = fAddress[i]
-      if(checkAddress.charAt(checkAddress.length-1) !== '동'){ 
-        sAddress.push(checkAddress)
-      }else {
-        sAddress.push(checkAddress)
-        break
-      }  
+      // 띄어쓰기 기준으로 나누어 fAddress에 저장
+      fAddress = fullAddress.split(' ');
+      // console.log(fAddress, '주소 나누기 성공') 
+      // 예: ["광주", "광산구", "장덕동", "992-8"]
+      
+      // 리스트 돌면서 마지막 단어가 '동'인 부분 저장 
+      // 주소의 동까지 저장 
+      for (let i in fAddress) {
+        // 인덱스
+        // console.log(i)  
+        let checkAddress = fAddress[i]
+        if(checkAddress.charAt(checkAddress.length-1) !== '동'){ 
+          sAddress.push(checkAddress)
+        }else {
+          sAddress.push(checkAddress)
+          break
+        }  
   }
   // console.log(sAddress, '동까지 저장')
   const finalAddress = sAddress.join(" ");
