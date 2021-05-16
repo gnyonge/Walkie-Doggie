@@ -341,21 +341,25 @@ public class UserController {
 	//uid, password 필수
 	@ApiOperation(value = "Change Password", notes = "비밀번호 변경")
 	@PutMapping("/change/pass")//user/address
-	public ResponseEntity<Map<String, Object>> changePass(@RequestParam UserDto user,@RequestParam String newPass) {
+	public ResponseEntity<Map<String, Object>> changePass(@RequestBody Map<String, Object> param) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
 			logger.info("=====> 비밀번호 변경하기");
 			
-			String pass = securityutil.bytesToHex(securityutil.sha256(user.getU_password()));
-			String newOne = securityutil.bytesToHex(securityutil.sha256(newPass));
+			String pass = param.get("u_password").toString();
+			String newOne = param.get("newPass").toString();
+			String uid = param.get("uid").toString();
 			
-			UserDto check = userservice.checkPass(user.getUid());
+			pass = securityutil.bytesToHex(securityutil.sha256(pass));
+			newOne = securityutil.bytesToHex(securityutil.sha256(newOne));
+			
+			UserDto check = userservice.checkPass(uid);
 			
 			if(check.getU_password().equals(pass)) {
 				//비밀번호 변경가능
-				int res = userservice.changePass(user.getUid(), newOne);
+				int res = userservice.changePass(uid, newOne);
 				if(res>=1) {
 					resultMap.put("message", "비밀번호 변경에 성공하였습니다.");
 				}else {

@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import axios from 'axios';
 export default {
   data () {
@@ -66,8 +66,11 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapGetters(['getUser'])
+  },
   methods: {
-    ...mapActions(['createUserInApi','sendEmailInApi','checkPasswordInApi','checkAuthEmailInApi']),
+    ...mapActions(['createUserInApi','sendEmailInApi','checkPasswordInApi','checkAuthEmailInApi','loginNormalInApi']),
     goback() {
         this.$router.push('/loginmain')
     },
@@ -79,19 +82,10 @@ export default {
         console.error(error)
       })
     },
+
     // 회원가입 눌렀을 때 
     registerUser() {
-      // this.checkPasswordInApi({
-        // u_email: this.email,
-        // u_flag: 0,
-        // u_location: "string",
-        // u_nickname: this.nickname,
-        // u_password: this.password,
-        // u_report: 0,
-      //   uid: "string"
-      // }).then((res) => {
-      //   console.log(res, '비밀번호 확인 눌렀을 때 성공 !')
-      // });
+      console.log(this.getUser.password)
       this.createUserInApi({
         u_email: this.email,
         u_flag: 0,
@@ -103,6 +97,9 @@ export default {
       })
       .then((res) => {
         console.log(res, '회원가입버튼 눌렀을 때 성공 !')
+        this.loginNormalInApi({
+
+        })
       })
       this.$router.push('/register') // 반려견 등록 페이지로 이동 
     },

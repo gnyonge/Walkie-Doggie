@@ -71,7 +71,7 @@ export default {
     camera.click()
   },
   computed: {
-      ...mapGetters(['getNowLat', 'getNowLon', 'getAreaName', 'getTempPhotoURL',])
+      ...mapGetters(['getNowLat', 'getNowLon', 'getAreaName', 'getTempPhotoURL', 'getDogInfo'])
   },
   methods:{
     ...mapMutations(['setNowLat', 'setNowLon', 'setTempPhotoURL']),
@@ -108,12 +108,12 @@ export default {
         this.sendNowPostInApi({
           p_latitude: this.getNowLat,
           p_longtitude: this.getNowLon,
-          peid: "petpetpetpet1",
+          peid: this.getDogInfo.pet.peid,
           l_image: this.getTempPhotoURL,
           l_desc: this.optionValue,
           p_location: this.getAreaName
         }).then(() =>{
-          this.deleteAll
+          this.deleteAll()
           this.$router.push('/startwalk')
           console.log('백엔드 전송 성공')
         }).catch((error) =>{
@@ -123,7 +123,7 @@ export default {
       },
 
     goback(){
-      this.deleteAll
+      this.deleteAll()
       this.$router.push('/startwalk')
     },
     deleteAll(){

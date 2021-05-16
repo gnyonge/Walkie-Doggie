@@ -2,31 +2,33 @@
   <div>
     <div>  
       <!-- 1. 프로필 박스 -->
-      <div class="mx-3 mt-3">
+      <div class="mx-3 mt-3" id="mainBox">
         <div class="ml-3 d-flex">
           <!-- 1. 프로필 사진 --> 
-          <div class="mt-5">
+          <div class="mt-10">
             <v-img :src="pet.pe_profile_photo" 
             class="rounded-circle"
+            height="130"
+            width="130" alt="프로필사진" v-if="photo">
+            </v-img>
+            <v-img src="@/assets/images/서비스로고.png" 
+            class="rounded-circle"
             max-height="130"
-            max-width="130" alt="프로필사진">
+            max-width="130" alt="프로필사진" v-else>
             </v-img>
           </div>
           <!-- 2. 인적사항 --> 
-          <div class="mt-3 ml-5" style="width: 148px; word-break:break-all;">
+          <div class="mt-3 ml-3" style="width: 148px; word-break:break-all;">
             <p style="font-size: 20px">{{pet.pe_name}}</p>
-            <p>나이: {{pet.pe_age}}살</p>
-            <p>몸무게: {{pet.pe_weight}}kg</p>
-            <p>특이사항: {{pet.pe_trauma}}, {{pet.pe_disease}}</p>
+            <p><b>나이:</b> {{pet.pe_age}}살</p>
+            <p><b>몸무게:</b> {{pet.pe_weight}}kg</p>
+            <p><b>특이사항:</b> {{pet.pe_trauma}}, {{pet.pe_disease}}</p>
           </div>
           <!-- 햄버거버튼 -->
-          <v-menu
-            bottom
-            left
-            class="d-inline"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
+          <div class="text-center">
+            <v-menu offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
                 color="#BAF1E4"
                 icon
                 v-bind="attrs"
@@ -34,23 +36,17 @@
               >
                 <v-icon size="40px">mdi-menu</v-icon>
               </v-btn>
-            </template>
-
-            <v-list width="100px">
-              <!-- <v-list-item
-                v-for="(item, i) in items"
-                :key="i"
-              >
-
-                <v-list-item-title @click="goto()">{{ item.title }}</v-list-item-title>
-              </v-list-item> -->
-              <v-list-item>
-                <v-list-item-title @click="goto('infochangelocation')" style="margin-top:10px">지역 수정</v-list-item-title>
-                <v-list-item-title @click="goto('infochangepw')">계정 설정</v-list-item-title>
-                <v-list-item-title @click="goto('')">?A?A?A?A?A??A</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-for="(item, index) in items"
+                  :key="index"
+                >
+                  <v-list-item-title @click="moveto(`${item.path}`)">{{ item.title }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </div>
         </div>
       </div>
         
@@ -86,89 +82,120 @@
       </div>
         <div class="frame" >
           <div class="card-list">
-            <!-- 한 마리당 하나의 카드 -->
-            <!-- 카드 클릭시 대표 강아지 설정 변경  -->
-            <div class="mt-5" id="mainBox" style="background-color:#BAF1E4;">
+            <div class="mt-5" id="dogBox" v-for="(my, idx) in myPetList" :key="idx" :class="{push: pet.peid == my.peid}">
               <div class="d-flex justify-end">
-                <!-- 설정버튼 클릭 시 dogchange 페이지로 이동 -->
-                <v-icon @click="gotoDogChange()">mdi-cog-outline</v-icon>
+                <v-icon v-if="pet.peid == my.peid" @click="goto('dogchange')">mdi-cog-outline</v-icon>
+                <v-icon v-else style="color: white;">mdi-radiobox-blank</v-icon>
               </div>
               <div>
-                <v-img src="../../assets/images/서비스로고.png" 
+                <v-img :src="my.pe_profile_photo" 
                   class="rounded-circle" height="158"
                   max-height="158"
-                  max-width="158" alt="">
+                  max-width="158" alt="프로필"
+                  @click="selectDog(my.peid)">
                   </v-img>
               </div>
-              <div class="d-flex justify-center mt-2">
-                <p style="color:#79704F; font-size:24px;">이름</p>
+              <div class="d-flex justify-center mt-9">
+                <p style="color:#79704F; font-size:24px;">{{my.pe_name}}</p>
+              </div>
+              <div class="d-flex justify-center">
+                <div style="color:#79704F; font-size:20px;">{{my.pe_age}}살</div>
               </div>
               
             </div>
-            <!-- 강아지 추가 페이지로 이동 -->
             <div class="mt-3">
               <v-btn
               class="mx-2"
               fab
               dark
               color="#BAF1E4"
+              @click="goto('dogregister')"
             >
                 <v-icon>
                   mdi-plus
                 </v-icon>
               </v-btn>
             </div>
-            <!-- <div class="space"></div> -->
+            <div class="space"></div>
+            </div>
           </div>
         </div>
-      </div>
 </template>
 
 <script>
 import {mapGetters,mapActions} from 'vuex'
 
 export default {
-  // components: { InfoChange },
   name: "MyPageMain",
   data: () => ({
-      // items: [
-      //   { title: '지역 수정' , m_url: 'infochangelocation'},
-      //   { title: '계정 관리' ,m_url: 'infochangepassword' },
-      //   { title: '로그아웃' ,m_url: ''},
-      // ],
       pet: {},
       allergy: [],
+      photo: false, // 프로필 사진 유무
+      items: [
+        { title: '지역 설정' , path: 'infochangelocation'},
+        { title: '계정 관리' , path: 'infochangepw'},
+      ],
+      myPetList: [],
     }),
   created() {
-    // this.getUserInfoInApi(this.getUser.uid) 명세서 확인필요
-    console.log(this.getDogInfo.pet.peid,'peid')
-    this.showDogInfoInApi(this.getDogInfo.pet.peid)
+    this.getUserInfoInApi(this.getUser.uid) // 모든 펫 리스트 가져오기
+    .then(() => {
+      this.myPetList = this.getMyDogListInfo
+    })
+    this.showDogInfoInApi(this.getDogInfo.pet.peid) // 현재 펫 정보 가져오기
     .then(() => {
       this.pet = this.getDogInfo.pet
+      if (this.getDogInfo.pet.pe_profile_photo.length != 0) {
+        this.photo = true
+      }
       this.allergy = this.getDogInfo.allergy
     })
   },
   computed: {
-    ...mapGetters(['getDogInfo','getUser'])
+    ...mapGetters(['getDogInfo', 'getUser', 'getMyDogListInfo']) 
   },
   methods: {
-    ...mapActions(['showDogInfoInApi','getUserInfoInApi','getAddressInApi']),
-    goto(m_url) {
-      this.$router.push(`/${m_url}`)
+    ...mapActions(['showDogInfoInApi', 'getUserInfoInApi']),
+    goto(path) {
+      this.$router.push(`/${path}`)
     },
-    gotoDogChange() {
-      this.$router.push('/dogchange')
+    moveto(path) {
+      this.$router.push(`/${path}`)
     },
-    goback() {
-      this.$router.push('/mypage')
+    selectDog(peid) {
+      this.showDogInfoInApi(peid) // 선택한 펫 정보 가져오기
+      .then(() => {
+        this.pet = this.getDogInfo.pet
+        if (this.getDogInfo.pet.pe_profile_photo.length != 0) {
+          this.photo = true
+        }
+        this.allergy = this.getDogInfo.allergy
+      })
     }
   }
   
 }
 </script>
 <style scoped>
-p {
-  color: black;
+#dogBox {
+  display: inline;
+  width: 300px;
+  height: 350px;
+  box-shadow: 3px 3px 0 rgb(0,0,0,0.3);
+  color: #323232;
+  border-radius: 15px;
+  background-color: white;
+  margin: 20px;
+  padding: 20px;
+  cursor: pointer; 
+  outline: none; 
+}
+
+.push {
+  box-shadow: 1px 1px 0 rgb(0,0,0,0.3) !important;
+  background-color: #BAF1E4 !important;
+  position: relative; 
+  top:2px; 
 }
 
 .frame {
@@ -193,6 +220,5 @@ p {
   flex-shrink: 0;
   width: 200px;
   height: 200px;
-/*   background-color: white; */
 }
 </style>

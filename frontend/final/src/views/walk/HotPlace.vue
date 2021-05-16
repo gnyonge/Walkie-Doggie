@@ -5,21 +5,24 @@
       <div id="map"></div>
     </div>
     <div class="m-4">
-      <DropDown />
+      <DropDown v-if="this.getSelectedItem === null" />
     </div>
-    <ImageList />
+    <ImageList v-if="this.getSelectedItem === null"/>
+    <ImageItem v-else/>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import ImageList from '@/components/walk/ImageList'
+import ImageItem from '@/components/walk/ImageItem'
 import DropDown from '@/components/walk/DropDown'
 
 export default {
   name: 'HotPlace',
   components: {
     ImageList,
+    ImageItem,
     DropDown,
   },
   computed: {
@@ -37,6 +40,7 @@ export default {
     this.getHotPlaceListInApi(place).then(() =>{
       var hotplace = this.getHotPlace
       for (var i of hotplace) {
+          // 조건에 맞는 핀 이미지 연결 
           let img = ''
           if(i.l_desc === '사진이 잘 나와요!'){
             img = 'https://i.ibb.co/XWGzFdp/nicephoto.png'
@@ -47,7 +51,6 @@ export default {
           }else{ // 휴식 공간이 있어요!
             img = 'https://i.ibb.co/pybCvBz/resting.png'
           } 
-
           this.positions.push({
           title: i.lid,
           lat: i.p_latitude,
@@ -70,7 +73,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions(['getHotPlaceListInApi']),
+    ...mapActions(['getHotPlaceListInApi', 'setClickPostDetailInAPI']),
     // 지도 첫 화면 로드 
     initMap() {
       this.mapContainer = document.getElementById('map');
@@ -123,7 +126,7 @@ export default {
     },
     // 핀 꽂기
     pin() {
-      
+      var t = this 
       var map = this.map
       var positions = this.positions
       console.log(positions, '포지션')
@@ -151,12 +154,9 @@ export default {
       function getMakerInfo(map, marker){
         return function(){
         // 마커 선택후 해당 정보 자식 컴포넌트로 전송 
-
-        
         // 해당 게시글 wid
         console.log(marker.getTitle())
-        // 위도경도 출력 
-        console.log(marker.getPosition())
+        t.setClickPostDetailInAPI(marker.getTitle())
         }
       }
       marker.setMap(map)

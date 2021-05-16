@@ -19,7 +19,7 @@
 
 	<select id="show_health" parameterType="String"
 		resultType="HealthDto">
-		select * from Health where peid=#{peid} where h_flag=0
+		select * from Health where peid=#{peid} and h_flag=0
 	</select>
 
 	<select id="show_pet" parameterType="String" resultType="PetDto">
@@ -34,7 +34,9 @@
 
 	<update id="update_pet" parameterType="PetDto">
 		update Pet set
-		pe_profile_photo=#{pe_profile_photo}, pe_age=#{pe_age},
+		pe_name=#{pe_name},
+		pe_profile_photo=#{pe_profile_photo},
+		pe_age=#{pe_age},
 		pe_weight=#{pe_weight}, pe_trauma=#{pe_trauma},
 		pe_disease=#{pe_disease}, pe_birthday=#{pe_birthday}
 		where peid=#{peid}
@@ -52,7 +54,7 @@
 		select * from Allergy where peid=#{peid} and al_flag=0
 	</select>
 
-	<update id="delete_allergy" parameterType="String">
+	<update id="delete_allergy" parameterType="AllergyDto">
 		update Allergy set
 		al_flag=1 where aid=#{aid}
 	</update>

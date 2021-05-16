@@ -15,9 +15,12 @@
           </div>
         </div>
         <v-form>
-          <v-text-field name="email" label="이메일" id="email" v-model="email" type="email" required color="#48B9A8" style="margin-top:40px;"></v-text-field>
-          <v-text-field name="password" label="비밀번호" id="password" v-model="password" type="password" required color="#48B9A8" style="margin-top:20px;" class="font-change"></v-text-field>
+          <v-text-field label="이메일" v-model="email" type="email" required color="#48B9A8" style="margin-top:40px;"></v-text-field>
+          <v-text-field label="비밀번호" v-model="password" type="password" required color="#48B9A8" style="margin-top:20px;" class="font-change"></v-text-field>
         </v-form>
+        <div style="color:red; font-size:14px" v-if="check">
+          아이디나 비밀번호를 확인해주세요.
+        </div>
           <div class="d-flex justify-center">
             <v-btn class="login-btn" id="mainBtn" style="width:100%; margin-top:30px; margin-bottom: 30px; font-size: 20px; height:45px; border-radius: 5px;" @click="login()"><b>로그인</b></v-btn>
           </div>
@@ -50,7 +53,9 @@ export default {
         u_location:"",
         u_nickname:"",
     },
+      check: false,
     };
+
   },
     created() {
     //     let code = this.getParameter('code');
@@ -148,20 +153,18 @@ export default {
     login() {
       this.loginNormalInApi({
         u_email: this.email,
-        u_flag: 0,
-        u_location: "string",
-        u_nickname: "string",
         u_password: this.password,
-        u_report: 0,
-        uid: "adminadmin123"
       })
       .then((res) => {
-        console.log(res, '로그인버튼 눌렀을 때 성공 !')
-        this.$router.push('/calendar')
+        console.log(res,"로그인 성공")
+        if(res == "로그인에 성공하였습니다.") {
+          this.$router.push('/calendar')
+        }
+        else {
+          this.check = true
+        }
       })
-      .catch((error) => {
-        console.log(error)
-      })
+      
        // 반려견 등록 페이지로 이동 
     },
   }

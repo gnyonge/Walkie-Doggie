@@ -1,7 +1,8 @@
 import { rscApi } from '@/services/api';
 const state = {
   token: '',
-  user: {},
+  user: {}, //강아지정보 미포함
+  add: ''
 };
 const getters = {
   getToken(state) {
@@ -9,6 +10,9 @@ const getters = {
   },
   getUser(state) {
     return state.user
+  },
+  getAddress(state) {
+    return state.add
   }
 };
 const mutations = {
@@ -17,22 +21,28 @@ const mutations = {
   },
   setUser(state,user) {
     state.user = user
+  },
+  setAddress(state,add) {
+    state.add = add
   }
 
 };
 const actions = { 
   // 로그인 
   // - 자체 로그인 
-  loginNormalInApi(context, params) {
+  loginNormalInApi({commit, state}, params) {
     return rscApi.post('login/signin',params)
     .then ((res)=> {
-      context.commit('setToken',res.data.doggie_token);
-      context.commit('setUser',res.data.user);
-      console.log(res, '로그인')
+      commit('setToken',res.data.doggie_token);
+      commit('setUser',res.data.user);
+      console.log('로그인완료', res.data.user)
+      console.log('유저되나요', state.user, state.token)
       return res.data.message;
       // get이라면 다르게 해줘야 한다. 
     })
-    .catch(()=>{});
+    .catch((error)=>{
+      console.log(error)
+    });
   },
 
   // 회원가입 
@@ -73,7 +83,39 @@ const actions = {
       return res;
     })
     .catch(()=>{});
-  }
+  },
+
+  // 비밀번호 변경
+  changePasswordInApi(context,params) {
+    return rscApi.put('user/change/pass',params)
+    .then ((res) => {
+      console.log(res, '변경 성공?')
+      return res;
+    })
+    .catch(()=>{});
+  },
+ 
+  // 지역등록
+  setAddressInApi(context,params) {
+    return rscApi.get(`user/address?add=${params.add}&uid=${params.uid}`)
+    .then ((res) => {
+      console.log(res, '주소성공!!!!!!!!!!!')
+      return res;
+    })
+    .catch(()=>{});
+  },
+
+   // 회원탈퇴
+   deleteUserInApi(context, params) {
+    return rscApi.put('user/leave', params)
+    .then((res) => {
+      context.commit('setUser', null)
+      console.log(res, '유저 삭제 완료')
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+  },
 };
 
 export default {

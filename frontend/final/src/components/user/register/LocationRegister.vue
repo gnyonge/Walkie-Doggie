@@ -9,25 +9,20 @@
     </div>
   <div class="register-btn-pd">
     <v-flex class="ph-size">
-      <!-- <v-text-field name="nickname" label="주소" id="nickname" v-model="nickname" type="nickname" required></v-text-field>
-      <div class="d-flex justify-center">
-        <router-link to="#"><v-btn class="register-btn">지역설정</v-btn></router-link> 
-      </div> -->
-      <!-- <div class="daummap"> <h1>우편번호: <span>{{ zip }}</span></h1> <h1>기본주소: <span>{{ addr1 }}</span></h1> <h1>상세주소: <span>{{ addr2 }}</span></h1> <div ref="embed"></div> <button @click="showApi">주소API 호출</button> </div> -->
-    <DaumPostcode
+     <DaumPostcode
       :on-complete=handleAddress
+      v-model="address"
     />
     <div class="mt-3">
-      지번 주소를 동까지 입력해주세요.
+      주소는 동단위까지 입력됩니다.
+      <p style="font-size:14px">(예: '광주 광산구 장덕동')</p>
     </div>
-      <v-text-field 
-      label="(예: '광주 광산구 장덕동')" 
-      id="address" 
-      v-model="address" 
-      type="address" required>
-      </v-text-field>
+    <div style="font-size:18px;">
+      입력된 주소: <b>{{address}}</b>
+    </div>
+      
     <div class="register-btn-pd d-flex justify-center mt-5">
-        <v-btn class="" id="mainBtn" @click="setAddress()">지역 설정</v-btn>
+        <v-btn class="" id="mainBtn" @click="setAddress()" :disabled="confirm == false">지역 설정</v-btn>
     </div>
     </v-flex>
   </div>
@@ -36,53 +31,65 @@
 
 <script >
 import DaumPostcode from 'vuejs-daum-postcode'
+import { mapGetters, mapActions } from 'vuex'
 
-var handleAddress = (data) => {
-  let fullAddress = data.address
-  let extraAddress = ''
-  if (data.addressType === 'R') {
-    fullAddress = data.jibunAddress
-  }
-  // 띄어쓰기 2후 마지막 글자가 동이이면 저장 
-  // 아니면 -> 세번 후 저장!!! 
-  // 그런데도 동이 없으면 면까지만?? 
+// var handleAddress = (data) => {
+//   let fullAddress = data.address
+//   let fAddress = [] // 띄어쓰기 기준으로 나누어 단어 저장
+//   let sAddress = [] // '동' 으로 끝나는 단어 저장 
 
+  
+//     fullAddress = data.jibunAddress
 
-  // if (data.addressType === 'R') {
-  //   if (data.bname !== '') {
-  //     extraAddress += data.bname
-  //   }
-  //   if (data.buildingName !== '') {
-  //     extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName)
-  //   }
-  //   fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '')
-  // }
-  // let fullAddress = data.address
-  // let extraAddress = ''
-  // if (data.addressType === 'R') {
-  //   if (data.bname !== '') {
-  //     extraAddress += data.bname
-  //   }
-  //   if (data.buildingName !== '') {
-  //     extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName)
-  //   }
-  //   fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '')
-  // }
+//     // 띄어쓰기 기준으로 나누어 fAddress에 저장
+//     fAddress = fullAddress.split(' ');
+//     // console.log(fAddress, '주소 나누기 성공') 
+//     // 예: ["광주", "광산구", "장덕동", "992-8"]
+    
+//     // 리스트 돌면서 마지막 단어가 '동'인 부분 저장 
+//     // 주소의 동까지 저장 
+//     for (let i in fAddress) {
+//       // 인덱스
+//       // console.log(i)  
+//       let checkAddress = fAddress[i]
+//       if(checkAddress.charAt(checkAddress.length-1) !== '동'){ 
+//         sAddress.push(checkAddress)
+//       }else {
+//         sAddress.push(checkAddress)
+//         break
+//       }  
+//   }
+//   // console.log(sAddress, '동까지 저장')
+//   const finalAddress = sAddress.join(" ");
+//   this.address = finalAddress
+//   // let address = finalAddress
+//   console.log(finalAddress, '전달할 최종 주소')
+//   // console.log(fullAddress, '풀 주소') 
+//   // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)' 주소 세번째 꺼로 가져오기 
+//   }
 
-  console.log(fullAddress) // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
-  console.log(extraAddress)
-}
 export default {
   data () {
     return {
-      address: ''
+      address: '',
+    }
+  },
+  computed: {
+    ...mapGetters(['getUser']),
+    confirm() {
+        if (this.address.length < 1) {
+          return false
+        }
+        return true
+      }
+  },
+  watch: {
+    address(newVal) {
+      console.log(newVal, '여기용ㅁㄹㄴㅇㅁㄴㄹ')
     }
   },
   components: {
     DaumPostcode
-  },
-  created() {
-    
   },
   mounted() {
       let recaptchaScript = document.createElement('script')
@@ -90,14 +97,51 @@ export default {
       document.head.appendChild(recaptchaScript)
     },
   methods: {
-    handleAddress,
-    setAddress() {
-      // address 
-      // this.goto()
+    ...mapActions(['setAddressInApi']),
+    handleAddress(data) {
+  let fullAddress = data.address
+  let fAddress = [] // 띄어쓰기 기준으로 나누어 단어 저장
+  let sAddress = [] // '동' 으로 끝나는 단어 저장 
+
+  
+    fullAddress = data.jibunAddress
+
+    // 띄어쓰기 기준으로 나누어 fAddress에 저장
+    fAddress = fullAddress.split(' ');
+    // console.log(fAddress, '주소 나누기 성공') 
+    // 예: ["광주", "광산구", "장덕동", "992-8"]
+    
+    // 리스트 돌면서 마지막 단어가 '동'인 부분 저장 
+    // 주소의 동까지 저장 
+    for (let i in fAddress) {
+      // 인덱스
+      // console.log(i)  
+      let checkAddress = fAddress[i]
+      if(checkAddress.charAt(checkAddress.length-1) !== '동'){ 
+        sAddress.push(checkAddress)
+      }else {
+        sAddress.push(checkAddress)
+        break
+      }  
+  }
+  // console.log(sAddress, '동까지 저장')
+  const finalAddress = sAddress.join(" ");
+  this.address = finalAddress
+  // let address = finalAddress
+  console.log(finalAddress, '전달할 최종 주소')
+  // console.log(fullAddress, '풀 주소') 
+  // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)' 주소 세번째 꺼로 가져오기 
     },
-    goto() {
-      this.$router.push('/dogregister')
-    }
+    setAddress() {
+      console.log(this.address, '최종 어드레스')
+      this.setAddressInApi({
+        uid: this.getUser.uid,
+        add: this.address
+      })
+      .then(() => {
+        this.$router.push('/dogregister')
+      })
+    },
   }
 }
 </script>

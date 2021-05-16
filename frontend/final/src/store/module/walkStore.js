@@ -19,7 +19,7 @@ const state = {
   path: [],
   // 핫플레이스 전체리스트, top5 담는 곳
   hotPlace: [],
-  postingWid: [31, 32],
+  postingWid: [],
   myPostingContent: [],
   // 시작 시간 관련 
   startTime: '',
@@ -48,11 +48,10 @@ const getters = {
     return state.like.areaName
   },
   getMyPath(state){
-    console.log(state.path)
     return state.path
   },
   getPostingWid(state){
-    return state.like.postingWid
+    return state.postingWid
   },
   getHotPlace(state) {
     return state.hotPlace
@@ -73,7 +72,7 @@ const getters = {
 const mutations = {
   // 멍플레이스 
   setSelectedItem(state, data){
-    state.like.selectedItem = data
+    state.dog.selectedItem = data
   },
   // 좋아요 포스팅 
   setNowLat(state, data){
@@ -140,9 +139,10 @@ const actions = {
   // 좋아요 사진, 위도, 경도, 의견 백엔드 전송
   sendNowPostInApi(context, params){
     return rscApi.post('place/likePlace', params)
-      .then(() =>{
-        console.log('좋아요 포스팅 성공')
-        // context.commit('setPostingWid', res.data.wid)
+      .then((res) =>{
+        console.log(res)
+        context.commit('setPostingWid', res.data.lid)
+        console.log(state.postingWid, '게시글이 올라가고 해당 lid가 찍히냐')
       }).catch((error) =>{
         console.log(error, '포스팅 실패')
         
@@ -159,12 +159,10 @@ const actions = {
       })
   },
   // 내가 쓴 게시글 리스트 받아오기 
-  getMyPlaceListInApi(context){
-    let myPlaceList = {
-      lidList: state.postingWid.join(",")
-    }
-    return rscApi.get('walk/likeList', {params: myPlaceList})
+  getMyPlaceListInApi(context, params){
+    return rscApi.post('walk/likeList',params)
       .then((res) => {
+        console.log(res, 'res.data.likeList')
         context.commit('setMyPostingContent', res.data.likeList)
       }).catch((error) =>{
         console.log(error, '내가 쓴 게시글 가져오기 실패')
@@ -186,7 +184,30 @@ const actions = {
       context.commit('setHotPlace', res.data.postList)
     })
   },
-  
+  // 핫플 포스트 디테일 
+  setClickPostDetailInAPI(context, lid){
+    return rscApi.get(`place/detail/${lid}`)
+      .then((res)=> {
+        context.commit('setSelectedItem', res.data.postDetail)
+      }).catch((error)=>{
+        console.log(error)
+      })
+  },
+  // 내 게시글 수정 
+  editMyPostingInApi(){
+
+  },
+  // 내 게시글 삭제
+  deleteMyPostingInApi(context, params){
+    console.log(params)
+    return rscApi.delete(`place/delete/${params.peid}?lid=${params.lid}`)
+      .then((res)=>{
+        console.log('내 게시글 삭제 성공')
+        return res
+      }).catch((error)=>{
+        console.log(error)
+      })
+  }, 
 };
 
 export default {
