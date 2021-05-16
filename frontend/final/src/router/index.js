@@ -28,6 +28,7 @@ import Health from '../views/mypage/Health.vue'
 import InfoChangeLocation from '../views/mypage/InfoChangeLocation.vue'
 import InfoChangePassword from '../views/mypage/InfoChangePassword.vue'
 import Statistics from '../views/mypage/Statistics.vue'
+import Dontleaveus from '../views/mypage/Dontleaveus.vue'
 // import VueChartJS from '@/views/VueChartJS'
 // import VueChartKick from '@/views/VueChartKick'
 // import VueCharts from '@/views/VueCharts'
@@ -162,6 +163,11 @@ const routes = [
     path: '/statistics',
     name: 'Statistics',
     component: Statistics
+  },
+  {
+    path: '/dontleaveus',
+    name: 'Dontleaveus',
+    component: Dontleaveus
   },
   // {
   //   path: '/chartjs',
