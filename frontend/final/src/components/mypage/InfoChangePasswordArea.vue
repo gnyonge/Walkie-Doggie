@@ -17,14 +17,14 @@
       </router-link>
     </div>
     <div class="d-flex justify-end mt-5">
-      <v-btn style="background-color:#E97575; margin:20px;" id="mainBtn"><b>탈퇴하기</b></v-btn>
+      <v-btn style="background-color:#E97575; margin:20px;" id="mainBtn" @click="goto()"><b>탈퇴하기</b></v-btn>
     </div>
   </div>
 
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -34,16 +34,22 @@ export default {
 
     }
   },
+  computed: {
+    ...mapGetters(['getUser'])
+  },
   methods: {
-    ...mapActions(['loginNormalInApi']),
+    ...mapActions(['loginNormalInApi','checkPasswordInApi']),
     goback() {
       this.$router.push('/mypage')
     },
     changePassword() {
       this.checkPasswordInApi({
         u_password: "string",
-        uid: "string"
+        uid: this.getUser.uid
       })
+    },
+    goto() {
+      this.$router.push('/dontleaveus')
     }
   }
 }

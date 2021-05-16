@@ -113,7 +113,7 @@ const actions = {
     .catch((error) => {
       console.error(error)
     })
-  }
+  },
 };
 
 export default {

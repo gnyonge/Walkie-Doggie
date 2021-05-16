@@ -93,7 +93,19 @@ const actions = {
       return res;
     })
     .catch(()=>{});
-  }
+  },
+
+   // 회원탈퇴
+   deleteUserInApi(context, params) {
+    return rscApi.put('user/leave', params)
+    .then((res) => {
+      context.commit('setUser', null)
+      console.log(res, '유저 삭제 완료')
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+  },
 };
 
 export default {

@@ -42,7 +42,7 @@
                   v-for="(item, index) in items"
                   :key="index"
                 >
-                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                  <v-list-item-title @click="moveto(`${item.path}`)">{{ item.title }}</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -132,8 +132,8 @@ export default {
       allergy: [],
       photo: false, // 프로필 사진 유무
       items: [
-        { title: '지역 설정' },
-        { title: '계정 관리' },
+        { title: '지역 설정' , path: 'infochangelocation'},
+        { title: '계정 관리' , path: 'infochangepw'},
       ],
       myPetList: [],
     }),
