@@ -42,11 +42,14 @@ export default {
       context: null,
     }
   },
+  created(){
+    this.setNowTab(0)
+  },
   computed: {
     ...mapGetters(['getPrettyDate', 'getSelectedDate', 'getMyDiaryObject', 'getDogInfo'])
   },
   methods: {
-    ...mapMutations(['setSelectedDate', 'setPrettyDate', 'setDetailBtn']),
+    ...mapMutations(['setSelectedDate', 'setPrettyDate', 'setDetailBtn', 'setNowTab']),
     ...mapActions(['getTodayDiaryInApi', 'getTodayWalkInApi']),
     onContext(ctx) {
       this.context = ctx.activeYMD

@@ -140,7 +140,9 @@ const actions = {
   sendNowPostInApi(context, params){
     return rscApi.post('place/likePlace', params)
       .then((res) =>{
+        console.log(res)
         context.commit('setPostingWid', res.data.lid)
+        console.log(state.postingWid, '게시글이 올라가고 해당 lid가 찍히냐')
       }).catch((error) =>{
         console.log(error, '포스팅 실패')
         
@@ -157,10 +159,10 @@ const actions = {
       })
   },
   // 내가 쓴 게시글 리스트 받아오기 
-  getMyPlaceListInApi(context){
-    return rscApi.get('walk/likeList',state.postingWid)
+  getMyPlaceListInApi(context, params){
+    return rscApi.post('walk/likeList',params)
       .then((res) => {
-        console.log(res.data.likeList, 'res.data.likeList')
+        console.log(res, 'res.data.likeList')
         context.commit('setMyPostingContent', res.data.likeList)
       }).catch((error) =>{
         console.log(error, '내가 쓴 게시글 가져오기 실패')

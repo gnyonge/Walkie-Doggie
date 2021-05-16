@@ -119,14 +119,15 @@ export default {
       'getbeforeH',
       'getbeforeM',
       'getPostingWid',
-      'getDogInfo' ])
+      'getDogInfo',
+    ])
   },
   mounted() {
     console.log(this.getPostingWid, 'startwalk mounted에서 찍는 getPostingwid')
     // 좋아요 작성시 해당 리스트 가져오기 
     if(this.getPostingWid.length !== 0){
       console.log('내 게시글 정보 가져오냐')
-      this.getMyPlaceListInApi()
+      this.getMyPlaceListInApi(this.getPostingWid)
     }
     console.log(this.getFirstAreaName)
     // 첫화면과 구별 
@@ -142,7 +143,7 @@ export default {
         // 다시 들어올 떄마다 경로 받기 
         this.linePath = this.getMyPath
         this.getLocation()
-        // 내가 쓴 글 핀으로 보여주기
+        // 내가 쓴 게시글들을 핀으로 보여주기
         this.myLikePoint() 
       }
     } else {
@@ -173,8 +174,10 @@ export default {
       'setStartTime',
       'setbeforeH',
       'setbeforeM',
-      ]), 
-    ...mapActions(['doneWalkInApi', 'getMyPlaceListInApi']),
+    ]), 
+    ...mapActions([
+      'doneWalkInApi', 
+      'getMyPlaceListInApi']),
     // 지도 첫 화면 로드 
     initMap() {
       this.mapContainer = document.getElementById('map');
@@ -197,9 +200,10 @@ export default {
           var lat = position.coords.latitude, // 위도
               lon = position.coords.longitude; // 경도
           
+          
           // 첫위치 위도 -> 주소 
           this.getAddress(lon, lat)
-         
+          
           this.linePath.push(new kakao.maps.LatLng(lat, lon))
           // 첫위치 마커 표시
           if(this.getFirstAreaName === ''){
@@ -272,16 +276,28 @@ export default {
     },
     // 위치 -> 주소 
     getAddress(lon, lat){
-      const callback =  (result, status) => {
-        if (status === kakao.maps.services.Status.OK) {
+      const callback = (result, status) => {
+        if (status === kakao.maps.services.Status.Ok) {
           var address = result[0].address.address_name
           var detail = address.split(' ')
-          if (this.getFirstAreaName === '') {
-            this.setFirstAreaName(detail[2])
-          }else {
-            this.setAreaName(detail[2])
+          var fullAddress = []
+          console.log(detail)
+          for(var i in detail) {
+            fullAddress.push(detail[i])
+            if(detail[i].charAt(detail[i].length-1) === '동' || 
+              detail[i].charAt(detail[i].length-1) === '읍' ||
+              detail[i].charAr(detail[i].length-1) === '면' ){
+                break
+            }
+            if(this.getFirstAreaName === ''){
+              this.setFirstAreaName(fullAddress.join(" "))
+              console.log(this.getFirstAreaName, '좋아요 전 주소')
+            }else{
+              this.setAreaName(fullAddress.join(" "))
+              console.log(this.getAreaName, '좋아요 이후 주소')
+            }
           }
-        } 
+        }
       }
       //주소-좌표 변환 객체 생성 
       var geocoder = new kakao.maps.services.Geocoder();
@@ -376,8 +392,10 @@ export default {
         console.log(marker.getPosition())
         }
       }
-
-      marker.setMap(map)
+      if (marker !== undefined){
+        marker.setMap(map)
+      }
+      
       console.log('pin 함수 안에 setMap 있냐')
     },
     // 형식 변환 
