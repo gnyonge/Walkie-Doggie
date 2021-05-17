@@ -1,6 +1,8 @@
 <template>
 <div id="mainBox">
     <div class="d-flex justify-center">
+      <div style="width: 24px; background-color: white;">
+      </div>
       <div>
         지역 등록
       </div>

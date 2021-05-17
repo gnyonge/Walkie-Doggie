@@ -33,6 +33,14 @@
         <v-icon>mdi-fire</v-icon>
       </v-btn> 
     </div>
+    <div class="d-flex justify-center mt-5">
+      <v-btn
+          color="red" text width="50px"
+          @click="goto()"
+        >
+          산책에서 나가기
+        </v-btn>
+    </div>
   </div>
 </template>
 
@@ -49,6 +57,9 @@ export default {
     startWalk(){
       this.$router.push('/startwalk')
     },
+    goto() {
+        this.$router.push('/calendar')
+      },
     goToHotPlace(){
       this.getHotPlaceListInApi(this.getUser.u_location)
       .then(() => {
