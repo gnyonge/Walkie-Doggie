@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
+import { mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -56,6 +56,9 @@ export default {
     };
 
   },
+  computed: {
+    ...mapGetters(['getDogInfo', 'getUser', 'getMyDogListInfo'])
+  },
     created() {
     //     let code = this.getParameter('code');
     // console.log(code);
@@ -74,7 +77,7 @@ export default {
      this.setNowTab(1)
   },
   methods: {
-    ...mapActions(['loginNormalInApi']),
+    ...mapActions(['loginNormalInApi', 'getUserInfoInApi', 'showDogInfoInApi']),
     ...mapMutations(['setNowTab']),
      getParameter(name) { 
       var ret; 
@@ -109,7 +112,14 @@ export default {
       .then((res) => {
         console.log(res,"로그인 성공")
         if(res == "로그인에 성공하였습니다.") {
-          this.$router.push('/calendar')
+          this.getUserInfoInApi(this.getUser.uid)
+          .then(() => {
+            this.showDogInfoInApi(this.getMyDogListInfo[0].peid)
+            .then(() => {
+              this.$router.push('/calendar')
+            })
+            
+          })
         }
         else {
           this.check = true
