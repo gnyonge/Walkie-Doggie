@@ -134,6 +134,7 @@ export default {
       items: [
         { title: '지역 설정' , path: 'infochangelocation'},
         { title: '계정 관리' , path: 'infochangepw'},
+        { title: '로그아웃' },
       ],
       myPetList: [],
     }),

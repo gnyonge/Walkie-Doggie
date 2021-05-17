@@ -22,9 +22,13 @@
       </div>
 
       <v-text-field name="email" label="이메일주소" id="email" v-model="email" type="email" required color="#48B9A8">
-        <v-btn id="mainBtn" slot="append" style="margin:5px; width:120px;" @click="sendCheckEmail()">인증메일 전송</v-btn>
+        <v-btn id="mainBtn" slot="append" style="margin:5px; width:120px;" @click="sendCheckEmail()" :disabled="sendEmailMsg == true">인증메일 전송</v-btn>
       </v-text-field>
       
+      <div v-if="emailCheck" style="font-size: 12px; color:red;">
+        이미 회원가입한 이메일입니다!
+      </div>
+
       <v-text-field name="code" label="인증번호" id="code" v-model="code" type="code" required color="#48B9A8">
         <v-btn id="mainBtn" slot="append" style="margin:5px; width:60px;" @click="checkAuthEmail()">확인</v-btn>
       </v-text-field>
@@ -59,6 +63,8 @@ export default {
       confirmPassword: '',
       nickname: '',
       nickCheck: false,
+      sendEmailMsg: false,
+      emailCheck: false,
       // passwordRules: [v=> !!v || "Password is required"],
       // confirmPasswordRules: [v=> !!v || "Password is required"],
       rules: [
@@ -67,7 +73,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getUser'])
+    ...mapGetters(['getUser']),
   },
   methods: {
     ...mapActions(['createUserInApi','sendEmailInApi','checkPasswordInApi','checkAuthEmailInApi','loginNormalInApi']),
@@ -99,9 +105,14 @@ export default {
         this.loginNormalInApi({
           u_email: res.data.email,
           u_password: res.data.password,
+        }).then((res) => {
+          if (res === "로그인에 성공하였습니다.") { // 로그인 됨
+            this.$router.push('/register') // 반려견 등록 페이지로 이동 
+          } else { // 로그인 안됨
+            alert('회원가입 후 로그인에 실패하였습니다.')
+          }
         })
       })
-      this.$router.push('/register') // 반려견 등록 페이지로 이동 
     },
 
     // 인증메일 보내기  눌렀을 때 
@@ -113,6 +124,12 @@ export default {
       .then((res) => {
         console.log(this.email)
         console.log(res, '인증번호 메일 보내기 눌렀을 때 성공 !')
+        if(res.data.message ==="인증 메일을 보냈습니다. 확인해주십시오") {
+          this.sendEmailMsg = true
+        }
+        if(res.data.message ==="회원가입된 메일입니다.") {
+          this.emailCheck = true
+        }
       })
     },
 

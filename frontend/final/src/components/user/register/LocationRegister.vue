@@ -2,7 +2,7 @@
 <div id="mainBox">
     <div class="d-flex justify-center">
       <div>
-        반려견 등록
+        지역 등록
       </div>
       <div style="width: 24px; background-color: white;">
       </div>
