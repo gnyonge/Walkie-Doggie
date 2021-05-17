@@ -75,7 +75,6 @@ public class WalkController {
 				logger.info("=====> 산책 시작 성공");
 				resultMap.put("message", "산책 시작에 성공하였습니다.");
 				resultMap.put("wid", walkDto.getWid());
-				logger.info("=====>wid:");
 				status = HttpStatus.ACCEPTED;
 			}else {
 				logger.info("=====> 산책 시작 실패");
@@ -85,6 +84,45 @@ public class WalkController {
 
         } catch (Exception e) {
             logger.error("산책 시작 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+	/*
+     * 기능: 산책 종료
+     * 
+     * developer: 윤수민
+     * 
+     * @param WalkDto(wid, w_like, w_time)
+     * 
+     * @return message, wid
+     */
+    @ApiOperation(value = "Walk End", notes = "산책 종료")
+    @PutMapping("/end")
+    public ResponseEntity<Map<String, Object>> end_walk(@RequestBody WalkDto walkDto) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        
+        try {
+			logger.info("=====> 산책 종료 시작");
+            
+			int result = walkService.endWalk(walkDto);
+
+			if(result == 1){
+				logger.info("=====> 산책 종료 성공");
+				resultMap.put("message", "산책 종료에 성공하였습니다.");
+				resultMap.put("wid", walkDto.getWid());
+				status = HttpStatus.ACCEPTED;
+			}else {
+				logger.info("=====> 산책 종료 실패");
+				resultMap.put("message", "산책 종료에 실패하였습니다.");
+				status = HttpStatus.NOT_FOUND;
+			}
+
+        } catch (Exception e) {
+            logger.error("산책 종료 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }

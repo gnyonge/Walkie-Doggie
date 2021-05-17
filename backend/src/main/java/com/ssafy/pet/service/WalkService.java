@@ -9,6 +9,8 @@ public interface WalkService {
 
     public int createWalk(WalkDto walkDto);
 
+    public int endWalk(WalkDto walkDto);
+
     public Map<String, Object> getLikeInfo(Integer lid);
 
 }
