@@ -99,9 +99,14 @@ export default {
         this.loginNormalInApi({
           u_email: res.data.email,
           u_password: res.data.password,
+        }).then((res) => {
+          if (res === "로그인에 성공하였습니다.") { // 로그인 됨
+            this.$router.push('/register') // 반려견 등록 페이지로 이동 
+          } else { // 로그인 안됨
+            alert('회원가입 후 로그인에 실패하였습니다.')
+          }
         })
       })
-      this.$router.push('/register') // 반려견 등록 페이지로 이동 
     },
 
     // 인증메일 보내기  눌렀을 때 

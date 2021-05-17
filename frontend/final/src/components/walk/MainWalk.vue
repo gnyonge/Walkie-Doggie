@@ -37,14 +37,26 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'MainWalk',
+  computed: {
+    ...mapGetters(['getUser', 'getHotPlace'])
+  },
   methods:{
+    ...mapActions(['getHotPlaceListInApi']),
     startWalk(){
       this.$router.push('/startwalk')
     },
     goToHotPlace(){
-      this.$router.push('/hotplace')
+      this.getHotPlaceListInApi(this.getUser.u_location)
+      .then(() => {
+        if (this.getHotPlace.length == 0) {
+          alert('핫플레이스가 하나도 없어요...')
+        } else {
+          this.$router.push('/hotplace')
+        }
+      })
     },
   }
 }
