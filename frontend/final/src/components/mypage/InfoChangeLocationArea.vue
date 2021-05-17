@@ -1,10 +1,16 @@
 <template>
   <div class="" id="mainBox">
     <div class="">
+      <div class="d-flex justify-space-between">
       <div>
-        <v-icon @click="goback()">mdi-arrow-left</v-icon>
+      <v-icon @click="goback()">mdi-arrow-left</v-icon>
       </div>
-      <h1 style="font-size: 15px;" class="d-flex justify-center">지역 설정</h1>
+      <div>
+        지역 변경
+      </div>
+      <div style="width: 24px; background-color: white;">
+      </div>
+    </div>
       <div style="font-size:18px;" class="my-3">
       기존 주소: <b>{{getUser.u_location}}</b>
       </div>

@@ -27,7 +27,7 @@
 
 <script>
 import { rscApi } from '@/services/api';
-import { mapMutations } from 'vuex'
+import { mapMutations, mapGetters, mapActions } from 'vuex'
 
 export default {
   data(){
@@ -40,8 +40,12 @@ export default {
     },
     }
   },
+  computed: {
+    ...mapGetters(['getUser', 'getDogInfo']),
+  },
   methods: {
-    ...mapMutations(['setUser']),
+    ...mapMutations(['setUser', 'setDogInfo']),
+    ...mapActions(['getUserInfoInApi', 'showDogInfoInApi']),
     goto(path) {
       this.$router.push(path)
     },
@@ -66,25 +70,36 @@ export default {
             nickname : kakao_account.profile.nickname,
             email:kakao_account.email,
           };
-          console.log(userInfo);
+          console.log(userInfo,'1');
           this.user.u_email = userInfo.email;
           this.user.u_nickname = userInfo.nickname;
+          console.log(this.user,'2')
           rscApi.post(`login/ksign`,this.user)
                 .then(({data}) => {
                   this.user = data.user;
+                  console.log(this.user,'3')
                   sessionStorage.setItem('doggie_token',data.doggie_token);
                   this.setUser(this.user)
+                  
+                  console.log(this.getUser,'4',data,'5')
                   if(this.user.u_location==null){
                     //지역 등록 안했으니까 지역 등록으로
                     this.$router.push("/register")
                   }else{
                     //지역 등록 했으니까
-                    if(data.list==null){
-                    this.$router.push("/dogregister")
-
-                    }else{
-                    this.$router.push('/calendar')
-                    }
+                    this.getUserInfoInApi(this.user.uid)
+                      .then((res) => {
+                        if (res.data.petList.length == 0) {
+                          this.$router.push("/dogregister")
+                        }else{
+                          this.showDogInfoInApi(res.data.petList[0].peid)
+                          .then((res) => {
+                            this.setDogInfo(res.data)
+                            console.log(res.data, '히얼제발펫리스트', this.getDogInfo)
+                          this.$router.push('/mypage')
+                          })
+                          }
+                      })
                   }
                   console.log(data);
                   
