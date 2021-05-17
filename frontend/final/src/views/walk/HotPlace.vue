@@ -35,8 +35,7 @@ export default {
     }
   },
   mounted() {
-    var place = '경기 파주시 동패동'
-    // var place = this.getUser.u_location
+    var place = this.getUser.u_location
     console.log(place, '지역')
     // 멍플레이스 게시글들 받기 
     this.getHotPlaceListInApi(place).then(() =>{
