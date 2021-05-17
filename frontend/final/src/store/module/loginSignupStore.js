@@ -98,6 +98,7 @@ const actions = {
   setAddressInApi(context,params) {
     return rscApi.get(`user/address?add=${params.add}&uid=${params.uid}`)
     .then ((res) => {
+      // context.commit('setAddress',) 바꾸끼!!!!!!!!!!!!!!!!!
       console.log(res, '주소성공!!!!!!!!!!!')
       return res;
     })
