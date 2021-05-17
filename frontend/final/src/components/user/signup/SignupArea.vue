@@ -145,7 +145,7 @@ export default {
       })
     },
 
-    // 인증메일 보내기  눌렀을 때 
+    // 인증메일 보내기  눌렀을 때 ㅇㅇ
     // 한번 클릭하면 버튼이 안보이도록 수정해야한다. 
     sendCheckEmail() {
       this.sendEmailInApi({
