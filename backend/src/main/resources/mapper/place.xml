@@ -18,15 +18,15 @@
 	</select>
 
 	<select id="clickPlace" parameterType="map" resultType="Integer" >
-		insert into LikePlace(pid, peid, l_image, l_desc, p_location, l_like, l_flag, l_date)
-		values(#{pid}, #{peid},  #{l_image}, #{l_desc}, #{p_location}, 0, 0, now())
+		insert into LikePlace(wid, pid, peid, l_image, l_desc, p_location, l_like, l_flag, l_date)
+		values(#{wid}, #{pid}, #{peid},  #{l_image}, #{l_desc}, #{p_location}, 0, 0, now())
 		returning lid;
 	</select>
 
 	<select id="checkLike" parameterType="map" resultType="int" >
 		select count(*)
 		from LikePlace
-		where peid=#{peid} and pid = #{pid} and l_flag=0;
+		where peid=#{peid} and pid=#{pid} and wid=#{wid} and l_flag=0;
 	</select>
 
 	<update id="plusPlace" parameterType="int">
