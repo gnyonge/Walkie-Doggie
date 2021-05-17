@@ -22,7 +22,7 @@ public class OCRController {
 	@PostMapping()
 	public ResponseEntity<String> traduzir(@RequestParam(name="file") MultipartFile file) throws Exception{
 		String ext = FilenameUtils.getExtension(file.getOriginalFilename());
-		if (!"png".equals(ext) && !"jpg".equals(ext)) {
+		if (!"png".equals(ext) && !"jpg".equals(ext) && !"JPG".equals(ext)) {
 			return ResponseEntity.badRequest().build();
 		}
 		String resultado = "";
