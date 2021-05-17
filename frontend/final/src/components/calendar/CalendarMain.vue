@@ -43,6 +43,7 @@ export default {
     }
   },
   created(){
+    this.setSelectedDate(null)
     this.setNowTab(0)
   },
   computed: {
