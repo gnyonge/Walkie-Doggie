@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 import { rscApi } from '@/services/api';
 
 export default {
@@ -72,9 +72,11 @@ export default {
 
     //   }) 
     // }   
+     this.setNowTab(1)
   },
   methods: {
     ...mapActions(['loginNormalInApi']),
+    ...mapMutations(['setNowTab']),
      getParameter(name) { 
       var ret; 
       var url = location.href; 

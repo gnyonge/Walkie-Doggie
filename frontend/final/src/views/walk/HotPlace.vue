@@ -35,7 +35,9 @@ export default {
     }
   },
   mounted() {
+    
     var place = this.getUser.u_location
+    console.log(place, '지역')
     // 멍플레이스 게시글들 받기 
     this.getHotPlaceListInApi(place).then(() =>{
       var hotplace = this.getHotPlace
