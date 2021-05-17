@@ -4,18 +4,22 @@ import axios from 'axios';
 
 const rscApi = axios.create({
   baseURL: 'http://localhost' + ':8888/pet',
+  // headers: {
+  //   'doggie_token': sessionStorage.getItem('doggie_token') // header의 속성
+  // }
 });
 
 // Add a request interceptor
 rscApi.interceptors.request.use(
   function(config) {
-    if (this.$store.state.token !== null) {
+    var token = sessionStorage.getItem('doggie_token');
+    if (token !== null) {
       config['headers'] = {
-        'doggie-token': this.$store.state.token,
+        'doggie_token': token,
       };
     }
     // Do something before request is sent
-    console.log('토큰이다', this.$store.state.token);
+    // console.log('토큰이다', token);
     return config;
   },
   function(error) {
@@ -23,5 +27,7 @@ rscApi.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+
 
 export { rscApi };
