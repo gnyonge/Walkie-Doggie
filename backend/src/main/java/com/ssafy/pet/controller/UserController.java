@@ -311,6 +311,7 @@ public class UserController {
 				resultMap.put("message", "주소 등록이 완료하였습니다");
 				resultMap.put("flag", "SUCCESS");
 				resultMap.put("location", user.getU_location());
+			}else {
 				resultMap.put("message", "주소 등록에 실패하였습니다");
 				resultMap.put("flag", "FAIL");
 
