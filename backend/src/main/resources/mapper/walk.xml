@@ -6,9 +6,15 @@
 	
 	<!-- 산책 정보 -->
 	<insert id="createWalk" parameterType="WalkDto" useGeneratedKeys="true" keyProperty="wid" keyColumn="wid" >
-		insert into Walk(peid, w_img, w_distance, w_time, w_date, w_flag, w_like, w_location)
-		values(#{peid}, #{w_img}, #{w_distance}, #{w_time}, now(), 0, #{w_like}, #{w_location});
+		insert into Walk(peid, w_date, w_flag, w_like, w_location)
+		values(#{peid}, now(), 0, #{w_like}, #{w_location});
 	</insert>
+
+	<update id="endWalk" parameterType="WalkDto" >
+		update Walk
+		set w_like=#{w_like}, w_time=#{w_time} 
+		where wid=#{wid};
+	</update>
 
 	<select id="getLikeInfo" parameterType="Integer" resultType="map" >
 		select l.lid, l.l_image, l.l_desc, l.l_date, pl.p_latitude, pl.p_longtitude, p.pe_name

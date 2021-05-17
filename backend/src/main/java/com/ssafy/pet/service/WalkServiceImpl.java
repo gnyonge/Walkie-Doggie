@@ -20,6 +20,11 @@ public class WalkServiceImpl implements WalkService{
     }
 
     @Override
+    public int endWalk(WalkDto walkDto) {
+        return wdao.endWalk(walkDto);
+    }
+
+    @Override
     public Map<String, Object> getLikeInfo(Integer lid) {
         return wdao.getLikeInfo(lid);
     }

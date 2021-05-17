@@ -52,38 +52,77 @@ public class WalkController {
     private WalkService walkService;
 	
 	/*
-     * 기능: 산책 정보 저장
+     * 기능: 산책 시작
      * 
      * developer: 윤수민
      * 
-     * @param WalkDto
+     * @param WalkDto(peid, w_location)
      * 
      * @return message, wid
      */
-    @ApiOperation(value = "Walk Info Insert", notes = "산책 시작 시 산책 정보 저장")
-    @PostMapping("/insert")
-    public ResponseEntity<Map<String, Object>> insert_walk(@RequestBody WalkDto walkDto) {
+    @ApiOperation(value = "Walk Start", notes = "산책 시작")
+    @PostMapping("/start")
+    public ResponseEntity<Map<String, Object>> start_walk(@RequestBody WalkDto walkDto) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         
         try {
-			logger.info("=====> 산책 정보 저장 시작");
+			logger.info("=====> 산책 시작을 시작");
             
 			int result = walkService.createWalk(walkDto);
 
 			if(result == 1){
-				logger.info("=====> 산책 정보 저장 성공");
-				resultMap.put("message", "산책 정보 저장에 성공하였습니다.");
+				logger.info("=====> 산책 시작 성공");
+				resultMap.put("message", "산책 시작에 성공하였습니다.");
 				resultMap.put("wid", walkDto.getWid());
 				status = HttpStatus.ACCEPTED;
 			}else {
-				logger.info("=====> 산책 정보 저장 실패");
-				resultMap.put("message", "산책 정보 저장에 실패하였습니다.");
+				logger.info("=====> 산책 시작 실패");
+				resultMap.put("message", "산책 시작에 실패하였습니다.");
 				status = HttpStatus.NOT_FOUND;
 			}
 
         } catch (Exception e) {
-            logger.error("산책 정보 저장 실패 : {}", e);
+            logger.error("산책 시작 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+	/*
+     * 기능: 산책 종료
+     * 
+     * developer: 윤수민
+     * 
+     * @param WalkDto(wid, w_like, w_time)
+     * 
+     * @return message, wid
+     */
+    @ApiOperation(value = "Walk End", notes = "산책 종료")
+    @PutMapping("/end")
+    public ResponseEntity<Map<String, Object>> end_walk(@RequestBody WalkDto walkDto) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        
+        try {
+			logger.info("=====> 산책 종료 시작");
+            
+			int result = walkService.endWalk(walkDto);
+
+			if(result == 1){
+				logger.info("=====> 산책 종료 성공");
+				resultMap.put("message", "산책 종료에 성공하였습니다.");
+				resultMap.put("wid", walkDto.getWid());
+				status = HttpStatus.ACCEPTED;
+			}else {
+				logger.info("=====> 산책 종료 실패");
+				resultMap.put("message", "산책 종료에 실패하였습니다.");
+				status = HttpStatus.NOT_FOUND;
+			}
+
+        } catch (Exception e) {
+            logger.error("산책 종료 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
@@ -91,104 +130,23 @@ public class WalkController {
     }
 
 	// /*
-    //  * 기능: 산책 경로 저장
+    //  * 기능: 산책 정보 저장
     //  * 
     //  * developer: 윤수민
     //  * 
-    //  * @param file, wid
-    //  * 
-    //  * @return message
-    //  */
-	// @ApiOperation(value = "Walk Route Insert", notes = "산책 경로 저장")
-	// @PutMapping("/routeInsert")
-	// public ResponseEntity<Map<String, Object>> save_route(@RequestParam(value = "wid") int wid,
-	// @RequestParam(value = "file") MultipartFile file) {
-	// 	Map<String, Object> resultMap = new HashMap<>();
-	// 	HttpStatus status = null;
-
-	// 	try {
-	// 		logger.info("=====> 산책 경로 저장 시작");
-	// 		String originName = file.getOriginalFilename(); // 파일 이름 가져오기
-
-	// 		String ext = originName.substring(originName.lastIndexOf('.')); // 파일 확장명 가져오기
-	// 		String saveFileName = UUID.randomUUID().toString() + ext; // 암호화해서 파일확장넣어주기
-	// 		String path = System.getProperty("user.dir"); // 경로설정해주고
-
-	// 		File tempfile = new File(path, saveFileName); // 경로에 파일만들어주고
-
-	// 		String line = "walk/";
-
-	// 		saveFileName = line + saveFileName;
-
-	// 		file.transferTo(tempfile);
-	// 		s3util.setS3Client().putObject(new PutObjectRequest(bucket, saveFileName, tempfile)
-	// 				.withCannedAcl(CannedAccessControlList.PublicRead));
-	// 		String url = s3util.setS3Client().getUrl(bucket, saveFileName).toString();
-	// 		tempfile.delete();
-			
-	// 		Map<String, Object> map = new HashMap<>();
-	// 		map.put("url", url);
-	// 		map.put("wid", wid);
-	// 		int result = walkService.saveRoute(map);
-
-	// 		if (result == 1) {
-	// 			logger.info("=====> 산책 경로 저장 성공");
-	// 			resultMap.put("message", "산책 경로 저장에 성공하였습니다.");
-	// 			status = HttpStatus.ACCEPTED;
-	// 		} else {
-	// 			logger.info("=====> 산책 경로 저장 실패");
-	// 			resultMap.put("message", "산책 경로 저장에 실패하였습니다.");
-	// 			status = HttpStatus.NOT_FOUND;
-	// 		}
-
-	// 	} catch (Exception e) {
-	// 		// TODO: handle exception
-	// 		logger.error("산책 경로 저장 실패 : {}", e);
-	// 		resultMap.put("message", e.getMessage());
-	// 		status = HttpStatus.INTERNAL_SERVER_ERROR;
-	// 	}
-	// 	return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	// }
-
-	// /*
-    //  * 기능: 산책 정보 저장(파일 같이)
-    //  * 
-    //  * developer: 윤수민
-    //  * 
-    //  * @param WalkDto, file
+    //  * @param WalkDto
     //  * 
     //  * @return message, wid
     //  */
     // @ApiOperation(value = "Walk Info Insert", notes = "산책 시작 시 산책 정보 저장")
     // @PostMapping("/insert")
-    // public ResponseEntity<Map<String, Object>> insert_walk(@RequestPart MultipartFile file, @RequestPart WalkDto walkDto) {
+    // public ResponseEntity<Map<String, Object>> insert_walk(@RequestBody WalkDto walkDto) {
     //     Map<String, Object> resultMap = new HashMap<>();
     //     HttpStatus status = null;
         
     //     try {
 	// 		logger.info("=====> 산책 정보 저장 시작");
             
-	// 		if(file != null){
-	// 			String originName = file.getOriginalFilename(); // 파일 이름 가져오기
-
-	// 			String ext = originName.substring(originName.lastIndexOf('.')); // 파일 확장명 가져오기
-	// 			String saveFileName = UUID.randomUUID().toString() + ext; // 암호화해서 파일확장넣어주기
-	// 			String path = System.getProperty("user.dir"); // 경로설정해주고
-
-	// 			File tempfile = new File(path, saveFileName); // 경로에 파일만들어주고
-
-	// 			String line = "diary/";
-
-	// 			saveFileName = line + saveFileName;
-
-	// 			file.transferTo(tempfile);
-	// 			s3util.setS3Client().putObject(new PutObjectRequest(bucket, saveFileName, tempfile)
-	// 					.withCannedAcl(CannedAccessControlList.PublicRead));
-	// 			String url = s3util.setS3Client().getUrl(bucket, saveFileName).toString();
-	// 			tempfile.delete();
-	// 			walkDto.setW_img(url);
-	// 		}
-			
 	// 		int result = walkService.createWalk(walkDto);
 
 	// 		if(result == 1){
