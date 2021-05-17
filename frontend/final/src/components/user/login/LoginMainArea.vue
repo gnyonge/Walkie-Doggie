@@ -27,6 +27,7 @@
 
 <script>
 import { rscApi } from '@/services/api';
+import { mapMutations } from 'vuex'
 
 export default {
   data(){
@@ -40,6 +41,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['setUser']),
     goto(path) {
       this.$router.push(path)
     },
@@ -52,7 +54,7 @@ export default {
         scope:'account_email, profile',
         success: this.GetMe,
         // fail:LogoutFailure,
-      });
+      })
     },
         GetMe(authObj){
       console.log(authObj);
@@ -71,6 +73,7 @@ export default {
                 .then(({data}) => {
                   this.user = data.user;
                   sessionStorage.setItem('doggie_token',data.doggie_token);
+                  this.setUser(this.user)
                   if(this.user.u_location==null){
                     //지역 등록 안했으니까 지역 등록으로
                     this.$router.push("/register")
