@@ -304,12 +304,14 @@ public class UserController {
 		try {
 			logger.info("=====> 주소설정하기");
 			int result = userservice.setAddress(uid, add);
+
+			UserDto user = userservice.checkPass(uid);
 			
 			if(result>=1) {
 				resultMap.put("message", "주소 등록이 완료하였습니다");
 				logger.info("=====> 주소설정하기완료");
 				resultMap.put("flag", "SUCCESS");
-			}else {
+				resultMap.put("location", user.getU_location());
 				resultMap.put("message", "주소 등록에 실패하였습니다");
 				logger.info("=====> 주소설정하기실패");
 				resultMap.put("flag", "FAIL");
