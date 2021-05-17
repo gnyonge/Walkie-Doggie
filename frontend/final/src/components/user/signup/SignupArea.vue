@@ -13,7 +13,7 @@
     </div>
     <!-- 회원가입 폼 -->
     <v-form>
-      <v-text-field name="nickname" label="닉네임" id="nickname" v-model="nickname" type="nickname" required color="#48B9A8">
+      <v-text-field :rules="rules1" name="nickname" label="닉네임" id="nickname" v-model="nickname" type="nickname" required color="#48B9A8">
         <v-btn slot="append" id="mainBtn" style="margin:5px; width:80px;" @click="checkNickname()">중복 확인</v-btn>
       </v-text-field>
 
@@ -21,7 +21,7 @@
         사용가능한 닉네임 입니다!
       </div>
 
-      <v-text-field name="email" label="이메일주소" id="email" v-model="email" type="email" required color="#48B9A8">
+      <v-text-field :rules="rules1" name="email" label="이메일주소" id="email" v-model="email" type="email" required color="#48B9A8">
         <v-btn id="mainBtn" slot="append" style="margin:5px; width:120px;" @click="sendCheckEmail()" :disabled="sendEmailMsg == true">인증메일 전송</v-btn>
       </v-text-field>
       
@@ -29,11 +29,13 @@
         이미 회원가입한 이메일입니다!
       </div>
 
-      <v-text-field name="code" label="인증번호" id="code" v-model="code" type="code" required color="#48B9A8">
+      <v-text-field :rules="rules1" name="code" label="인증번호" id="code" v-model="code" type="code" required color="#48B9A8">
         <v-btn id="mainBtn" slot="append" style="margin:5px; width:60px;" @click="checkAuthEmail()">확인</v-btn>
       </v-text-field>
-
-      <v-text-field name="password" label="비밀번호" id="password" v-model="password" type="password"
+      <div style="color:red; font-size:12px" v-if="codeCheck">
+          인증 코드를 다시 확인해주세요.
+      </div>
+      <v-text-field :rules="rules1" name="password" label="비밀번호" id="password" v-model="password" type="password"
        required color="#48B9A8" class="font-change"></v-text-field>
        
       <v-text-field name="passwordcheck" label="비밀번호 확인" id="confirmPassword" v-model="confirmPassword" 
@@ -46,7 +48,7 @@
     <!-- 회원가입 완료 버튼  -->
     <!-- 버튼 비활성화 시켜놓고 password랑 confirmPassword가 같을 때만 활성화 되게  -->
     <div class="d-flex justify-center">
-      <v-btn id="mainBtn" style="margin-top: 30px;width: 180px; height: 60px; border-radius: 50px; font-size: 25px" @click="registerUser()">회원가입</v-btn>
+      <v-btn id="mainBtn" style="margin-top: 30px;width: 180px; height: 60px; border-radius: 50px; font-size: 25px" @click="registerUser()" :disabled="confirmSignup == false">회원가입</v-btn>
     </div>
   </div>
 </template>
@@ -65,15 +67,43 @@ export default {
       nickCheck: false,
       sendEmailMsg: false,
       emailCheck: false,
+      codeCheck: false,
       // passwordRules: [v=> !!v || "Password is required"],
       // confirmPasswordRules: [v=> !!v || "Password is required"],
       rules: [
         ()=> (this.password=== this.confirmPassword) || '비밀번호가 일치하지 않아요'
-      ]
+      ],
+      rules1: [
+        value => !!value || '필수 입력사항입니다!',
+        value => !!value.replace(/(\s*)/g, "") || '공백은 불가해요!',
+        ],
+      rules2: [
+      value => !!value.replace(/(\s*)/g, "") || '공백은 불가해요!',
+      // value => (value || '').length <= 20 || 'Max 20 characters',
+      // value => 
+      ],
     }
   },
   computed: {
     ...mapGetters(['getUser']),
+    confirmSignup() {
+        if (this.email.length < 1) {
+          return false
+        }
+        if (this.password.length < 1) {
+          return false
+        }
+        if (this.code.length < 1) {
+          return false
+        }
+        if (this.confirmPassword.length < 1) {
+          return false
+        }
+        if (this.nickname.length < 1) {
+          return false
+        }
+        return true
+      }
   },
   methods: {
     ...mapActions(['createUserInApi','sendEmailInApi','checkPasswordInApi','checkAuthEmailInApi','loginNormalInApi']),
@@ -115,7 +145,7 @@ export default {
       })
     },
 
-    // 인증메일 보내기  눌렀을 때 
+    // 인증메일 보내기  눌렀을 때 ㅇㅇ
     // 한번 클릭하면 버튼이 안보이도록 수정해야한다. 
     sendCheckEmail() {
       this.sendEmailInApi({
@@ -142,6 +172,9 @@ export default {
       .then((res) => {
         // console.log(auth)
         console.log(res, '인증번호 확인 버튼 !')
+        if(res.data.message ==="인증 번호가 틀렸습니다.") {
+          this.codeCheck = true
+        }
       })
     }
     
