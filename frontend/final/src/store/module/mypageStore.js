@@ -3,6 +3,7 @@ const state = {
   myDogListInfo: {}, // 유저의 강아지들 정보
   dogInfo: [], // 특정 강아지 한마리의 정보
   allHealthList: [], // 특정 강아지 한마리가 쓴 일기의 건강상태 모음집
+  statistics: {}, // 통계
 };
 const getters = {
   getDogInfo(state) {
@@ -13,6 +14,9 @@ const getters = {
   },
   getMyDogListInfo(state) {
     return state.myDogListInfo
+  },
+  getStatistics(state) {
+    return state.statistics
   }
 };
 const mutations = {
@@ -24,6 +28,9 @@ const mutations = {
   },
   setMyDogListInfo(state, list) {
     state.myDogListInfo = list
+  },
+  setStatistics(state, data) {
+    state.statistics = data
   }
 };
 const actions = {
@@ -114,6 +121,14 @@ const actions = {
       console.error(error)
     })
   },
+  // 통계
+  statisticsInApi(context, peid) {
+    return rscApi.get(`data/statistics/${peid}`)
+    .then((res) => {
+      console.log(res, '통계')
+      context.commit('setStatistics', res.data)
+    })
+  }
 };
 
 export default {

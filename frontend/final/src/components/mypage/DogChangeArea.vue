@@ -351,7 +351,10 @@ export default {
       
     },
     deletePet() {
-      const formData = new FormData()
+      if (this.getMyDogListInfo.length == 1) {
+        alert('최소 한마리는 있어야해요!')
+      } else {
+        const formData = new FormData()
       let pet = {}
       // 사진 없을 때
       if (!this.photo) {
@@ -413,6 +416,8 @@ export default {
         })
         
       })
+      }
+      
     }  
   }
 }
