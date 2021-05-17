@@ -5,51 +5,61 @@
         <v-icon @click="goback()">mdi-arrow-left</v-icon>
       </div>
       <h1 style="font-size: 15px;" class="d-flex justify-center">지역 설정</h1>
-      <p style="font-size:12px;" class="d-flex justify-center">주소를 입력해 주세요.</p>
+      <div style="font-size:18px;">
+      기존 주소: <b>{{getAddress}}</b>
+    </div>
+    <p style="font-size:12px;" class="d-flex justify-center">주소를 입력해 주세요.</p>
       <DaumPostcode
       :on-complete=handleAddress
       v-model="addressChange"
     />
     </div>
-    
+    <div style="font-size:18px;">
+      변경할 주소: <b>{{addressChange}}</b>
+    </div>
       <div class="d-flex justify-center mt-5">
         <v-btn class="" id="mainBtn" style="width:250px; margin-top:20px; margin-bottom: 20px;"><b>변경</b></v-btn>
       </div>
-    <div style="font-size:18px;">
-      기존 주소: <b>{{addressChange}}</b>
-    </div>
+    
   </div>
   
 
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
+<script >
 import DaumPostcode from 'vuejs-daum-postcode'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-    data () {
+  data () {
     return {
-      addressChange: '',
+      addressChange: ''
+    }
+  },
+  computed: {
+    ...mapGetters(['getUser','getAddress']),
+    confirm() {
+        if (this.address.length < 1) {
+          return false
+        }
+        return true
+      }
+  },
+  watch: {
+    address(newVal) {
+      console.log(newVal, '여기용ㅁㄹㄴㅇㅁㄴㄹ')
     }
   },
   components: {
     DaumPostcode
-  },
-  computed: {
-    ...mapGetters(['getUser','getAddress'])
   },
   mounted() {
       let recaptchaScript = document.createElement('script')
       recaptchaScript.setAttribute('src', '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js')
       document.head.appendChild(recaptchaScript)
     },
-    watch: {
-    address(newVal) {
-      console.log(newVal, '변경한다고 제발 ')
-    }
-  },
   methods: {
+    ...mapActions(['setAddressInApi']),
     handleAddress(data) {
       let fullAddress = data.address
       let fAddress = [] // 띄어쓰기 기준으로 나누어 단어 저장
@@ -74,25 +84,36 @@ export default {
         }else {
           sAddress.push(checkAddress)
           break
-        }
-      }
+        }  
+  }
+  // console.log(sAddress, '동까지 저장')
+  const finalAddress = sAddress.join(" ");
+  this.addressChange = finalAddress
+  // let address = finalAddress
+  console.log(finalAddress, '전달할 최종 주소')
+  console.log(this.getUser)
+  console.log(this.getAddress, '겟 어드레스 !')
+  // console.log(fullAddress, '풀 주소') 
+  // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)' 주소 세번째 꺼로 가져오기 
     },
-    goback() {
-      this.$router.push('/mypage')
-    }
+    setAddress() {
+      console.log(this.address, '최종 어드레스')
+      this.setAddressInApi({
+        uid: this.getUser.uid,
+        add: this.addressChange
+      })
+      .then(() => {
+        this.$router.push('/dogregister')
+      })
+    },
   }
 }
 </script>
 <style scoped>
-.health-box {
-  padding: 25px;
-  
-  height: 80%;
-  background: #EFE8DE;
-  margin: 10px;
+.register-btn {
+  width: 200px;
 }
-p {
-  color: black;
-  font-size: 40px;
+.txt_example {
+  font-size: 30px !important;
 }
 </style>
