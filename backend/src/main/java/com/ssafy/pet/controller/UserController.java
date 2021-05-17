@@ -357,7 +357,7 @@ public class UserController {
 	// 비밀번호 변경
 	//uid, password 필수
 	@ApiOperation(value = "Change Password", notes = "비밀번호 변경")
-	@PutMapping("/confirm/change/pass")//user/address
+	@PutMapping("/change/pass")//user/address
 	public ResponseEntity<Map<String, Object>> changePass(@RequestBody Map<String, Object> param) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
