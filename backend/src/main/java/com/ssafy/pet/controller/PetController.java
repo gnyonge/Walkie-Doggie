@@ -126,7 +126,7 @@ public class PetController {
 					petservice.insert_allergy(all);
 				}
 			}
-
+			
 			List<AllergyDto> new_allergy_list = petservice.show_allergy(peid);
 
 			if (result == 1) {

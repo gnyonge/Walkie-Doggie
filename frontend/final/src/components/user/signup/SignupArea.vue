@@ -111,7 +111,7 @@ export default {
         this.$router.push('/loginmain')
     },
     checkNickname() {
-      return axios.get(`http://localhost:8888/pet/user/check/${this.nickname}`)
+      return axios.get(`http://localhost:8888/pet/user/confirm/check/${this.nickname}`)
       .then((res) => {
         this.nickCheck = res.data.flag
       }).catch((error) => {
