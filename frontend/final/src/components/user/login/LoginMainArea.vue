@@ -18,6 +18,9 @@
       <div class="signup-btn-pd" >
         <v-img src="../../../assets/images/kakao_login_medium_narrow.png" style="border-radius: 12px;" class="logo-img" alt="" @click="kakao()" ></v-img>
       </div>
+      <div class="signup-btn-pd" >
+        <v-img src="../../../assets/images/kakao_login_medium_narrow.png" style="border-radius: 12px;" class="logo-img" alt="" @click="kakaologout()" ></v-img>
+      </div>
     </div>
   </div>
 </template>
@@ -48,6 +51,7 @@ export default {
       window.Kakao.Auth.login({
         scope:'account_email, profile',
         success: this.GetMe,
+        // fail:LogoutFailure,
       });
     },
         GetMe(authObj){
@@ -92,6 +96,9 @@ export default {
         }
       })
   },
+  kakaologout(){
+    window.Kakao.Auth.logout()
+  }
 
   },
 }
