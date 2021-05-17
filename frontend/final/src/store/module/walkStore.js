@@ -141,11 +141,11 @@ const actions = {
       })
   },
   // 좋아요 사진, 위도, 경도, 의견 백엔드 전송
-  sendNowPostInApi(context, params){
+  sendNowPostInApi({commit, state}, params){
     return rscApi.post('place/likePlace', params)
       .then((res) =>{
         console.log(res)
-        context.commit('setPostingWid', res.data.lid)
+        commit('setPostingWid', res.data.lid)
         console.log(state.postingWid, '게시글이 올라가고 해당 lid가 찍히냐')
       }).catch((error) =>{
         console.log(error, '포스팅 실패')
