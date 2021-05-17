@@ -35,6 +35,9 @@
       <div style="color:red; font-size:12px" v-if="codeCheck">
           인증 코드를 다시 확인해주세요.
       </div>
+      <div style="font-size:12px" v-if="codeSuccess">
+          인증되었습니다.
+      </div>
       <v-text-field :rules="rules1" name="password" label="비밀번호" id="password" v-model="password" type="password"
        required color="#48B9A8" class="font-change"></v-text-field>
        
@@ -68,6 +71,7 @@ export default {
       sendEmailMsg: false,
       emailCheck: false,
       codeCheck: false,
+      codeSuccess: false,
       // passwordRules: [v=> !!v || "Password is required"],
       // confirmPasswordRules: [v=> !!v || "Password is required"],
       rules: [
@@ -174,6 +178,8 @@ export default {
         console.log(res, '인증번호 확인 버튼 !')
         if(res.data.message ==="인증 번호가 틀렸습니다.") {
           this.codeCheck = true
+        }else {
+          this.codeSuccess = true
         }
       })
     }
