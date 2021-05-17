@@ -164,6 +164,7 @@ export default {
         this.$router.push(`/${path}`)
       } else {
         this.setUser(null)
+        sessionStorage.setItem('doggie_token','');
         this.$router.push('/')
       }
       
