@@ -34,6 +34,7 @@ const actions = {
     .then ((res)=> {
       commit('setToken',res.data.doggie_token);
       commit('setUser',res.data.user);
+      sessionStorage.setItem('doggie_token',res.data.doggie_token);
       console.log(res.data, '로그인 후 res확인')
       console.log('로그인완료', res.data.user)
       console.log('유저되나요', state.user, state.token)
@@ -47,7 +48,7 @@ const actions = {
 
   // 회원가입 
   createUserInApi(context,params) {
-    return rscApi.post('user/signup',params)
+    return rscApi.post('user/confirm/signup',params)
     .then ((res) => {
       console.log(res.data, '회원가입 후 res 확인')
       return res;
@@ -57,7 +58,7 @@ const actions = {
   
   // 인증메일 
   sendEmailInApi(context,params) {
-    return rscApi.post('user/sendMail',params)
+    return rscApi.post('user/confirm/sendMail',params)
     .then ((res) => {
       console.log(res, '메일전송')
       return res;
@@ -67,7 +68,7 @@ const actions = {
 
   // 인증 번호 확인 
   checkAuthEmailInApi(context,params) {
-    return rscApi.post('user/checkMail',params)
+    return rscApi.post('user/confirm/checkMail',params)
     .then ((res) => {
       return res;
     })

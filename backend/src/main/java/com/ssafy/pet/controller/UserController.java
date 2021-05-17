@@ -73,7 +73,7 @@ public class UserController {
 
 	// 회원가입하기
 	@ApiOperation(value = "User Signup", notes = "자체로그인 회원가입")
-	@PostMapping("/signup")
+	@PostMapping("/confirm/signup")
 	public ResponseEntity<Map<String, Object>> signup(@RequestBody UserDto user) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
@@ -130,7 +130,7 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "NickName Overlap Check", notes = "닉네임 중복 체크")
-	@GetMapping("/check/{nick}")
+	@GetMapping("/confirm/check/{nick}")
 	public ResponseEntity<Map<String, Object>> allList(@PathVariable String nick) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
@@ -163,7 +163,7 @@ public class UserController {
 
 	//1. 인증 메일 보내기  (랜덤값을 만들어서 sha-256방식으로 암호화 했으면 좋겠어)
 	@ApiOperation(value = "Auth Mail Send", notes = "인증번호 메일 보내기")
-	@PostMapping("/sendMail")
+	@PostMapping("/confirm/sendMail")
 	public ResponseEntity<Map<String, Object>> sendMail(@RequestBody EmailAuthDto user) {
 		// 1. 이미 있는 메일이야? 메일 중복 확인
 
@@ -230,7 +230,7 @@ public class UserController {
 	
 	//2. 인증 번호 확인 하기
 	@ApiOperation(value = "Auth Mail Check", notes = "인증번호 확인")
-	@PostMapping("/checkMail")
+	@PostMapping("/confirm/checkMail")
 	public ResponseEntity<Map<String, Object>> checkMail(@RequestBody EmailAuthDto user) {
 		// 1. 이미 있는 메일이야? 메일 중복 확인
 
@@ -269,23 +269,23 @@ public class UserController {
 	// mypage 마이페이지
 	@ApiOperation(value = "Mypage Info", notes = "마이페이지")
 	@GetMapping("/info")//user/info
-	public ResponseEntity<Map<String, Object>> myInfo(@RequestParam String uid) {
+	public ResponseEntity<Map<String, Object>> myInfo(HttpServletRequest req, @RequestParam String uid) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-//		String jwt = req.getHeader("doggie_token");
+		String jwt = req.getHeader("doggie_token");
 
 		try {
 			logger.info("=====> 마이페이지");
 			
-//			resultMap.putAll(jwtutil.get(req.getHeader("doggie_token")));
-//			String juid = jwtutil.getUserId(jwt);
-//			System.out.println("uid : "+uid);
+			resultMap.putAll(jwtutil.get(req.getHeader("doggie_token")));
+			String juid = jwtutil.getUserId(jwt);
+			System.out.println("uid : "+uid);
 			
 			List<PetDto> list = userservice.petInfo(uid);
 			resultMap.put("petList", list);
 			resultMap.put("message", "SUCCESS");
 			status = HttpStatus.ACCEPTED;
-
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.error("마이페이지 실패 : {}", e);
@@ -307,9 +307,11 @@ public class UserController {
 			
 			if(result>=1) {
 				resultMap.put("message", "주소 등록이 완료하였습니다");
+				logger.info("=====> 주소설정하기완료");
 				resultMap.put("flag", "SUCCESS");
 			}else {
 				resultMap.put("message", "주소 등록에 실패하였습니다");
+				logger.info("=====> 주소설정하기실패");
 				resultMap.put("flag", "FAIL");
 
 			}
