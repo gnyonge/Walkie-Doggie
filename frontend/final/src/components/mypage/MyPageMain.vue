@@ -22,7 +22,8 @@
             <p style="font-size: 20px">{{pet.pe_name}}</p>
             <p><b>나이:</b> {{pet.pe_age}}살</p>
             <p><b>몸무게:</b> {{pet.pe_weight}}kg</p>
-            <p><b>특이사항:</b> {{pet.pe_trauma}}, {{pet.pe_disease}}</p>
+            <p><b>트라우마:</b> {{pet.pe_trauma}}</p>
+            <p><b>질병:</b> {{pet.pe_disease}}</p>
           </div>
           <!-- 햄버거버튼 -->
           <div class="text-center">
