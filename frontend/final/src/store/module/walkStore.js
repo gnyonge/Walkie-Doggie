@@ -167,8 +167,8 @@ const actions = {
     return rscApi.post('walk/likeList',params)
       .then((res) => {
         console.log(res.data.likeList, 'res.data.likeList')
-        // commit('setMyPostingContent', res.data.likeList)
-        // console.log(state.myPostingContent, 'my postingcontent에 어떤 형식으로 들어가니')
+        context.commit('setMyPostingContent', res.data.likeList)
+        console.log(state.myPostingContent, 'my postingcontent에 어떤 형식으로 들어가니')
         return res
       }).catch((error) =>{
         console.log(error, '내가 쓴 게시글 가져오기 실패')
@@ -176,6 +176,7 @@ const actions = {
   },
   // 핫플레이스 전체 리스트 받아오기
   getHotPlaceListInApi(context, place) {
+    console.log(place)
     var pop = 'pop'
     return rscApi.get(`place/list/${place}?sort=${pop}`)
     .then((res) => {

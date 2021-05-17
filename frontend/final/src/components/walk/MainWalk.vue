@@ -6,7 +6,7 @@
         class="rounded-circle"
         max-height="158"
         max-width="158"
-        src="../../assets/dog.jpg">
+        :src = getDogInfo.pet.pe_profile_photo>
       </v-img>
     </div>
     <div class="d-flex justify-center explain">
@@ -37,8 +37,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'MainWalk',
+  computed: {
+    ...mapGetters(['getDogInfo'])
+  },
   methods:{
     startWalk(){
       this.$router.push('/startwalk')
