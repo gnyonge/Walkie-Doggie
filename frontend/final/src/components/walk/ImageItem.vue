@@ -76,8 +76,10 @@ export default {
       let lid = this.getSelectedItem.lid
       this.deleteMyPostingInApi({peid, lid})
         .then(()=> {
-          this.setSelectedItem(null)
           this.getHotPlaceListInApi(this.getUser.u_location)
+          this.setSelectedItem(null)
+          
+
         })
     },
   },
