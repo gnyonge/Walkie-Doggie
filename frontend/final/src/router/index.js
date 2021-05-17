@@ -32,7 +32,7 @@ import Dontleaveus from '../views/mypage/Dontleaveus.vue'
 // import VueChartJS from '@/views/VueChartJS'
 // import VueChartKick from '@/views/VueChartKick'
 // import VueCharts from '@/views/VueCharts'
-
+import NotFound from '../views/NotFound.vue'
 
 Vue.use(VueRouter)
 
@@ -168,6 +168,11 @@ const routes = [
     path: '/dontleaveus',
     name: 'Dontleaveus',
     component: Dontleaveus
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: "/404",
+    component: NotFound
   },
   // {
   //   path: '/chartjs',

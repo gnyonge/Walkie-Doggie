@@ -41,6 +41,9 @@ export default {
   },
   created() {
     this.hotPlaceList = this.getHotPlace
+    if(this.hotPlaceList.length == 0){
+      this.$router.push('/hotplace')
+    }
   },
   beforeDestroy() {
 

@@ -9,24 +9,26 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: "DropDown",
   data() {
     return {
       Filter: "Filter",
-      place: "장덕동",
     }
+  },
+  computed:{
+    ...mapGetters(['getUser'])
   },
   methods: {
     ...mapActions(['getHotPlaceListInApi', 'getTop5ListInApi']),
     all() {
       this.Filter = "All"
-      this.getHotPlaceListInApi(this.place)
+      this.getHotPlaceListInApi(this.getUser.u_location)
     },
     top() {
       this.Filter = "Top 5"
-      this.getTop5ListInApi(this.place)
+      this.getTop5ListInApi(this.getUser.u_location)
     }
   }
 
