@@ -42,7 +42,7 @@
                   v-for="(item, index) in items"
                   :key="index"
                 >
-                  <v-list-item-title @click="moveto(`${item.path}`)">{{ item.title }}</v-list-item-title>
+                  <v-list-item-title @click="goto(`${item.path}`)">{{ item.title }}</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -123,7 +123,7 @@
 </template>
 
 <script>
-import {mapGetters,mapActions} from 'vuex'
+import {mapGetters, mapActions, mapMutations} from 'vuex'
 
 export default {
   name: "MyPageMain",
@@ -134,10 +134,12 @@ export default {
       items: [
         { title: '지역 설정' , path: 'infochangelocation'},
         { title: '계정 관리' , path: 'infochangepw'},
+        { title: '로그아웃', path:'logout' },
       ],
       myPetList: [],
     }),
   created() {
+    console.log(this.getAddress,'유저저저저저저')
     this.getUserInfoInApi(this.getUser.uid) // 모든 펫 리스트 가져오기
     .then(() => {
       this.myPetList = this.getMyDogListInfo
@@ -152,15 +154,19 @@ export default {
     })
   },
   computed: {
-    ...mapGetters(['getDogInfo', 'getUser', 'getMyDogListInfo']) 
+    ...mapGetters(['getDogInfo', 'getUser', 'getMyDogListInfo', 'getAddress']) 
   },
   methods: {
+    ...mapMutations(['setUser']),
     ...mapActions(['showDogInfoInApi', 'getUserInfoInApi']),
     goto(path) {
-      this.$router.push(`/${path}`)
-    },
-    moveto(path) {
-      this.$router.push(`/${path}`)
+      if (path != 'logout') {
+        this.$router.push(`/${path}`)
+      } else {
+        this.setUser(null)
+        this.$router.push('/')
+      }
+      
     },
     selectDog(peid) {
       this.showDogInfoInApi(peid) // 선택한 펫 정보 가져오기

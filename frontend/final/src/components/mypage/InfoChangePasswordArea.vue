@@ -36,6 +36,11 @@ export default {
 
     }
   },
+  // created: {
+  //   gotoMypage() {
+  //     this.$router.push('/mypage')
+  //   }
+  // },
   computed: {
     ...mapGetters(['getUser'])
   },
@@ -63,6 +68,7 @@ export default {
           })
           .then((res) => {
             console.log(res, '비밀번호 변경 성공')
+            this.$router.push('/mypage')
           })
         }
       })
@@ -70,7 +76,7 @@ export default {
     },
     goto() {
       this.$router.push('/dontleaveus')
-    }
+    },
   }
 }
 </script>
