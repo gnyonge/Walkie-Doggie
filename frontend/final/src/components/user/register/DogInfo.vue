@@ -18,7 +18,7 @@
       <div class="d-flex justify-center mt-15">
         <div>
           <p>※ 다견가정을 위해</p>
-          <p>최대 3마리까지 등록 가능합니다.</p>
+          <p>최대 세마리까지 등록 가능합니다.</p>
         </div>
       </div>
   </div>

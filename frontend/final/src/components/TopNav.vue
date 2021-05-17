@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-    <v-img id="header" src="@/assets/header.png"></v-img>
+    <v-img id="header" src="@/assets/header.png" @click="goto()"></v-img>
     </div>
   </div>
 </template>
@@ -9,6 +9,11 @@
 <script>
   export default {
     name: "TopNav",
+    methods: {
+      goto() {
+        this.$router.push('/calendar')
+      }
+    }
   }
 </script>
 <style>

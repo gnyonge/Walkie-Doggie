@@ -43,7 +43,6 @@ export default {
     }
   },
   created(){
-    this.setSelectedDate(null)
     this.setNowTab(0)
   },
   computed: {
@@ -61,8 +60,7 @@ export default {
       this.getTodayDiaryInApi({
       date: this.getSelectedDate,
       peid: this.getDogInfo.pet.peid}).then(()=> {
-        console.log(this.getMyDiaryObject,' 날짜선택')
-        if (this.getMyDiaryObject.Diary != null) {
+        if (this.getMyDiaryObject.Diary != null && ctx.selectedDate) {
           this.setDetailBtn('diary')
           this.$router.push(`/calendar/detail/todaydiary/${this.getSelectedDate}`)
         }

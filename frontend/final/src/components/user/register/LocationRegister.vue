@@ -1,6 +1,8 @@
 <template>
 <div id="mainBox">
     <div class="d-flex justify-center">
+      <div style="width: 24px; background-color: white;">
+      </div>
       <div>
         지역 등록
       </div>
@@ -133,13 +135,14 @@ export default {
   // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)' 주소 세번째 꺼로 가져오기 
     },
     setAddress() {
-      console.log(this.address, '최종 어드레스')
       this.setAddressInApi({
         uid: this.getUser.uid,
         add: this.address
       })
       .then(() => {
         this.$router.push('/dogregister')
+        console.log(this.getUser, 'user있나 카카오 로그인하고')
+
       })
     },
   }

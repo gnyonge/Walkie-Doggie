@@ -3,14 +3,16 @@
     <div>  
       <!-- 1. 프로필 박스 -->
       <div class="mx-3 mt-3" id="mainBox">
-        <div class="ml-3 d-flex">
+        <div class="d-flex">
           <!-- 1. 프로필 사진 --> 
           <div class="mt-10">
+            <!-- 프사 있을 때 -->
             <v-img :src="pet.pe_profile_photo" 
             class="rounded-circle"
             height="130"
             width="130" alt="프로필사진" v-if="photo">
             </v-img>
+            <!-- 프사 없을 때 -->
             <v-img src="@/assets/images/서비스로고.png" 
             class="rounded-circle"
             max-height="130"
@@ -18,12 +20,14 @@
             </v-img>
           </div>
           <!-- 2. 인적사항 --> 
-          <div class="mt-3 ml-3" style="width: 148px; word-break:break-all;">
-            <p style="font-size: 20px">{{pet.pe_name}}</p>
+          <div class="mt-1 ml-3" style="width: 148px; word-break:break-all;">
+            <p style="font-size: 20px; margin-top: 3px;">{{pet.pe_name}}</p>
             <p><b>나이:</b> {{pet.pe_age}}살</p>
             <p><b>몸무게:</b> {{pet.pe_weight}}kg</p>
-            <p><b>트라우마:</b> {{pet.pe_trauma}}</p>
-            <p><b>질병:</b> {{pet.pe_disease}}</p>
+            <p v-if="pet.pe_disease"><b>질병:</b> {{pet.pe_disease}}</p>
+            <p v-else><b>질병:</b> 없음</p>
+            <p v-if="pet.pe_trauma"><b>트라우마:</b> {{pet.pe_trauma}}</p>
+            <p v-else><b>트라우마:</b> 없음</p>
           </div>
           <!-- 햄버거버튼 -->
           <div class="text-center">
@@ -110,7 +114,7 @@
               fab
               dark
               color="#BAF1E4"
-              @click="goto('dogregister')"
+              @click="addDog()"
             >
                 <v-icon>
                   mdi-plus
@@ -140,7 +144,7 @@ export default {
       myPetList: [],
     }),
   created() {
-    console.log(this.getAddress,'유저저저저저저')
+    console.log(this.getUser, '???????????')
     this.getUserInfoInApi(this.getUser.uid) // 모든 펫 리스트 가져오기
     .then(() => {
       this.myPetList = this.getMyDogListInfo
@@ -158,17 +162,26 @@ export default {
     ...mapGetters(['getDogInfo', 'getUser', 'getMyDogListInfo', 'getAddress']) 
   },
   methods: {
-    ...mapMutations(['setUser']),
+    ...mapMutations(['setUser', 'setDogInfo', 'setMyDogListInfo']),
     ...mapActions(['showDogInfoInApi', 'getUserInfoInApi']),
     goto(path) {
       if (path != 'logout') {
         this.$router.push(`/${path}`)
-      } else {
+      } 
+      else { // 로그아웃할때
         this.setUser(null)
+        this.setDogInfo(null)
+        this.setMyDogListInfo(null)
         sessionStorage.setItem('doggie_token','');
         this.$router.push('/')
       }
-      
+      },
+    addDog() {
+      if (this.getMyDogListInfo.length == 3) {
+        alert('최대 세마리까지 등록 가능합니다!')
+      } else {
+        this.$router.push('/dogregister')
+      }
     },
     selectDog(peid) {
       this.showDogInfoInApi(peid) // 선택한 펫 정보 가져오기

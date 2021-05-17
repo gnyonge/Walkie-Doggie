@@ -5,20 +5,21 @@
         <v-icon @click="goback()">mdi-arrow-left</v-icon>
       </div>
       <h1 style="font-size: 15px;" class="d-flex justify-center">지역 설정</h1>
-      <div style="font-size:18px;">
-      기존 주소: <b>{{getAddress}}</b>
-    </div>
-    <p style="font-size:12px;" class="d-flex justify-center">주소를 입력해 주세요.</p>
+      <div style="font-size:18px;" class="my-3">
+      기존 주소: <b>{{getUser.u_location}}</b>
+      </div>
+    <!-- <p style="font-size:12px;" class="d-flex justify-center">주소를 입력해 주세요.</p> -->
       <DaumPostcode
       :on-complete=handleAddress
       v-model="addressChange"
     />
     </div>
-    <div style="font-size:18px;">
+    <div style="font-size:18px;" class="my-5">
       변경할 주소: <b>{{addressChange}}</b>
     </div>
-      <div class="d-flex justify-center mt-5">
-        <v-btn class="" id="mainBtn" style="width:250px; margin-top:20px; margin-bottom: 20px;"><b>변경</b></v-btn>
+      <div class="d-flex justify-center">
+        <v-btn class="" id="mainBtn" style="width:150px; margin-top:20px; margin-bottom: 20px;"
+        @click="changeLocation()"><b>변경</b></v-btn>
       </div>
     
   </div>
@@ -28,7 +29,7 @@
 
 <script >
 import DaumPostcode from 'vuejs-daum-postcode'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions} from 'vuex'
 
 export default {
   data () {
@@ -37,18 +38,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getUser','getAddress']),
-    confirm() {
-        if (this.address.length < 1) {
-          return false
-        }
-        return true
-      }
-  },
-  watch: {
-    address(newVal) {
-      console.log(newVal, '여기용ㅁㄹㄴㅇㅁㄴㄹ')
-    }
+    ...mapGetters(['getUser', 'getAddress', 'getDogInfo']),
   },
   components: {
     DaumPostcode
@@ -59,7 +49,20 @@ export default {
       document.head.appendChild(recaptchaScript)
     },
   methods: {
-    ...mapActions(['setAddressInApi']),
+    ...mapActions(['setAddressInApi', 'setAddressInApi']),
+    goback() {
+      if (this.getDogInfo.pet.peid) {
+        this.$router.push('/mypage')
+      }
+    },
+    changeLocation() {
+      this.setAddressInApi({
+        add: this.addressChange,
+        uid: this.getUser.uid
+      }).then(() => {
+        this.$router.push('/mypage')
+      })
+    },
     handleAddress(data) {
       let fullAddress = data.address
       let fAddress = [] // 띄어쓰기 기준으로 나누어 단어 저장
@@ -116,4 +119,5 @@ export default {
 .txt_example {
   font-size: 30px !important;
 }
+
 </style>

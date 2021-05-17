@@ -113,16 +113,15 @@ export default {
           l_desc: this.optionValue,
           p_location: this.getAreaName
         }).then((res) =>{
-          this.deleteAll()
+          console.log(res)
           // 같은 장소에 핀 찍은 경우 
           if (res.response.status === 404){
             this.$router.push('/walk')
             alert('같은 장소에는 좋아요를 찍을 수 없습니다.')   
           }
-          else{
-            this.$router.push('/startwalk')
-          }
+          this.$router.push('/startwalk')
           
+          this.deleteAll()
         }).catch((error) =>{
           console.log(error.response)
         })
