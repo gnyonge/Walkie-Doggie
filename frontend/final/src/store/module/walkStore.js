@@ -14,6 +14,7 @@ const state = {
     startArea: '', 
     areaName: '', 
     // 포스팅 후 
+    wid: null, 
   },
   // 이동 경로 
   path: [],
@@ -27,6 +28,10 @@ const state = {
   beforeM: '', 
 };
 const getters = {
+  //처음 시작했을때 wid
+  getWid(state){
+    return state.like.wid
+  },
   // 멍플레이스 
   getSelectedItem(state) {
     return state.dog.selectedItem
@@ -70,6 +75,10 @@ const getters = {
   },
 };
 const mutations = {
+  // 글 작성 후 wid 
+  setWid(state, data){
+    state.like.wid = data 
+  },
   // 멍플레이스 
   setSelectedItem(state, data){
     state.dog.selectedItem = data
@@ -132,6 +141,15 @@ const mutations = {
   },
 };
 const actions = {
+  // 산책 시작
+  sendStartWalk(context, paramas){
+    return rscApi.post('walk/start', paramas)
+      .then((res)=>{
+        context.commit('setWid', res.data.wid)
+      }).catch((error)=>{
+        console.log(error)
+      })
+  },
   // 업로드 사진 미리보기 
   makeTempPhotoUrlInApi(context, params){
     return rscApi.post('place/imageUpload', params)
@@ -147,7 +165,6 @@ const actions = {
         console.log(res)
         context.commit('setPostingWid', res.data.lid)
       }).catch((error) =>{
-        console.log(error.response, 'vuex내부')
         return error
       })
   },
