@@ -30,11 +30,11 @@
         <v-form>
         <!-- 이름  -->
         <v-flex class="ph-size">
-          <v-text-field label="강아지이름" id="name" v-model="name" type="name" required color="#48B9A8"></v-text-field>
+          <v-text-field label="강아지이름" v-model="name" :rules="namerules" required color="#48B9A8"></v-text-field>
         </v-flex>
         <!-- 나이 -->
         <v-flex class="ph-size">
-          <v-text-field label="나이" id="age" v-model="age" type="age" required color="#48B9A8"></v-text-field>
+          <v-text-field label="나이" v-model.number="age" :rules="agerules" required color="#48B9A8"></v-text-field>
         </v-flex>
         <!-- 생일-달력 -->
         <v-dialog
@@ -78,21 +78,21 @@
         </v-dialog>
         <!-- 체중 -->
         <v-flex class="ph-size">
-          <v-text-field label="체중(kg)" id="weight" v-model="weight" type="weight" required color="#48B9A8"></v-text-field>
+          <v-text-field label="체중(kg)" v-model.number="weight" :rules="agerules" required color="#48B9A8"></v-text-field>
         </v-flex>
         <!-- 질병 -->
         <v-flex class="ph-size">
-          <v-text-field label="선천적 질병" id="disease" v-model="disease" type="disease" required color="#48B9A8"></v-text-field>
+          <v-text-field label="선천적 질병(선택)" v-model="disease" required color="#48B9A8"></v-text-field>
         </v-flex>
         <!-- 트라우마 -->
         <v-flex class="ph-size">
-          <v-text-field label="트라우마" id="trauma" v-model="trauma" type="trauma" required color="#48B9A8"></v-text-field>
+          <v-text-field label="트라우마(선택)" v-model="trauma" required color="#48B9A8"></v-text-field>
         </v-flex>
 
         <div id="contentBox">
         <v-checkbox
           v-model="alle"
-          label="알러지"
+          label="알러지(선택)"
           color="#48B9A8"
           hide-details
         ></v-checkbox>
@@ -120,7 +120,7 @@
       </v-form>
       <!-- 반려견 등록 버튼  -->
       <div class="d-flex justify-center mt-9">
-        <v-btn id="mainBtn" @click="registerNewDog()">반려견 등록</v-btn>
+        <v-btn id="mainBtn" @click="registerNewDog()" :disabled="confirm == false">반려견 등록</v-btn>
       </div>
       </div>
       
@@ -153,10 +153,31 @@ export default {
       alle: false,
       allergyContent: '',
       allergyArray: [],
+
+      namerules: [
+        value => !!value || '필수 입력사항입니다!',
+        value => !!value.replace(/(\s*)/g, "") || '공백은 불가해요!',
+        ],
+      agerules: [
+        value => Number.isInteger(value) || '숫자만 가능합니다!'
+      ]
+      
     }
   },
   computed: {
-    ...mapGetters(['getTempPhotoURL', 'getUser'])
+    ...mapGetters(['getTempPhotoURL', 'getUser']),
+    confirm() {
+        if (this.name.length < 1) {
+          return false
+        }
+        if (!Number.isInteger(this.age) || this.age.length < 1) {
+          return false
+        }
+        if (!Number.isInteger(this.weight) || this.weight.length < 1) {
+          return false
+        }
+        return true
+      }
   },
   watch: {
       alle(newVal) {
