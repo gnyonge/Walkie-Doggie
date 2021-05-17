@@ -69,7 +69,7 @@
         class="rounded-circle gird"
         max-height="80"
         max-width="80"
-        src="../../assets/dog.jpg">
+        :src= getDogInfo.pet.pe_profile_photo>
       </v-img>
     </div>
   </div>
@@ -131,10 +131,9 @@ export default {
       console.log('내 게시글 정보 가져오냐')
       this.getMyPlaceListInApi(this.getPostingWid)
       .then((res) => {
-        console.log(res.data.likeList, '여기서 set할게요')
         this.setMyPostingContent(res.data.likeList)
-        console.log(this.getMyPostingContent, '여기떠야됨진짜;;')
-
+        // 내가 쓴 게시글들을 핀으로 보여주기
+        this.myLikePoint()
       })
     }
     console.log(this.getFirstAreaName)
@@ -151,9 +150,7 @@ export default {
         console.log(this.start)
         // 다시 들어올 떄마다 경로 받기 
         this.linePath = this.getMyPath
-        this.getLocation()
-        // 내가 쓴 게시글들을 핀으로 보여주기
-        this.myLikePoint() 
+        this.getLocation() 
       }
     } else {
       const script = document.createElement('script');

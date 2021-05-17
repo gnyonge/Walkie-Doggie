@@ -29,8 +29,17 @@
       </div>
       
       <div v-if="!check" class="mt-10">
-        정말 탈퇴하시겠어요? <v-btn id="mainBtn" @click="deleteUser()">네</v-btn>
-        <v-btn id="mainBtn" @click="goback()">아니오</v-btn>
+        <div style="margin-top: 60px; margin-bottom: 60px" class="d-flex justify-center">
+          정말 탈퇴하시겠어요? 
+        </div>
+        <div class="d-flex justify-center" style="margin-bottom:30px;">
+          <v-btn id="mainBtn" class="mr-3" style="background-color:#E97575;" @click="deleteUser()">탈퇴할래요</v-btn>
+          <v-btn id="mainBtn" @click="goback()">아니오</v-btn>
+        </div>
+          
+          
+        
+        
       </div>
       </div>
       
@@ -60,6 +69,9 @@ export default {
       this.deleteUserInApi({
         u_password: this.password,
         uid: this.getUser.uid,
+      })
+      .then(()=>{
+        this.$router.push('/loginmain')
       })
     },
     checkpw() {

@@ -70,6 +70,7 @@ export default {
           rscApi.post(`login/ksign`,this.user)
                 .then(({data}) => {
                   this.user = data.user;
+                  sessionStorage.setItem('doggie_token',data.doggie_token);
                   if(this.user.u_location==null){
                     //지역 등록 안했으니까 지역 등록으로
                     this.$router.push("/register")

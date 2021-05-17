@@ -309,10 +309,12 @@ public class UserController {
 			
 			if(result>=1) {
 				resultMap.put("message", "주소 등록이 완료하였습니다");
+				logger.info("=====> 주소설정하기완료");
 				resultMap.put("flag", "SUCCESS");
 				resultMap.put("location", user.getU_location());
 			}else {
 				resultMap.put("message", "주소 등록에 실패하였습니다");
+				logger.info("=====> 주소설정하기실패");
 				resultMap.put("flag", "FAIL");
 
 			}
@@ -358,7 +360,7 @@ public class UserController {
 	// 비밀번호 변경
 	//uid, password 필수
 	@ApiOperation(value = "Change Password", notes = "비밀번호 변경")
-	@PutMapping("/confirm/change/pass")//user/address
+	@PutMapping("/change/pass")//user/address
 	public ResponseEntity<Map<String, Object>> changePass(@RequestBody Map<String, Object> param) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
