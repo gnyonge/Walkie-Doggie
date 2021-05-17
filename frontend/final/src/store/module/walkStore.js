@@ -146,10 +146,9 @@ const actions = {
       .then((res) =>{
         console.log(res)
         context.commit('setPostingWid', res.data.lid)
-        console.log(state.postingWid, '게시글이 올라가고 해당 lid가 찍히냐')
       }).catch((error) =>{
-        console.log(error, '포스팅 실패')
-        
+        console.log(error.response, 'vuex내부')
+        return error
       })
   },
   // 산책 종료 
@@ -167,8 +166,8 @@ const actions = {
     return rscApi.post('walk/likeList',params)
       .then((res) => {
         console.log(res.data.likeList, 'res.data.likeList')
-        // commit('setMyPostingContent', res.data.likeList)
-        // console.log(state.myPostingContent, 'my postingcontent에 어떤 형식으로 들어가니')
+        context.commit('setMyPostingContent', res.data.likeList)
+        console.log(state.myPostingContent, 'my postingcontent에 어떤 형식으로 들어가니')
         return res
       }).catch((error) =>{
         console.log(error, '내가 쓴 게시글 가져오기 실패')
@@ -176,6 +175,7 @@ const actions = {
   },
   // 핫플레이스 전체 리스트 받아오기
   getHotPlaceListInApi(context, place) {
+    console.log(place)
     var pop = 'pop'
     return rscApi.get(`place/list/${place}?sort=${pop}`)
     .then((res) => {

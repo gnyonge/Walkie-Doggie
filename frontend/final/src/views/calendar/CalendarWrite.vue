@@ -92,7 +92,7 @@
       </div>
       <!-- 완료버튼 -->
       <div class="d-flex justify-end">
-        <v-btn id="mainBtn" width="50px" @click="createDiary()" :disabled="comfirm == false">완료</v-btn>
+        <v-btn id="mainBtn" width="50px" @click="createDiary()" :disabled="confirm == false">완료</v-btn>
       </div>
     </div>
   </div>
@@ -126,7 +126,7 @@ export default {
     },
     computed: {
       ...mapGetters(['getSelectedDate', 'getPrettyDate', 'getTempPhotoURL', 'getDogInfo']),
-      comfirm() {
+      confirm() {
         if (this.diaryContent.length < 1) {
           return false
         }

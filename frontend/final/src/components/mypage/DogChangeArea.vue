@@ -31,11 +31,11 @@
       <v-form>
         <!-- 이름  -->
         <v-flex class="ph-size">
-          <v-text-field label="이름" v-model="name" required color="#48B9A8"></v-text-field>
+          <v-text-field label="이름" :rules="namerules" v-model="name" required color="#48B9A8"></v-text-field>
         </v-flex>
         <!-- 나이 -->
         <v-flex class="ph-size">
-          <v-text-field label="나이" v-model="age" required color="#48B9A8"></v-text-field>
+          <v-text-field label="나이" :rules="agerules" v-model.number="age" required color="#48B9A8"></v-text-field>
         </v-flex>
         <!-- 생일-달력 -->
         <v-dialog
@@ -79,7 +79,7 @@
         </v-dialog>
         <!-- 체중 -->
         <v-flex class="ph-size">
-          <v-text-field label="체중(kg)" v-model="weight" required color="#48B9A8"></v-text-field>
+          <v-text-field label="체중(kg)" :rules="agerules" v-model.number="weight" required color="#48B9A8"></v-text-field>
         </v-flex>
         <!-- 질병 -->
         <v-flex class="ph-size">
@@ -183,6 +183,14 @@ export default {
       alle: false,
       allergyContent: '',
       allergyArray: [],
+
+      namerules: [
+        value => !!value || '필수 입력사항입니다!',
+        value => !!value.replace(/(\s*)/g, "") || '공백은 불가해요!',
+        ],
+      agerules: [
+        value => Number.isInteger(value) || '숫자만 가능합니다!'
+      ]
     }
   },
   created() {
@@ -396,10 +404,12 @@ export default {
       this.deletePetInApi(formData).then(() => {
         this.getUserInfoInApi(this.getUser.uid)
         .then(() => {
-          console.log()
           this.showDogInfoInApi(this.getMyDogListInfo[0].peid)
-          this.snackbar = false
-          this.$router.push('/mypage')
+          .then(() => {
+            this.snackbar = false
+            this.$router.push('/mypage')
+          })
+          
         })
         
       })

@@ -71,9 +71,11 @@ export default {
 
     //   }) 
     // }   
+     this.setNowTab(1)
   },
   methods: {
     ...mapActions(['loginNormalInApi']),
+    ...mapMutations(['setNowTab']),
      getParameter(name) { 
       var ret; 
       var url = location.href; 

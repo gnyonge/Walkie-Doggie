@@ -6,7 +6,7 @@
         class="rounded-circle"
         max-height="158"
         max-width="158"
-        src="../../assets/dog.jpg">
+        :src = getDogInfo.pet.pe_profile_photo>
       </v-img>
     </div>
     <div class="d-flex justify-center explain">
@@ -37,14 +37,27 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'MainWalk',
+  computed: {
+    ...mapGetters(['getUser', 'getHotPlace', 'getDogInfo'])
+  },
   methods:{
+    ...mapActions(['getHotPlaceListInApi']),
     startWalk(){
       this.$router.push('/startwalk')
     },
     goToHotPlace(){
-      this.$router.push('/hotplace')
+      this.getHotPlaceListInApi(this.getUser.u_location)
+      .then(() => {
+        if (this.getHotPlace.length == 0) {
+          alert('핫플레이스가 하나도 없어요...')
+        } else {
+          this.$router.push('/hotplace')
+        }
+      })
     },
   }
 }

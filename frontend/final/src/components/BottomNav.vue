@@ -29,7 +29,7 @@ export default {
   },
   created() {
     if (this.$route.name == 'Home') {
-      this.setNowTab(0)
+      this.setNowTab(1)
       }
     this.active_tab = this.getNowTab
   },
