@@ -144,7 +144,7 @@ export default {
       myPetList: [],
     }),
   created() {
-    console.log(this.getUser, '???????????')
+    console.log(this.getDogInfo, '???????????')
     this.getUserInfoInApi(this.getUser.uid) // 모든 펫 리스트 가져오기
     .then(() => {
       this.myPetList = this.getMyDogListInfo
