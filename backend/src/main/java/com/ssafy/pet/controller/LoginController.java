@@ -144,9 +144,9 @@ public class LoginController {
 						&& check_user.getU_flag() == 0) {
 					// 로그인이 맞다는거자나 그럼 토큰을 생성하자
 					String token = jwtutil.create(check_user);
-					res.setHeader("doggie_token", token);
+					res.setHeader("doggieToken", token);
 					// logger.info("토큰: {}", token);
-					resultMap.put("doggie_token", token);
+					resultMap.put("doggieToken", token);
 					resultMap.put("user", check_user);
 					resultMap.put("message", "로그인에 성공하였습니다.");
 				} else {

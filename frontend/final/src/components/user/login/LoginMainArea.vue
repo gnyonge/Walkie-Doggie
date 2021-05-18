@@ -66,7 +66,7 @@ export default {
           rscApi.post(`login/ksign`,this.user)
                 .then(({data}) => {
                   this.user = data.user;
-                  sessionStorage.setItem('doggie_token',data.doggie_token);
+                  sessionStorage.setItem('doggieToken',data.doggieToken);
                   this.setUser(this.user)
                   
                   if(this.user.u_location==null){
