@@ -63,11 +63,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getSelectedItem', 'getHotPlace', 'getUser', 'getDogInfo'])
+    ...mapGetters(['getSelectedItem', 'getHotPlace', 'getUser', 'getDogInfo', 'getFilter'])
   },
   methods: {
     ...mapMutations(['setSelectedItem', 'setNowTab']),
-    ...mapActions(['likePlaceInApi', 'checkLikeInApi']),
+    ...mapActions(['likePlaceInApi', 'getHotPlaceListInApi', 'getTop5ListInApi']),
     goback() {
       this.$router.push('/walk')
       this.setNowTab(1)
@@ -76,21 +76,29 @@ export default {
       this.setSelectedItem(i)
     },
     likePost(lid) {
-      this.likePlaceInApi({
-        lid: lid,
-        uid: this.getUser.uid
-      }).then(() => {
-        // if (res == '핫플레이스 게시글 좋아요 성공하였습니다.') {
-          
-        // }
-      })
-      // .then(() => {
-      //   this.getHotPlaceListInApi({
-      //       uid: this.getUser.uid,
-      //       sort: "pop",
-      //       p_location: this.getUser.u_location
-      //     })
-      // })
+      if (this.getFilter == 'ALL') {
+        this.likePlaceInApi({
+          lid: lid,
+          uid: this.getUser.uid
+        }).then(() => {
+          this.getHotPlaceListInApi({
+              uid: this.getUser.uid,
+              sort: "string",
+              p_location: this.getUser.u_location
+            })
+        })
+      } else {
+        this.likePlaceInApi({
+          lid: lid,
+          uid: this.getUser.uid
+        }).then(() => {
+          this.getTop5ListInApi({
+            uid: this.getUser.uid,
+            p_location: this.getUser.u_location
+          })
+        })
+      }
+      
     }
   }
 }

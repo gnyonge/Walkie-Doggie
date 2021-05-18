@@ -125,6 +125,12 @@ const actions = {
         console.log(error)
       })
   },
+  foodPhotoInApi(context, {formData, peid}) {
+    return rscApi.post(`ocr?peid=${peid}`, formData)
+    .then((res) => {
+      console.log(res)
+    })
+  }
 };
 
 export default {

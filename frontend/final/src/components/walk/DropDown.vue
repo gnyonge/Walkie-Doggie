@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
   name: "DropDown",
   data() {
@@ -21,8 +21,10 @@ export default {
     ...mapGetters(['getUser'])
   },
   methods: {
+    ...mapMutations(['setFilter']),
     ...mapActions(['getHotPlaceListInApi', 'getTop5ListInApi']),
     all() {
+      this.setFilter('ALL')
       this.Filter = "All"
       this.getHotPlaceListInApi({
         uid: this.getUser.uid,
@@ -31,6 +33,7 @@ export default {
       })
     },
     top() {
+      this.setFilter('TOP5')
       this.Filter = "Top 5"
       this.getTop5ListInApi({
         uid: this.getUser.uid,
