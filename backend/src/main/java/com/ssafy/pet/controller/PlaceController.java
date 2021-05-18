@@ -389,7 +389,7 @@ public class PlaceController {
         try {
 			logger.info("place/top5 호출성공");
 
-            List<Map<String, Object>> postList = placeService.getTop5(p_location);
+            List<Map<String, Object>> postList = placeService.getTop5(p_location,uid);
             if(postList != null){
                 resultMap.put("postList", postList);
                 resultMap.put("message", "핫플레이스 TOP5 호출 성공하였습니다.");

@@ -120,8 +120,9 @@
 
 	<!-- Top5 -->
 	<select id="getTop5" parameterType="string" resultType="map" >
-		select l.lid, l.l_image, l.l_desc, l.l_date, pl.p_latitude, pl.p_longtitude, p.pe_name, l.l_like
-		from LikePlace as l join Pet as p on l.peid = p.peid join Place as pl on l.pid = pl.pid
+		select l.lid, l.l_image, l.l_desc, l.l_date, pl.p_latitude, pl.p_longtitude, p.pe_name, l.l_like, coalesce(lp.lid,0) as l_flag
+		from LikePlace as l left outer join Pet as p on l.peid = p.peid left outer join Place as pl on l.pid = pl.pid 
+			left outer join (select lid from LikePost where uid=#{uid}) as lp on l.lid=lp.lid
 		where l.p_location=#{p_location} and l.l_flag=0
 		order by l.l_like desc
 		limit 5;
