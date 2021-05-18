@@ -144,7 +144,6 @@ export default {
       myPetList: [],
     }),
   created() {
-    console.log(this.getDogInfo, '???????????')
     this.getUserInfoInApi(this.getUser.uid) // 모든 펫 리스트 가져오기
     .then(() => {
       this.myPetList = this.getMyDogListInfo
@@ -162,7 +161,7 @@ export default {
     ...mapGetters(['getDogInfo', 'getUser', 'getMyDogListInfo', 'getAddress']) 
   },
   methods: {
-    ...mapMutations(['setUser', 'setDogInfo', 'setMyDogListInfo']),
+    ...mapMutations(['setUser', 'setDogInfo', 'setMyDogListInfo', 'setNowTab']),
     ...mapActions(['showDogInfoInApi', 'getUserInfoInApi']),
     goto(path) {
       if (path != 'logout') {
@@ -174,6 +173,7 @@ export default {
         this.setMyDogListInfo(null)
         sessionStorage.setItem('doggie_token','');
         this.$router.push('/')
+        this.setNowTab(1)
       }
       },
     addDog() {

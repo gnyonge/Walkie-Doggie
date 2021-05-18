@@ -272,12 +272,12 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> myInfo(HttpServletRequest req, @RequestParam String uid) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		String jwt = req.getHeader("doggie_token");
+		String jwt = req.getHeader("doggieToken");
 
 		try {
 			logger.info("=====> 마이페이지");
 			
-			resultMap.putAll(jwtutil.get(req.getHeader("doggie_token")));
+			resultMap.putAll(jwtutil.get(req.getHeader("doggieToken")));
 			String juid = jwtutil.getUserId(jwt);
 			System.out.println("uid : "+uid);
 			

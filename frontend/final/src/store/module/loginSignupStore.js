@@ -29,20 +29,17 @@ const mutations = {
 const actions = { 
   // 로그인 
   // - 자체 로그인 
-  loginNormalInApi({commit, state}, params) {
+  loginNormalInApi({commit}, params) {
     return rscApi.post('login/signin',params)
     .then ((res)=> {
-      commit('setToken',res.data.doggie_token);
+      commit('setToken',res.data.doggieToken);
       commit('setUser',res.data.user);
-      sessionStorage.setItem('doggie_token',res.data.doggie_token);
-      console.log(res.data, '로그인 후 res확인')
-      console.log('로그인완료', res.data.user)
-      console.log('유저되나요', state.user, state.token)
+      sessionStorage.setItem('doggieToken',res.data.doggieToken);
       return res.data.message;
       // get이라면 다르게 해줘야 한다. 
     })
     .catch((error)=>{
-      console.log(error)
+      console.error(error)
     });
   },
 
@@ -50,7 +47,6 @@ const actions = {
   createUserInApi(context,params) {
     return rscApi.post('user/confirm/signup',params)
     .then ((res) => {
-      console.log(res.data, '회원가입 후 res 확인')
       return res;
     })
     .catch(()=>{});
@@ -60,7 +56,6 @@ const actions = {
   sendEmailInApi(context,params) {
     return rscApi.post('user/confirm/sendMail',params)
     .then ((res) => {
-      console.log(res, '메일전송')
       return res;
     })
     .catch(()=>{});
@@ -88,7 +83,6 @@ const actions = {
   changePasswordInApi(context,params) {
     return rscApi.put('user/change/pass',params)
     .then ((res) => {
-      console.log(res, '변경 성공?')
       return res;
     })
     .catch(()=>{});
@@ -107,9 +101,8 @@ const actions = {
    // 회원탈퇴
    deleteUserInApi(context, params) {
     return rscApi.put('user/leave', params)
-    .then((res) => {
+    .then(() => {
       context.commit('setUser', null)
-      console.log(res, '유저 삭제 완료')
     })
     .catch((error) => {
       console.error(error)

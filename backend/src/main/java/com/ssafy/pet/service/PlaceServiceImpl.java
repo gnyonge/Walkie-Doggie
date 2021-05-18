@@ -95,13 +95,13 @@ public class PlaceServiceImpl implements PlaceService{
 
     // 게시글 리스트
     @Override
-    public List<Map<String, Object>> getPostListNew(String p_location) {
-        return pdao.getPostListNew(p_location);
+    public List<Map<String, Object>> getPostListNew(String p_location, String uid) {
+        return pdao.getPostListNew(p_location, uid);
     }
 
     @Override
-    public List<Map<String, Object>> getPostListLike(String p_location) {
-        return pdao.getPostListLike(p_location);
+    public List<Map<String, Object>> getPostListLike(String p_location, String uid) {
+        return pdao.getPostListLike(p_location, uid);
     }
     
     @Override
@@ -111,8 +111,8 @@ public class PlaceServiceImpl implements PlaceService{
 
     // Top5
     @Override
-    public List<Map<String, Object>> getTop5(String p_location) {
-        return pdao.getTop5(p_location);
+    public List<Map<String, Object>> getTop5(String p_location, String uid) {
+        return pdao.getTop5(p_location, uid);
     }
 
 }

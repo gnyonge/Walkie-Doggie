@@ -29,9 +29,6 @@ import InfoChangeLocation from '../views/mypage/InfoChangeLocation.vue'
 import InfoChangePassword from '../views/mypage/InfoChangePassword.vue'
 import Statistics from '../views/mypage/Statistics.vue'
 import Dontleaveus from '../views/mypage/Dontleaveus.vue'
-// import VueChartJS from '@/views/VueChartJS'
-// import VueChartKick from '@/views/VueChartKick'
-// import VueCharts from '@/views/VueCharts'
 import NotFound from '../views/NotFound.vue'
 
 Vue.use(VueRouter)
@@ -174,21 +171,7 @@ const routes = [
     redirect: "/404",
     component: NotFound
   },
-  // {
-  //   path: '/chartjs',
-  //   name: 'VueChartJS',
-  //   component: VueChartJS
-  // },
-  // {
-  //   path: '/chartkick',
-  //   name: 'VueChartKick',
-  //   component: VueChartKick
-  // },
-  // {
-  //   path: '/charts',
-  //   name: 'VueCharts',
-  //   component: VueCharts
-  // }
+
 ]
 
 const router = new VueRouter({

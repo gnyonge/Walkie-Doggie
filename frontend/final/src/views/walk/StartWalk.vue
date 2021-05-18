@@ -5,64 +5,56 @@
         <!-- 지도 -->
         <div id="map"></div>
       </div>
-        <div class="btncalss">
-          <!-- 좋아요 -->
+      <div class="btncalss">
+        <!-- 좋아요 -->
+        <v-btn
+          large
+          id="mainBtn"
+          style="width: 10px;"
+          @click="like">
+          <v-icon style="color: #FC6C8C;">mdi-cards-heart</v-icon> 
+        </v-btn>
+        <!-- 산책 종료  -->  
+        <v-dialog
+            transition="dialog-bottom-transition"
+            max-width="600">
+        <template v-slot:activator="{ on, attrs }">
           <v-btn
             large
-            id="mainBtn"
-            style="width: 10px;"
-            @click="like">
-           <v-icon style="color: #FC6C8C;">mdi-cards-heart</v-icon> 
-          </v-btn>
-          <!-- 멍플레이스 -->
-          <v-btn
-            large
+            v-bind="attrs"
+            v-on="on"
             id="mainBtn"
             style="width: 10px; "
-            @click="goToHotPlace">
-            <v-icon style="color: #FA3C5A;">mdi-fire</v-icon>
-            </v-btn>
-          <!-- 산책 종료  -->  
-          <v-dialog
-              transition="dialog-bottom-transition"
-              max-width="600">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              large
-              v-bind="attrs"
-              v-on="on"
-              id="mainBtn"
-              style="width: 10px; "
-              @click="doneWalk">
-              <v-icon style="color: #F2B75B">mdi-file-excel-box-outline</v-icon>
-            </v-btn>
+            @click="doneWalk">
+            <v-icon style="color: #F2B75B">mdi-file-excel-box-outline</v-icon>
+          </v-btn>
+        </template>
+        <template>
+          <v-card>
+            <v-card-text>
+              <div style="text-align: center;">
+                <p><v-icon style="font-size: 120px;color: #7CE793;">mdi-check</v-icon></p>
+                <p>산책 시작 시간 :<br> {{ start }} </p>
+                <p>산책 종료 시간 :<br> {{ end }} </p>
+                <p>총 산책 시간 : {{ totalH }}시간 {{ totalM}}분</p>
+                <p>좋아요 수 : {{ likecnt }}</p>
+              </div>
+            </v-card-text>
+              <v-card-actions class="justify-center">
+                <v-btn
+                  text
+                  id="mainBtn"
+                  style="background-color: #FC6C8C;"
+                  @click="gotoMain">
+                  창 닫기
+                </v-btn>
+              </v-card-actions>
+            </v-card>
           </template>
-          <template>
-            <v-card>
-              <v-card-text>
-                <div style="text-align: center;">
-                  <p><v-icon style="font-size: 120px;color: #7CE793;">mdi-check</v-icon></p>
-                  <p>산책 시작 시간 :<br> {{ start }} </p>
-                  <p>산책 종료 시간 :<br> {{ end }} </p>
-                  <p>총 산책 시간 : {{ totalH }}시간 {{ totalM}}분</p>
-                  <p>좋아요 수 : {{ likecnt }}</p>
-                </div>
-              </v-card-text>
-                <v-card-actions class="justify-center">
-                  <v-btn
-                    text
-                    id="mainBtn"
-                    style="background-color: #FC6C8C;"
-                    @click="gotoMain">
-                    창 닫기
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </template>
-          </v-dialog>
-        </div>
-      
+        </v-dialog>
+      </div>
     </div>
+    <ImageItem v-if="this.getSelectedItem != null" />
     <div class="d-flex justify-center img">
       <v-img
         height="80"
@@ -71,6 +63,7 @@
         max-width="80"
         :src= getDogInfo.pet.pe_profile_photo>
       </v-img>
+      
     </div>
   </div>
 </template>
@@ -78,9 +71,13 @@
 
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex'
+import ImageItem from '@/components/walk/ImageItem'
 
 export default {
   name: 'StartWalk',
+  components: {
+    ImageItem
+  },
   data() {
     return {
       // 지도 
@@ -123,6 +120,7 @@ export default {
       'getMyPostingContent',
       'getLikeCnt',
       'getWid',
+      'getSelectedItem'
     ])
   },
   mounted() {
@@ -183,7 +181,8 @@ export default {
     ...mapActions([
       'doneWalkInApi', 
       'getMyPlaceListInApi',
-      'sendStartWalkInApi']),
+      'sendStartWalkInApi',
+      'setClickPostDetailInAPI']),
     // 지도 첫 화면 로드 
     initMap() {
       this.mapContainer = document.getElementById('map');
@@ -385,6 +384,7 @@ export default {
     },
     // 핀꽂기
     pin(positionslist){
+      var t = this
       var map = this.map
       var positions = positionslist
       for (var i = 0 ; i < positions.length; i++){
@@ -411,12 +411,14 @@ export default {
       function getMakerInfo(map, marker){
         return function(){
         // 마커 선택후 해당 정보 자식 컴포넌트로 전송 
-
-        
-        // 해당 게시글 wid
+        t.setClickPostDetailInAPI({
+          uid:t.getDogInfo.pet.uid, 
+          lid: marker.getTitle(),
+        }).then(()=>{
+          console.log('선택한거 잘 가냐')
+        })
         console.log(marker.getTitle())
-        // 위도경도 출력 
-        console.log(marker.getPosition())
+       
         }
       }
       if (marker !== undefined){
@@ -454,9 +456,6 @@ export default {
       var newPosition = this.formatConversion(this.getMyPostingContent)
       this.pin(newPosition)
     },
-    // 멍플레이스 
-    goToHotPlace() {
-    },
     // 산책종료
     doneWalk() {
       this.start = this.getStartTime
@@ -492,8 +491,8 @@ export default {
     // 메인으로 보내기 
     gotoMain(){
       // 하단바 색상 변경 
-      this.setNowTab(0)
-      this.$router.push('/calendar')
+      this.setNowTab(1)
+      this.$router.push('/walk')
     },
 
     // 움직이는 경로 표시하기 
