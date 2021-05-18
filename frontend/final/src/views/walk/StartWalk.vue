@@ -497,7 +497,7 @@ export default {
 
     // 움직이는 경로 표시하기 
     navigation(){
-      this.walkLoc = setInterval(this.getLocation, 10000)
+      this.walkLoc = setInterval(this.getLocation, 600000)
     },
     
     // 위치 정보 기반 선 표시 
