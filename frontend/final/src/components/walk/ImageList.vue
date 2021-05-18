@@ -22,10 +22,10 @@
         ></v-img>
       </div>
       <div class="d-flex justify-end mt-1">
-        <v-btn icon @click="likePost(i.lid)">
+        <v-btn icon @click="likePost(i.lid)" class="mt-1">
           <v-icon>mdi-heart-outline</v-icon>
         </v-btn>
-        <div class="d-inline mr-3" style="font-size: 18px; margin-top: 10px;">10220</div>
+        <div class="d-inline mr-3" style="font-size: 18px; margin-top: 10px;">{{i.l_like}}</div>
         <v-btn icon>
           <v-icon color="red">mdi-heart</v-icon>
         </v-btn>
@@ -42,7 +42,8 @@ export default {
   name: "ImageList",
   data() {
     return {
-     hotPlaceList: []
+     hotPlaceList: [],
+     isLiked: false,
     }
   },
   created() {
@@ -81,7 +82,7 @@ export default {
         lid: lid,
         uid: this.getUser.uid
       }).then(() => {
-        console.log('좋아요성공쓰 in component')
+        
       })
     }
   }
