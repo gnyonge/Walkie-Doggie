@@ -10,7 +10,7 @@
       </v-img>
     </div>
     <div class="d-flex justify-center explain">
-    반려견의 산책정보를 기록합니다. 
+    <b>반려견의 산책정보를 기록합니다. </b>
     </div>
     <div class="d-flex justify-center">
       <v-btn
@@ -18,7 +18,7 @@
         large
         id="mainBtn"
         style="color: #323232; width: 210px; margin:10px;"
-        @click="startWalk">산책 시작하기
+        @click="startWalk"><b>산책 시작하기</b>
         <v-icon>mdi-dog-side</v-icon>
       </v-btn>
     </div>
@@ -29,7 +29,7 @@
         id="mainBtn"
         style="color: #323232; width: 210px; margin:10px;"
         @click="goToHotPlace"
-      >멍플레이스 구경하기
+      ><b>멍플레이스 구경하기</b>
         <v-icon>mdi-fire</v-icon>
       </v-btn> 
     </div>
@@ -38,7 +38,7 @@
           color="red" text width="50px"
           @click="goto()"
         >
-          산책에서 나가기
+          <b>산책에서 나가기</b>
         </v-btn>
     </div>
   </div>
@@ -59,7 +59,19 @@ export default {
   },
   methods:{
     ...mapActions(['getHotPlaceListInApi']),
-    ...mapMutations(['setWid', 'deletePostingWid', 'setFilter']),
+    ...mapMutations([
+      'setWid', 
+      'deletePostingWid', 
+      'deletePostingContent',
+      'deleteMyPath',
+      'setNowLon',
+      'setNowLat',
+      'setFirstAreaName',
+      'setTempPhotoURL',
+      'setAreaName',
+      'setLikeCnt',
+      'setFilter']),
+
     startWalk(){
       this.$router.push('/startwalk')
     },

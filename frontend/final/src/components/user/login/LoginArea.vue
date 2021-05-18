@@ -9,7 +9,7 @@
           <v-icon @click="goback()">mdi-arrow-left</v-icon>
           </div>
           <div>
-            로그인
+            <b>로그인</b>
           </div>
           <div style="width: 24px; background-color: white;">
           </div>

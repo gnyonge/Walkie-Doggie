@@ -1,8 +1,8 @@
 <template>
   <div id="mainBox">
     <div class="d-flex justify-space-between">
-      <div style="width: 24px; background-color: white;">
-      </div>
+      <!-- <div style="width: 24px; background-color: white;">
+      </div> -->
       <div style="padding-top: 1px;">
         멍 PHOTO
       </div>

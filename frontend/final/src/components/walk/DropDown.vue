@@ -1,11 +1,12 @@
 <template>
   <div>
     <b-dropdown id="dropdown-1" :text="Filter" variant="info">
-      <b-dropdown-item @click="all()">All</b-dropdown-item>
-      <b-dropdown-item @click="top()">Top 5</b-dropdown-item>
+      <b-dropdown-item @click="all()">모든 게시글</b-dropdown-item>
+      <b-dropdown-item @click="top()">탑 5 인기글</b-dropdown-item>
       <!-- <b-dropdown-item active>Active action</b-dropdown-item> -->
     </b-dropdown>
   </div>
+  
 </template>
 
 <script>
@@ -14,7 +15,7 @@ export default {
   name: "DropDown",
   data() {
     return {
-      Filter: "Filter",
+      Filter: "필터",
     }
   },
   computed:{
