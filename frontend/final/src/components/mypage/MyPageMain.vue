@@ -161,7 +161,7 @@ export default {
     ...mapGetters(['getDogInfo', 'getUser', 'getMyDogListInfo', 'getAddress']) 
   },
   methods: {
-    ...mapMutations(['setUser', 'setDogInfo', 'setMyDogListInfo']),
+    ...mapMutations(['setUser', 'setDogInfo', 'setMyDogListInfo', 'setNowTab']),
     ...mapActions(['showDogInfoInApi', 'getUserInfoInApi']),
     goto(path) {
       if (path != 'logout') {
@@ -173,6 +173,7 @@ export default {
         this.setMyDogListInfo(null)
         sessionStorage.setItem('doggie_token','');
         this.$router.push('/')
+        this.setNowTab(1)
       }
       },
     addDog() {

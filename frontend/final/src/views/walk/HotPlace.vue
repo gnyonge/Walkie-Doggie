@@ -39,7 +39,7 @@ export default {
     // 멍플레이스 게시글들 받기 
     this.getHotPlaceListInApi({
         uid: this.getUser.uid,
-        sort: "pop",
+        sort: "string",
         p_location: this.getUser.u_location
       }).then(() =>{
       var hotplace = this.getHotPlace

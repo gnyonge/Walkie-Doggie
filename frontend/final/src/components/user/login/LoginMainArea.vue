@@ -37,11 +37,14 @@ export default {
     },
     }
   },
+  created() {
+    this.setNowTab(1)
+  },
   computed: {
     ...mapGetters(['getUser', 'getDogInfo']),
   },
   methods: {
-    ...mapMutations(['setUser', 'setDogInfo']),
+    ...mapMutations(['setUser', 'setDogInfo', 'setNowTab']),
     ...mapActions(['getUserInfoInApi', 'showDogInfoInApi']),
     goto(path) {
       this.$router.push(path)

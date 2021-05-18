@@ -26,7 +26,7 @@ export default {
       this.Filter = "All"
       this.getHotPlaceListInApi({
         uid: this.getUser.uid,
-        sort: "pop",
+        sort: "string",
         p_location: this.getUser.u_location
       })
     },

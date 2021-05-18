@@ -27,6 +27,7 @@ const state = {
   startTime: '',
   beforeH: '', 
   beforeM: '', 
+  check: {},
 };
 const getters = {
   //처음 시작했을때 wid
@@ -80,6 +81,9 @@ const getters = {
   },
   getbeforeM(state){
     return state.beforeM
+  },
+  getCheck(state){
+    return state.check
   },
   
 };
@@ -151,7 +155,10 @@ const mutations = {
   // 좋아요 게시글 올린 갯수 갱신
   setLikeCnt(state, data){
     state.like.likeCnt = data
-  }
+  },
+  setCheck(state, data){
+    state.check = data
+  },
 };
 const actions = {
   // 산책 시작
@@ -212,7 +219,7 @@ const actions = {
   },
   // 핫플레이스 전체 리스트 받아오기
   getHotPlaceListInApi(context, params) {
-    return rscApi.post('place/list/', params)
+    return rscApi.post('place/list', params)
     .then((res) => {
       console.log(res)
       context.commit('setHotPlace', res.data.postList)
@@ -250,12 +257,20 @@ const actions = {
   likePlaceInApi(context, params) {
     return rscApi.post(`place/likePost?lid=${params.lid}&uid=${params.uid}`)
     .then((res) => {
-      console.log(res, '좋아요 했어요!!!!!!')
+      console.log(res, '좋아요 했음')
+      return res.data.message
     })
     .catch((err) => {
       console.log(err)
     })
-  }
+  },
+  // 좋아요 여부 확인
+  // checkLikeInApi(context, params) {
+  //   return rscApi.get(`place/detail/${params.lid}/${params.uid}`)
+  //   .then((res) => {
+  //     console.log(res, '좋아요')
+  //   })
+  // }
 };
 
 export default {
