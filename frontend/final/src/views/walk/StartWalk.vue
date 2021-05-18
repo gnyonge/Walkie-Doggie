@@ -122,9 +122,11 @@ export default {
       'getDogInfo',
       'getMyPostingContent',
       'getLikeCnt',
+      'getWid',
     ])
   },
   mounted() {
+    console.log(this.getPostingWid, '내가쓴 게시글 ')
     // 좋아요 작성시 해당 리스트 가져오기 
     if(this.getPostingWid.length !== 0){
       this.getMyPlaceListInApi(this.getPostingWid)
@@ -142,7 +144,6 @@ export default {
         // 실시간 위치 정보 
         this.navigation()
       } else { // 좋아요 포스팅 이후 
-        console.log(this.start)
         // 다시 들어올 떄마다 경로 받기 
         this.linePath = this.getMyPath
         this.getLocation() 
@@ -217,8 +218,7 @@ export default {
             displayMarker(locPosition, message);
           }else{ // 좋아요 표시 후 마커 
             var middlelocPosition = new kakao.maps.LatLng(lat, lon)
-            middleDisplayMarker(middlelocPosition);
-          
+            middleDisplayMarker(middlelocPosition) 
           } 
         });
       } else { // HTML5의 GeoLocation을 사용할 수 없을때 
@@ -294,7 +294,6 @@ export default {
               peid:  this.getDogInfo.pet.peid,
               w_location: this.getFirstAreaName
             }).then(()=> {
-              console.log(this.getWid, '요청 성공후 wid')
               console.log('시작 api전송 성공')
             })
 
@@ -366,7 +365,7 @@ export default {
     },
     // 좋아요
     like() {
-      this.likecnt += this.getLikeCnt
+      this.likecnt = this.getLikeCnt + 1 
       this.setLikeCnt(this.likecnt)
 
       var t = this
@@ -391,7 +390,7 @@ export default {
       for (var i = 0 ; i < positions.length; i++){
         // 마커 이미지의 이미지 크기 입니다
         var imageSize = new kakao.maps.Size(31, 35); 
-        var imageOption = {offset: new kakao.maps.Point(27, 69)};
+        var imageOption = {offset: new kakao.maps.Point(16, 34)};
         // 마커 이미지 생성 
         var markerImage = new kakao.maps.MarkerImage(positions[i].imageSrc, imageSize, imageOption);
         //위치 정보 갱신 
@@ -460,14 +459,14 @@ export default {
     },
     // 산책종료
     doneWalk() {
-      // getWid undefine뜬다 샵라라라라ㅏ
-      console.log(this.getWid, '버튼 전에 getWid')
       this.start = this.getStartTime
       this.end = this.getTime()
+      this.likecnt = this.getLikeCnt
+      
       // 백엔드로 정보 보내기 
       this.doneWalkInApi({
-        wid: this.getWid ,
-        w_like: this.likecnt,
+        wid: this.getWid,
+        w_like: this.getLikeCnt,
         w_time: (this.totalH * 60) + this.totalM,
       }).then(()=> {
         // 실시간 정보 가져오기죽이기 
@@ -482,6 +481,7 @@ export default {
         this.setFirstAreaName('')
         this.setTempPhotoURL('')
         this.setAreaName('')
+        this.setLikeCnt(0)
       }).catch((error)=> {
         console.log(error)
       })

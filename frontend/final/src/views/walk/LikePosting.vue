@@ -71,7 +71,7 @@ export default {
     camera.click()
   },
   computed: {
-      ...mapGetters(['getNowLat', 'getNowLon', 'getAreaName', 'getTempPhotoURL', 'getDogInfo'])
+      ...mapGetters(['getNowLat', 'getNowLon', 'getAreaName', 'getTempPhotoURL', 'getDogInfo', 'getWid'])
   },
   methods:{
     ...mapMutations(['setNowLat', 'setNowLon', 'setTempPhotoURL']),
@@ -106,6 +106,7 @@ export default {
         alert('선정이유를 선택해 주세요!')
       } else {
         this.sendNowPostInApi({
+          wid: this.getWid, 
           p_latitude: this.getNowLat,
           p_longtitude: this.getNowLon,
           peid: this.getDogInfo.pet.peid,
@@ -113,20 +114,24 @@ export default {
           l_desc: this.optionValue,
           p_location: this.getAreaName
         }).then((res) =>{
-          console.log(res)
+          console.log(res, '잘왔을때')
           // 같은 장소에 핀 찍은 경우 
-          if (res.response.status === 404){
+          if (res.status === 404){
+            this.deleteAll()
             this.$router.push('/walk')
             alert('같은 장소에는 좋아요를 찍을 수 없습니다.')   
+
+          }else if(res.status === 202){
+            this.deleteAll()
+            this.$router.push('/startwalk')
           }
-          this.$router.push('/startwalk')
           
-          this.deleteAll()
         }).catch((error) =>{
           console.log(error.response)
         })
-        }
-      },
+        
+      }
+    },
 
     goback(){
       this.deleteAll()

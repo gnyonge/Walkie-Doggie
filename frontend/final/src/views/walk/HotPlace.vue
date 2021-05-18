@@ -32,6 +32,7 @@ export default {
     return{
       map: {},
       positions: [],
+      myPin: true,
     }
   },
   mounted() {
@@ -87,7 +88,7 @@ export default {
       
       var t = this
       t.map = new kakao.maps.Map(this.mapContainer, this.mapOption); // 지도를 생성합니다
-    
+      
       // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
       if (navigator.geolocation) {
         // GeoLocation을 이용해서 접속 위치를 얻어옵니다
@@ -119,12 +120,9 @@ export default {
 
         // 지도 중심좌표를 접속위치로 변경합니다
         map.setCenter(locPosition);   
-        map.setDraggable(true)
-        }  
-      },
-    // 백엔드에서 핫플레스 정보 가져오기 
-    getInfo(){
-
+        
+      }  
+      
     },
     // 핀 꽂기
     pin() {
@@ -135,7 +133,7 @@ export default {
       for (var i = 0 ; i < positions.length; i++){
         // 마커 이미지의 이미지 크기 입니다
         var imageSize = new kakao.maps.Size(31, 35); 
-        var imageOption = {offset: new kakao.maps.Point(27, 69)};
+        var imageOption = {offset: new kakao.maps.Point(16, 45)};
         // 마커 이미지 생성 
         var markerImage = new kakao.maps.MarkerImage(positions[i].imageSrc, imageSize, imageOption);
         //위치 정보 갱신 
@@ -162,6 +160,7 @@ export default {
         }
       }
       marker.setMap(map)
+      map.setDraggable(true)
     },
     
   },
