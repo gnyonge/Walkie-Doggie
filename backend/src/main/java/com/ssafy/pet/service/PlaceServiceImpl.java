@@ -111,8 +111,8 @@ public class PlaceServiceImpl implements PlaceService{
 
     // Top5
     @Override
-    public List<Map<String, Object>> getTop5(String p_location) {
-        return pdao.getTop5(p_location);
+    public List<Map<String, Object>> getTop5(String p_location, String uid) {
+        return pdao.getTop5(p_location, uid);
     }
 
 }
