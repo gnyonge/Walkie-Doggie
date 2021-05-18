@@ -32,9 +32,11 @@ export default {
 </script>
 <style>
 @import url(https://fonts.googleapis.com/earlyaccess/jejugothic.css);
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans&display=swap');
+
 #back {
   background-color: #F7FAFB;
-  font-family: "Jeju Gothic", serif;
+  font-family: 'Noto Sans';
   color: #323232;
 }
 #top {
