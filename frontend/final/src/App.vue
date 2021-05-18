@@ -38,6 +38,7 @@ export default {
   background-color: #F7FAFB;
   font-family: 'Noto Sans';
   color: #323232;
+  font-weight: bold;
 }
 #top {
   display: flex;

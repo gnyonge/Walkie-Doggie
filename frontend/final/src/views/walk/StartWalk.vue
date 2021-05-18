@@ -1,61 +1,64 @@
 <template>
   <div>
-    <div id="mainBox" style="margin-top: 10%;">
+    <div id="mainBox" class="mt-5" style="position: relative;">
       <div id="app">
         <!-- 지도 -->
         <div id="map"></div>
       </div>
-      <div class="btncalss">
-        <!-- 좋아요 -->
+    </div>
+    <div class="btncalss d-flex justify-center mt-2" style="position: relative; top: -60px;">
+      <!-- 좋아요 -->
+      <v-btn
+        large
+        class="mr-5"
+        id="mainBtn"
+        style="height:50px; width: 130px"
+        @click="like">
+        <v-icon size="30px" style="color: #FC6C8C;">mdi-cards-heart</v-icon>
+      </v-btn>
+      
+      <!-- 산책 종료  -->  
+      <v-dialog
+          transition="dialog-bottom-transition"
+          max-width="600">
+      <template v-slot:activator="{ on, attrs }">
         <v-btn
           large
+          v-bind="attrs"
+          v-on="on"
           id="mainBtn"
-          style="width: 10px;"
-          @click="like">
-          <v-icon style="color: #FC6C8C;">mdi-cards-heart</v-icon> 
+          color=""
+          style="height: 50px; width:130px"
+          @click="doneWalk">
+          <v-icon size="30px" style="color: red">mdi-close-circle</v-icon>
         </v-btn>
-        <!-- 산책 종료  -->  
-        <v-dialog
-            transition="dialog-bottom-transition"
-            max-width="600">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            large
-            v-bind="attrs"
-            v-on="on"
-            id="mainBtn"
-            style="width: 10px; "
-            @click="doneWalk">
-            <v-icon style="color: #F2B75B">mdi-file-excel-box-outline</v-icon>
-          </v-btn>
+      </template>
+      <template>
+        <v-card>
+          <v-card-text>
+            <div style="text-align: center;">
+              <p><v-icon style="font-size: 120px;color: #7CE793;">mdi-check</v-icon></p>
+              <b>산책 시작 시간 :<br> {{ start }} </b> <br> <br>
+              <b>산책 종료 시간 :<br> {{ end }} </b> <br> <br>
+              <b>총 산책 시간 : {{ totalH }}시간 {{ totalM}}분</b> <br> <br>
+              <b>좋아요 수 : {{ likecnt }}</b>
+            </div>
+          </v-card-text>
+            <v-card-actions class="justify-center text-align-center">
+              <v-btn
+                text
+                id="mainBtn"
+                style="background-color: #FC6C8C; "
+                @click="gotoMain">
+                <b>창 닫기</b>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
         </template>
-        <template>
-          <v-card>
-            <v-card-text>
-              <div style="text-align: center;">
-                <p><v-icon style="font-size: 120px;color: #7CE793;">mdi-check</v-icon></p>
-                <p>산책 시작 시간 :<br> {{ start }} </p>
-                <p>산책 종료 시간 :<br> {{ end }} </p>
-                <p>총 산책 시간 : {{ totalH }}시간 {{ totalM}}분</p>
-                <p>좋아요 수 : {{ likecnt }}</p>
-              </div>
-            </v-card-text>
-              <v-card-actions class="justify-center">
-                <v-btn
-                  text
-                  id="mainBtn"
-                  style="background-color: #FC6C8C;"
-                  @click="gotoMain">
-                  창 닫기
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </template>
-        </v-dialog>
-      </div>
+      </v-dialog>
     </div>
     <ImageItem v-if="this.getSelectedItem != null" />
-    <div class="d-flex justify-center img">
+    <div class="d-flex justify-center mt-2">
       <v-img
         height="80"
         class="rounded-circle gird"
@@ -63,8 +66,7 @@
         max-width="80"
         :src= getDogInfo.pet.pe_profile_photo>
       </v-img>
-      
-    </div>
+      </div>
   </div>
 </template>
 
@@ -534,11 +536,11 @@ export default {
 <style>
 #map {
     width: auto;
-    height: 480px;
+    height: 510px;
 }
 .img{
-  position: absolute;
-  margin: 10% 40%;
+  /* position: absolute; */
+  margin: 10% 10%;
   z-index: 1;
 }
 .gird{
@@ -546,13 +548,13 @@ export default {
 
 }
 .btncalss{
-  position: absolute;
-  text-align: center;
+  /* position: absolute; */
+  /* text-align: center; */
   display: inline-block;
-  margin: 2% 0%; 
-  width: 295px;
-  display: flex;
-  justify-content: space-between;
+  /* margin: 2% 0%;  */
+  /* width: 450px; */
+  display: flex; 
+  /* justify-content: space-between; */
   z-index: 1;
 }
 

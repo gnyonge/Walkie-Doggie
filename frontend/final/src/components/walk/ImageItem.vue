@@ -1,8 +1,8 @@
 <template>
   <div id="mainBox">
     <div class="d-flex justify-space-between">
-      <div style="width: 24px; background-color: white;">
-      </div>
+      <!-- <div style="width: 24px; background-color: white;">
+      </div> -->
       <div style="padding-top: 1px;">
         멍 PHOTO
       </div>
@@ -19,7 +19,7 @@
       ></v-img>
       <div id="contentBox"> 
       <div class="d-flex justify-end mt-9">
-        <v-btn color="#48B9A8" text width="50px" @click="go()" v-if="userCheckBtn()">수정</v-btn>
+        <!-- <v-btn color="#48B9A8" text width="50px" @click="go()" v-if="userCheckBtn()">수정</v-btn> -->
         <!-- 삭제 확인 창 -->
         <v-btn
           color="#48B9A8" text width="50px"
