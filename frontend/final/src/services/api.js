@@ -12,10 +12,10 @@ const rscApi = axios.create({
 // Add a request interceptor
 rscApi.interceptors.request.use(
   function(config) {
-    var token = sessionStorage.getItem('doggie_token');
+    var token = sessionStorage.getItem('doggieToken');
     if (token !== null) {
       config['headers'] = {
-        'doggie_token': token,
+        'doggieToken': token,
       };
     }
     // Do something before request is sent
