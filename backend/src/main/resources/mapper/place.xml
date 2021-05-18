@@ -74,7 +74,7 @@
 	</select>
 	
 	<insert id="clickLike" parameterType="map" >
-		insert into LikePost 
+		insert into LikePost(uid, lid)
 		values(#{uid}, #{lid});
 	</insert>
 
