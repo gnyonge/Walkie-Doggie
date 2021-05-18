@@ -69,7 +69,7 @@
 	<!-- 게시글 좋아요 -->
 	<select id="checkLikePost" parameterType="map" resultType="Integer" >
 		select lid
-		from LikePost
+		from LikePost 
 		where lid=#{lid} and uid = #{uid};
 	</select>
 	

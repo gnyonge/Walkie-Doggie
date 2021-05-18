@@ -318,14 +318,15 @@ public class PlaceController {
      * 
      * developer: 윤수민
      * 
-     * @param : p_location, sort(new,popular)
+     * @param : p_location, uid, sort(new,popular)
      * 
      * @return : message,
      * postList(lid, p_latitude, p_longtitude, l_image, l_desc, l_date, pe_name) 
      */
 	@ApiOperation(value = "HotPlace postList", notes = "핫플레이스 게시글 리스트")
-    @GetMapping("/list/{p_location}")
-    public ResponseEntity<Map<String, Object>> getPostByList(@PathVariable("p_location") String p_location, @RequestParam(value = "sort") String sort) {
+    @GetMapping("/list/{p_location}/{peid}")
+    public ResponseEntity<Map<String, Object>> getPostByList(@PathVariable("p_location") String p_location, @PathVariable("uid") String uid,
+    @RequestParam(value = "sort") String sort) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         
@@ -368,14 +369,15 @@ public class PlaceController {
      * 
      * developer: 윤수민
      * 
-     * @param : p_location
+     * @param : p_location, uid
      * 
      * @return : message,
      * postList(lid, p_latitude, p_longtitude, l_image, l_desc, l_date, pe_name)
      */
 	@ApiOperation(value = "HotPlace top5", notes = "핫플레이스 TOP5")
-    @GetMapping("/top5/{p_location}")
-    public ResponseEntity<Map<String, Object>> getTop5(@PathVariable("p_location") String p_location) {
+    @GetMapping("/top5/{p_location}/{peid}")
+    public ResponseEntity<Map<String, Object>> getTop5(@PathVariable("p_location") String p_location,
+    @PathVariable("uid") String uid) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         
@@ -405,22 +407,32 @@ public class PlaceController {
      * 
      * developer: 윤수민
      * 
-     * @param : lid
+     * @param : lid, uid
      * 
      * @return : message,
-     * postList(lid, p_latitude, p_longtitude, l_image, l_desc, l_date, pe_name)
+     * postDetail(lid, p_latitude, p_longtitude, l_image, l_desc, l_date, pe_name, l_flag)
      */
 	@ApiOperation(value = "HotPlace detail", notes = "핫플레이스 디테일")
-    @GetMapping("/detail/{lid}")
-    public ResponseEntity<Map<String, Object>> getDetail(@PathVariable("lid") int lid) {
+    @GetMapping("/detail/{lid}/{uid}")
+    public ResponseEntity<Map<String, Object>> getDetail(@PathVariable("lid") int lid,
+    @PathVariable("uid") String uid) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         
+        Map<String, Object> param = new HashMap<>();
+        param.put("lid", lid);
+        param.put("uid", uid);
         try {
 			logger.info("place/detail 호출성공");
 
             Map<String, Object> postDetail = placeService.getDetail(lid);
             if(postDetail != null){
+                Integer isLike = placeService.checkLikePost(param); 
+                if(isLike == null){ 
+                    postDetail.put("l_flag", 0);
+                }else{
+                    postDetail.put("l_flag", 1);
+                }
                 resultMap.put("postDetail", postDetail);
                 resultMap.put("message", "핫플레이스 디테일 호출 성공하였습니다.");
                 status = HttpStatus.ACCEPTED;
