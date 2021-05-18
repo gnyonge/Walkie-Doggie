@@ -22,7 +22,13 @@
         ></v-img>
       </div>
       <div class="d-flex justify-end mt-1">
-        <v-icon class="mt-2">mdi-heart-outline</v-icon><div class="d-inline mr-3" style="font-size: 18px; margin-top: 10px;">10220</div>
+        <v-btn icon @click="likePost(i.lid)">
+          <v-icon>mdi-heart-outline</v-icon>
+        </v-btn>
+        <div class="d-inline mr-3" style="font-size: 18px; margin-top: 10px;">10220</div>
+        <v-btn icon>
+          <v-icon color="red">mdi-heart</v-icon>
+        </v-btn>
       </div>
       <v-divider></v-divider>
     </div>
@@ -30,7 +36,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: "ImageList",
@@ -41,6 +47,7 @@ export default {
   },
   created() {
     this.hotPlaceList = this.getHotPlace
+    console.log(this.hotPlaceList,'??')
     if(this.hotPlaceList.length == 0){
       this.$router.push('/hotplace')
     }
@@ -54,10 +61,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getSelectedItem', 'getHotPlace'])
+    ...mapGetters(['getSelectedItem', 'getHotPlace', 'getUser'])
   },
   methods: {
     ...mapMutations(['setSelectedItem', 'setNowTab']),
+    ...mapActions(['likePlaceInApi']),
     goback() {
       this.$router.push('/calendar')
       this.setNowTab(0)
@@ -67,6 +75,15 @@ export default {
       console.log(i)
       console.log(this.getSelectedItem)
     },
+    likePost(lid) {
+      console.log(lid, this.getUser.uid,'호잉')
+      this.likePlaceInApi({
+        lid: lid,
+        uid: this.getUser.uid
+      }).then(() => {
+        console.log('좋아요성공쓰 in component')
+      })
+    }
   }
 }
 </script>
