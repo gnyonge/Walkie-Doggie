@@ -81,7 +81,11 @@ export default {
       let lid = this.getSelectedItem.lid
       this.deleteMyPostingInApi({peid, lid})
         .then(()=> {
-          this.getHotPlaceListInApi(this.getUser.u_location)
+          this.getHotPlaceListInApi({
+            uid: this.getUser.uid,
+            sort: "string",
+            p_location: this.getUser.u_location
+          })
           this.setSelectedItem(null)
           
         })

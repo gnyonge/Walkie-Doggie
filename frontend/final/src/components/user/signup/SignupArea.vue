@@ -24,7 +24,9 @@
       <v-text-field :rules="rules1" name="email" label="이메일주소" id="email" v-model="email" type="email" required color="#48B9A8">
         <v-btn id="mainBtn" slot="append" style="margin:5px; width:120px;" @click="sendCheckEmail()" :disabled="sendEmailMsg == true">인증메일 전송</v-btn>
       </v-text-field>
-      
+      <div v-if="sent" style="font-size: 12px; color:red;">
+        인증메일을 보냈습니다.
+      </div>
       <div v-if="emailCheck" style="font-size: 12px; color:red;">
         이미 회원가입한 이메일입니다!
       </div>
@@ -66,6 +68,7 @@ export default {
       nickCheck: false,
       sendEmailMsg: false,
       emailCheck: false,
+      sent: false,
       codeCheck: false,
       codeSuccess: false,
       rules: [
@@ -150,6 +153,8 @@ export default {
       .then((res) => {
         if(res.data.message ==="인증 메일을 보냈습니다. 확인해주십시오") {
           this.sendEmailMsg = true
+          this.emailCheck = false
+          this.sent = true
         }
         if(res.data.message ==="회원가입된 메일입니다.") {
           this.emailCheck = true

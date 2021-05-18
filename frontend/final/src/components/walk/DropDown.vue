@@ -24,11 +24,18 @@ export default {
     ...mapActions(['getHotPlaceListInApi', 'getTop5ListInApi']),
     all() {
       this.Filter = "All"
-      this.getHotPlaceListInApi(this.getUser.u_location)
+      this.getHotPlaceListInApi({
+        uid: this.getUser.uid,
+        sort: "string",
+        p_location: this.getUser.u_location
+      })
     },
     top() {
       this.Filter = "Top 5"
-      this.getTop5ListInApi(this.getUser.u_location)
+      this.getTop5ListInApi({
+        uid: this.getUser.uid,
+        p_location: this.getUser.u_location
+      })
     }
   }
 

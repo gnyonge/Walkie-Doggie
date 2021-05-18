@@ -36,9 +36,12 @@ export default {
     }
   },
   mounted() {
-    var place = this.getUser.u_location
     // 멍플레이스 게시글들 받기 
-    this.getHotPlaceListInApi(place).then(() =>{
+    this.getHotPlaceListInApi({
+        uid: this.getUser.uid,
+        sort: "string",
+        p_location: this.getUser.u_location
+      }).then(() =>{
       var hotplace = this.getHotPlace
       for (var i of hotplace) {
           // 조건에 맞는 핀 이미지 연결 
