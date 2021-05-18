@@ -6,7 +6,7 @@
         <v-icon @click="goback()">mdi-arrow-left</v-icon>
       </div>
       <div>
-        회원가입
+        <b>회원가입</b>
       </div>
       <div style="width: 24px; background-color: white;">
       </div>
@@ -14,44 +14,42 @@
     <!-- 회원가입 폼 -->
     <v-form>
       <v-text-field :rules="rules1" name="nickname" label="닉네임" id="nickname" v-model="nickname" type="nickname" required color="#48B9A8">
-        <v-btn slot="append" id="mainBtn" style="margin:5px; width:80px;" @click="checkNickname()">중복 확인</v-btn>
+        <v-btn slot="append" id="mainBtn" style="margin:5px; width:80px;" @click="checkNickname()"><b>중복 확인</b></v-btn>
       </v-text-field>
 
       <div v-if="nickCheck" style="font-size: 12px">
-        사용가능한 닉네임 입니다!
+        <b>사용가능한 닉네임 입니다!</b>
       </div>
 
       <v-text-field :rules="rules1" name="email" label="이메일주소" id="email" v-model="email" type="email" required color="#48B9A8">
-        <v-btn id="mainBtn" slot="append" style="margin:5px; width:120px;" @click="sendCheckEmail()" :disabled="sendEmailMsg == true">인증메일 전송</v-btn>
+        <v-btn id="mainBtn" slot="append" style="margin:5px; width:120px;" @click="sendCheckEmail()" :disabled="sendEmailMsg == true"><b>인증메일 전송</b></v-btn>
       </v-text-field>
-      
+      <div v-if="sent" style="font-size: 12px; color:red;">
+        <b>인증메일을 보냈습니다.</b>
+      </div>
       <div v-if="emailCheck" style="font-size: 12px; color:red;">
-        이미 회원가입한 이메일입니다!
+        <b>이미 회원가입한 이메일입니다!</b>
       </div>
 
       <v-text-field :rules="rules1" name="code" label="인증번호" id="code" v-model="code" type="code" required color="#48B9A8">
-        <v-btn id="mainBtn" slot="append" style="margin:5px; width:60px;" @click="checkAuthEmail()">확인</v-btn>
+        <v-btn id="mainBtn" slot="append" style="margin:5px; width:60px;" @click="checkAuthEmail()"><b>확인</b></v-btn>
       </v-text-field>
       <div style="color:red; font-size:12px" v-if="codeCheck">
-          인증 코드를 다시 확인해주세요.
+          <b>인증 코드를 다시 확인해주세요.</b>
       </div>
       <div style="font-size:12px" v-if="codeSuccess">
-          인증되었습니다.
+          <b>인증되었습니다.</b>
       </div>
       <v-text-field :rules="rules1" name="password" label="비밀번호" id="password" v-model="password" type="password"
        required color="#48B9A8" class="font-change"></v-text-field>
        
       <v-text-field name="passwordcheck" label="비밀번호 확인" id="confirmPassword" v-model="confirmPassword" 
       :rules="rules" type="password" required color="#48B9A8" class="font-change"></v-text-field>
-
-      <!-- <v-text-field name="password" label="비밀번호" id="password" v-model="password" :rules="passwordRules" type="password" required color="#48B9A8" class="font-change"></v-text-field> -->
-      <!-- <v-text-field name="passwordcheck" label="비밀번호 확인" id="confirmPassword" v-model="confirmPassword" :rules="[confirmPasswordRules, passwordConfirmationRule]" type="password" required color="#48B9A8" class="font-change"></v-text-field> -->
     
     </v-form>
     <!-- 회원가입 완료 버튼  -->
-    <!-- 버튼 비활성화 시켜놓고 password랑 confirmPassword가 같을 때만 활성화 되게  -->
     <div class="d-flex justify-center">
-      <v-btn id="mainBtn" style="margin-top: 30px;width: 180px; height: 60px; border-radius: 50px; font-size: 25px" @click="registerUser()" :disabled="confirmSignup == false">회원가입</v-btn>
+      <v-btn id="mainBtn" style="margin-top: 30px;width: 180px; height: 60px; border-radius: 50px; font-size: 25px" @click="registerUser()" :disabled="confirmSignup == false"><b>회원가입</b></v-btn>
     </div>
   </div>
 </template>
@@ -70,10 +68,9 @@ export default {
       nickCheck: false,
       sendEmailMsg: false,
       emailCheck: false,
+      sent: false,
       codeCheck: false,
       codeSuccess: false,
-      // passwordRules: [v=> !!v || "Password is required"],
-      // confirmPasswordRules: [v=> !!v || "Password is required"],
       rules: [
         ()=> (this.password=== this.confirmPassword) || '비밀번호가 일치하지 않아요'
       ],
@@ -84,7 +81,6 @@ export default {
       rules2: [
       value => !!value.replace(/(\s*)/g, "") || '공백은 불가해요!',
       // value => (value || '').length <= 20 || 'Max 20 characters',
-      // value => 
       ],
     }
   },
@@ -148,7 +144,7 @@ export default {
       })
     },
 
-    // 인증메일 보내기  눌렀을 때 ㅇㅇ
+    // 인증메일 보내기 눌렀을 때
     // 한번 클릭하면 버튼이 안보이도록 수정해야한다. 
     sendCheckEmail() {
       this.sendEmailInApi({
@@ -157,6 +153,8 @@ export default {
       .then((res) => {
         if(res.data.message ==="인증 메일을 보냈습니다. 확인해주십시오") {
           this.sendEmailMsg = true
+          this.emailCheck = false
+          this.sent = true
         }
         if(res.data.message ==="회원가입된 메일입니다.") {
           this.emailCheck = true
@@ -204,7 +202,5 @@ export default {
 .ph-size {
   width: 250px;
 }
-.font-change {
-  font-family: 'Courier New', Courier, monospace;
-}
+
 </style>

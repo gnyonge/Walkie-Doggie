@@ -35,41 +35,6 @@
 import DaumPostcode from 'vuejs-daum-postcode'
 import { mapGetters, mapActions } from 'vuex'
 
-// var handleAddress = (data) => {
-//   let fullAddress = data.address
-//   let fAddress = [] // 띄어쓰기 기준으로 나누어 단어 저장
-//   let sAddress = [] // '동' 으로 끝나는 단어 저장 
-
-  
-//     fullAddress = data.jibunAddress
-
-//     // 띄어쓰기 기준으로 나누어 fAddress에 저장
-//     fAddress = fullAddress.split(' ');
-//     // console.log(fAddress, '주소 나누기 성공') 
-//     // 예: ["광주", "광산구", "장덕동", "992-8"]
-    
-//     // 리스트 돌면서 마지막 단어가 '동'인 부분 저장 
-//     // 주소의 동까지 저장 
-//     for (let i in fAddress) {
-//       // 인덱스
-//       // console.log(i)  
-//       let checkAddress = fAddress[i]
-//       if(checkAddress.charAt(checkAddress.length-1) !== '동'){ 
-//         sAddress.push(checkAddress)
-//       }else {
-//         sAddress.push(checkAddress)
-//         break
-//       }  
-//   }
-//   // console.log(sAddress, '동까지 저장')
-//   const finalAddress = sAddress.join(" ");
-//   this.address = finalAddress
-//   // let address = finalAddress
-//   console.log(finalAddress, '전달할 최종 주소')
-//   // console.log(fullAddress, '풀 주소') 
-//   // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)' 주소 세번째 꺼로 가져오기 
-//   }
-
 export default {
   data () {
     return {
@@ -84,11 +49,6 @@ export default {
         }
         return true
       }
-  },
-  watch: {
-    address(newVal) {
-      console.log(newVal, '여기용ㅁㄹㄴㅇㅁㄴㄹ')
-    }
   },
   components: {
     DaumPostcode
@@ -110,14 +70,12 @@ export default {
 
       // 띄어쓰기 기준으로 나누어 fAddress에 저장
       fAddress = fullAddress.split(' ');
-      // console.log(fAddress, '주소 나누기 성공') 
       // 예: ["광주", "광산구", "장덕동", "992-8"]
       
       // 리스트 돌면서 마지막 단어가 '동'인 부분 저장 
       // 주소의 동까지 저장 
       for (let i in fAddress) {
         // 인덱스
-        // console.log(i)  
         let checkAddress = fAddress[i]
         if(checkAddress.charAt(checkAddress.length-1) !== '동'){ 
           sAddress.push(checkAddress)
@@ -130,8 +88,6 @@ export default {
   const finalAddress = sAddress.join(" ");
   this.address = finalAddress
   // let address = finalAddress
-  console.log(finalAddress, '전달할 최종 주소')
-  // console.log(fullAddress, '풀 주소') 
   // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)' 주소 세번째 꺼로 가져오기 
     },
     setAddress() {
@@ -141,7 +97,6 @@ export default {
       })
       .then(() => {
         this.$router.push('/dogregister')
-        console.log(this.getUser, 'user있나 카카오 로그인하고')
 
       })
     },

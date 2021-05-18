@@ -14,7 +14,6 @@
       <div style="font-size:18px;" class="my-3">
       기존 주소: <b>{{getUser.u_location}}</b>
       </div>
-    <!-- <p style="font-size:12px;" class="d-flex justify-center">주소를 입력해 주세요.</p> -->
       <DaumPostcode
       :on-complete=handleAddress
       v-model="addressChange"
@@ -79,7 +78,6 @@ export default {
 
       // 띄어쓰기 기준으로 나누어 fAddress에 저장
       fAddress = fullAddress.split(' ');
-      // console.log(fAddress, '주소 나누기 성공') 
       // 예: ["광주", "광산구", "장덕동", "992-8"]
       
       // 리스트 돌면서 마지막 단어가 '동'인 부분 저장 
@@ -95,14 +93,8 @@ export default {
           break
         }  
   }
-  // console.log(sAddress, '동까지 저장')
   const finalAddress = sAddress.join(" ");
   this.addressChange = finalAddress
-  // let address = finalAddress
-  console.log(finalAddress, '전달할 최종 주소')
-  console.log(this.getUser)
-  console.log(this.getAddress, '겟 어드레스 !')
-  // console.log(fullAddress, '풀 주소') 
   // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)' 주소 세번째 꺼로 가져오기 
     },
     setAddress() {

@@ -491,8 +491,8 @@ export default {
     // 메인으로 보내기 
     gotoMain(){
       // 하단바 색상 변경 
-      this.setNowTab(0)
-      this.$router.push('/calendar')
+      this.setNowTab(1)
+      this.$router.push('/walk')
     },
 
     // 움직이는 경로 표시하기 

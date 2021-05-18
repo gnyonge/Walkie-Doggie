@@ -61,7 +61,6 @@ export default {
   methods: {
     ...mapActions(['deleteUserInApi', 'checkPasswordInApi']),
     deleteUser() {
-      console.log(this.getUser.uid,'유저 uid 확인')
       this.deleteUserInApi({
         u_password: this.password,
         uid: this.getUser.uid,
@@ -76,7 +75,6 @@ export default {
         uid: this.getUser.uid
       })
       .then((res) => {
-        console.log(res,'비밀번호 확인 성공')
         if(!res.data.message) {
           // this.check = false
           this.pass = false
@@ -137,7 +135,5 @@ p {
   border: 1px solid #E5E5E5;
   box-shadow: 3px 3px 3px #E5E5E5;
 }
-.font-change {
-  font-family: 'Courier New', Courier, monospace;
-}
+
 </style>

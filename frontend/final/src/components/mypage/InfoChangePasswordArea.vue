@@ -36,11 +36,6 @@ export default {
 
     }
   },
-  // created: {
-  //   gotoMypage() {
-  //     this.$router.push('/mypage')
-  //   }
-  // },
   computed: {
     ...mapGetters(['getUser'])
   },
@@ -55,10 +50,8 @@ export default {
         uid: this.getUser.uid
       }).then((res) => {
         // 비밀번호 틀림
-        console.log(res.data,'제발베랄자랄')
         if (res.data.message == false) {
           this.check = true
-          console.log('비밀번호 틀림')
         }else { // 비밀번호 맞음
           this.check = false
           this.changePasswordInApi({
@@ -66,8 +59,7 @@ export default {
           uid: this.getUser.uid,
           newPass: this.newpassword
           })
-          .then((res) => {
-            console.log(res, '비밀번호 변경 성공')
+          .then(() => {
             this.$router.push('/mypage')
           })
         }
@@ -81,7 +73,5 @@ export default {
 }
 </script>
 <style scoped>
-.font-change {
-  font-family: 'Courier New', Courier, monospace;
-}
+
 </style>

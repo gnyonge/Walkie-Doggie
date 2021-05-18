@@ -324,12 +324,15 @@ public class PlaceController {
      * postList(lid, p_latitude, p_longtitude, l_image, l_desc, l_date, pe_name) 
      */
 	@ApiOperation(value = "HotPlace postList", notes = "핫플레이스 게시글 리스트")
-    @GetMapping("/list/{p_location}/{uid}")
-    public ResponseEntity<Map<String, Object>> getPostByList(@PathVariable("p_location") String p_location, @PathVariable("uid") String uid,
-    @RequestParam(value = "sort") String sort) {
+    @PostMapping("/list")
+    public ResponseEntity<Map<String, Object>> getPostByList(@RequestBody Map<String, Object> param) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         
+        String p_location = param.get("p_location").toString();
+        String uid = param.get("uid").toString();
+        String sort = param.get("sort").toString();
+
         try {
 			logger.info("place/list 호출성공");
 
@@ -375,16 +378,18 @@ public class PlaceController {
      * postList(lid, p_latitude, p_longtitude, l_image, l_desc, l_date, pe_name)
      */
 	@ApiOperation(value = "HotPlace top5", notes = "핫플레이스 TOP5")
-    @GetMapping("/top5/{p_location}/{uid}")
-    public ResponseEntity<Map<String, Object>> getTop5(@PathVariable("p_location") String p_location,
-    @PathVariable("uid") String uid) {
+    @PostMapping("/top5")
+    public ResponseEntity<Map<String, Object>> getTop5(@RequestBody Map<String, Object> param) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         
+        String p_location = param.get("p_location").toString();
+        String uid = param.get("uid").toString();
+
         try {
 			logger.info("place/top5 호출성공");
 
-            List<Map<String, Object>> postList = placeService.getTop5(p_location);
+            List<Map<String, Object>> postList = placeService.getTop5(p_location,uid);
             if(postList != null){
                 resultMap.put("postList", postList);
                 resultMap.put("message", "핫플레이스 TOP5 호출 성공하였습니다.");

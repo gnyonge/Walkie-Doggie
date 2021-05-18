@@ -36,10 +36,12 @@ export default {
     }
   },
   mounted() {
-    var place = this.getUser.u_location
-    console.log(place, '지역')
     // 멍플레이스 게시글들 받기 
-    this.getHotPlaceListInApi(place).then(() =>{
+    this.getHotPlaceListInApi({
+        uid: this.getUser.uid,
+        sort: "string",
+        p_location: this.getUser.u_location
+      }).then(() =>{
       var hotplace = this.getHotPlace
       for (var i of hotplace) {
           // 조건에 맞는 핀 이미지 연결 
@@ -129,7 +131,6 @@ export default {
       var t = this 
       var map = this.map
       var positions = this.positions
-      console.log(positions, '포지션')
       for (var i = 0 ; i < positions.length; i++){
         // 마커 이미지의 이미지 크기 입니다
         var imageSize = new kakao.maps.Size(31, 35); 
@@ -155,7 +156,6 @@ export default {
         return function(){
         // 마커 선택후 해당 정보 자식 컴포넌트로 전송 
         // 해당 게시글 wid
-        console.log(marker.getTitle())
         t.setClickPostDetailInAPI(marker.getTitle())
         }
       }
