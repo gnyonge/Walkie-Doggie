@@ -49,9 +49,7 @@ export default {
   created() {
     this.hotPlaceList = this.getHotPlace
     console.log(this.hotPlaceList,'??')
-    if(this.hotPlaceList.length == 0){
-      this.$router.push('/hotplace')
-    }
+    
   },
   beforeDestroy() {
 

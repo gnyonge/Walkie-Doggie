@@ -7,8 +7,8 @@ const state = {
   },
   like: {
     // 좋아요 포스팅 
-    nowLat: 0,
-    nowLon: 0,
+    nowLat: Number,
+    nowLon: Number,
     tempPhotoUrl: '',
     likeCnt: 0, 
     // 지역설정 관련
