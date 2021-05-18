@@ -266,7 +266,6 @@ export default {
           pe_profile_photo: '',
           uid: this.getDogInfo.pet.uid
           }
-          console.log(this.photo_url,'2')
         } 
         // 프사있었는데 변경안함
         else {
@@ -282,7 +281,6 @@ export default {
           pe_profile_photo: this.photo_url,
           uid: this.getDogInfo.pet.uid
           }
-          console.log(this.photo_url,'3')
         }
         let allergy = []
         for (let i in this.allergyArray) {
@@ -293,7 +291,6 @@ export default {
             al_flag: 0,
           })
         }
-        console.log(allergy, '확인', pet)
         formData.append(
             'pet',
             new Blob([JSON.stringify(pet)], { type: 'application/json' })
@@ -305,12 +302,10 @@ export default {
 
           this.NoPhotoUpdateDogInfoInApi(formData).then(() => {
             this.$router.push('/mypage')
-            console.log('사진추가안함')
           })
       } 
       // 사진 추가함
       else {
-        console.log(this.photo_url,'4')
         let pet = {
           pe_age: this.age,
           pe_birthday: this.date,
@@ -343,8 +338,7 @@ export default {
           )
           formData.append('file', this.file)
 
-          this.updateDogInfoInApi(formData).then((res) => {
-            console.log(res, '사진추가후 수정완료')
+          this.updateDogInfoInApi(formData).then(() => {
             this.$router.push('/mypage')
           })
       }

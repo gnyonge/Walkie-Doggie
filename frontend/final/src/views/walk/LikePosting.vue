@@ -114,7 +114,6 @@ export default {
           l_desc: this.optionValue,
           p_location: this.getAreaName
         }).then((res) =>{
-          console.log(res, '잘왔을때')
           // 같은 장소에 핀 찍은 경우 
           if (res.status === 404){
             this.deleteAll()

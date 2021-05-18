@@ -48,7 +48,6 @@ export default {
   },
   created() {
     this.hotPlaceList = this.getHotPlace
-    console.log(this.hotPlaceList,'??')
     if(this.hotPlaceList.length == 0){
       this.$router.push('/hotplace')
     }
@@ -73,11 +72,8 @@ export default {
     },
     clickItem(i){
       this.setSelectedItem(i)
-      console.log(i)
-      console.log(this.getSelectedItem)
     },
     likePost(lid) {
-      console.log(lid, this.getUser.uid,'호잉')
       this.likePlaceInApi({
         lid: lid,
         uid: this.getUser.uid

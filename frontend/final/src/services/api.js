@@ -1,6 +1,4 @@
 import axios from 'axios';
-// import store from '../store/index';
-
 
 const rscApi = axios.create({
   baseURL: 'http://localhost' + ':8888/pet',
@@ -18,8 +16,6 @@ rscApi.interceptors.request.use(
         'doggie_token': token,
       };
     }
-    // Do something before request is sent
-    // console.log('토큰이다', token);
     return config;
   },
   function(error) {

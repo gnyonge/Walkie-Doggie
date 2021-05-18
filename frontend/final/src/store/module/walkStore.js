@@ -228,8 +228,8 @@ const actions = {
     })
   },
   // 핫플 포스트 디테일 
-  setClickPostDetailInAPI(context, lid){
-    return rscApi.get(`place/detail/${lid}`)
+  setClickPostDetailInAPI(context,params){
+    return rscApi.get(`place/detail/${params.lid}/${params.uid}`)
       .then((res)=> {
         context.commit('setSelectedItem', res.data.postDetail)
       }).catch((error)=>{
