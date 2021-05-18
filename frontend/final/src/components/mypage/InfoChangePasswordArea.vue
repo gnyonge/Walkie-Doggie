@@ -73,7 +73,5 @@ export default {
 }
 </script>
 <style scoped>
-.font-change {
-  font-family: 'Courier New', Courier, monospace;
-}
+
 </style>
