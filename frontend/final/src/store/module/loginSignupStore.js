@@ -52,6 +52,13 @@ const actions = {
     .catch(()=>{});
   },
   
+  // 닉네임 중복 확인
+  checkNicknameInApi(context, params) {
+    return rscApi.post('user/confirm/check', params)
+    .then((res) => {
+      return res.data.flag
+    })
+  },
   // 인증메일 
   sendEmailInApi(context,params) {
     return rscApi.post('user/confirm/sendMail',params)
@@ -89,8 +96,8 @@ const actions = {
   },
  
   // 지역등록
-  setAddressInApi(context,params) {
-    return rscApi.get(`user/address?add=${params.add}&uid=${params.uid}`)
+  setAddressInApi(context, params) {
+    return rscApi.post('user/address', params)
     .then ((res) => {
       context.commit('setUser', res.data.user)
       return res;

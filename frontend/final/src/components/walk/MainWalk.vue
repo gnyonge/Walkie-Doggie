@@ -69,7 +69,9 @@ export default {
       'setFirstAreaName',
       'setTempPhotoURL',
       'setAreaName',
-      'setLikeCnt']),
+      'setLikeCnt',
+      'setFilter']),
+
     startWalk(){
       this.$router.push('/startwalk')
     },
@@ -77,6 +79,7 @@ export default {
         this.$router.push('/calendar')
       },
     goToHotPlace(){
+      this.setFilter('ALL')
       this.getHotPlaceListInApi({
         uid: this.getUser.uid,
         sort: "string",
