@@ -230,15 +230,6 @@ const actions = {
         console.log(error)
       })
   },
-  // 내 게시글 수정 
-  editMyPostingInApi(context,params){
-    return rscApi.put('place/modify',params)
-    .then ((res) => {
-      console.log(res, '수정성공?')
-      return res;
-    })
-    .catch(()=>{});
-  },
   // 내 게시글 삭제
   deleteMyPostingInApi(context, params){
     console.log(params)
