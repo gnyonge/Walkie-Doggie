@@ -211,19 +211,18 @@ const actions = {
       })
   },
   // 핫플레이스 전체 리스트 받아오기
-  getHotPlaceListInApi(context, place) {
-    console.log(place)
-    var pop = 'pop'
-    return rscApi.get(`place/list/${place}?sort=${pop}`)
+  getHotPlaceListInApi(context, params) {
+    return rscApi.post('place/list/', params)
     .then((res) => {
+      console.log(res)
       context.commit('setHotPlace', res.data.postList)
     })
   },
   // 핫플레이스 TOP 5 받아오기
-  getTop5ListInApi(context, place) {
-    return rscApi.get(`place/top5/${place}`)
+  getTop5ListInApi(context, params) {
+    return rscApi.post('place/top5', params)
     .then((res) => {
-      console.log(res.data.postList, 'top5')
+      console.log(res)
       context.commit('setHotPlace', res.data.postList)
     })
   },

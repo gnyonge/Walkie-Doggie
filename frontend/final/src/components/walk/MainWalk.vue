@@ -67,7 +67,11 @@ export default {
         this.$router.push('/calendar')
       },
     goToHotPlace(){
-      this.getHotPlaceListInApi(this.getUser.u_location)
+      this.getHotPlaceListInApi({
+        uid: this.getUser.uid,
+        sort: "pop",
+        p_location: this.getUser.u_location
+      })
       .then(() => {
         if (this.getHotPlace.length == 0) {
           alert('핫플레이스가 하나도 없어요...')
