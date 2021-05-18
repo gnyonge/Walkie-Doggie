@@ -19,34 +19,34 @@ public class DataServiceImpl implements DataService{
 
     // 산책 횟수
     @Override
-    public int getLWalkCount(String location) {
+    public Integer getLWalkCount(String location) {
         return ddao.getLWalkCount(location);
     }
 
     @Override
-    public int getPWalkCount(String peid) {
+    public Integer getPWalkCount(String peid) {
         return ddao.getPWalkCount(peid);
     }
 
     // 총 산책 시간
     @Override
-    public int getLTotalTime(String location) {
+    public Integer getLTotalTime(String location) {
         return ddao.getLTotalTime(location);
     }
 
     @Override
-    public int getPTotalTime(String peid) {
+    public Integer getPTotalTime(String peid) {
         return ddao.getPTotalTime(peid);
     }
 
     // 산책 시간대
     @Override
-    public int getLWalkTime(String location) {
+    public Integer getLWalkTime(String location) {
         return ddao.getLWalkTime(location);
     }
 
     @Override
-    public int getPWalkTime(String peid) {
+    public Integer getPWalkTime(String peid) {
         return ddao.getPWalkTime(peid);
     }
 
