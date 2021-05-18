@@ -36,10 +36,6 @@
           <v-btn id="mainBtn" class="mr-3" style="background-color:#E97575;" @click="deleteUser()">탈퇴할래요</v-btn>
           <v-btn id="mainBtn" @click="goback()">아니오</v-btn>
         </div>
-          
-          
-        
-        
       </div>
       </div>
       

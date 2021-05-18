@@ -12,6 +12,7 @@ import Walk from '../views/walk/Walk.vue'
 import StartWalk from '../views/walk/StartWalk.vue'
 import HotPlace from '../views/walk/HotPlace.vue'
 import LikePosting from '../views/walk/LikePosting.vue'
+import ImageItemUpdate from '../views/walk/ImageItemUpdate.vue'
 
 import Food from '../views/food/Food.vue'
 import FoodResult from '../views/food/FoodResult.vue'
@@ -93,6 +94,11 @@ const routes = [
     path: '/likeposting',
     name: 'LikePosting',
     component: LikePosting
+  },
+  {
+    path: '/hotplaceupdate',
+    name: 'ImageItemUpdate',
+    component: ImageItemUpdate
   },
   {
     path: '/food',

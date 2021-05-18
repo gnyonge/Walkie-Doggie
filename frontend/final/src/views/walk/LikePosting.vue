@@ -29,7 +29,7 @@
           <div>왜 좋은가요?</div>
           <div>
             <v-btn text id="likeBox" @click="selectThis(option.name, idx)" :class="{clicked: optionValue == option.name}"
-            v-for="option, idx in selectOptions" :key="idx">
+              v-for="option, idx in selectOptions" :key="idx">
               {{option.name}}
             </v-btn>
           </div>
