@@ -12,42 +12,42 @@
 	</select>
 
 	<!-- 산책 횟수 -->
-	<select id="getLWalkCount" parameterType="string" resultType="int" >
+	<select id="getLWalkCount" parameterType="string" resultType="Integer" >
 		select count(wid) / count(distinct peid)
 		from Walk
-		where w_location=#{location} and w_flag=0 and w_date > (NOW() - INTERVAL 7 DAY);
+		where w_location=#{location} and w_flag=2 and w_date > (NOW() - INTERVAL 7 DAY);
 	</select>
 
-	<select id="getPWalkCount" parameterType="string" resultType="int" >
+	<select id="getPWalkCount" parameterType="string" resultType="Integer" >
 		select count(wid) 
 		from Walk
-		where peid=#{peid} and w_flag=0 and w_date > (NOW() - INTERVAL 7 DAY);
+		where peid=#{peid} and w_flag=2 and w_date > (NOW() - INTERVAL 7 DAY);
 	</select>
 
 	<!-- 총 산책 시간 -->
-	<select id="getLTotalTime" parameterType="string" resultType="int" >
+	<select id="getLTotalTime" parameterType="string" resultType="Integer" >
 		select sum(w_time) / count(distinct peid)
 		from Walk
-		where w_location=#{location} and w_flag=0 and w_date > (NOW() - INTERVAL 7 DAY);
+		where w_location=#{location} and w_flag=2 and w_date > (NOW() - INTERVAL 7 DAY);
 	</select>
 
-	<select id="getPTotalTime" parameterType="string" resultType="int" >
+	<select id="getPTotalTime" parameterType="string" resultType="Integer" >
 		select sum(w_time) 
 		from Walk
-		where peid=#{peid} and w_flag=0 and w_date > (NOW() - INTERVAL 7 DAY);
+		where peid=#{peid} and w_flag=2 and w_date > (NOW() - INTERVAL 7 DAY);
 	</select>
 
 	<!-- 산책 시간대 -->
-	<select id="getLWalkTime" parameterType="string" resultType="int" >
+	<select id="getLWalkTime" parameterType="string" resultType="Integer" >
 		select avg(hour(w_date))
 		from Walk
-		where w_location=#{location} and w_flag=0 and w_date > (NOW() - INTERVAL 7 DAY);
+		where w_location=#{location} and w_flag=2 and w_date > (NOW() - INTERVAL 7 DAY);
 	</select>
 
-	<select id="getPWalkTime" parameterType="string" resultType="int" >
+	<select id="getPWalkTime" parameterType="string" resultType="Integer" >
 		select avg(hour(w_date))
 		from Walk
-		where peid=#{peid} and w_flag=0 and w_date > (NOW() - INTERVAL 7 DAY);
+		where peid=#{peid} and w_flag=2 and w_date > (NOW() - INTERVAL 7 DAY);
 	</select>
 
 </mapper>

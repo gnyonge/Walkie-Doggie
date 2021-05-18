@@ -48,60 +48,61 @@ public class DataController {
 			logger.info("data/statistics 호출성공");
 
 			String location = dataService.getLocation(peid);
-
+			
 			if(location != null){
+
 				// 산책 횟수
-				int l_walk_count = dataService.getLWalkCount(location); 
-				if(l_walk_count != 0){
-					logger.info("=====> 지역별 산책 횟수 호출 성공");
-					resultMap.put("l_walk_count", l_walk_count);
-				}else{
+				Integer l_walk_count = dataService.getLWalkCount(location); 
+				if(l_walk_count == null){
 					logger.info("=====> 지역별 산책 횟수 0");
 					resultMap.put("l_walk_count", 0);
-				}
-				int p_walk_count = dataService.getPWalkCount(peid);
-				if(p_walk_count != 0){
-					logger.info("=====> 내 산책 횟수 호출 성공");
-					resultMap.put("p_walk_count", p_walk_count);
 				}else{
+					logger.info("=====> 지역별 산책 횟수 호출 성공");
+					resultMap.put("l_walk_count", l_walk_count);
+				}
+				Integer p_walk_count = dataService.getPWalkCount(peid);
+				if(p_walk_count == null){
 					logger.info("=====> 내 산책 횟수 0");
 					resultMap.put("p_walk_count", 0);
+				}else{
+					logger.info("=====> 내 산책 횟수 호출 성공");
+					resultMap.put("p_walk_count", p_walk_count);
 				}
 
 				// 총 산책 시간
-				int l_total_time = dataService.getLTotalTime(location);
-				if(l_total_time != 0){
-					logger.info("=====> 지역별 총 산책 시간 호출 성공");
-					resultMap.put("l_total_time", l_total_time);
-				}else{
+				Integer l_total_time = dataService.getLTotalTime(location);
+				if(l_total_time == null){
 					logger.info("=====> 지역별 총 산책 시간 0");
 					resultMap.put("l_total_time", 0);
-				}
-				int p_total_time = dataService.getPTotalTime(peid);
-				if(p_total_time != 0){
-					logger.info("=====> 내 총 산책 시간 호출 성공");
-					resultMap.put("p_total_time", p_total_time);
 				}else{
+					logger.info("=====> 지역별 총 산책 시간 호출 성공");
+					resultMap.put("l_total_time", l_total_time);
+				}
+				Integer p_total_time = dataService.getPTotalTime(peid);
+				if(p_total_time == null){
 					logger.info("=====> 내 총 산책 시간 0");
 					resultMap.put("p_total_time", 0);
+				}else{
+					logger.info("=====> 내 총 산책 시간 호출 성공");
+					resultMap.put("p_total_time", p_total_time);					
 				}
 
 				// 산책 시간대
-				int l_walk_time = dataService.getLWalkTime(location);
-				if(l_walk_time != 0){
-					logger.info("=====> 지역별 산책 시간대 호출 성공");
-					resultMap.put("l_walk_time", l_walk_time);
-				}else{
+				Integer l_walk_time = dataService.getLWalkTime(location);
+				if(l_walk_time == null){
 					logger.info("=====> 지역별 산책 시간대 0");
 					resultMap.put("l_walk_time", 0);
-				}
-				int p_walk_time = dataService.getPWalkTime(peid);
-				if(p_walk_time != 0){
-					logger.info("=====> 내 산책 시간대 호출 성공");
-					resultMap.put("p_walk_time", p_walk_time);
 				}else{
+					logger.info("=====> 지역별 산책 시간대 호출 성공");
+					resultMap.put("l_walk_time", l_walk_time);
+				}
+				Integer p_walk_time = dataService.getPWalkTime(peid);
+				if(p_walk_time == null){
 					logger.info("=====> 내 산책 시간대 0");
 					resultMap.put("p_walk_time", 0);
+				}else{
+					logger.info("=====> 내 산책 시간대 호출 성공");
+					resultMap.put("p_walk_time", p_walk_time);
 				}
 
 				resultMap.put("message", "통계정보 호출 성공하였습니다.");
