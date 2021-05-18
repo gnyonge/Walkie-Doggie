@@ -32,7 +32,7 @@ public class JWTUtil {
 		jwtBuilder.setHeaderParam("typ", "JWT"); // 토큰의 타입으로 고정 값.
 
 		// Payload 설정 - claim 정보 포함
-		jwtBuilder.setSubject("doggie_token") // 토큰의 제목 설정
+		jwtBuilder.setSubject("doggieToken") // 토큰의 제목 설정
 				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * EXPIRE_MINUTES)) // 유효기간
 				.claim("user", user) // 정보 저장
 				.claim("message", "환영합니다. "); // 담고 싶은 정보 설정.

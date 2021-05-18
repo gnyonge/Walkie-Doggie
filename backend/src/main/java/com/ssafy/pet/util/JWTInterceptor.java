@@ -30,7 +30,7 @@ public class JWTInterceptor implements HandlerInterceptor {
 		} else {
 			// request의 parameter에서 auth_token으로 넘어온 녀석을 찾아본다
 			// String token = request.getParameter("auth_token");
-			String token = request.getHeader("doggie_token");
+			String token = request.getHeader("doggieToken");
 			if (token != null && token.length() > 0) {
 				// 유효한 토큰이면 진행, 그렇지 않으면 예외를 발생시킨다.
 				jwtutil.checkValid(token);
