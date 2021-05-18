@@ -32,9 +32,9 @@ const actions = {
   loginNormalInApi({commit}, params) {
     return rscApi.post('login/signin',params)
     .then ((res)=> {
-      commit('setToken',res.data.doggie_token);
+      commit('setToken',res.data.doggieToken);
       commit('setUser',res.data.user);
-      sessionStorage.setItem('doggie_token',res.data.doggie_token);
+      sessionStorage.setItem('doggieToken',res.data.doggieToken);
       return res.data.message;
       // get이라면 다르게 해줘야 한다. 
     })
