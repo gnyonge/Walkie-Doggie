@@ -120,15 +120,13 @@ export default {
       'getbeforeM',
       'getPostingWid',
       'getDogInfo',
-      'getMyPostingContent'
+      'getMyPostingContent',
+      'getLikeCnt',
     ])
   },
   mounted() {
-    console.log(this.getPostingWid, 'startwalk mounted에서 찍는 getPostingwid')
-    console.log(this.getMyPostingContent, 'getmyposting엔 뭐가 들었냐')
     // 좋아요 작성시 해당 리스트 가져오기 
     if(this.getPostingWid.length !== 0){
-      console.log('내 게시글 정보 가져오냐')
       this.getMyPlaceListInApi(this.getPostingWid)
       .then((res) => {
         this.setMyPostingContent(res.data.likeList)
@@ -141,11 +139,8 @@ export default {
     if (window.kakao && window.kakao.maps) {
       this.initMap();
       if( this.getFirstAreaName === '') {
-        // 시작 시간 가져오기 
-        this.setStartTime(this.startTime())
         // 실시간 위치 정보 
         this.navigation()
-
       } else { // 좋아요 포스팅 이후 
         console.log(this.start)
         // 다시 들어올 떄마다 경로 받기 
@@ -182,10 +177,12 @@ export default {
       'setbeforeM',
       'deletePostingContent',
       'setMyPostingContent',
+      'setLikeCnt',
     ]), 
     ...mapActions([
       'doneWalkInApi', 
-      'getMyPlaceListInApi']),
+      'getMyPlaceListInApi',
+      'sendStartWalkInApi']),
     // 지도 첫 화면 로드 
     initMap() {
       this.mapContainer = document.getElementById('map');
@@ -290,6 +287,17 @@ export default {
             fullAddress = this.makeFullAd(detail)
             console.log(fullAddress, '첫주소 설정')
             this.setFirstAreaName(fullAddress)
+            // 시작 시간 가져오기 
+            this.setStartTime(this.startTime())
+            // 시작 api 호출 
+            this.sendStartWalkInApi({
+              peid:  this.getDogInfo.pet.peid,
+              w_location: this.getFirstAreaName
+            }).then(()=> {
+              console.log(this.getWid, '요청 성공후 wid')
+              console.log('시작 api전송 성공')
+            })
+
           }else {
             fullAddress = this.makeFullAd(detail)
             console.log(fullAddress, '좋아요 후 주소 설정')
@@ -358,7 +366,9 @@ export default {
     },
     // 좋아요
     like() {
-      this.likecnt += 1 
+      this.likecnt += this.getLikeCnt
+      this.setLikeCnt(this.likecnt)
+
       var t = this
 
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
@@ -450,16 +460,15 @@ export default {
     },
     // 산책종료
     doneWalk() {
+      // getWid undefine뜬다 샵라라라라ㅏ
+      console.log(this.getWid, '버튼 전에 getWid')
       this.start = this.getStartTime
       this.end = this.getTime()
       // 백엔드로 정보 보내기 
       this.doneWalkInApi({
-        peid: this.getDogInfo.pet.peid,
-        w_date: this.getStartTime, 
-        w_distance: "1.2",
+        wid: this.getWid ,
         w_like: this.likecnt,
         w_time: (this.totalH * 60) + this.totalM,
-        w_location: this.getFirstAreaName,
       }).then(()=> {
         // 실시간 정보 가져오기죽이기 
         clearInterval(this.walkLoc)

@@ -10,6 +10,7 @@ const state = {
     nowLat: 0,
     nowLon: 0,
     tempPhotoUrl: '',
+    likeCnt: 0, 
     // 지역설정 관련
     startArea: '', 
     areaName: '', 
@@ -52,31 +53,40 @@ const getters = {
   getAreaName(state){
     return state.like.areaName
   },
+  getLikeCnt(state){
+    return state.like.likeCnt
+  },
+  // 경로 
   getMyPath(state){
     return state.path
   },
+  // 내가 쓴 게시글 관련 
   getPostingWid(state){
     return state.postingWid
-  },
-  getHotPlace(state) {
-    return state.hotPlace
   },
   getMyPostingContent(state){
     return state.myPostingContent
   },
+  getHotPlace(state) {
+    return state.hotPlace
+  },
+  // 시작시간 가져오기
   getStartTime(state){
     return state.startTime
   },
+  // 산책 시간 계산 
   getbeforeH(state){
     return state.beforeH
   },
   getbeforeM(state){
     return state.beforeM
   },
+  
 };
 const mutations = {
   // 글 작성 후 wid 
   setWid(state, data){
+    console.log(data, 'setWid안에서')
     state.like.wid = data 
   },
   // 멍플레이스 
@@ -139,10 +149,14 @@ const mutations = {
   setbeforeM(state, data){
     state.beforeM = data 
   },
+  // 좋아요 게시글 올린 갯수 갱신
+  setLikeCnt(state, data){
+    state.like.likeCnt = data
+  }
 };
 const actions = {
   // 산책 시작
-  sendStartWalk(context, paramas){
+  sendStartWalkInApi(context, paramas){
     return rscApi.post('walk/start', paramas)
       .then((res)=>{
         context.commit('setWid', res.data.wid)
@@ -170,8 +184,8 @@ const actions = {
   },
   // 산책 종료 
   doneWalkInApi(context, params){
-    console.log(params)
-    return rscApi.post('walk/insert', params)
+    console.log(params, '산책종료함수에 넘겨주는 params')
+    return rscApi.post('walk/end', params)
       .then((res) => {
         console.log(res)
       }).catch((error) =>{

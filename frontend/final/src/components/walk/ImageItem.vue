@@ -79,7 +79,6 @@ export default {
           this.getHotPlaceListInApi(this.getUser.u_location)
           this.setSelectedItem(null)
           
-
         })
     },
   },

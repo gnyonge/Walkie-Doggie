@@ -119,6 +119,7 @@ export default {
 
         // 지도 중심좌표를 접속위치로 변경합니다
         map.setCenter(locPosition);   
+        map.setDraggable(true)
         }  
       },
     // 백엔드에서 핫플레스 정보 가져오기 

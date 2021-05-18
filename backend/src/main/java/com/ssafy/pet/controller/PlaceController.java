@@ -101,7 +101,7 @@ public class PlaceController {
      * 
      * developer: 윤수민
      * 
-     * @param pid, peid, l_desc, l_image, p_location
+     * @param wid, pid, peid, l_desc, l_image, p_location
      * 
      * @return message
 	 * 
@@ -137,7 +137,7 @@ public class PlaceController {
 				logger.info("=====> 기존 등록된 장소");
 				param.put("pid", pid);
 				int result = placeService.checkLike(param);
-				if(result == 0){ // 해당 강아지가 해당 장소 좋아요 누른 적 없는 경우
+				if(result == 0){ // 해당 강아지가 해당 산책 시 해당 장소 좋아요 누른 적 없는 경우
 					Integer lid = placeService.clickPlace(param);
 					if (lid != null) {
 						logger.info("=====> 좋아요 성공");
