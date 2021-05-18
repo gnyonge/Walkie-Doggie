@@ -37,6 +37,8 @@ public class OCRController {
 	
 	@PostMapping()
 	public ResponseEntity<Map<String, Object>> traduzir(@RequestParam(name="file") MultipartFile file, @RequestParam String peid) throws Exception{
+		logger.info("ocr 호출성공");
+		
 		String ext = FilenameUtils.getExtension(file.getOriginalFilename());
 		if (!"png".equals(ext) && !"jpg".equals(ext) && !"JPG".equals(ext)) {
 			return ResponseEntity.badRequest().build();
@@ -70,6 +72,7 @@ public class OCRController {
 				}
 			}
 			
+			logger.info("=====> 유해 성분 확인에 성공");
 			resultMap.put("ingredients", ing_list);
 			resultMap.put("message", "유해 성분 확인에 성공하였습니다.");
 			status = HttpStatus.ACCEPTED;
