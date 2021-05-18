@@ -130,8 +130,8 @@ public class UserController {
 	}
 
 	@ApiOperation(value = "NickName Overlap Check", notes = "닉네임 중복 체크")
-	@GetMapping("/confirm/check/{nick}")
-	public ResponseEntity<Map<String, Object>> allList(@PathVariable String nick) {
+	@PostMapping("/confirm/check")
+	public ResponseEntity<Map<String, Object>> allList(@RequestBody String nick) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
@@ -296,15 +296,16 @@ public class UserController {
 	}
 	// 지역등록
 	@ApiOperation(value = "Set Address", notes = "지역등록")
-	@GetMapping("/address")//user/address
-	public ResponseEntity<Map<String, Object>> setAddress(@RequestParam String uid,@RequestParam String add) {
+	@PostMapping("/address")//user/address
+	public ResponseEntity<Map<String, Object>> setAddress(@RequestBody Map<String, Object> param) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
 		try {
 			logger.info("=====> 주소설정하기");
+			String uid = param.get("uid").toString();
+			String add = param.get("add").toString();
 			int result = userservice.setAddress(uid, add);
-
 			UserDto user = userservice.checkPass(uid);
 			
 			if(result>=1) {
