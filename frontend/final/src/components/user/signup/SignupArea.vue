@@ -180,6 +180,7 @@ export default {
           this.codeCheck = true
         }else {
           this.codeSuccess = true
+          this.codeCheck = false
         }
       })
     }

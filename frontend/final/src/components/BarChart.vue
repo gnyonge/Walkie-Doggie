@@ -1,3 +1,6 @@
+	
+최진영[광주1반_C106]팀원
+오후 2:27
 <script>
   //Importing Bar class from the vue-chartjs wrapper
   import { Bar } from 'vue-chartjs'
@@ -8,9 +11,15 @@
     created() {
       this.statisticsInApi(this.getDogInfo.pet.peid)
       .then(() => {
-        var stat = this.getStatistics
-        this.datacollection.datasets[0].data = [stat.p_walk_count, stat.l_walk_count, 
-        stat.p_walk_time, stat.l_walk_time, stat.p_total_time, stat.l_total_time]
+        let newarray = [this.getStatistics.p_walk_count, this.getStatistics.l_walk_count, 
+        this.getStatistics.p_walk_time, this.getStatistics.l_walk_time, this.getStatistics.p_total_time, this.getStatistics.l_total_time]
+        this.datacollection.datasets[0].data = this.datacollection.datasets[0].data.concat(newarray)
+        console.log(this.datacollection.datasets[0].data, '??')
+        this.datacollection.datasets[0].data = this.datacollection.datasets[0].data.concat(newarray)
+        // console.log(test,'test')
+        // this.datacollection.datasets[0][this.data] = [this.getStatistics.p_walk_count, this.getStatistics.l_walk_count, 
+        // this.getStatistics.p_walk_time, this.getStatistics.l_walk_time, this.getStatistics.p_total_time, this.getStatistics.l_total_time]
+        // console.log(this.datacollection.datasets[0][this.data], '어어')
       })
     },
     computed: {

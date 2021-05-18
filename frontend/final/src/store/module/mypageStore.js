@@ -127,6 +127,7 @@ const actions = {
     .then((res) => {
       console.log(res, '통계')
       context.commit('setStatistics', res.data)
+      return res.data 
     })
   }
 };

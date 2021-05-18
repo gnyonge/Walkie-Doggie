@@ -15,7 +15,7 @@ const state = {
     startArea: '', 
     areaName: '', 
     // 포스팅 후 
-    wid: null, 
+    wid: Number, 
   },
   // 이동 경로 
   path: [],
@@ -86,7 +86,6 @@ const getters = {
 const mutations = {
   // 글 작성 후 wid 
   setWid(state, data){
-    console.log(data, 'setWid안에서')
     state.like.wid = data 
   },
   // 멍플레이스 
@@ -156,10 +155,10 @@ const mutations = {
 };
 const actions = {
   // 산책 시작
-  sendStartWalkInApi(context, paramas){
+  sendStartWalkInApi({commit}, paramas){
     return rscApi.post('walk/start', paramas)
       .then((res)=>{
-        context.commit('setWid', res.data.wid)
+        commit('setWid', res.data.wid)
       }).catch((error)=>{
         console.log(error)
       })
@@ -173,19 +172,28 @@ const actions = {
       })
   },
   // 좋아요 사진, 위도, 경도, 의견 백엔드 전송
-  sendNowPostInApi(context, params){
+  sendNowPostInApi({commit, state}, params){
     return rscApi.post('place/likePlace', params)
       .then((res) =>{
         console.log(res)
-        context.commit('setPostingWid', res.data.lid)
+        commit('setPostingWid', res.data.lid)
+        console.log(state.postingWid,'게시글 작성후 postingwid들어갔냐' )
+        return res
       }).catch((error) =>{
-        return error
+        // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답
+        if(error.response){ 
+          return error.response
+        }else if (error.request){  // 요청이 이루어 졌으나 응답을 받지 못했습니다.
+          return error.request
+        }else { // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생
+          return error.message
+        }
       })
   },
   // 산책 종료 
   doneWalkInApi(context, params){
     console.log(params, '산책종료함수에 넘겨주는 params')
-    return rscApi.post('walk/end', params)
+    return rscApi.put('walk/end', params)
       .then((res) => {
         console.log(res)
       }).catch((error) =>{
@@ -196,9 +204,7 @@ const actions = {
   getMyPlaceListInApi(context, params){
     return rscApi.post('walk/likeList',params)
       .then((res) => {
-        console.log(res.data.likeList, 'res.data.likeList')
         context.commit('setMyPostingContent', res.data.likeList)
-        console.log(state.myPostingContent, 'my postingcontent에 어떤 형식으로 들어가니')
         return res
       }).catch((error) =>{
         console.log(error, '내가 쓴 게시글 가져오기 실패')
@@ -230,15 +236,6 @@ const actions = {
         console.log(error)
       })
   },
-  // 내 게시글 수정 
-  editMyPostingInApi(context,params){
-    return rscApi.put('place/modify',params)
-    .then ((res) => {
-      console.log(res, '수정성공?')
-      return res;
-    })
-    .catch(()=>{});
-  },
   // 내 게시글 삭제
   deleteMyPostingInApi(context, params){
     console.log(params)
@@ -250,6 +247,16 @@ const actions = {
         console.log(error)
       })
   }, 
+  // 핫플레이스 포스트 좋아요
+  likePlaceInApi(context, params) {
+    return rscApi.post(`place/likePost?lid=${params.lid}&uid=${params.uid}`)
+    .then((res) => {
+      console.log(res, '좋아요 했어요!!!!!!')
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
 };
 
 export default {

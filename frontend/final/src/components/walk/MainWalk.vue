@@ -45,15 +45,21 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'MainWalk',
   computed: {
     ...mapGetters(['getUser', 'getHotPlace', 'getDogInfo'])
   },
+  mounted(){
+    // 중복으로 넘어가면 setWid초기화
+    this.setWid(Number)
+    this.deletePostingWid()
+  },
   methods:{
     ...mapActions(['getHotPlaceListInApi']),
+    ...mapMutations(['setWid', 'deletePostingWid']),
     startWalk(){
       this.$router.push('/startwalk')
     },
