@@ -9,18 +9,18 @@ public interface DataDao {
     String getLocation(String peid);
 
     // 산책 횟수
-    int getLWalkCount(String location);
+    Integer getLWalkCount(String location);
 
-    int getPWalkCount(String peid);
+    Integer getPWalkCount(String peid);
 
     // 총 산책 시간
-    int getLTotalTime(String location);
+    Integer getLTotalTime(String location);
     
-    int getPTotalTime(String peid);    
+    Integer getPTotalTime(String peid);    
 
     // 산책 시간대
-    int getLWalkTime(String location);
+    Integer getLWalkTime(String location);
     
-    int getPWalkTime(String peid);
+    Integer getPWalkTime(String peid);
     
 }

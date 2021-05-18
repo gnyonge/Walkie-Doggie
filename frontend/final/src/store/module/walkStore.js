@@ -250,6 +250,16 @@ const actions = {
         console.log(error)
       })
   }, 
+  // 핫플레이스 포스트 좋아요
+  likePlaceInApi(context, params) {
+    return rscApi.post(`place/likePost?lid=${params.lid}&uid=${params.uid}`)
+    .then((res) => {
+      console.log(res, '좋아요 했어요!!!!!!')
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
 };
 
 export default {
