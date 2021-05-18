@@ -135,7 +135,5 @@ p {
   border: 1px solid #E5E5E5;
   box-shadow: 3px 3px 3px #E5E5E5;
 }
-.font-change {
-  font-family: 'Courier New', Courier, monospace;
-}
+
 </style>
