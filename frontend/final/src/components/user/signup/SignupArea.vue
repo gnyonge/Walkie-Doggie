@@ -125,7 +125,6 @@ export default {
 
     // 회원가입 눌렀을 때 
     registerUser() {
-      console.log(this.getUser.password)
       this.createUserInApi({
         u_email: this.email,
         u_flag: 0,
@@ -156,8 +155,6 @@ export default {
         email: this.email,
       })
       .then((res) => {
-        console.log(this.email)
-        console.log(res, '인증번호 메일 보내기 눌렀을 때 성공 !')
         if(res.data.message ==="인증 메일을 보냈습니다. 확인해주십시오") {
           this.sendEmailMsg = true
         }
@@ -174,8 +171,6 @@ export default {
         email: this.email,
       })
       .then((res) => {
-        // console.log(auth)
-        console.log(res, '인증번호 확인 버튼 !')
         if(res.data.message ==="인증 번호가 틀렸습니다.") {
           this.codeCheck = true
         }else {
