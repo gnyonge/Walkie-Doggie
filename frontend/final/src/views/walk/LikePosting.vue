@@ -98,6 +98,7 @@ export default {
         
       })
     },
+
     // 사진, 옵션 정보 백엔드 정보 전송 
     posting(){
       if(this.photo_url === ''){
