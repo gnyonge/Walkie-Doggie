@@ -12,7 +12,7 @@
 
 	<update id="endWalk" parameterType="WalkDto" >
 		update Walk
-		set w_like=#{w_like}, w_time=#{w_time} 
+		set w_like=#{w_like}, w_time=#{w_time}, w_flag=2 
 		where wid=#{wid};
 	</update>
 
