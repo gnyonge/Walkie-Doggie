@@ -78,19 +78,27 @@ public class OCRController {
 					ing_list.add(oservice.get_ingredient(ingredient));
 				}
 			}
+			logger.info("=====> 유해 성분 확인 성공");
 
 			List<AllergyDto> allergy_list = pservice.show_allergy(peid);
 
 			List<String> all_list = new ArrayList<>();
-			for (AllergyDto allergy : allergy_list) {
-				if (resultado.contains(allergy.getAl_name())) {
-					all_list.add(allergy.getAl_name());
+			if(allergy_list != null){
+				for (AllergyDto allergy : allergy_list) {
+					if (resultado.contains(allergy.getAl_name())) {
+						all_list.add(allergy.getAl_name());
+					}
 				}
+				resultMap.put("Allergys", all_list);
+				logger.info("=====> 알레르기 확인 성공");
+			}else{
+				resultMap.put("Allergys", "");
+				logger.info("=====> 알레르기 없음");
 			}
+			
 
-			logger.info("=====> 유해 성분 확인에 성공");
 			resultMap.put("Ingredients", ing_list);
-			resultMap.put("Allergys", all_list);
+			
 			resultMap.put("message", "OCR 확인에 성공하였습니다.");
 			status = HttpStatus.ACCEPTED;
 
