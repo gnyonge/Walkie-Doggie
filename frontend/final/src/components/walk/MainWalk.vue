@@ -59,7 +59,17 @@ export default {
   },
   methods:{
     ...mapActions(['getHotPlaceListInApi']),
-    ...mapMutations(['setWid', 'deletePostingWid']),
+    ...mapMutations([
+      'setWid', 
+      'deletePostingWid', 
+      'deletePostingContent',
+      'deleteMyPath',
+      'setNowLon',
+      'setNowLat',
+      'setFirstAreaName',
+      'setTempPhotoURL',
+      'setAreaName',
+      'setLikeCnt']),
     startWalk(){
       this.$router.push('/startwalk')
     },
