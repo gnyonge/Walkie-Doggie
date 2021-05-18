@@ -1,7 +1,6 @@
 <template>
   <div class="column my-3">
         <reactive :chart-data="datacollection"></reactive>
-        <!-- <button class="button is-primary" @click="fillData()">Randomize</button> -->
   </div>
 </template>
 
@@ -9,13 +8,13 @@
   import Reactive from '@/components/Reactive'
   import { mapGetters, mapActions } from 'vuex'
   export default {
-    name: 'VueChartJS',
+    name: 'Chart',
     components: {
       Reactive
     },
     data() {
       return {
-        datacollection: null // instantiating datacollection with null
+        datacollection: {} // instantiating datacollection with null
       }
     },
     created() {
@@ -35,26 +34,14 @@
           labels: ['내 평균 산책횟수', '지역 평균 산책횟수', '내 평균 산책시간대', '지역 평균 산책시간대', '내 산책 총 시간', '지역 평균 산책 총 시간'],
           datasets: [
             {
-              label: 'Data One',
+              label: '산책 통계',
               backgroundColor: '#f87979',
               // Data for the x-axis of the chart
               data: [this.getStatistics.p_walk_count, this.getStatistics.l_walk_count, 
           this.getStatistics.p_walk_time, this.getStatistics.l_walk_time, this.getStatistics.p_total_time, this.getStatistics.l_total_time]
-              // [this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), 
-              // this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), 
-              // this.getRandomInt(), this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]
             }
           ]
         }
       },
-      // getRandomInt() {
-      //   // JS function to generate numbers to be used for the chart
-      //   return Math.floor(Math.random() * (50 - 5 + 1)) + 5
-      // }},
-      // getstat() {
-      //     let newarray = [this.getStatistics.p_walk_count, ]
-
-      //     return newarray
-      // }
   }}
 </script>
