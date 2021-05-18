@@ -107,9 +107,9 @@ public class LoginController {
 					logger.info("기존 카카오로 로그인헀던 회원");
 				}
 				String token = jwtutil.create(kakaoCome);
-				res.setHeader("doggie_token", token);
+				res.setHeader("doggieToken", token);
 				logger.info("토큰: {}", token);
-				resultMap.put("doggie_token", token);
+				resultMap.put("doggieToken", token);
 				resultMap.put("user", kakaoCome);
 				resultMap.put("message", "로그인에 성공하였습니다.");
 			}
@@ -199,9 +199,9 @@ public class LoginController {
 					
 				}
 				String token = jwtutil.create(check_user);
-				res.setHeader("doggie_token", token);
+				res.setHeader("doggieToken", token);
 				logger.info("토큰: {}", token);
-				resultMap.put("doggie_token", token);
+				resultMap.put("doggieToken", token);
 				resultMap.put("user", check_user);
 			}
 			status = HttpStatus.ACCEPTED;
