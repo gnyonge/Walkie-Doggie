@@ -1,3 +1,6 @@
+	
+최진영[광주1반_C106]팀원
+오후 2:27
 <script>
   //Importing Bar class from the vue-chartjs wrapper
   import { Bar } from 'vue-chartjs'
