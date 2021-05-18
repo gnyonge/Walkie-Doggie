@@ -34,20 +34,11 @@ const mutations = {
   }
 };
 const actions = {
-  // 지역 등록 
-  // getAddressInApi(context,params) {
-  //   return rscApi.get('user/address',params)
-  //   .then((res)=> {
-  //     console.log(res,'주소 받아오기!!!')
-  //     return res;
-  //   })
-  // },
   // 유저 인포 불러오기 (강아지정보 포함)
   getUserInfoInApi(context, params) {
     return rscApi.get(`user/info?uid=${params}`)
     .then((res)=> {
       context.commit('setMyDogListInfo', res.data.petList)
-      console.log(res.data.petList, '유저 인포 받아오기 !!')
       return res;
     })
   },
@@ -56,7 +47,6 @@ const actions = {
     return rscApi.post('pet/insert', params)
     .then ((res) => {
       context.commit('setDogInfo', res.data);
-      console.log(res.data, '반려견 등록 성공!!')
       return res;
     })
     .catch(()=>{});
@@ -66,7 +56,6 @@ const actions = {
     return rscApi.post('pet/insert/np', params)
     .then ((res) => {
       context.commit('setDogInfo', res.data);
-      console.log(res.data, '반려견 등록 성공!!')
       return res;
     })
     .catch(()=>{});
@@ -76,7 +65,6 @@ const actions = {
     return rscApi.get(`pet/show?peid=${params}`)
     .then ((res)=> {
       context.commit('setDogInfo', res.data);
-      console.log(res,'반려견정보보기')
       return res;
     })
     .catch(()=>{});
@@ -86,7 +74,6 @@ const actions = {
     return rscApi.put('pet/update', params)
     .then ((res)=> {
       context.commit('setDogInfo', res.data);
-      console.log(res.data,'반려견 수정완료 후 정보보기', state.dogInfo)
       return res;
     })
     .catch(()=>{});
@@ -96,7 +83,6 @@ const actions = {
     return rscApi.put('pet/update/np', params)
     .then ((res)=> {
       context.commit('setDogInfo', res.data);
-      console.log(res.data,'반려견 수정완료 후 정보보기', state.dogInfo)
       return res;
     })
     .catch(()=>{});
@@ -113,9 +99,8 @@ const actions = {
   // 반려견 정보 삭제
   deletePetInApi(context, params) {
     return rscApi.put('pet/leave', params)
-    .then((res) => {
+    .then(() => {
       context.commit('setDogInfo', null)
-      console.log(res, '펫 삭제 완료')
     })
     .catch((error) => {
       console.error(error)
@@ -125,7 +110,6 @@ const actions = {
   statisticsInApi(context, peid) {
     return rscApi.get(`data/statistics/${peid}`)
     .then((res) => {
-      console.log(res, '통계')
       context.commit('setStatistics', res.data)
       return res.data 
     })

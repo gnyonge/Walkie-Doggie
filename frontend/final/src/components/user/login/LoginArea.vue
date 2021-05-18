@@ -24,10 +24,6 @@
           <div class="d-flex justify-center">
             <v-btn class="login-btn" id="mainBtn" style="width:100%; margin-top:30px; margin-bottom: 30px; font-size: 20px; height:45px; border-radius: 5px;" @click="login()"><b>로그인</b></v-btn>
           </div>
-        <!-- 카카오로그인 --> 
-        <div class=" d-flex justify-center" style="background: #BDBDBD; border-radius: 5px; box-shadow: 1px 3px 0 rgb(0,0,0,0.3);">
-          <v-img src="../../../assets/images/카카오로그인버튼.png" class="logo-img" alt="" @click="kakao()" ></v-img>
-        </div>
       </div>
     </div>
   </div>
@@ -42,10 +38,6 @@ export default {
     return {
       email: '',
       password: '',
-      // id:"1bf3f0e4ba92eceb2527659918098b46",
-      // uri:"http://localhost:8080/login",
-      // type:"code",
-      // address:"https://kauth.kakao.com",
       user:{
         uid:"",
         u_email:"",
@@ -59,21 +51,7 @@ export default {
   computed: {
     ...mapGetters(['getDogInfo', 'getUser', 'getMyDogListInfo'])
   },
-    created() {
-    //     let code = this.getParameter('code');
-    // console.log(code);
-    // if(code != undefined) {
-    //   rscApi.get(`login/kakao?code=${code}`)
-    //   .then(({data}) => {
-    //     console.log(data);
-    //     // doggie_token을 cookie로 저장
-    //     this.$router.push(`/calendar`)
-    //   })
-    //   .catch(()=>{
-    //       this.$router.push(`/login`)
-
-    //   }) 
-    // }   
+    created() { 
      this.setNowTab(1)
   },
   methods: {
@@ -93,14 +71,6 @@ export default {
         } 
       }
     },
-    kakao(){
-      console.log(window.Kakao);
-      // const params={
-      //   redirectUri:"http://localhost:8080/login",
-      // };
-      // window.location.replace("http://localhost:8888/pet/login/oauth")
-    
-  },
     goback() {
       this.$router.push('/')
     },
@@ -110,7 +80,6 @@ export default {
         u_password: this.password,
       })
       .then((res) => {
-        console.log(res,"로그인 성공")
         if(res == "로그인에 성공하였습니다.") {
           this.getUserInfoInApi(this.getUser.uid)
           .then(() => {
