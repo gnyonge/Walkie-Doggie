@@ -6,7 +6,7 @@
     light
   >
     <v-btn id="btns" v-for="tab in tabs" :key="tab.idx" @click="goTo(tab.path, tab.idx)">
-      <span id="span-in-nav">{{tab.name}}</span>
+      <span id="span-in-nav"><b>{{tab.name}}</b></span>
       <v-icon>{{tab.icon}}</v-icon>
     </v-btn>
   </v-bottom-navigation>

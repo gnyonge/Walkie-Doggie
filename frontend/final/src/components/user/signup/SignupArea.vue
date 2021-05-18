@@ -56,7 +56,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import axios from 'axios';
 export default {
   data () {
     return {
@@ -106,14 +105,14 @@ export default {
       }
   },
   methods: {
-    ...mapActions(['createUserInApi','sendEmailInApi','checkPasswordInApi','checkAuthEmailInApi','loginNormalInApi']),
+    ...mapActions(['createUserInApi','sendEmailInApi','checkPasswordInApi','checkAuthEmailInApi','loginNormalInApi', 'checkNicknameInApi']),
     goback() {
         this.$router.push('/loginmain')
     },
     checkNickname() {
-      return axios.get(`http://localhost:8888/pet/user/confirm/check/${this.nickname}`)
+      this.checkNicknameInApi({nick: this.nickname})
       .then((res) => {
-        this.nickCheck = res.data.flag
+        this.nickCheck = res
       }).catch((error) => {
         console.error(error)
       })

@@ -7,8 +7,8 @@ const state = {
   },
   like: {
     // 좋아요 포스팅 
-    nowLat: 0,
-    nowLon: 0,
+    nowLat: Number,
+    nowLon: Number,
     tempPhotoUrl: '',
     likeCnt: 0, 
     // 지역설정 관련
@@ -27,7 +27,7 @@ const state = {
   startTime: '',
   beforeH: '', 
   beforeM: '', 
-  check: {},
+  filter: "",
 };
 const getters = {
   //처음 시작했을때 wid
@@ -82,8 +82,8 @@ const getters = {
   getbeforeM(state){
     return state.beforeM
   },
-  getCheck(state){
-    return state.check
+  getFilter(state){
+    return state.filter
   },
   
 };
@@ -156,8 +156,8 @@ const mutations = {
   setLikeCnt(state, data){
     state.like.likeCnt = data
   },
-  setCheck(state, data){
-    state.check = data
+  setFilter(state, data){
+    state.filter = data
   },
 };
 const actions = {
@@ -264,13 +264,7 @@ const actions = {
       console.log(err)
     })
   },
-  // 좋아요 여부 확인
-  // checkLikeInApi(context, params) {
-  //   return rscApi.get(`place/detail/${params.lid}/${params.uid}`)
-  //   .then((res) => {
-  //     console.log(res, '좋아요')
-  //   })
-  // }
+
 };
 
 export default {

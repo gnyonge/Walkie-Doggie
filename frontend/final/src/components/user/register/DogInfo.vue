@@ -2,7 +2,7 @@
   <div class="register-btn-pd" id="mainBox">
     <div class="d-flex justify-space-between">
       <div>
-      <v-icon @click="goto('/register')">mdi-arrow-left</v-icon>
+      <v-icon @click="goto()">mdi-arrow-left</v-icon>
       </div>
       <div>
         반려견 등록
@@ -11,7 +11,7 @@
       </div>
     </div>
       <div class="d-flex justify-center">
-        <div class="circle " @click="goto('/dogregisternext')">
+        <div class="circle " @click="gotoregi()">
           <p>+ 반려견 등록</p>
         </div>
       </div>
@@ -26,11 +26,23 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
   name: "DogInfo",
+  computed: {
+    ...mapGetters(['getDogInfo'])
+  },
   methods: {
-    goto(path) {
-      this.$router.push(path)
+    goto() {
+      if (!this.getDogInfo) {
+        this.$router.push('/register')
+      } else {
+        this.$router.push('/mypage')
+      }
+      
+    },
+    gotoregi() {
+      this.$router.push('/dogregisternext')
     }
   }
 }
