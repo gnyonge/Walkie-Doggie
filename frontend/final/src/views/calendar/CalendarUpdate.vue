@@ -237,7 +237,6 @@ export default {
           peid: this.getDogInfo.pet.peid
         })
       }
-      console.log(health_list,' ???')
       formData.append(
         'diary',
         new Blob([JSON.stringify(diary)], { type: 'application/json' })
@@ -277,7 +276,6 @@ export default {
               peid: this.getDogInfo.pet.peid
             })
           }
-          console.log(health_list,' 사진있을때 ')
           formData.append(
             'diary',
             new Blob([JSON.stringify(diary)], { type: 'application/json' })

@@ -15,7 +15,8 @@
     <v-divider></v-divider>
     <div v-if="getMyWalkObject.Walk_list[0].count != 0">
       <div id="mydiv2" class="mt-8"><div><v-icon>mdi-check</v-icon>오늘 {{getMyWalkObject.Walk_list[0].count}}번 산책했어요 !</div></div>
-      <div id="mydiv2"><div><v-icon>mdi-check</v-icon>오늘 {{getMyWalkObject.Walk_list[0].time}}분 산책했어요 !</div></div>
+      <div id="mydiv2" v-if="getMyWalkObject.Walk_list[0].time"><div><v-icon>mdi-check</v-icon>오늘 {{getMyWalkObject.Walk_list[0].time}}분 산책했어요 !</div></div>
+      <div id="mydiv2" v-else><div><v-icon>mdi-check</v-icon>오늘 0분 산책했어요 !</div></div>
     </div>
     <div v-else>
       <div id="mydiv2" class="mt-8"><div><v-icon>mdi-check</v-icon>오늘 산책을 안했어요 😢</div></div>
@@ -27,10 +28,8 @@
 import { mapGetters } from 'vuex'
 export default {
   name: "TodayWalk",
-  data() {
-    return {
-      
-    }
+  created() {
+    console.log(this.getMyWalkObject)
   },
   computed: {
       ...mapGetters(['getSelectedDate', 'getPrettyDate', 'getMyWalkObject'])
