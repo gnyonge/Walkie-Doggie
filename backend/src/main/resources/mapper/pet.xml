@@ -11,10 +11,10 @@
 
 	<insert id="regist_pet" parameterType="PetDto">
 		insert into Pet(peid, uid,
-		pe_name, pe_profile_photo, pe_weight, pe_trauma, pe_disease,
+		pe_name, pe_profile_photo, pe_weight, pe_trauma, pe_disease, pe_age
 		pe_birthday)
 		values(#{peid},#{uid},
-		#{pe_name},#{pe_profile_photo},#{pe_weight},#{pe_trauma},#{pe_disease},#{pe_birthday})
+		#{pe_name},#{pe_profile_photo},#{pe_weight},#{pe_trauma},#{pe_disease},#{pe_age},#{pe_birthday})
 	</insert>
 
 	<select id="show_health" parameterType="String"
