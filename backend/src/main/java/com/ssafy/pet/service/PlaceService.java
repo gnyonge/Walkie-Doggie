@@ -41,9 +41,9 @@ public interface PlaceService {
     public void minusPost(int lid);
 
     // 게시글 리스트
-    public List<Map<String, Object>> getPostListNew(String p_location);
+    public List<Map<String, Object>> getPostListNew(String p_location, String uid);
 
-    public List<Map<String, Object>> getPostListLike(String p_location);
+    public List<Map<String, Object>> getPostListLike(String p_location, String uid);
     
     public Map<String, Object> getDetail(int lid);
 

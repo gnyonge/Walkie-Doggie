@@ -324,7 +324,7 @@ public class PlaceController {
      * postList(lid, p_latitude, p_longtitude, l_image, l_desc, l_date, pe_name) 
      */
 	@ApiOperation(value = "HotPlace postList", notes = "핫플레이스 게시글 리스트")
-    @GetMapping("/list/{p_location}/{peid}")
+    @GetMapping("/list/{p_location}/{uid}")
     public ResponseEntity<Map<String, Object>> getPostByList(@PathVariable("p_location") String p_location, @PathVariable("uid") String uid,
     @RequestParam(value = "sort") String sort) {
         Map<String, Object> resultMap = new HashMap<>();
@@ -334,7 +334,7 @@ public class PlaceController {
 			logger.info("place/list 호출성공");
 
             if(sort.equals("pop")){ // 인기순 정렬
-                List<Map<String, Object>> postList = placeService.getPostListLike(p_location);
+                List<Map<String, Object>> postList = placeService.getPostListLike(p_location,uid);
                 if(postList != null){
                     resultMap.put("postList", postList);
                     resultMap.put("message", "좋아요순 핫플레이스 게시글 리스트 호출 성공하였습니다.");
@@ -344,7 +344,7 @@ public class PlaceController {
                     status = HttpStatus.NOT_FOUND;
                 }
             }else{ // 최신순 정렬
-                List<Map<String, Object>> postList = placeService.getPostListNew(p_location);
+                List<Map<String, Object>> postList = placeService.getPostListNew(p_location,uid);
                 if(postList != null){
                     resultMap.put("postList", postList);
                     resultMap.put("message", "최신순 핫플레이스 게시글 리스트 호출 성공하였습니다.");
@@ -375,7 +375,7 @@ public class PlaceController {
      * postList(lid, p_latitude, p_longtitude, l_image, l_desc, l_date, pe_name)
      */
 	@ApiOperation(value = "HotPlace top5", notes = "핫플레이스 TOP5")
-    @GetMapping("/top5/{p_location}/{peid}")
+    @GetMapping("/top5/{p_location}/{uid}")
     public ResponseEntity<Map<String, Object>> getTop5(@PathVariable("p_location") String p_location,
     @PathVariable("uid") String uid) {
         Map<String, Object> resultMap = new HashMap<>();
