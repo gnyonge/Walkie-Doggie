@@ -69,12 +69,12 @@
 	<!-- 게시글 좋아요 -->
 	<select id="checkLikePost" parameterType="map" resultType="Integer" >
 		select lid
-		from LikePost
+		from LikePost 
 		where lid=#{lid} and uid = #{uid};
 	</select>
 	
 	<insert id="clickLike" parameterType="map" >
-		insert into LikePost 
+		insert into LikePost (uid, lid)
 		values(#{uid}, #{lid});
 	</insert>
 
