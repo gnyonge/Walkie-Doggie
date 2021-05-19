@@ -16,7 +16,7 @@
         </div>
         <v-form>
           <v-text-field label="이메일" v-model="email" type="email" required color="#48B9A8" style="margin-top:40px;"></v-text-field>
-          <v-text-field label="비밀번호" v-model="password" type="password" required color="#48B9A8" style="margin-top:20px;" class="font-change"></v-text-field>
+          <v-text-field label="비밀번호" v-model="password" type="password" required color="#48B9A8" style="margin-top:20px;"></v-text-field>
         </v-form>
         <div style="color:red; font-size:14px" v-if="check">
           아이디나 비밀번호를 확인해주세요.
