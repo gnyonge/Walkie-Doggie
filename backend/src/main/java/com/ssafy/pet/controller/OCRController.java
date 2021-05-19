@@ -57,7 +57,8 @@ public class OCRController {
 
 		try {
 			String path = System.getProperty("user.dir");
-			path = path + "\\tessdata";
+			System.out.println(path);
+			path = path + "\\backend\\tessdata";
 
 			// 배포시 경로 변경
 //			path.replace("\\", "\\\\");

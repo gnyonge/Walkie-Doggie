@@ -27,16 +27,19 @@ export default {
   computed: {
     ...mapGetters(['getNowTab'])
   },
+  created() {
+    document.title = "WALKIE DOGGIE"
+  }
 
 };
 </script>
 <style>
 @import url(https://fonts.googleapis.com/earlyaccess/jejugothic.css);
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
 
 #back {
   background-color: #F7FAFB;
-  font-family: 'Noto Sans';
+  font-family: 'Noto Sans KR';
   color: #323232;
   font-weight: bold;
 }
@@ -76,8 +79,12 @@ export default {
   box-shadow: 3px 3px 0 rgb(0,0,0,0.3);
   background-color: #BAF1E4;
   color: #323232;
+  text-align:center;
+  position:relative;
+  padding: 0;
 }
 span {
   margin-top: 0px;
 }
+
 </style>

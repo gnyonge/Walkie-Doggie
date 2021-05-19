@@ -52,7 +52,6 @@ export default {
     ...mapMutations(['setSelectedDate', 'setPrettyDate', 'setDetailBtn', 'setNowTab']),
     ...mapActions(['getTodayDiaryInApi', 'getTodayWalkInApi']),
     onContext(ctx) {
-      console.log(ctx)
       this.context = ctx.activeYMD
       this.setSelectedDate(this.context)
       let prettyDate = this.context.slice(0,4) + '년 ' + this.context.slice(5,7) + '월 ' + this.context.slice(8,10) + '일'
