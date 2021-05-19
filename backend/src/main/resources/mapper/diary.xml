@@ -54,10 +54,9 @@
 	</select>
 
 	<select id="get_walk" parameterType="map" resultType="map">
-		select
-		count(*) as count, sum(w_distance) as distance, sum(w_time) as time
+		select count(*) as count, sum(w_time) as time
 		from Walk
-		where peid=#{peid} and date(w_date)=#{d_date} and w_flag=0;
+		where peid=#{peid} and date(w_date)=#{d_date} and w_flag=2;
 	</select>
 
 	<select id="get_all_diary" parameterType="String"
