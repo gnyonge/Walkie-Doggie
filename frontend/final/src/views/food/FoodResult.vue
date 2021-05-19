@@ -1,42 +1,57 @@
 <template>
   <div>
-    <div id="date"><h2 class="my-10">성분 분석 결과</h2></div>
-    <div class="mt-15 d-flex justify-center">
-      <div id="tempimg">사진 업로드 하면 여기 띄워짐!</div>
-    </div>
-    <!-- <div id="date" class="mt-5"><h4 class="mt-2">조금은 주의가 필요한 성분들이에요.</h4></div> -->
-    <div
-    id="mainBox"
-    class="my-5"
-    max-width="344"
-    outlined
-    v-for="i, idx in 3"
-    :key="idx"
-  >
-    <v-list-item three-line>
-      <v-list-item-avatar
-        tile
-        size="80"
-        color="grey"
-      ></v-list-item-avatar>
-      <v-list-item-content>
-        <v-list-item-title class="headline mb-1">
-          성분 이름
-        </v-list-item-title>
-        <v-list-item-subtitle>Greyhound divisely hello coldly fonwderfully</v-list-item-subtitle>
-      </v-list-item-content>
+    <div id="mainBox">
+      <div id="date"><h3>성분 분석 결과</h3></div>
+      <div id="date" class="my-5"><p>{{getDogInfo.pet.pe_name}}에게 맞지 않는 성분이 들어있어요!</p></div>
+      <div
+        class="my-5"
+        max-width="344"
+        outlined
+        v-for="(food, idx) in foodList" :key="idx"
+      >
+        <v-list-item three-line id="healthDiv">
+          <v-list-item-content>
+              <li class="mt-1">{{food}}</li>
+            <!-- <v-list-item-subtitle> -->
+            <!-- </v-list-item-subtitle> -->
+          </v-list-item-content>
+          <v-list-item-avatar tile size="50">
+            <img
+              src="@/assets/bad.png"
+              alt="건강사진"
+            >
+          </v-list-item-avatar>
+        </v-list-item>
+      </div>
 
-    </v-list-item>
-  </div>
+    </div>
   </div>
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
   name: "FoodResult",
+  data() {
+    return {
+      foodList: []
+    }
+  },
+  computed: {
+    ...mapGetters(['getDogInfo', 'getFoodResult'])
+  },
+  created() {
+    console.log(this.getFoodResult)
+    this.foodList = this.getFoodResult.Allergys
+  }
 }
 </script>
 
 <style>
-
+#healthDiv {
+  border-radius: 15px;
+  background-color: white;
+  border: 1px solid #E5E5E5;
+  box-shadow: 3px 3px 3px #E5E5E5;
+}
 </style>

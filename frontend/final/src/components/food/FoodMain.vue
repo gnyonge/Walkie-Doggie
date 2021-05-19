@@ -1,24 +1,33 @@
 <template>
   <div>
-    <div id="date"><h2 class="my-10">우리 아이 간식</h2></div>
-    <div id="date" class="mt-9"><h2 class="mt-5">성분 분석 해드려요!</h2></div>
-    <div id="date" class="mt-8">
+    <div id="mainBox">
+    <div id="date"><h3 class="my-5"><b>우리 아이 간식</b></h3></div>
+    <div id="date" class="mt-9"><h3><b>성분 분석 해드려요!</b></h3></div>
+    <div id="date">
       <div class="filebox mt-3"> 
-        <label for="ex_file">성분표 사진추가!</label> 
+        <label for="ex_file"><b>성분표 사진추가!</b></label> 
         <input type="file" accept="image/*" @click="addPhoto()" id="ex_file"> 
       </div>
     </div>
-    <div id="contentBox">
+    <div id="contentBox" class="mt-8">
+        <v-img
+        v-if="!photoCheck"
+          :src="photo_url"
+          alt="프로필 사진" 
+        >
+        </v-img>
       <v-img
-        v-if="photo_url"
+        v-else
         height="330"
         width="330"
         :src="photo_url">
       </v-img>
     </div>
     <div class="mt-6 d-flex justify-center">
-      <v-btn rounded @click="result()" id="btnstyle" style="width: 200px; height: 50px; font-size: 20px;" :class="{diary: isClicked}">분석 시작!</v-btn>
+      <v-btn rounded @click="result()" id="btnstyle" style="width: 200px; height: 50px; font-size: 20px;" :disabled="!photoCheck" :class="{diary: isClicked}"><b>분석 시작!</b></v-btn>
     </div>
+    </div>
+
   </div>
 </template>
 
@@ -29,8 +38,9 @@ export default {
   data() {
     return {
       isClicked: false,
-      photo_url: "",
+      photo_url: require('@/assets/images/서비스로고.png'),
       file: {},
+      photoCheck: false
     }
   },
   computed: {
@@ -59,6 +69,7 @@ export default {
           formData.append('file', file)
           t.makeTempPhotoUrlInApi(formData)
           .then(() => {
+            t.photoCheck = true
             t.photo_url = t.getTempPhotoURL
           }).catch((error) => {
             console.error(error)
@@ -85,5 +96,29 @@ export default {
   box-shadow: 1px 1px 0 rgb(0,0,0,0.5) !important;
   position: relative; 
   top:2px; 
+}
+.filebox label {
+  display: inline-block; 
+  padding: .5em .75em; 
+  color: #323232; 
+  font-size: inherit; 
+  line-height: normal; 
+  vertical-align: middle; 
+  background-color: #BAF1E4; 
+  cursor: pointer; 
+  border: 1px solid #ebebeb; 
+  border-bottom-color: #e2e2e2; 
+  border-radius: .25em; 
+  } 
+.filebox input[type="file"] {
+  /* 파일 필드 숨기기 */ 
+  position: absolute; 
+  width: 1px; 
+  height: 1px; 
+  padding: 0; 
+  margin: -1px; 
+  overflow: hidden; 
+  clip:rect(0,0,0,0); 
+  border: 0; 
 }
 </style>
