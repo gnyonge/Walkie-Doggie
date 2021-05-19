@@ -57,13 +57,13 @@
         </div>
       </div>
       <div class="d-flex justify-end mt-9">
-        <v-btn color="#48B9A8" text width="50px" @click="go('/calendar/update')">수정</v-btn>
+        <v-btn color="#48B9A8" text width="50px" @click="go('/calendar/update')"><b>수정</b></v-btn>
         <!-- 삭제 확인 창 -->
         <v-btn
           color="red" text width="50px"
           @click="snackbar = true"
         >
-          삭제
+          <b>삭제</b>
         </v-btn>
 
         <v-snackbar
@@ -120,7 +120,6 @@ export default {
     },
     deleteDiary() {
       const formData = new FormData()
-      console.log('hid화이팅1', this.getMyDiaryObject.Health_list)
       let diary = {}
       if (!this.photo_url) {
         diary = {
@@ -133,7 +132,6 @@ export default {
             d_walk: 0,
             peid: this.getDogInfo.pet.peid
           }
-          console.log('hid화이팅2')
       } else {
         diary = {
             did: this.getMyDiaryObject.Diary.did,
@@ -146,7 +144,6 @@ export default {
             peid: this.getDogInfo.pet.peid
           }
       }
-      console.log('hid화이팅3')
       let health_list = []
           for (let i in this.getMyDiaryObject.Health_list) {
             health_list.push({
@@ -156,7 +153,6 @@ export default {
               hid: this.getMyDiaryObject.Health_list[i].hid,
               peid: this.getDogInfo.pet.peid
             })
-            console.log('hid화이팅ㅇㄹㄴㅇㄹ')
           }
           
           formData.append(
@@ -167,9 +163,7 @@ export default {
             'health_list',
             new Blob([JSON.stringify(health_list)], { type: 'application/json' })
           )
-          console.log('hid화이팅4')
           this.deleteTodayDiaryInApi(formData).then(() => {
-            console.log('hid화이팅5')
             this.snackbar = false
             this.$router.push('/calendar')
           })

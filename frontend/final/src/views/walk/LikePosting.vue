@@ -13,7 +13,16 @@
     </div>
       <div style="text-align: center;" class="mt-5">
         <!-- 사진받기 -->
+        <div class="loader d-flex justify-center align-center" v-if="pageOn" style="width: 100%; height: 330px;">
+          <b-spinner label="Spinning"></b-spinner></div>
         <v-img
+        v-if="!photoCheck"
+          :src="photo_url"
+          alt="프로필 사진" 
+        >
+        </v-img>
+        <v-img
+        v-if="photoCheck && !pageOn"
         id = "photoimg"
         height="330"
         max-height="330"
@@ -21,7 +30,7 @@
         </v-img>
         <br>
         <div class="filebox"> 
-          <label for="ex_file">좋아요 사진추가!</label> 
+          <label for="ex_file">좋아요 사진 추가!</label> 
           <input type="file" accept="image/*" capture="camera" required @click="addPhoto()" id="ex_file"> 
         </div>
         <!-- 사용자 의견 선택옵션 -->
@@ -30,7 +39,7 @@
           <div class="mt-2">
             <v-btn text id="likeBox" @click="selectThis(option.name, idx)" :class="{clicked: optionValue == option.name}"
               v-for="option, idx in selectOptions" :key="idx">
-              {{option.name}}
+              <b>{{option.name}}</b>
             </v-btn>
           </div>
         </div>
@@ -40,7 +49,7 @@
             large
             id="mainBtn"
             @click="posting">
-            입력완료
+            <b>입력완료</b>
           </v-btn>
         </div>
       </div>
@@ -55,14 +64,16 @@ export default {
   name: 'LikePosting', 
   data() {
     return {
-      photo_url: '', 
       optionValue: -1,
       selectOptions: [
         {idx: 0, name: '사진이 잘 나와요!'},
         {idx: 1, name: '휴식 공간이 있어요!'},
         {idx: 2, name: '마킹을 했어요!'},
         {idx: 3, name: '날씨가 좋아요!'},
-      ]
+      ],
+      photo_url: require('@/assets/images/서비스로고.png'),
+      photoCheck: false,
+      pageOn: false,
     }
   },
   mounted(){
@@ -85,12 +96,15 @@ export default {
         var t = this
         var photo = document.getElementById('ex_file')
         photo.addEventListener('change', function(event) {
+          t.photoCheck = true
+          t.pageOn = true
           const formData = new FormData()
           var file = event.target.files[0]
           formData.append('file', file)
           t.makeTempPhotoUrlInApi(formData)
           .then(() => {
             t.photo_url = t.getTempPhotoURL
+            t.pageOn = false
           }).catch((error) => {
             console.error(error)
           })
@@ -99,7 +113,7 @@ export default {
 
     // 사진, 옵션 정보 백엔드 정보 전송 
     posting(){
-      if(this.photo_url === ''){
+      if(!this.photo_url){
         alert('사진을 업로드 해 주세요!')
       }else if (this.optionValue === -1){
         alert('선정이유를 선택해 주세요!')

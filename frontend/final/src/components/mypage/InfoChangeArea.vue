@@ -17,7 +17,8 @@
           <v-text-field name="password" label="비밀번호" id="password" v-model="password" type="password" required></v-text-field>
         </v-flex>
         <v-flex class="ph-size">
-          <v-text-field name="passwordcheck" label="비밀번호 확인" id="passwordcheck" v-model="passwordcheck" type="passwordcheck" required></v-text-field>
+          <v-text-field name="passwordcheck" label="비밀번호 확인" id="passwordcheck" 
+          v-model="passwordcheck" type="passwordcheck" required></v-text-field>
         </v-flex>
       <v-btn class="login-btn">변경</v-btn>
     </div>

@@ -1,11 +1,10 @@
 <template>
   <div class="main">
-    <div class="d-flex justify-center">
+    <div class="d-flex justify-center mb-8">
       <v-img
-        height="158"
         class="rounded-circle"
-        max-height="158"
-        max-width="158"
+        max-height="250"
+        max-width="250"
         :src = getDogInfo.pet.pe_profile_photo>
       </v-img>
     </div>
@@ -99,7 +98,7 @@ export default {
 
 <style>
 .main{
-  margin-top: 45%;
+  margin-top: 20%;
   text-align: center;
 }
 .explain{

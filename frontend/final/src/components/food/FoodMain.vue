@@ -5,7 +5,7 @@
     <div id="date" class="mt-9"><h3><b>성분 분석 해드려요!</b></h3></div>
     <div id="date">
       <div class="filebox mt-3"> 
-        <label for="ex_file"><b>성분표 사진추가!</b></label> 
+        <label for="ex_file"><b>성분표 사진 추가!</b></label> 
         <input type="file" accept="image/*" @click="addPhoto()" id="ex_file"> 
       </div>
     </div>
@@ -17,15 +17,21 @@
         >
         </v-img>
       <v-img
-        v-else
+        v-if="photoCheck && !pageOn"
         height="330"
         width="330"
         :src="photo_url">
       </v-img>
+        <div class="loader d-flex justify-center align-center" v-if="pageOn" style="width: 100%; height: 330px;">
+          <b-spinner label="Spinning"></b-spinner></div>
     </div>
     <div class="mt-6 d-flex justify-center">
-      <v-btn rounded @click="result()" id="btnstyle" style="width: 200px; height: 50px; font-size: 20px;" :disabled="!photoCheck" :class="{diary: isClicked}"><b>분석 시작!</b></v-btn>
+      <v-btn rounded @click="result()" id="btnstyle" style="width: 200px; height: 50px; font-size: 20px;" 
+      :disabled="!photoCheck" :class="{diary: isClicked}" class="mb-3"><b>분석 시작!</b></v-btn>
     </div>
+    <div v-if="foodOn" class="d-flex justify-center">
+        성분분석 중...
+      </div>
     </div>
 
   </div>
@@ -40,7 +46,9 @@ export default {
       isClicked: false,
       photo_url: require('@/assets/images/서비스로고.png'),
       file: {},
-      photoCheck: false
+      photoCheck: false,
+      pageOn: false,
+      foodOn: false,
     }
   },
   computed: {
@@ -50,6 +58,7 @@ export default {
     ...mapMutations(['setNowTab']), 
     ...mapActions(['makeTempPhotoUrlInApi', 'foodPhotoInApi']),
     result() {
+      this.foodOn = true
       this.isClicked = true
       this.setNowTab(2)
       const formData = new FormData()
@@ -63,14 +72,16 @@ export default {
         var t = this
         var photo = document.getElementById('ex_file')
         photo.addEventListener('change', function(event) {
+          t.photoCheck = true
+          t.pageOn = true
           const formData = new FormData()
           var file = event.target.files[0]
           t.file = event.target.files[0]
           formData.append('file', file)
           t.makeTempPhotoUrlInApi(formData)
           .then(() => {
-            t.photoCheck = true
             t.photo_url = t.getTempPhotoURL
+            t.pageOn = false
           }).catch((error) => {
             console.error(error)
           })
