@@ -196,6 +196,7 @@ public class DiaryController {
 			Map<String, Object> map = new HashMap<>();
 			map.put("d_date", d_date);
 			map.put("peid", peid);
+			logger.info("=====> 산책 조회 시작!");
 			List<Map<String, Object>> walk_list = dservice.get_walk(map);
 
 			resultMap.put("Diary", diary); // 기록일지
