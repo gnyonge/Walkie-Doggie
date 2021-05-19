@@ -154,6 +154,8 @@ export default {
         // 다시 들어올 떄마다 경로 받기 
         this.linePath = this.getMyPath
         this.getLocation() 
+        // 여기서 실시간으로 다시 그어주기
+        this.navigation()
       }
     } else {
       const script = document.createElement('script');
