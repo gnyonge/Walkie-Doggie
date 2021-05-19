@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const rscApi = axios.create({
-  baseURL: 'http://localhost' + ':8888/pet',
+  baseURL: 'https://k4c106.p.ssafy.io' + '/pet',
   // headers: {
   //   'doggie_token': sessionStorage.getItem('doggie_token') // header의 속성
   // }
