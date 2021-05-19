@@ -27,6 +27,9 @@ export default {
   computed: {
     ...mapGetters(['getNowTab'])
   },
+  created() {
+    document.title = "WALKIE DOGGIE"
+  }
 
 };
 </script>

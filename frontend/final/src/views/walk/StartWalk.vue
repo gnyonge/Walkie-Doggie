@@ -6,16 +6,23 @@
         <div id="map"></div>
       </div>
     </div>
-    <div class="btncalss d-flex justify-center mt-2" style="position: relative; top: -60px;">
+    <div class="btncalss d-flex justify-center mt-2" style="position: relative; top: -50px;">
       <!-- 좋아요 -->
       <v-btn
         large
-        class="mr-5"
         id="mainBtn"
-        style="height:50px; width: 130px"
+        style="height:50px; width: 80px"
         @click="like">
         <v-icon size="30px" style="color: #FC6C8C;">mdi-cards-heart</v-icon>
       </v-btn>
+      <div class="d-flex justify-center mx-3" style="position: relative; top: -20px;">
+      <v-img
+        class="rounded-circle gird"
+        max-height="100"
+        max-width="100"
+        :src= getDogInfo.pet.pe_profile_photo>
+      </v-img>
+      </div>
       
       <!-- 산책 종료  -->  
       <v-dialog
@@ -27,8 +34,7 @@
           v-bind="attrs"
           v-on="on"
           id="mainBtn"
-          color=""
-          style="height: 50px; width:130px"
+          style="height: 50px; width:80px"
           @click="doneWalk">
           <v-icon size="30px" style="color: red">mdi-close-circle</v-icon>
         </v-btn>
@@ -58,7 +64,7 @@
       </v-dialog>
     </div>
     <ImageItem v-if="this.getSelectedItem != null" />
-    <div class="d-flex justify-center mt-2">
+    <!-- <div class="d-flex justify-center mt-2">
       <v-img
         height="80"
         class="rounded-circle gird"
@@ -66,7 +72,7 @@
         max-width="80"
         :src= getDogInfo.pet.pe_profile_photo>
       </v-img>
-      </div>
+      </div> -->
   </div>
 </template>
 
