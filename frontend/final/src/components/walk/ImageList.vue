@@ -87,13 +87,24 @@ export default {
               p_location: this.getUser.u_location
             })
         })
-      } else {
+      } else if (this.getFilter == 'TOP 5') {
         this.likePlaceInApi({
           lid: lid,
           uid: this.getUser.uid
         }).then(() => {
           this.getTop5ListInApi({
             uid: this.getUser.uid,
+            p_location: this.getUser.u_location
+          })
+        })
+      } else {
+        this.likePlaceInApi({
+          lid: lid,
+          uid: this.getUser.uid
+        }).then(() => {
+          this.getHotPlaceListInApi({
+            uid: this.getUser.uid,
+            sort: "pop",
             p_location: this.getUser.u_location
           })
         })

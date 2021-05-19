@@ -6,7 +6,8 @@ const state = {
   selectedDate: "", // 선택된 날짜
   prettyDate: "", // 보여주기 위해 selectedDate 변환
   myDiaryObject: {}, // 다이어리 전체 객체
-  myWalkObject: {},
+  myWalkObject: {}, // 산책기록 전체 객체
+  foodResult: {}, // 성분분석 후 전체 객체
 };
 const getters = {
   getNowTab(state) {
@@ -27,6 +28,9 @@ const getters = {
   getMyWalkObject(state) {
     return state.myWalkObject
   },
+  getFoodResult(state) {
+    return state.foodResult
+  },
 };
 const mutations = {
   setNowTab(state, now) {
@@ -46,6 +50,9 @@ const mutations = {
   },
   setMyWalkObject(state, walk) {
     state.myWalkObject = walk
+  },
+  setFoodResult(state, data) {
+    state.foodResult = data
   },
 };
 const actions = {
@@ -128,7 +135,9 @@ const actions = {
   foodPhotoInApi(context, {formData, peid}) {
     return rscApi.post(`ocr?peid=${peid}`, formData)
     .then((res) => {
-      console.log(res)
+      context.commit('setFoodResult', res.data)
+    }).catch((error) => {
+      console.log(error)
     })
   }
 };
