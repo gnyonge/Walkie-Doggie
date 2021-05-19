@@ -124,7 +124,7 @@
 		from LikePlace as l left outer join Pet as p on l.peid = p.peid left outer join Place as pl on l.pid = pl.pid 
 			left outer join (select lid from LikePost where uid=#{uid}) as lp on l.lid=lp.lid
 		where l.p_location=#{p_location} and l.l_flag=0
-		order by l.l_like desc
+		order by l.l_like desc, l.l_date desc
 		limit 5;
 	</select>
 	

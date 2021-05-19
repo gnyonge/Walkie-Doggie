@@ -7,6 +7,7 @@ import com.ssafy.pet.util.JWTInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.ApplicationPidFileWriter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -19,7 +20,7 @@ public class BackendApplication implements WebMvcConfigurer {
 	
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(BackendApplication.class);
-		app.addListeners(new ApplicationPidFileWriter())
+		app.addListeners(new ApplicationPidFileWriter());
 		app.run(args);
 		// SpringApplication.run(BackendApplication.class, args);
 	}
