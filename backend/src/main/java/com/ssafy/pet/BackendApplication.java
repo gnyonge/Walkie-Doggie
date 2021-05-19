@@ -18,7 +18,10 @@ public class BackendApplication implements WebMvcConfigurer {
 	public JWTInterceptor jwtInterceptor;
 	
 	public static void main(String[] args) {
-		SpringApplication.run(BackendApplication.class, args);
+		SpringApplication app = new SpringApplication(BackendApplication.class);
+		app.addListeners(new ApplicationPidFileWriter())
+		app.run(args);
+		// SpringApplication.run(BackendApplication.class, args);
 	}
 
 	// JWTInterceptor를 설치한다. 경로 조건을 설정한다.
