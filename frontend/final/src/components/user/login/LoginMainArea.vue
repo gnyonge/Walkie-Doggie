@@ -67,17 +67,18 @@ export default {
           this.user.u_email = userInfo.email;
           this.user.u_nickname = userInfo.nickname;
           rscApi.post(`login/ksign`,this.user)
-            .then(({data}) => {
-              this.user = data.user;
-              sessionStorage.setItem('doggie_token',data.doggie_token);
-              this.setUser(this.user)
-              
-              if(this.user.u_location==null){
-                //지역 등록 안했으니까 지역 등록으로
-                this.$router.push("/register")
-              }else{
-                //지역 등록 했으니까
-                this.getUserInfoInApi(this.user.uid)
+                .then(({data}) => {
+                  this.user = data.user;
+                  sessionStorage.setItem('doggieToken',data.doggieToken);
+                  this.setUser(this.user)
+                  
+                  if(this.user.u_location==null){
+                    //지역 등록 안했으니까 지역 등록으로
+                    this.$router.push("/register")
+                  }else{
+                    //지역 등록 했으니까
+                    this.getUserInfoInApi(this.user.uid)
+
                   .then((res) => {
                     if (res.data.petList.length == 0) {
                       this.$router.push("/dogregister")
