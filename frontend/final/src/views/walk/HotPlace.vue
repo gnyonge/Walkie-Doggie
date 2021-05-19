@@ -26,7 +26,7 @@ export default {
     DropDown,
   },
   computed: {
-    ...mapGetters(['getSelectedItem', 'getHotPlace', 'getUser'])
+    ...mapGetters(['getSelectedItem', 'getHotPlace', 'getUser', 'getDogInfo'])
   },
   data(){
     return{
@@ -156,7 +156,11 @@ export default {
         return function(){
         // 마커 선택후 해당 정보 자식 컴포넌트로 전송 
         // 해당 게시글 wid
-        t.setClickPostDetailInAPI(marker.getTitle())
+        console.log(t.getDogInfo.pet.uid)
+        t.setClickPostDetailInAPI({
+          uid:t.getDogInfo.pet.uid, 
+          lid: marker.getTitle(),
+        })
         }
       }
       marker.setMap(map)

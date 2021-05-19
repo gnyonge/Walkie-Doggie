@@ -126,7 +126,6 @@ export default {
     ])
   },
   mounted() {
-    console.log(this.getPostingWid, '내가쓴 게시글 ')
     // 좋아요 작성시 해당 리스트 가져오기 
     if(this.getPostingWid.length !== 0){
       this.getMyPlaceListInApi(this.getPostingWid)
@@ -141,9 +140,12 @@ export default {
     if (window.kakao && window.kakao.maps) {
       this.initMap();
       if( this.getFirstAreaName === '') {
-        // 실시간 위치 정보 
-        this.navigation()
+        setTimeout(()=>{ 
+          // 실시간 위치 정보
+          this.navigation();}, 5000
+        )
       } else { // 좋아요 포스팅 이후 
+
         // 다시 들어올 떄마다 경로 받기 
         this.linePath = this.getMyPath
         this.getLocation() 
@@ -250,12 +252,6 @@ export default {
           
         // 인포윈도우를 마커위에 표시합니다 
         infowindow.open(map, marker);
-
-        // message창 3초 후에 종료 
-        setTimeout(function(){ 
-          infowindow.close()
-          marker.setMap(null);}, 3000
-        )
         
         // 지도 중심좌표를 접속위치로 변경합니다
         map.setCenter(locPosition);  
@@ -499,7 +495,7 @@ export default {
 
     // 움직이는 경로 표시하기 
     navigation(){
-      this.walkLoc = setInterval(this.getLocation, 600000)
+      this.walkLoc = setInterval(this.getLocation, 15000) 
     },
     
     // 위치 정보 기반 선 표시 
@@ -507,13 +503,13 @@ export default {
       var map = this.map
       var linePath = this.linePath
       var t = this 
-
+      console.log(linePath, '좋아요 이후 linepath찍히냐')
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
       navigator.geolocation.getCurrentPosition(function(position) { 
         var lat = position.coords.latitude, // 위도
             lon = position.coords.longitude; // 경도
       linePath.push(new kakao.maps.LatLng(lat, lon))
-
+      console.log(linePath, '이동경로 잘 push해주냐')
       // 실시간 위치 정보 vuex로 보내기 
       t.setMyPath(new kakao.maps.LatLng(lat, lon))
       
@@ -522,7 +518,7 @@ export default {
         path: linePath, // 선을 구성하는 좌표배열 
         strokeWeight: 5, // 선의 두께
         strokeColor: '#1E90FF', // 선의 색깔 
-        strokeOpacity: 0.2, // 선의 불투명도, 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+        strokeOpacity: 0.7, // 선의 불투명도, 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
         strokeStyle: 'solid' // 선의 스타일입니다
       })
       polyline.setMap(map)
