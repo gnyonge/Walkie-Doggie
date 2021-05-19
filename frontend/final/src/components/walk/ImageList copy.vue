@@ -22,13 +22,22 @@
         ></v-img>
       </div>
       <div class="d-flex justify-end mt-1">
-        <v-btn icon @click="likePost(i.lid)" class="mt-1" v-if="i.l_flag == 0">
+        <v-btn icon @click="likePost(i.lid)" class="mt-1" v-if="i.l_flag == 0 && !isLiked">
           <v-icon>mdi-heart-outline</v-icon>
         </v-btn>
-        <v-btn icon @click="likePost(i.lid)" class="mt-1" v-else>
+        <v-btn icon @click="likePost(i.lid)" class="mt-1" v-else-if="i.l_flag == 0 && isLiked">
           <v-icon color="red">mdi-heart</v-icon>
         </v-btn>
-        <div class="d-inline mr-3" style="font-size: 18px; margin-top: 10px;">{{i.l_like}}</div>
+        <v-btn icon @click="likePost(i.lid)" class="mt-1" v-else-if="i.l_flag != 0 && !isLiked">
+          <v-icon color="red">mdi-heart</v-icon>
+        </v-btn>
+        <v-btn icon @click="likePost(i.lid)" class="mt-1" v-else-if="i.l_flag != 0 && isLiked">
+          <v-icon color="red">mdi-heart-outline</v-icon>
+        </v-btn>
+        <div class="d-inline mr-3" style="font-size: 18px; margin-top: 10px;" v-if="i.l_flag == 0 && !isLiked">{{i.l_like}}</div>
+        <div class="d-inline mr-3" style="font-size: 18px; margin-top: 10px;" v-else-if="i.l_flag == 0 && isLiked">{{i.l_like + 1}}</div>
+        <div class="d-inline mr-3" style="font-size: 18px; margin-top: 10px;" v-else-if="i.l_flag != 0 && !isLiked">{{i.l_like}}</div>
+        <div class="d-inline mr-3" style="font-size: 18px; margin-top: 10px;" v-else-if="i.l_flag != 0 && isLiked">{{i.l_like + 1}}</div>
         
       </div>
       <v-divider></v-divider>
@@ -45,7 +54,6 @@ export default {
     return {
      hotPlaceList: [],
      isLiked: false,
-     color: ""
     }
   },
   created() {
@@ -63,11 +71,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getSelectedItem', 'getHotPlace', 'getUser', 'getDogInfo', 'getFilter'])
+    ...mapGetters(['getSelectedItem', 'getHotPlace', 'getUser', 'getDogInfo'])
   },
   methods: {
     ...mapMutations(['setSelectedItem', 'setNowTab']),
-    ...mapActions(['likePlaceInApi', 'getHotPlaceListInApi', 'getTop5ListInApi']),
+    ...mapActions(['likePlaceInApi', 'getHotPlaceListInApi']),
     goback() {
       this.$router.push('/walk')
       this.setNowTab(1)
@@ -76,29 +84,23 @@ export default {
       this.setSelectedItem(i)
     },
     likePost(lid) {
-      if (this.getFilter == 'ALL') {
-        this.likePlaceInApi({
-          lid: lid,
-          uid: this.getUser.uid
-        }).then(() => {
-          this.getHotPlaceListInApi({
-              uid: this.getUser.uid,
-              sort: "string",
-              p_location: this.getUser.u_location
-            })
-        })
-      } else {
-        this.likePlaceInApi({
-          lid: lid,
-          uid: this.getUser.uid
-        }).then(() => {
-          this.getTop5ListInApi({
-            uid: this.getUser.uid,
-            p_location: this.getUser.u_location
-          })
-        })
-      }
-      
+      this.likePlaceInApi({
+        lid: lid,
+        uid: this.getUser.uid
+      }).then(() => {
+        if (this.isLiked) {
+          this.isLiked = false
+        } else {
+          this.isLiked = true
+        }
+      })
+      // .then(() => {
+      //   this.getHotPlaceListInApi({
+      //       uid: this.getUser.uid,
+      //       sort: "pop",
+      //       p_location: this.getUser.u_location
+      //     })
+      // })
     }
   }
 }
