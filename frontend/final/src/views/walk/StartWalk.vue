@@ -458,8 +458,9 @@ export default {
     doneWalk() {
       this.start = this.getStartTime
       this.end = this.getTime()
+      this.calTime()
       this.likecnt = this.getLikeCnt
-      
+      console.log((this.totalH * 60) + this.totalM, '총산책시간')
       // 백엔드로 정보 보내기 
       this.doneWalkInApi({
         wid: this.getWid,
@@ -468,7 +469,7 @@ export default {
       }).then(()=> {
         // 실시간 정보 가져오기죽이기 
         clearInterval(this.walkLoc)
-        this.calTime()
+        
         // 저장되어 있던 정보도 지우기 
         this.deletePostingContent()
         this.deletePostingWid()
@@ -495,7 +496,7 @@ export default {
 
     // 움직이는 경로 표시하기 
     navigation(){
-      this.walkLoc = setInterval(this.getLocation, 15000) 
+      this.walkLoc = setInterval(this.getLocation, 20000) 
     },
     
     // 위치 정보 기반 선 표시 
