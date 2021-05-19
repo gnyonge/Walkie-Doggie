@@ -155,7 +155,10 @@ export default {
         this.linePath = this.getMyPath
         this.getLocation() 
         // 여기서 실시간으로 다시 그어주기
-        this.navigation()
+        setTimeout(()=>{ 
+          // 실시간 위치 정보
+          this.navigation();}, 5000
+        )
       }
     } else {
       const script = document.createElement('script');
