@@ -166,9 +166,11 @@ const routes = [
     name: 'Dontleaveus',
     component: Dontleaveus
   },
+  { 
+    path: '*', 
+    redirect:'/404'},
   {
-    path: '/:pathMatch(.*)*',
-    redirect: "/404",
+    path: "/404",
     component: NotFound
   },
 

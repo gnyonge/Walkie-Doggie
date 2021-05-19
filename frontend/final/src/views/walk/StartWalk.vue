@@ -135,7 +135,6 @@ export default {
         this.myLikePoint()
       })
     }
-    console.log(this.getFirstAreaName)
     // 첫화면과 구별 
     if (window.kakao && window.kakao.maps) {
       this.initMap();
@@ -282,7 +281,6 @@ export default {
           var detail = address.split(' ')
           if (this.getFirstAreaName === '') {
             fullAddress = this.makeFullAd(detail)
-            console.log(fullAddress, '첫주소 설정')
             this.setFirstAreaName(fullAddress)
             // 시작 시간 가져오기 
             this.setStartTime(this.startTime())
@@ -291,12 +289,10 @@ export default {
               peid:  this.getDogInfo.pet.peid,
               w_location: this.getFirstAreaName
             }).then(()=> {
-              console.log('시작 api전송 성공')
             })
 
           }else {
             fullAddress = this.makeFullAd(detail)
-            console.log(fullAddress, '좋아요 후 주소 설정')
             this.setAreaName(fullAddress)
           }
         } 
@@ -324,14 +320,12 @@ export default {
           break
         }
       }
-      // console.log(sAddress, '동까지 저장')
       const finalAddress = sAddress.join(" ");
       return finalAddress
     },
     // 시간 가져오기 
     getTime() {
       let today = new Date() 
-      console.log(today)
       let date = today.getFullYear() + '년' + (today.getMonth() + 1 ) + '월' + today.getDate() + '일'
       let time = today.getHours() + '시' + today.getMinutes() + '분'
       this.afterH = today.getHours()
@@ -408,22 +402,16 @@ export default {
       //  마커 클릭시 해당 정보 가져오는 함수 
       function getMakerInfo(map, marker){
         return function(){
-        // 마커 선택후 해당 정보 자식 컴포넌트로 전송 
-        t.setClickPostDetailInAPI({
-          uid:t.getDogInfo.pet.uid, 
-          lid: marker.getTitle(),
-        }).then(()=>{
-          console.log('선택한거 잘 가냐')
-        })
-        console.log(marker.getTitle())
-       
+          // 마커 선택후 해당 정보 자식 컴포넌트로 전송 
+          t.setClickPostDetailInAPI({
+            uid:t.getDogInfo.pet.uid, 
+            lid: marker.getTitle(),
+          }).then(()=>{})     
         }
       }
       if (marker !== undefined){
         marker.setMap(map)
       }
-      
-      console.log('pin 함수 안에 setMap 있냐')
     },
     // 형식 변환 
     formatConversion(posts){
@@ -460,7 +448,6 @@ export default {
       this.end = this.getTime()
       this.calTime()
       this.likecnt = this.getLikeCnt
-      console.log((this.totalH * 60) + this.totalM, '총산책시간')
       // 백엔드로 정보 보내기 
       this.doneWalkInApi({
         wid: this.getWid,
@@ -469,8 +456,8 @@ export default {
       }).then(()=> {
         // 실시간 정보 가져오기죽이기 
         clearInterval(this.walkLoc)
-        
         // 저장되어 있던 정보도 지우기 
+        this.setStartTime('')
         this.deletePostingContent()
         this.deletePostingWid()
         this.deleteMyPath()
@@ -504,13 +491,11 @@ export default {
       var map = this.map
       var linePath = this.linePath
       var t = this 
-      console.log(linePath, '좋아요 이후 linepath찍히냐')
       // GeoLocation을 이용해서 접속 위치를 얻어옵니다
       navigator.geolocation.getCurrentPosition(function(position) { 
         var lat = position.coords.latitude, // 위도
             lon = position.coords.longitude; // 경도
       linePath.push(new kakao.maps.LatLng(lat, lon))
-      console.log(linePath, '이동경로 잘 push해주냐')
       // 실시간 위치 정보 vuex로 보내기 
       t.setMyPath(new kakao.maps.LatLng(lat, lon))
       

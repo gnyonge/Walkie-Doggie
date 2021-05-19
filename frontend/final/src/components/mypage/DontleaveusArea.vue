@@ -20,7 +20,7 @@
       <div v-if="check">
         <v-form class="mt-10">
         <v-text-field name="password" label="기존 비밀번호" id="password" v-model="password" type="password" required color="#48B9A8" class="font-change">
-          <v-btn @click="checkpw()" slot="append" style="margin:5px; width:60px;" id="mainBtn">확인</v-btn>
+          <v-btn @click="checkpw()" slot="append" style="margin:5px; width:60px;" id="mainBtn"><b>확인</b></v-btn>
         </v-text-field>
       </v-form>
       <div style="color:red; font-size:14px" v-if="!pass">

@@ -199,10 +199,8 @@ const actions = {
   },
   // 산책 종료 
   doneWalkInApi(context, params){
-    console.log(params, '산책종료함수에 넘겨주는 params')
     return rscApi.put('walk/end', params)
-      .then((res) => {
-        console.log(res)
+      .then(() => {
       }).catch((error) =>{
         console.log(error)
       })
@@ -221,7 +219,6 @@ const actions = {
   getHotPlaceListInApi(context, params) {
     return rscApi.post('place/list', params)
     .then((res) => {
-      console.log(res)
       context.commit('setHotPlace', res.data.postList)
     })
   },
@@ -257,7 +254,6 @@ const actions = {
   likePlaceInApi(context, params) {
     return rscApi.post(`place/likePost?lid=${params.lid}&uid=${params.uid}`)
     .then((res) => {
-      console.log(res, '좋아요 했음')
       return res.data.message
     })
     .catch((err) => {

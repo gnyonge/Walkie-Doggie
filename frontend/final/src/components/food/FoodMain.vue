@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div id="date"><h2 class="my-10">우리 아이 간식</h2></div>
-    <div id="date" class="mt-9"><h2 class="mt-5">성분 분석 해드려요!</h2></div>
+    <div id="date"><h2 class="my-10"><b>우리 아이 간식</b></h2></div>
+    <div id="date" class="mt-9"><h2 class="mt-5"><b>성분 분석 해드려요!</b></h2></div>
     <div id="date" class="mt-8">
       <div class="filebox mt-3"> 
-        <label for="ex_file">성분표 사진추가!</label> 
+        <label for="ex_file"><b>성분표 사진추가!</b></label> 
         <input type="file" accept="image/*" @click="addPhoto()" id="ex_file"> 
       </div>
     </div>
@@ -17,7 +17,7 @@
       </v-img>
     </div>
     <div class="mt-6 d-flex justify-center">
-      <v-btn rounded @click="result()" id="btnstyle" style="width: 200px; height: 50px; font-size: 20px;" :class="{diary: isClicked}">분석 시작!</v-btn>
+      <v-btn rounded @click="result()" id="btnstyle" style="width: 200px; height: 50px; font-size: 20px;" :class="{diary: isClicked}"><b>분석 시작!</b></v-btn>
     </div>
   </div>
 </template>
