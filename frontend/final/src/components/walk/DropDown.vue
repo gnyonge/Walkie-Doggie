@@ -4,7 +4,6 @@
       <b-dropdown-item @click="all()">최신순</b-dropdown-item>
       <b-dropdown-item @click="pop()">인기순</b-dropdown-item>
       <b-dropdown-item @click="top()">TOP 5</b-dropdown-item>
-      <!-- <b-dropdown-item active>Active action</b-dropdown-item> -->
     </b-dropdown>
   </div>
   
@@ -52,7 +51,6 @@ export default {
       })
     },
   }
-
 }
 </script>
 

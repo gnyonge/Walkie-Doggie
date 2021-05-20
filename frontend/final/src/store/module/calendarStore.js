@@ -151,7 +151,6 @@ const actions = {
     return rscApi.get(`diary/show?peid=${peid}`)
     .then((res) => {
       context.commit('setAllDiaryList', res.data.All_diary)
-      console.log(res.data.All_diary, '올다이어리')
     }).catch((error) => {
       console.log(error)
     })

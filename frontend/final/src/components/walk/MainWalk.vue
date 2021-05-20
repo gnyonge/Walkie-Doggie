@@ -10,7 +10,7 @@
       </v-img>
     </div>
     <div class="d-flex justify-center explain">
-    <b>반려견의 산책정보를 기록합니다. </b>
+      <b>반려견의 산책정보를 기록합니다. </b>
     </div>
     <div class="d-flex justify-center">
       <v-btn
@@ -51,6 +51,12 @@ export default {
   name: 'MainWalk',
   computed: {
     ...mapGetters(['getUser', 'getHotPlace', 'getDogInfo'])
+  },
+  created() {
+    if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      }
   },
   mounted(){
     // 중복으로 넘어가면 setWid초기화

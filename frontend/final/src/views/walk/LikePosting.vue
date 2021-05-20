@@ -76,13 +76,19 @@ export default {
       pageOn: false,
     }
   },
+  created() {
+    if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      } 
+  },
   mounted(){
     // 클릭하자마자 사진 바로 받기 
     var camera = document.getElementById('ex_file')
     camera.click()
   },
   computed: {
-      ...mapGetters(['getNowLat', 'getNowLon', 'getAreaName', 'getTempPhotoURL', 'getDogInfo', 'getWid'])
+      ...mapGetters(['getNowLat', 'getNowLon', 'getAreaName', 'getTempPhotoURL', 'getDogInfo', 'getWid', 'getUser'])
   },
   methods:{
     ...mapMutations(['setNowLat', 'setNowLon', 'setTempPhotoURL']),

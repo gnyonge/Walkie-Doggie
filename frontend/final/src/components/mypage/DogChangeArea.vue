@@ -11,7 +11,9 @@
       <div style="width: 24px; background-color: white;">
       </div>
     </div>
+    <!-- 강아지 이름 -->
     <div class="d-flex justify-center mb-3" style="font-size: 30px;">{{getDogInfo.pet.pe_name}}</div>
+    <!-- 이미지 -->
     <div class="d-flex justify-center">
       <v-avatar width="100px" height="100px">
         <img
@@ -20,16 +22,18 @@
         >
       </v-avatar>
     </div>
+    <!-- 업로드 중 -->
     <div v-if="pageOn" class="d-flex justify-center">
-          업로드 중...
-        </div>
-      <div class="d-flex justify-center">
-        <div class="filebox mt-3"> 
-          <label for="ex_file"><v-icon class="pt-1">mdi-camera</v-icon></label> 
-          <input type="file" id="ex_file" accept="image/*" @click="getPhoto()" ref="imageInput"> 
-        </div>
-      </div> 
-    
+      업로드 중...
+    </div>
+    <!-- 사진 추가 -->
+    <div class="d-flex justify-center">
+      <div class="filebox mt-3"> 
+        <label for="ex_file"><v-icon class="pt-1">mdi-camera</v-icon></label> 
+        <input type="file" id="ex_file" accept="image/*" @click="getPhoto()" ref="imageInput"> 
+      </div>
+    </div>
+    <!-- 입력 칸 -->
     <div>
       <v-form>
         <!-- 이름  -->
@@ -92,44 +96,43 @@
         <v-flex class="ph-size">
           <v-text-field label="트라우마" v-model="trauma" required color="#48B9A8"></v-text-field>
         </v-flex>
-
+        <!-- 알러지 -->
         <div id="contentBox">
-        <v-checkbox
-          v-model="alle"
-          label="알러지"
-          color="#48B9A8"
-          hide-details
-        ></v-checkbox>
-        <v-text-field
-          color="#48B9A8"
-          @keydown.enter="addAllergy()"
-          v-model="allergyContent"
-          class="px-5"
-          v-if="alle"
-          label="입력 후 enter"
-        ></v-text-field>
-        <div class="mx-4" v-if="alle">
-          <v-chip
-            v-for="(alg, idx) in allergyArray"
-            :key="idx"
-            class="mx-1 my-1"
-            close
-            color="#BAF1E4"
-            @click:close="deleteAllergy(alg)"
-          >
-            {{ alg }}
-          </v-chip>
+          <v-checkbox
+            v-model="alle"
+            label="알러지"
+            color="#48B9A8"
+            hide-details
+          ></v-checkbox>
+          <v-text-field
+            color="#48B9A8"
+            @keydown.enter="addAllergy()"
+            v-model="allergyContent"
+            class="px-5"
+            v-if="alle"
+            label="입력 후 enter"
+          ></v-text-field>
+          <div class="mx-4" v-if="alle">
+            <v-chip
+              v-for="(alg, idx) in allergyArray"
+              :key="idx"
+              class="mx-1 my-1"
+              close
+              color="#BAF1E4"
+              @click:close="deleteAllergy(alg)"
+            >
+              {{ alg }}
+            </v-chip>
+          </div>
         </div>
-      </div>
       </v-form>
       <!-- 반려견 등록 버튼  -->
       <div class="d-flex justify-center mt-9">
         <v-btn id="mainBtn" @click="updateDog()"><b>반려견 정보 수정</b></v-btn>
       </div>
-
     </div>
+    <!-- 삭제 확인 창 -->
     <div class="d-flex justify-end mt-5">
-        <!-- 삭제 확인 창 -->
         <v-btn
           color="red" text width="50px"
           @click="snackbar = true"
@@ -155,7 +158,6 @@
           </template>
         </v-snackbar>
       </div>
-
   </div>
   
 
@@ -198,23 +200,29 @@ export default {
     }
   },
   created() {
-    if (this.getDogInfo.pet.pe_profile_photo.length != 0) {
-      this.photo_url = this.getDogInfo.pet.pe_profile_photo
-    } else {
-      this.photo = false
-    }
-    this.name = this.getDogInfo.pet.pe_name
-    this.age = this.getDogInfo.pet.pe_age
-    this.weight = this.getDogInfo.pet.pe_weight
-    this.trauma = this.getDogInfo.pet.pe_trauma
-    this.disease = this.getDogInfo.pet.pe_disease
-    this.date = this.getDogInfo.pet.pe_birthday.substr(0, 10)
-    if (this.getDogInfo.allergy.length != 0) {
-      this.alle = true
-      for (let i of this.getDogInfo.allergy) {
-        this.allergyArray.push(i.al_name)
+    if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      } else {
+        if (this.getDogInfo.pet.pe_profile_photo.length != 0) {
+          this.photo_url = this.getDogInfo.pet.pe_profile_photo
+        } else {
+          this.photo = false
+        }
+        this.name = this.getDogInfo.pet.pe_name
+        this.age = this.getDogInfo.pet.pe_age
+        this.weight = this.getDogInfo.pet.pe_weight
+        this.trauma = this.getDogInfo.pet.pe_trauma
+        this.disease = this.getDogInfo.pet.pe_disease
+        this.date = this.getDogInfo.pet.pe_birthday.substr(0, 10)
+        if (this.getDogInfo.allergy.length != 0) {
+          this.alle = true
+          for (let i of this.getDogInfo.allergy) {
+            this.allergyArray.push(i.al_name)
+          }
+        }
       }
-    }
+    
   },
   computed: {
     ...mapGetters(['getTempPhotoURL', 'getDogInfo', 'getMyDogListInfo', 'getUser'])
@@ -413,12 +421,9 @@ export default {
             alert('삭제되었습니다!')
             this.$router.push('/mypage')
           })
-          
         })
-        
       })
       }
-      
     }  
   }
 }

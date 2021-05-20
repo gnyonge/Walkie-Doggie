@@ -122,13 +122,17 @@ export default {
         ],
         rules2: [
         value => !!value.replace(/(\s*)/g, "") || '공백은 불가해요!',
-        // value => (value || '').length <= 20 || 'Max 20 characters',
-        // value => 
         ],
       }
     },
+    created() {
+      if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      } 
+    },
     computed: {
-      ...mapGetters(['getSelectedDate', 'getPrettyDate', 'getTempPhotoURL', 'getDogInfo']),
+      ...mapGetters(['getSelectedDate', 'getPrettyDate', 'getTempPhotoURL', 'getDogInfo', 'getUser']),
       confirm() {
         if (this.diaryContent.length < 1) {
           return false
@@ -238,9 +242,7 @@ export default {
           this.createNoPhotoDiaryInApi(formData).then(() => {
             this.setDetailBtn('diary')
             this.$router.push(`/calendar/detail/todaydiary/${this.getSelectedDate}`)
-              
           })
-          
         }
         // 사진 있을 때
         else {

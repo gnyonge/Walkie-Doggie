@@ -1,39 +1,44 @@
 <template>
   <div>
     <div id="mainBox">
-    <div id="date"><h3 class="my-5"><b>우리 아이 간식</b></h3></div>
-    <div id="date" class="mt-9"><h3><b>성분 분석 해드려요!</b></h3></div>
-    <div id="date">
-      <div class="filebox mt-3"> 
-        <label for="ex_file"><b>성분표 사진 추가!</b></label> 
-        <input type="file" accept="image/*" @click="addPhoto()" id="ex_file"> 
+      <div id="date"><h3 class="my-5"><b>우리 아이 간식</b></h3></div>
+      <div id="date" class="mt-9"><h3><b>성분 분석 해드려요!</b></h3></div>
+      <!-- 사진 추가 -->
+      <div id="date">
+        <div class="filebox mt-3"> 
+          <label for="ex_file"><b>성분표 사진 추가!</b></label> 
+          <input type="file" accept="image/*" @click="addPhoto()" id="ex_file"> 
+        </div>
       </div>
-    </div>
-    <div id="contentBox" class="mt-8">
+      <!-- 이미지 -->
+      <div id="contentBox" class="mt-8">
         <v-img
         v-if="!photoCheck"
           :src="photo_url"
           alt="프로필 사진" 
         >
         </v-img>
-      <v-img
-        v-if="photoCheck && !pageOn"
-        height="330"
-        width="330"
-        :src="photo_url">
-      </v-img>
+        <v-img
+          v-if="photoCheck && !pageOn"
+          height="330"
+          width="330"
+          :src="photo_url">
+        </v-img>
+        <!-- 로딩중 -->
         <div class="loader d-flex justify-center align-center" v-if="pageOn" style="width: 100%; height: 330px;">
-          <b-spinner label="Spinning"></b-spinner></div>
-    </div>
-    <div class="mt-6 d-flex justify-center">
-      <v-btn rounded @click="result()" id="btnstyle" style="width: 200px; height: 50px; font-size: 20px;" 
-      :disabled="!photoCheck" :class="{diary: isClicked}" class="mb-3"><b>분석 시작!</b></v-btn>
-    </div>
-    <div v-if="foodOn" class="d-flex justify-center">
-        성분분석 중...
+          <b-spinner label="Spinning"></b-spinner>
+        </div>
+      </div>
+      <!-- 분석 시작 버튼 -->
+      <div class="mt-6 d-flex justify-center">
+        <v-btn rounded @click="result()" id="btnstyle" style="width: 200px; height: 50px; font-size: 20px;" 
+        :disabled="!photoCheck" :class="{diary: isClicked}" class="mb-3"><b>분석 시작!</b></v-btn>
+      </div>
+      <!-- 분석중 -->
+      <div v-if="foodOn" class="d-flex justify-center">
+          성분분석 중...
       </div>
     </div>
-
   </div>
 </template>
 
@@ -41,6 +46,12 @@
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 export default {
   name: "FoodMain",
+  created() {
+    if (this.getUser == undefined) {
+      alert('로그인 해주세요!')
+      this.$router.push('/')
+    }
+  },
   data() {
     return {
       isClicked: false,
@@ -52,7 +63,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getTempPhotoURL', 'getDogInfo'])
+    ...mapGetters(['getTempPhotoURL', 'getDogInfo', 'getUser'])
   },
   methods: {
     ...mapMutations(['setNowTab']), 

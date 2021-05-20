@@ -28,12 +28,15 @@
 import { mapGetters } from 'vuex'
 export default {
   name: "TodayWalk",
-  created() {
-    console.log(this.getMyWalkObject)
-  },
   computed: {
-      ...mapGetters(['getSelectedDate', 'getPrettyDate', 'getMyWalkObject'])
+      ...mapGetters(['getSelectedDate', 'getPrettyDate', 'getMyWalkObject', 'getUser'])
     },
+  created() {
+    if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      } 
+  },
   methods: {
     goback() {
       this.$router.push('/calendar')

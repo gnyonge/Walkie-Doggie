@@ -53,8 +53,9 @@
             <v-card-actions class="justify-center text-align-center">
               <v-btn
                 text
+                class="mb-3"
                 id="mainBtn"
-                style="background-color: #FC6C8C; "
+                style="background-color: #FC6C8C; width: 100px;"
                 @click="gotoMain">
                 <b>창 닫기</b>
               </v-btn>
@@ -105,6 +106,12 @@ export default {
       
     }
   },
+  created() {
+    if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      } 
+  },
   computed: {
     ...mapGetters([
       'getNowTab', 
@@ -120,7 +127,8 @@ export default {
       'getMyPostingContent',
       'getLikeCnt',
       'getWid',
-      'getSelectedItem'
+      'getSelectedItem',
+      'getUser'
     ])
   },
   mounted() {

@@ -10,19 +10,18 @@
       <div style="width: 24px; background-color: white;">
       </div>
     </div>
-      <div class="d-flex justify-center">
-        <div class="circle " @click="gotoregi()">
-          <p>+ 반려견 등록</p>
-        </div>
+    <div class="d-flex justify-center">
+      <div class="circle " @click="gotoregi()">
+        <p>+ 반려견 등록</p>
       </div>
-      <div class="d-flex justify-center mt-15">
-        <div>
-          <p>※ 다견가정을 위해</p>
-          <p>최대 세마리까지 등록 가능합니다.</p>
-        </div>
+    </div>
+    <div class="d-flex justify-center mt-15">
+      <div>
+        <p>※ 다견가정을 위해</p>
+        <p>최대 세마리까지 등록 가능합니다.</p>
       </div>
+    </div>
   </div>
-
 </template>
 
 <script>
@@ -30,7 +29,13 @@ import {mapGetters} from 'vuex'
 export default {
   name: "DogInfo",
   computed: {
-    ...mapGetters(['getDogInfo'])
+    ...mapGetters(['getDogInfo', 'getUser'])
+  },
+  created() {
+    if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      }
   },
   methods: {
     goto() {
