@@ -168,7 +168,7 @@ public class UserController {
 		// 1. 이미 있는 메일이야? 메일 중복 확인
 
 		// 2. 메일 중복 아니야? 난수 생성해서 uid세팅하고, u_flag는 1로 해서 비활성화! mail 세팅하고!
-
+		System.out.println(user);
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
