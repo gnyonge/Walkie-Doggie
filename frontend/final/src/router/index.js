@@ -29,6 +29,7 @@ import InfoChangeLocation from '../views/mypage/InfoChangeLocation.vue'
 import InfoChangePassword from '../views/mypage/InfoChangePassword.vue'
 import Statistics from '../views/mypage/Statistics.vue'
 import Dontleaveus from '../views/mypage/Dontleaveus.vue'
+import DontleaveusKakao from '../views/mypage/DontleaveusKakao.vue'
 import NotFound from '../views/NotFound.vue'
 
 Vue.use(VueRouter)
@@ -165,6 +166,11 @@ const routes = [
     path: '/dontleaveus',
     name: 'Dontleaveus',
     component: Dontleaveus
+  },
+  {
+    path: '/dontleaveuskakao',
+    name: 'DontleaveusKakao',
+    component: DontleaveusKakao
   },
   { 
     path: '*', 
