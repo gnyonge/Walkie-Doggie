@@ -60,6 +60,7 @@ export default {
           newPass: this.newpassword
           })
           .then(() => {
+            alert('변경되었습니다!')
             this.$router.push('/mypage')
           })
         }

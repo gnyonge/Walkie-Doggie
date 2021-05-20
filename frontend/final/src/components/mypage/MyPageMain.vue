@@ -172,6 +172,7 @@ export default {
         this.setDogInfo(null)
         this.setMyDogListInfo(null)
         sessionStorage.setItem('doggie_token','');
+        alert('로그아웃되었습니다!')
         this.$router.push('/')
         this.setNowTab(1)
       }

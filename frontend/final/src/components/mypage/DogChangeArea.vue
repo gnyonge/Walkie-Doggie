@@ -305,6 +305,7 @@ export default {
           )
 
           this.NoPhotoUpdateDogInfoInApi(formData).then(() => {
+            alert('수정되었습니다!')
             this.$router.push('/mypage')
           })
       } 
@@ -343,6 +344,7 @@ export default {
           formData.append('file', this.file)
 
           this.updateDogInfoInApi(formData).then(() => {
+            alert('수정되었습니다!')
             this.$router.push('/mypage')
           })
       }
@@ -408,6 +410,7 @@ export default {
           this.showDogInfoInApi(this.getMyDogListInfo[0].peid)
           .then(() => {
             this.snackbar = false
+            alert('삭제되었습니다!')
             this.$router.push('/mypage')
           })
           
