@@ -28,7 +28,7 @@
         <v-btn icon @click="likePost(i.lid)" class="mt-1" v-else>
           <v-icon color="red">mdi-heart</v-icon>
         </v-btn>
-        <div class="d-inline mr-3" style="font-size: 18px; margin-top: 10px;">{{i.l_like}}</div>
+        <div class="d-inline mr-3" style="font-size: 18px; margin-top: 7px;">{{i.l_like}}</div>
         
       </div>
       <v-divider></v-divider>

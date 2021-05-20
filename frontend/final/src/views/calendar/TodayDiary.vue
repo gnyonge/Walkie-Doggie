@@ -35,10 +35,10 @@
         <div class="mt-2 font-weight-bold" style="font-size: 22px;">{{getPrettyDate}}</div>
       </div>
       <v-divider></v-divider>
-      <div id="contentBox">{{myDiary.Diary.d_memo}}</div>
+      <div id="contentBox" style="font-weight: initial">{{myDiary.Diary.d_memo}}</div>
       <div v-if="myDiary.Diary.d_special">
         <div id="contentBox" class="font-weight-bold" style="font-size: 17px;">특이사항</div>
-        <div id="contentBox">
+        <div id="contentBox" style="font-weight: initial">
           {{myDiary.Diary.d_special}}
         </div>
       </div>

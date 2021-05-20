@@ -11,7 +11,7 @@
       <div style="width: 24px; background-color: white;">
       </div>
     </div>
-      <div style="font-size:18px;" class="my-3">
+      <div style="font-size:18px;" class="mb-3 mt-5">
       기존 주소: <b>{{getUser.u_location}}</b>
       </div>
       <DaumPostcode
@@ -19,11 +19,11 @@
       v-model="addressChange"
     />
     </div>
-    <div style="font-size:18px;" class="my-5">
+    <div style="font-size:18px;" class="mt-5">
       변경할 주소: <b>{{addressChange}}</b>
     </div>
       <div class="d-flex justify-center">
-        <v-btn class="" id="mainBtn" style="width:150px; margin-top:20px; margin-bottom: 20px;"
+        <v-btn id="mainBtn" style="width:150px; margin-top:20px;"
         @click="changeLocation()"><b>변경</b></v-btn>
       </div>
     

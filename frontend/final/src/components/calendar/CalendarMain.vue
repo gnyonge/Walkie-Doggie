@@ -16,16 +16,27 @@
     v-if="value"
     max-width="374"
     >
+    
+    <div class="d-flex justify-center">
       <div id="date"><h4 class="mt-2"><b>오늘의 날짜는?🐶</b></h4></div>
+      </div>
+      <div class="d-flex justify-center">
       <div id="date"><h5 class="mt-3"><b>{{getPrettyDate}}</b></h5></div>
+      </div>
       <v-divider></v-divider>
+      <div class="d-flex justify-center">
       <div v-if="value" id="writebtns">
         <div><p class="my-0">오늘 일기 써주실거죠?</p></div>
         <v-btn id="mainBtn" width="100px" class="ml-3" @click="goto('write')"><b>일기쓰기</b></v-btn>
       </div>
+
+      </div>
+      <div class="d-flex justify-center ml-5">
       <div v-if="value" id="writebtns">
         <div><p class="my-0">산책기록 보실래요?</p></div>
         <v-btn id="mainBtn" width="100px" class="ml-3" @click="goto(`detail/todaywalk/${getSelectedDate}`)"><b>산책기록</b></v-btn>
+      </div>
+
       </div>
     </div>
 </div>
@@ -112,5 +123,11 @@ export default {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+.b-calendar-grid-weekdays {
+  margin-top: 10px !important;
+}
+.b-calendar-grid header {
+  margin-top: 10px !important;
 }
 </style>

@@ -40,7 +40,15 @@
               data: [this.getStatistics.p_walk_count, this.getStatistics.l_walk_count, 
           this.getStatistics.p_walk_time, this.getStatistics.l_walk_time, this.getStatistics.p_total_time, this.getStatistics.l_total_time]
             }
-          ]
+          ],
+          options: {
+            responsive: false,
+            legend: {
+              labels: {
+                fontColor: "red",
+                fontSize: 18
+              }}
+            },
         }
       },
   }}

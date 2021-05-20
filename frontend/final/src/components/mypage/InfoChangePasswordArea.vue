@@ -1,11 +1,17 @@
 <template>
   <div>
     <div class="" id="mainBox">
+      <div class="d-flex justify-space-between">
       <div>
-        <v-icon @click="goback()">mdi-arrow-left</v-icon>
+      <v-icon @click="goback()">mdi-arrow-left</v-icon>
       </div>
-      <v-form>
-        <h5 class="text-center mb-5 mt-5">비밀번호 설정</h5>
+      <div>
+        비밀번호 변경
+      </div>
+      <div style="width: 24px; background-color: white;">
+      </div>
+    </div>
+      <v-form class="mt-7">
         <v-text-field name="password" label="기존 비밀번호" id="password" v-model="password" type="password" required color="#48B9A8" class="font-change"></v-text-field>
         <div style="color:red; font-size:14px" v-if="check">
           기존 비밀번호를 확인해주세요.
@@ -13,8 +19,8 @@
         <v-text-field name="newpassword" label="새로운 비밀번호" id="newpassword" v-model="newpassword" type="password" required color="#48B9A8" class="font-change"></v-text-field>
         <v-text-field name="newpasswordcheck" label="새로운 비밀번호 확인" id="newpasswordcheck" v-model="newpasswordcheck" type="password" required color="#48B9A8" class="font-change"></v-text-field>
       </v-form>
-        <div class="d-flex justify-center mt-5">
-          <v-btn class="" id="mainBtn" style="width:250px; margin-top:20px; margin-bottom: 20px;" @click="changePassword()"><b>변경</b></v-btn>
+        <div class="d-flex justify-center">
+          <v-btn class="" id="mainBtn" style="width:250px; margin-top:20px;" @click="changePassword()"><b>비밀번호 변경</b></v-btn>
         </div>
     </div>
     <div class="d-flex justify-end mt-5">

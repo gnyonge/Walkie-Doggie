@@ -17,16 +17,14 @@
         width="100%"
         :src = getSelectedItem.l_image 
       ></v-img>
-      <div id="contentBox"> 
-      <div class="d-flex justify-end mt-5">
-        <!-- <v-btn color="#48B9A8" text width="50px" @click="go()" v-if="userCheckBtn()" class="mt-2">수정</v-btn> -->
+      <div class="d-flex justify-end">
         <!-- 삭제 확인 창 -->
         <v-btn
           color="#48B9A8" text width="50px"
           @click="snackbar = true"
           v-if="userCheckBtn()" class="mt-2"
         >
-          삭제
+          <b>삭제</b>
         </v-btn>
         <v-snackbar
           v-model="snackbar"
@@ -43,18 +41,17 @@
             </v-btn>
           </template>
         </v-snackbar>
-        <div class="d-flex justify-end mt-1">
+        <div class="d-flex justify-end" style="margin-top: 5px;">
         <v-btn icon @click="likePost(getSelectedItem.lid)" class="mt-1" v-if="getSelectedItem.l_flag == 0">
           <v-icon>mdi-heart-outline</v-icon>
         </v-btn>
         <v-btn icon @click="likePost(getSelectedItem.lid)" class="mt-1" v-else>
           <v-icon color="red">mdi-heart</v-icon>
         </v-btn>
-        <div class="d-inline mr-3" style="font-size: 18px; margin-top: 10px;">{{getSelectedItem.l_like}}</div>
+        <div class="d-inline mr-3" style="font-size: 18px; margin-top: 7px;">{{getSelectedItem.l_like}}</div>
         
       </div>
       </div>
-    </div>
   </div>
 </template>
 

@@ -53,8 +53,9 @@
             <v-card-actions class="justify-center text-align-center">
               <v-btn
                 text
+                class="mb-3"
                 id="mainBtn"
-                style="background-color: #FC6C8C; "
+                style="background-color: #FC6C8C; width: 100px;"
                 @click="gotoMain">
                 <b>창 닫기</b>
               </v-btn>

@@ -3,9 +3,9 @@
     <div>  
       <!-- 1. 프로필 박스 -->
       <div class="mx-3 mt-3" id="mainBox">
-        <div class="d-flex">
+        <div class="d-flex justify-space-between">
           <!-- 1. 프로필 사진 --> 
-          <div class="mt-10">
+          <div class="mt-10 mr-2">
             <!-- 프사 있을 때 -->
             <v-img :src="pet.pe_profile_photo" 
             class="rounded-circle"
@@ -221,7 +221,7 @@ export default {
 }
 
 .frame {
-  width: 360px;
+  min-width: 360px;
   overflow: auto;
 }
 
