@@ -18,8 +18,8 @@
       <div class="d-flex justify-center mx-3" style="position: relative; top: -20px;">
       <v-img
         class="rounded-circle gird"
-        max-height="100"
-        max-width="100"
+        height="100"
+        width="100"
         :src= getDogInfo.pet.pe_profile_photo>
       </v-img>
       </div>
@@ -64,15 +64,7 @@
       </v-dialog>
     </div>
     <ImageItem v-if="this.getSelectedItem != null" />
-    <!-- <div class="d-flex justify-center mt-2">
-      <v-img
-        height="80"
-        class="rounded-circle gird"
-        max-height="80"
-        max-width="80"
-        :src= getDogInfo.pet.pe_profile_photo>
-      </v-img>
-      </div> -->
+
   </div>
 </template>
 

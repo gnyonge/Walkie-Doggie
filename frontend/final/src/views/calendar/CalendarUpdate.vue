@@ -19,11 +19,13 @@
       <!-- 이미지 -->
       <div id="contentBox">
         <v-img
-          v-if="photo_url"
+          v-if="photo_url && !pageOn"
           height="330"
           width="100%"
           :src="photo_url">
         </v-img>
+        <div class="loader d-flex justify-center align-center" v-if="pageOn" style="width: 100%; height: 330px;">
+          <b-spinner label="Spinning"></b-spinner></div>
         <div class="filebox mt-3"> 
           <label for="ex_file">사진 추가</label> 
           <input type="file" accept="image/*" @click="addPhoto()" id="ex_file"> 
@@ -92,7 +94,7 @@
       </div>
       <!-- 완료버튼 -->
       <div class="d-flex justify-end">
-        <v-btn id="mainBtn" width="50px" @click="updateDiary()" :disabled="comfirm == false">완료</v-btn>
+        <v-btn id="mainBtn" width="50px" @click="updateDiary()" :disabled="comfirm == false"><b>완료</b></v-btn>
       </div>
     </div>
   </div>
@@ -112,6 +114,7 @@ export default {
       healthContent: "", // 건강사항 내용 (1개)
       healthArray: [], // 건강사항 내용들 (전체)
       photo_url: false,
+      pageOn: false,
       file: false,
       rules1: [
         value => !!value || '필수 입력사항입니다!',
@@ -201,6 +204,7 @@ export default {
         var t = this
         var photo = document.getElementById('ex_file')
         photo.addEventListener('change', function(event) {
+          t.pageOn = true
           const formData = new FormData()
           var file = event.target.files[0]
           t.file = event.target.files[0]
@@ -208,6 +212,7 @@ export default {
           t.makeTempPhotoUrlInApi(formData)
           .then(() => {
             t.photo_url = t.getTempPhotoURL
+            t.pageOn = false
           }).catch((error) => {
             console.error(error)
           })

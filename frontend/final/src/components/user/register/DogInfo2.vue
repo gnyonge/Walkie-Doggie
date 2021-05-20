@@ -20,12 +20,16 @@
           >
         </v-avatar>
       </div>
+      <div v-if="pageOn" class="d-flex justify-center">
+        업로드 중...
+      </div>
       <div class="d-flex justify-center">
         <div class="filebox mt-3"> 
-          <label for="ex_file">업로드 <v-icon class="pt-1">mdi-camera</v-icon></label> 
+          <label for="ex_file"><v-icon class="pt-1">mdi-camera</v-icon></label> 
           <input type="file" id="ex_file" accept="image/*" @click="getPhoto()" ref="imageInput"> 
         </div>
       </div> 
+      
       <div>
         <v-form>
         <!-- 이름  -->
@@ -143,6 +147,7 @@ export default {
       disease:'',
       photo: '',
       photo_url: require('../../../assets/images/서비스로고.png'),
+      pageOn: false,
 
       date: new Date().toISOString().substr(0, 10),
       menu: false,
@@ -206,6 +211,7 @@ export default {
       var camera = document.getElementById('ex_file')
       var t = this
       camera.addEventListener('change', function(e) {
+        t.pageOn = true
         let formData = new FormData()
         var file = e.target.files[0]
         t.file = e.target.files[0]
@@ -215,6 +221,7 @@ export default {
           formData
         ).then (()=> {
           t.photo_url = t.getTempPhotoURL
+          t.pageOn = false
         })    
       })
     },
