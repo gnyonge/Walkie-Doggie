@@ -54,7 +54,6 @@ public class HealthController {
 		try {
 
 			logger.info("=====> 건강 등록 시작!");
-			System.out.println(health_list);
 
 			for (HealthDto dto : health_list) {
 				hservice.insert_health(dto);

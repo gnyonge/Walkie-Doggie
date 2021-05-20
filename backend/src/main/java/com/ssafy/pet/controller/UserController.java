@@ -173,7 +173,6 @@ public class UserController {
 		HttpStatus status = null;
 
 		try {
-			System.out.println("hiru : "+user);
 			String mail = user.getEmail();
 
 			logger.info("=====> 이메일 중복 체크");
@@ -186,7 +185,7 @@ public class UserController {
 				//인증메일은 받은게 처음인지 여러번 누른애인지 확인하는거
 				
 				String code = uidutil.MakeUid();
-				System.out.println("메일 코드 : "+code);
+				logger.info("메일 코드 : "+code);
 				
 				// 이제 메일을 보내봅시다
 				MailUtils sendMail = new MailUtils(mailSender);
@@ -279,7 +278,6 @@ public class UserController {
 			
 			resultMap.putAll(jwtutil.get(req.getHeader("doggieToken")));
 			String juid = jwtutil.getUserId(jwt);
-			System.out.println("uid : "+uid);
 			
 			List<PetDto> list = userservice.petInfo(uid);
 			resultMap.put("petList", list);
@@ -341,7 +339,6 @@ public class UserController {
 			logger.info("=====> 비밀번호 맞는지 확인하기");
 			String pass = securityutil.bytesToHex(securityutil.sha256(user.getU_password()));
 			user.setU_password(pass);
-			System.out.println(user.getU_password());
 			
 			UserDto check = userservice.checkPass(user.getUid()); 
 			if(check.getU_password().equals(pass)) {
