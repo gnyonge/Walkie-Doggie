@@ -24,7 +24,6 @@ import com.ssafy.pet.dto.UserDto;
 import com.ssafy.pet.service.LoginService;
 import com.ssafy.pet.service.UserService;
 import com.ssafy.pet.util.JWTUtil;
-import com.ssafy.pet.util.KakaoUtil;
 import com.ssafy.pet.util.SecurityUtil;
 import com.ssafy.pet.util.UidUtil;
 
