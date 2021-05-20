@@ -29,7 +29,6 @@
           <v-icon color="red">mdi-heart</v-icon>
         </v-btn>
         <div class="d-inline mr-3" style="font-size: 18px; margin-top: 7px;">{{i.l_like}}</div>
-        
       </div>
       <v-divider></v-divider>
     </div>
@@ -49,10 +48,15 @@ export default {
     }
   },
   created() {
-    this.hotPlaceList = this.getHotPlace
-    if(this.hotPlaceList.length == 0){
-      this.$router.push('/hotplace')
-    }
+    if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      } else {
+        this.hotPlaceList = this.getHotPlace
+        if(this.hotPlaceList.length == 0){
+          this.$router.push('/hotplace')
+        }
+      }
   },
   beforeDestroy() {
 

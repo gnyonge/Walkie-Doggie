@@ -1,16 +1,16 @@
 <template>
   <div>
-    <div class="" id="mainBox">
+    <div id="mainBox">
       <div class="d-flex justify-space-between">
-      <div>
-      <v-icon @click="goback()">mdi-arrow-left</v-icon>
+        <div>
+        <v-icon @click="goback()">mdi-arrow-left</v-icon>
+        </div>
+        <div>
+          비밀번호 변경
+        </div>
+        <div style="width: 24px; background-color: white;">
+        </div>
       </div>
-      <div>
-        비밀번호 변경
-      </div>
-      <div style="width: 24px; background-color: white;">
-      </div>
-    </div>
       <v-form class="mt-7">
         <v-text-field name="password" label="기존 비밀번호" id="password" v-model="password" type="password" required color="#48B9A8" class="font-change"></v-text-field>
         <div style="color:red; font-size:14px" v-if="check">
@@ -19,15 +19,14 @@
         <v-text-field name="newpassword" label="새로운 비밀번호" id="newpassword" v-model="newpassword" type="password" required color="#48B9A8" class="font-change"></v-text-field>
         <v-text-field name="newpasswordcheck" label="새로운 비밀번호 확인" id="newpasswordcheck" v-model="newpasswordcheck" type="password" required color="#48B9A8" class="font-change"></v-text-field>
       </v-form>
-        <div class="d-flex justify-center">
-          <v-btn class="" id="mainBtn" style="width:250px; margin-top:20px;" @click="changePassword()"><b>비밀번호 변경</b></v-btn>
-        </div>
+      <div class="d-flex justify-center">
+        <v-btn class="" id="mainBtn" style="width:250px; margin-top:20px;" @click="changePassword()"><b>비밀번호 변경</b></v-btn>
+      </div>
     </div>
     <div class="d-flex justify-end mt-5">
       <v-btn style="background-color:#E97575; margin:20px;" id="mainBtn" @click="goto()"><b>탈퇴하기</b></v-btn>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -41,6 +40,12 @@ export default {
       check: false,
 
     }
+  },
+  created() {
+    if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      }
   },
   computed: {
     ...mapGetters(['getUser'])
@@ -71,7 +76,6 @@ export default {
           })
         }
       })
-      
     },
     goto() {
       this.$router.push('/dontleaveus')

@@ -1,35 +1,32 @@
 <template>
-  <div class="" id="mainBox">
-    <div class="">
+  <div id="mainBox">
+    <div>
       <div class="d-flex justify-space-between">
-      <div>
-      <v-icon @click="goback()">mdi-arrow-left</v-icon>
+        <div>
+          <v-icon @click="goback()">mdi-arrow-left</v-icon>
+        </div>
+        <div>
+          지역 변경
+        </div>
+        <div style="width: 24px; background-color: white;">
+        </div>
       </div>
-      <div>
-        지역 변경
-      </div>
-      <div style="width: 24px; background-color: white;">
-      </div>
-    </div>
-      <div style="font-size:18px;" class="mb-3 mt-5">
-      기존 주소: <b>{{getUser.u_location}}</b>
-      </div>
-      <DaumPostcode
-      :on-complete=handleAddress
-      v-model="addressChange"
-    />
+        <div style="font-size:18px;" class="mb-3 mt-5">
+        기존 주소: <b>{{getUser.u_location}}</b>
+        </div>
+        <DaumPostcode
+        :on-complete=handleAddress
+        v-model="addressChange"
+        />
     </div>
     <div style="font-size:18px;" class="mt-5">
       변경할 주소: <b>{{addressChange}}</b>
     </div>
-      <div class="d-flex justify-center">
-        <v-btn id="mainBtn" style="width:150px; margin-top:20px;"
-        @click="changeLocation()"><b>변경</b></v-btn>
-      </div>
-    
+    <div class="d-flex justify-center">
+      <v-btn id="mainBtn" style="width:150px; margin-top:20px;"
+      @click="changeLocation()"><b>변경</b></v-btn>
+    </div>
   </div>
-  
-
 </template>
 
 <script >
@@ -47,6 +44,12 @@ export default {
   },
   components: {
     DaumPostcode
+  },
+  created() {
+     if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      }
   },
   mounted() {
       let recaptchaScript = document.createElement('script')
@@ -84,8 +87,6 @@ export default {
       // 리스트 돌면서 마지막 단어가 '동'인 부분 저장 
       // 주소의 동까지 저장 
       for (let i in fAddress) {
-        // 인덱스
-        // console.log(i)  
         let checkAddress = fAddress[i]
         if(checkAddress.charAt(checkAddress.length-1) !== '동'){ 
           sAddress.push(checkAddress)

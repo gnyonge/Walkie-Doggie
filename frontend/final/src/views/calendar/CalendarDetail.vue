@@ -7,7 +7,6 @@
     <transition mode="out-in">
       <router-view></router-view>
     </transition>
-    
   </div>
 </template>
 
@@ -21,10 +20,15 @@ export default {
       }
     },
   created() {
-    this.isDiary = this.getDetailBtn
+    if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      } else {
+        this.isDiary = this.getDetailBtn
+      }
   }, 
   computed: {
-    ...mapGetters(['getSelectedDate', 'getDetailBtn'])
+    ...mapGetters(['getSelectedDate', 'getDetailBtn', 'getUser'])
   },
   methods: {
     ...mapMutations(['setDetailBtn']),

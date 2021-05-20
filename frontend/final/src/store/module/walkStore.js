@@ -179,12 +179,10 @@ const actions = {
       })
   },
   // 좋아요 사진, 위도, 경도, 의견 백엔드 전송
-  sendNowPostInApi({commit, state}, params){
+  sendNowPostInApi({commit}, params){
     return rscApi.post('place/likePlace', params)
       .then((res) =>{
-        console.log(res)
         commit('setPostingWid', res.data.lid)
-        console.log(state.postingWid,'게시글 작성후 postingwid들어갔냐' )
         return res
       }).catch((error) =>{
         // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답
@@ -226,7 +224,6 @@ const actions = {
   getTop5ListInApi(context, params) {
     return rscApi.post('place/top5', params)
     .then((res) => {
-      console.log(res)
       context.commit('setHotPlace', res.data.postList)
     })
   },
@@ -241,10 +238,8 @@ const actions = {
   },
   // 내 게시글 삭제
   deleteMyPostingInApi(context, params){
-    console.log(params)
     return rscApi.delete(`place/delete/${params.peid}?lid=${params.lid}`)
       .then((res)=>{
-        console.log('내 게시글 삭제 성공')
         return res
       }).catch((error)=>{
         console.log(error)

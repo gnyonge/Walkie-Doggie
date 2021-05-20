@@ -17,10 +17,9 @@
       <v-divider></v-divider>
       <div id="mydiv2" class="mt-8"><div>아직 일기가 없어요 ㅠ_ㅠ</div></div>
       <div class="d-flex justify-center align-center my-2" style="height: 40px;">
-        <div><v-btn rounded @click="go('/calendar/write')" id="btnstyle" width="130px">일기 쓰러가기!</v-btn></div>
+        <div><v-btn rounded @click="go('/calendar/write')" id="btnstyle" width="130px"><b>일기 쓰러가기!</b></v-btn></div>
       </div>
     </div>
-
     <!-- 일지 썼을 때-->
     <div v-else>
       <div id="contentBox" v-if="photo_url">
@@ -102,16 +101,21 @@ export default {
     }
   },
   created() {
-    if (this.getMyDiaryObject.Diary != null) {
+    if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      } else {
+         if (this.getMyDiaryObject.Diary != null) {
           this.diary = true
           this.myDiary = this.getMyDiaryObject
           if (this.getMyDiaryObject.Diary.d_img) {
             this.photo_url = this.getMyDiaryObject.Diary.d_img
           }
         }
+      }
   },
   computed: {
-      ...mapGetters(['getSelectedDate', 'getMyDiaryObject', 'getPrettyDate', 'getDogInfo'])
+      ...mapGetters(['getSelectedDate', 'getMyDiaryObject', 'getPrettyDate', 'getDogInfo', 'getUser'])
     },
   methods: {
     ...mapActions(['getTodayDiaryInApi', 'deleteTodayDiaryInApi']),

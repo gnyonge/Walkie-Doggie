@@ -81,7 +81,6 @@ const actions = {
   checkPasswordInApi(context,params) {
     return rscApi.post('user/check/pass',params)
     .then ((res) => {
-      console.log(res, 'store')
       return res;
     })
     .catch(()=>{});

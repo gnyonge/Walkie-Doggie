@@ -1,5 +1,6 @@
 <template>
-<div>
+  <div>
+    <!-- 달력 -->
     <v-card class="m-2 p-2">
       <b-calendar v-model="value" @context="onContext" :date-info-fn="dateClass" locale="ko-kr"
       selected-variant="warning"
@@ -10,36 +11,33 @@
       label-help
       ></b-calendar>
     </v-card>
-    
+    <!-- 날짜 클릭하면 나옴 -->
     <div
     id="mainBox"
     v-if="value"
     max-width="374"
     >
-    
-    <div class="d-flex justify-center">
-      <div id="date"><h4 class="mt-2"><b>오늘의 날짜는?🐶</b></h4></div>
+      <div class="d-flex justify-center">
+        <div id="date"><h4 class="mt-2"><b>오늘의 날짜는?🐶</b></h4></div>
       </div>
       <div class="d-flex justify-center">
-      <div id="date"><h5 class="mt-3"><b>{{getPrettyDate}}</b></h5></div>
+        <div id="date"><h5 class="mt-3"><b>{{getPrettyDate}}</b></h5></div>
       </div>
       <v-divider></v-divider>
       <div class="d-flex justify-center">
-      <div v-if="value" id="writebtns">
-        <div><p class="my-0">오늘 일기 써주실거죠?</p></div>
-        <v-btn id="mainBtn" width="100px" class="ml-3" @click="goto('write')"><b>일기쓰기</b></v-btn>
-      </div>
-
+        <div v-if="value" id="writebtns">
+          <div><p class="my-0">오늘 일기 써주실거죠?</p></div>
+          <v-btn id="mainBtn" width="100px" class="ml-3" @click="goto('write')"><b>일기쓰기</b></v-btn>
+        </div>
       </div>
       <div class="d-flex justify-center ml-5">
-      <div v-if="value" id="writebtns">
-        <div><p class="my-0">산책기록 보실래요?</p></div>
-        <v-btn id="mainBtn" width="100px" class="ml-3" @click="goto(`detail/todaywalk/${getSelectedDate}`)"><b>산책기록</b></v-btn>
-      </div>
-
+        <div v-if="value" id="writebtns">
+          <div><p class="my-0">산책기록 보실래요?</p></div>
+          <v-btn id="mainBtn" width="100px" class="ml-3" @click="goto(`detail/todaywalk/${getSelectedDate}`)"><b>산책기록</b></v-btn>
+        </div>
       </div>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
@@ -54,11 +52,17 @@ export default {
     }
   },
   created(){
-    this.setNowTab(0)
-    this.allDiaryInApi(this.getDogInfo.pet.peid)
+    if (this.getUser == undefined) {
+      alert('로그인 해주세요!')
+      this.$router.push('/')
+    } else {
+      this.setNowTab(0)
+      this.allDiaryInApi(this.getDogInfo.pet.peid)
+    }
+
   },
   computed: {
-    ...mapGetters(['getPrettyDate', 'getSelectedDate', 'getMyDiaryObject', 'getDogInfo', 'getAllDiaryList'])
+    ...mapGetters(['getPrettyDate', 'getSelectedDate', 'getMyDiaryObject', 'getDogInfo', 'getAllDiaryList', 'getUser'])
   },
   methods: {
     ...mapMutations(['setSelectedDate', 'setPrettyDate', 'setDetailBtn', 'setNowTab']),

@@ -126,23 +126,28 @@ export default {
     }
   },
   created() {
-    this.diaryContent = this.getMyDiaryObject.Diary.d_memo
-    if (this.getMyDiaryObject.Diary.d_special) {
-      this.memo = true
-      this.memoContent = this.getMyDiaryObject.Diary.d_special
-    }
-    if (this.getMyDiaryObject.Diary.d_img) {
-      this.photo_url = this.getMyDiaryObject.Diary.d_img
-    }
-    if (this.getMyDiaryObject.Health_list.length != 0) {
-      this.health = true
-      for (let i of this.getMyDiaryObject.Health_list) {
-        this.healthArray.push(i.h_content)
+    if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      } else {
+        this.diaryContent = this.getMyDiaryObject.Diary.d_memo
+        if (this.getMyDiaryObject.Diary.d_special) {
+          this.memo = true
+          this.memoContent = this.getMyDiaryObject.Diary.d_special
+        }
+        if (this.getMyDiaryObject.Diary.d_img) {
+          this.photo_url = this.getMyDiaryObject.Diary.d_img
+        }
+        if (this.getMyDiaryObject.Health_list.length != 0) {
+          this.health = true
+          for (let i of this.getMyDiaryObject.Health_list) {
+            this.healthArray.push(i.h_content)
+          }
+        }
       }
-    }
   },
   computed: {
-    ...mapGetters(['getSelectedDate', 'getPrettyDate', 'getMyDiaryObject', 'getTempPhotoURL', 'getDogInfo']),
+    ...mapGetters(['getSelectedDate', 'getPrettyDate', 'getMyDiaryObject', 'getTempPhotoURL', 'getDogInfo', 'getUser']),
     comfirm() {
         if (this.diaryContent.length < 1) {
           return false

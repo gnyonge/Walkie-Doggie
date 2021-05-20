@@ -106,6 +106,12 @@ export default {
       
     }
   },
+  created() {
+    if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      } 
+  },
   computed: {
     ...mapGetters([
       'getNowTab', 
@@ -121,7 +127,8 @@ export default {
       'getMyPostingContent',
       'getLikeCnt',
       'getWid',
-      'getSelectedItem'
+      'getSelectedItem',
+      'getUser'
     ])
   },
   mounted() {

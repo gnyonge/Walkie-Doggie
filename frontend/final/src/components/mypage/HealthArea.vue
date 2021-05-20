@@ -46,21 +46,27 @@ export default {
     }
   },
   created() {
-    this.allHealthListInApi(this.getDogInfo.pet.peid)
-    .then(() => {
-      let tempList = {}
-      for (let i of this.getAllHealthList) { 
-        if (Object.keys(tempList).includes(i.h_date.slice(0,10))) {
-          tempList[i.h_date.slice(0, 10)].push(i.h_content)
-        } else {
-          tempList[i.h_date.slice(0, 10)] = [i.h_content]
-        }
+    if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      } else {
+        this.allHealthListInApi(this.getDogInfo.pet.peid)
+        .then(() => {
+          let tempList = {}
+          for (let i of this.getAllHealthList) { 
+            if (Object.keys(tempList).includes(i.h_date.slice(0,10))) {
+              tempList[i.h_date.slice(0, 10)].push(i.h_content)
+            } else {
+              tempList[i.h_date.slice(0, 10)] = [i.h_content]
+            }
+          }
+          this.allHealthList = tempList
+        })
       }
-      this.allHealthList = tempList
-    })
+    
   },
   computed: {
-    ...mapGetters(['getDogInfo', 'getAllHealthList'])
+    ...mapGetters(['getDogInfo', 'getAllHealthList', 'getUser'])
   },
   methods: {
     ...mapActions(['allHealthListInApi']),
@@ -77,10 +83,6 @@ export default {
   border-radius: 70%;
   overflow: hidden;
   border: solid 3px;
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
-  
 }
 .mypage-list {
   width: 100%;

@@ -24,9 +24,11 @@
       <v-text-field :rules="rules1" name="email" label="이메일주소" id="email" v-model="email" type="email" required color="#48B9A8">
         <v-btn id="mainBtn" slot="append" style="margin:5px; width:120px;" @click="sendCheckEmail()" :disabled="sendEmailMsg == true"><b>인증메일 전송</b></v-btn>
       </v-text-field>
+
       <div v-if="sent" style="font-size: 12px; color:red;">
         <b>인증메일을 보냈습니다.</b>
       </div>
+
       <div v-if="emailCheck" style="font-size: 12px; color:red;">
         <b>이미 회원가입한 이메일입니다!</b>
       </div>
@@ -34,12 +36,15 @@
       <v-text-field :rules="rules1" name="code" label="인증번호" id="code" v-model="code" type="code" required color="#48B9A8">
         <v-btn id="mainBtn" slot="append" style="margin:5px; width:60px;" @click="checkAuthEmail()"><b>확인</b></v-btn>
       </v-text-field>
+
       <div style="color:red; font-size:12px" v-if="codeCheck">
           <b>인증 코드를 다시 확인해주세요.</b>
       </div>
+
       <div style="font-size:12px" v-if="codeSuccess">
           <b>인증되었습니다.</b>
       </div>
+
       <v-text-field :rules="rules1" name="password" label="비밀번호" id="password" v-model="password" type="password"
        required color="#48B9A8" class="font-change"></v-text-field>
        
@@ -55,7 +60,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -79,12 +84,10 @@ export default {
         ],
       rules2: [
       value => !!value.replace(/(\s*)/g, "") || '공백은 불가해요!',
-      // value => (value || '').length <= 20 || 'Max 20 characters',
       ],
     }
   },
   computed: {
-    ...mapGetters(['getUser']),
     confirmSignup() {
         if (this.email.length < 1) {
           return false
@@ -142,9 +145,7 @@ export default {
         })
       })
     },
-
     // 인증메일 보내기 눌렀을 때
-    // 한번 클릭하면 버튼이 안보이도록 수정해야한다. 
     sendCheckEmail() {
       this.sendEmailInApi({
         email: this.email,
@@ -160,7 +161,6 @@ export default {
         }
       })
     },
-
     // 인증 메일 확인 
     checkAuthEmail() {
       this.checkAuthEmailInApi({
@@ -176,7 +176,6 @@ export default {
         }
       })
     }
-    
   }
 }
 

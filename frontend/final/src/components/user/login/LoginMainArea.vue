@@ -9,11 +9,9 @@
       <div class="login-btn-pd">
         <v-btn class="login-btn" id="mainBtn" style="margin-top: 30px;margin-bottom:40px; width: 180px; height: 42px; border-radius: 12px; font-size: 14px; font-family:'Noto Sans KR';" @click="goto('/login')"><b>로그인</b></v-btn>
       </div>
-      
       <div class="signup-btn-pd">
         <v-btn class="signup-btn" id="mainBtn" style="margin-bottom:40px;  width: 180px; height: 42px; border-radius: 12px; font-size: 14px; font-family:'Noto Sans KR';" @click="goto('/signup')"><b>회원가입</b></v-btn>
       </div>
-      <!-- 선 넣기 !!!!!!!! -->
       <!-- 카카오로그인 --> 
       <div class="signup-btn-pd" >
         <v-img src="../../../assets/images/kakao_login_medium_narrow.png" style="width: 180px; border-radius: 12px; box-shadow: 3px 3px 0 rgb(0,0,0,0.3);" class="logo-img" alt="" @click="kakao()" ></v-img>
