@@ -143,7 +143,6 @@ export default {
       myPetList: [],
     }),
   created() {
-    console.log(this.getUser.u_password)
      if (this.getUser == undefined) {
         alert('로그인 해주세요!')
         this.$router.push('/')
