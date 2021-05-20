@@ -405,20 +405,26 @@ public class UserController {
 
 		try {
 			logger.info("=====> 회원탈퇴");
-			String pass = securityutil.bytesToHex(securityutil.sha256(user.getU_password()));
-			user.setU_password(pass);
-			
-			int result = userservice.leaveUser(user.getUid(), user.getU_password());
-			boolean flag = false;
+			int result = 0;
+
+			String chkKakao= userservice.isKakao(user.getUid());
+			if(chkKakao.equals("0")){
+				logger.info("=====> kakao 회원탈퇴");
+				result = userservice.leaveUserKakao(user.getUid());
+			}else{
+				String pass = securityutil.bytesToHex(securityutil.sha256(user.getU_password()));
+				user.setU_password(pass);
+				
+				result = userservice.leaveUser(user.getUid(), user.getU_password());
+			}
+
 			if(result>=1) {
-				flag = true;
 				resultMap.put("message", "탈퇴되었습니다.");
-				resultMap.put("flag", flag);
 			}else {
 				resultMap.put("message", "탈퇴 실패 하였습니다. 비밀번호를 확인해주세요 ");
-				resultMap.put("flag", flag);
 			}
 			status = HttpStatus.ACCEPTED;
+			logger.info("=====> 회원탈퇴 성공");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.error("회원 탈퇴 실패 : {}", e);
