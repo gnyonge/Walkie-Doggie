@@ -52,6 +52,7 @@ export default {
     }
   },
   created(){
+    console.log(this.getUser)
     if (this.getUser == undefined) {
       alert('로그인 해주세요!')
       this.$router.push('/')

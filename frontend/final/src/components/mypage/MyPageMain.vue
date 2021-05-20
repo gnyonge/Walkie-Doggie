@@ -47,7 +47,7 @@
                   v-for="(item, index) in items"
                   :key="index"
                 >
-                  <v-list-item-title @click="goto(`${item.path}`)">{{ item.title }}</v-list-item-title>
+                  <v-list-item-title @click="goto(item.path)">{{ item.title }}</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -138,11 +138,12 @@ export default {
       items: [
         { title: '지역 설정' , path: 'infochangelocation'},
         { title: '계정 관리' , path: 'infochangepw'},
-        { title: '로그아웃', path:'logout' },
+        { title: '로그아웃', path: 'logout' },
       ],
       myPetList: [],
     }),
   created() {
+    console.log(this.getUser.u_password)
      if (this.getUser == undefined) {
         alert('로그인 해주세요!')
         this.$router.push('/')
@@ -169,17 +170,25 @@ export default {
     ...mapMutations(['setUser', 'setDogInfo', 'setMyDogListInfo', 'setNowTab']),
     ...mapActions(['showDogInfoInApi', 'getUserInfoInApi']),
     goto(path) {
-      if (path != 'logout') {
-        this.$router.push(`/${path}`)
+      if (path == 'logout') {
+          this.setUser(null)
+          this.setDogInfo(null)
+          this.setMyDogListInfo(null)
+          sessionStorage.setItem('doggie_token','');
+          alert('로그아웃되었습니다!')
+          this.$router.push('/')
+          this.setNowTab(1)
       } 
-      else { // 로그아웃할때
-        this.setUser(null)
-        this.setDogInfo(null)
-        this.setMyDogListInfo(null)
-        sessionStorage.setItem('doggie_token','');
-        alert('로그아웃되었습니다!')
-        this.$router.push('/')
-        this.setNowTab(1)
+      else if (path == 'infochangepw') {
+        if (this.getUser.u_password == null) {
+          this.$router.push('/dontleaveuskakao')
+          } 
+        else {
+          this.$router.push(`/${path}`)
+        }
+      }
+      else {
+        this.$router.push(`/${path}`)
       }
       },
     addDog() {
