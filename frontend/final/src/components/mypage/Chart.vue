@@ -1,6 +1,6 @@
 <template>
   <div class="column my-3">
-        <reactive :chart-data="datacollection"></reactive>
+    <reactive :chart-data="datacollection"></reactive>
   </div>
 </template>
 
@@ -18,13 +18,19 @@
       }
     },
     created() {
-      this.statisticsInApi(this.getDogInfo.pet.peid)
-      .then(() => {
-        this.fillData() //anytime the vue instance is created, call the fillData() function.
-      })
+      if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      } else {
+        this.statisticsInApi(this.getDogInfo.pet.peid)
+        .then(() => {
+          this.fillData() //anytime the vue instance is created, call the fillData() function.
+        })
+      }
+      
     },
     computed: {
-      ...mapGetters(['getDogInfo', 'getStatistics'])
+      ...mapGetters(['getDogInfo', 'getStatistics', 'getUser'])
     },
     methods: {
       ...mapActions(['statisticsInApi']),
@@ -40,7 +46,7 @@
               data: [this.getStatistics.p_walk_count, this.getStatistics.l_walk_count, 
           this.getStatistics.p_walk_time, this.getStatistics.l_walk_time, this.getStatistics.p_total_time, this.getStatistics.l_total_time]
             }
-          ]
+          ],
         }
       },
   }}

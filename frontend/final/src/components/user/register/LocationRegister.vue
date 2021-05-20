@@ -1,5 +1,5 @@
 <template>
-<div id="mainBox">
+  <div id="mainBox">
     <div class="d-flex justify-center">
       <div style="width: 24px; background-color: white;">
       </div>
@@ -9,26 +9,25 @@
       <div style="width: 24px; background-color: white;">
       </div>
     </div>
-  <div class="register-btn-pd">
-    <v-flex class="ph-size">
-     <DaumPostcode
-      :on-complete=handleAddress
-      v-model="address"
-    />
-    <div class="mt-3">
-      주소는 동단위까지 입력됩니다.
-      <p style="font-size:14px">(예: '광주 광산구 장덕동')</p>
+    <div class="register-btn-pd">
+      <v-flex class="ph-size">
+        <DaumPostcode
+          :on-complete=handleAddress
+          v-model="address"
+        />
+        <div class="mt-3">
+          주소는 동단위까지 입력됩니다.
+          <p style="font-size:14px">(예: '광주 광산구 장덕동')</p>
+        </div>
+        <div style="font-size:18px;">
+          입력된 주소: <b>{{address}}</b>
+        </div>
+        <div class="register-btn-pd d-flex justify-center mt-5">
+          <v-btn class="" id="mainBtn" @click="setAddress()" :disabled="confirm == false">지역 설정</v-btn>
+        </div>
+      </v-flex>
     </div>
-    <div style="font-size:18px;">
-      입력된 주소: <b>{{address}}</b>
-    </div>
-      
-    <div class="register-btn-pd d-flex justify-center mt-5">
-        <v-btn class="" id="mainBtn" @click="setAddress()" :disabled="confirm == false">지역 설정</v-btn>
-    </div>
-    </v-flex>
   </div>
-</div>
 </template>
 
 <script >
@@ -40,6 +39,12 @@ export default {
     return {
       address: '',
     }
+  },
+  created() {
+    if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      }
   },
   computed: {
     ...mapGetters(['getUser']),
@@ -64,10 +69,7 @@ export default {
       let fullAddress = data.address
       let fAddress = [] // 띄어쓰기 기준으로 나누어 단어 저장
       let sAddress = [] // '동' 으로 끝나는 단어 저장 
-
-  
       fullAddress = data.jibunAddress
-
       // 띄어쓰기 기준으로 나누어 fAddress에 저장
       fAddress = fullAddress.split(' ');
       // 예: ["광주", "광산구", "장덕동", "992-8"]
@@ -75,7 +77,6 @@ export default {
       // 리스트 돌면서 마지막 단어가 '동'인 부분 저장 
       // 주소의 동까지 저장 
       for (let i in fAddress) {
-        // 인덱스
         let checkAddress = fAddress[i]
         if(checkAddress.charAt(checkAddress.length-1) !== '동'){ 
           sAddress.push(checkAddress)
@@ -83,12 +84,9 @@ export default {
           sAddress.push(checkAddress)
           break
         }  
-  }
-  // console.log(sAddress, '동까지 저장')
-  const finalAddress = sAddress.join(" ");
-  this.address = finalAddress
-  // let address = finalAddress
-  // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)' 주소 세번째 꺼로 가져오기 
+      }
+      const finalAddress = sAddress.join(" ");
+      this.address = finalAddress
     },
     setAddress() {
       this.setAddressInApi({
@@ -97,7 +95,6 @@ export default {
       })
       .then(() => {
         this.$router.push('/dogregister')
-
       })
     },
   }

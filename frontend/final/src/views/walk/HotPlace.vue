@@ -35,6 +35,12 @@ export default {
       myPin: true,
     }
   },
+  created() {
+    if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      } 
+  },
   mounted() {
     // 멍플레이스 게시글들 받기 
     this.getHotPlaceListInApi({

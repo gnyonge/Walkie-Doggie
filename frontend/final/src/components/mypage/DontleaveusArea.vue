@@ -11,23 +11,19 @@
       </div>
     </div>
     <div>
-      <div>
-
-      </div>
       <div v-if="check" class="d-flex justify-center mt-10" >
         비밀번호를 확인해 주세요.
       </div>
       <div v-if="check">
         <v-form class="mt-10">
-        <v-text-field name="password" label="기존 비밀번호" id="password" v-model="password" type="password" required color="#48B9A8" class="font-change">
-          <v-btn @click="checkpw()" slot="append" style="margin:5px; width:60px;" id="mainBtn"><b>확인</b></v-btn>
-        </v-text-field>
-      </v-form>
-      <div style="color:red; font-size:14px" v-if="!pass">
+          <v-text-field name="password" label="기존 비밀번호" id="password" v-model="password" type="password" required color="#48B9A8" class="font-change">
+            <v-btn @click="checkpw()" slot="append" style="margin:5px; width:60px;" id="mainBtn"><b>확인</b></v-btn>
+          </v-text-field>
+        </v-form>
+        <div style="color:red; font-size:14px" v-if="!pass">
           비밀번호가 틀렸습니다.
         </div>
       </div>
-      
       <div v-if="!check" class="mt-10">
         <div style="margin-top: 60px; margin-bottom: 60px" class="d-flex justify-center">
           정말 탈퇴하시겠어요? 
@@ -37,17 +33,22 @@
           <v-btn id="mainBtn" @click="goback()">아니오</v-btn>
         </div>
       </div>
-      </div>
-      
-      <div style="width: 24px; background-color: white;">
-      </div>
     </div>
+    <div style="width: 24px; background-color: white;">
+    </div>
+  </div>
 </template>
 
 <script>
 import {mapGetters, mapActions} from 'vuex'
 export default {
   name: "DontleaveusArea",
+  created() {
+    if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      } 
+  },
   data() {
     return {
      password: '',
@@ -66,6 +67,7 @@ export default {
         uid: this.getUser.uid,
       })
       .then(()=>{
+        alert('다음에 또 이용해주세요!')
         this.$router.push('/loginmain')
       })
     },
@@ -76,7 +78,6 @@ export default {
       })
       .then((res) => {
         if(!res.data.message) {
-          // this.check = false
           this.pass = false
         } else {
           this.check = false
