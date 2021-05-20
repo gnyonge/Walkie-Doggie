@@ -60,7 +60,7 @@ public class OCRController {
 			path = path + "\\tessdata";
 
 			// 배포시 경로 변경
-			path.replace("\\", "/");
+			path = path.replace("\\", "/");
 
 			BufferedImage img = ImageIO.read(file.getInputStream());
 			Tesseract tesseract = new Tesseract();
