@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ssafy.pet.dao.LoginDao">
+
+	<select id="check_email" parameterType="String" resultType="UserDto">
+		select * from User where u_email=#{email}
+	</select>
+	
+	<insert id="insert_kakao" parameterType="UserDto">
+		insert into User(uid, u_email, u_nickname)
+		values(#{uid}, #{u_email}, #{u_nickname})
+	</insert>
+
+	
+</mapper>
