@@ -2,7 +2,9 @@
   <div>
     <div id="mainBox">
       <div id="date"><h3>성분 분석 결과</h3></div>
-      <div id="date" class="my-5"><p>{{getDogInfo.pet.pe_name}}에게 맞지 않는 성분이 들어있어요!</p></div>
+      <div id="date" class="my-5" v-if="foodList.length != 0"><p>{{getDogInfo.pet.pe_name}}에게 맞지 않는 성분이 들어있어요!</p></div>
+      <div id="date" class="my-5" v-else><p>{{getDogInfo.pet.pe_name}}에게 안전한 성분들이에요!</p></div>
+      <div v-if="foodList.length != 0">
       <div
         class="my-5"
         max-width="344"
@@ -23,7 +25,13 @@
           </v-list-item-avatar>
         </v-list-item>
       </div>
-
+      </div>
+      <div v-else class="d-flex justify-center">
+        <v-img
+          width="280"
+          src="@/assets/good.png">
+        </v-img>
+      </div>
     </div>
   </div>
 </template>

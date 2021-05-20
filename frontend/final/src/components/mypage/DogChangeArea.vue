@@ -11,18 +11,21 @@
       <div style="width: 24px; background-color: white;">
       </div>
     </div>
-    <div class="d-flex justify-center" style="font-size: 30px;">{{getDogInfo.pet.pe_name}}</div>
+    <div class="d-flex justify-center mb-3" style="font-size: 30px;">{{getDogInfo.pet.pe_name}}</div>
     <div class="d-flex justify-center">
-        <v-avatar width="100px" height="100px">
-          <img
-            :src="photo_url"
-            alt="프로필 사진" 
-          >
-        </v-avatar>
-      </div>
+      <v-avatar width="100px" height="100px">
+        <img
+          :src="photo_url"
+          alt="프로필 사진" 
+        >
+      </v-avatar>
+    </div>
+    <div v-if="pageOn" class="d-flex justify-center">
+          업로드 중...
+        </div>
       <div class="d-flex justify-center">
         <div class="filebox mt-3"> 
-          <label for="ex_file">업로드 <v-icon class="pt-1">mdi-camera</v-icon></label> 
+          <label for="ex_file"><v-icon class="pt-1">mdi-camera</v-icon></label> 
           <input type="file" id="ex_file" accept="image/*" @click="getPhoto()" ref="imageInput"> 
         </div>
       </div> 
@@ -121,7 +124,7 @@
       </v-form>
       <!-- 반려견 등록 버튼  -->
       <div class="d-flex justify-center mt-9">
-        <v-btn id="mainBtn" @click="updateDog()">반려견 정보 수정</v-btn>
+        <v-btn id="mainBtn" @click="updateDog()"><b>반려견 정보 수정</b></v-btn>
       </div>
 
     </div>
@@ -131,7 +134,7 @@
           color="red" text width="50px"
           @click="snackbar = true"
         >
-          삭제
+          <b>삭제</b>
         </v-btn>
 
         <v-snackbar
@@ -170,6 +173,7 @@ export default {
       modal: false,
       menu2: false,
       file: null,
+      pageOn: false,
 
       multiLine: true,
       snackbar: false,
@@ -235,15 +239,15 @@ export default {
       var camera = document.getElementById('ex_file')
       var t = this
       camera.addEventListener('change', function(e) {
+        t.pageOn = true
         let formData = new FormData()
-        var file = e.target.files[0]
         t.file = e.target.files[0]
-        console.log(file,'파일')
         formData.append('file', t.file)
         t.makeTempPhotoUrlInApi(
           formData
         ).then (()=> {
           t.photo_url = t.getTempPhotoURL
+          t.pageOn = false
         })    
       })
     },
@@ -301,6 +305,7 @@ export default {
           )
 
           this.NoPhotoUpdateDogInfoInApi(formData).then(() => {
+            alert('수정되었습니다!')
             this.$router.push('/mypage')
           })
       } 
@@ -339,6 +344,7 @@ export default {
           formData.append('file', this.file)
 
           this.updateDogInfoInApi(formData).then(() => {
+            alert('수정되었습니다!')
             this.$router.push('/mypage')
           })
       }
@@ -404,6 +410,7 @@ export default {
           this.showDogInfoInApi(this.getMyDogListInfo[0].peid)
           .then(() => {
             this.snackbar = false
+            alert('삭제되었습니다!')
             this.$router.push('/mypage')
           })
           

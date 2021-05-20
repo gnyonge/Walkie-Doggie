@@ -18,6 +18,8 @@
       </div>
       <!-- 이미지 -->
       <div id="contentBox">
+        <div class="loader d-flex justify-center align-center" v-if="!photo_url && pageOn" style="width: 100%; height: 330px;">
+          <b-spinner label="Spinning"></b-spinner></div>
         <v-img
           v-if="photo_url"
           height="330"
@@ -92,7 +94,7 @@
       </div>
       <!-- 완료버튼 -->
       <div class="d-flex justify-end">
-        <v-btn id="mainBtn" width="50px" @click="createDiary()" :disabled="confirm == false">완료</v-btn>
+        <v-btn id="mainBtn" width="50px" @click="createDiary()" :disabled="confirm == false"><b>완료</b></v-btn>
       </div>
     </div>
   </div>
@@ -112,6 +114,7 @@ export default {
         healthContent: "", // 건강사항 내용 (1개)
         healthArray: [], // 건강사항 내용들 (전체)
         photo_url: false,
+        pageOn: false,
         file: {},
         rules1: [
         value => !!value || '필수 입력사항입니다!',
@@ -187,6 +190,7 @@ export default {
         var t = this
         var photo = document.getElementById('ex_file')
         photo.addEventListener('change', function(event) {
+          t.pageOn = true
           const formData = new FormData()
           var file = event.target.files[0]
           t.file = event.target.files[0]

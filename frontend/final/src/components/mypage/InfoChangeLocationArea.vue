@@ -54,7 +54,7 @@ export default {
       document.head.appendChild(recaptchaScript)
     },
   methods: {
-    ...mapActions(['setAddressInApi', 'setAddressInApi']),
+    ...mapActions(['setAddressInApi']),
     goback() {
       if (this.getDogInfo.pet.peid) {
         this.$router.push('/mypage')
@@ -65,6 +65,7 @@ export default {
         add: this.addressChange,
         uid: this.getUser.uid
       }).then(() => {
+        alert('변경되었습니다!')
         this.$router.push('/mypage')
       })
     },
@@ -93,20 +94,10 @@ export default {
           break
         }  
   }
-  const finalAddress = sAddress.join(" ");
-  this.addressChange = finalAddress
-  // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)' 주소 세번째 꺼로 가져오기 
+      const finalAddress = sAddress.join(" ");
+      this.addressChange = finalAddress
     },
-    setAddress() {
-      console.log(this.address, '최종 어드레스')
-      this.setAddressInApi({
-        uid: this.getUser.uid,
-        add: this.addressChange
-      })
-      .then(() => {
-        this.$router.push('/dogregister')
-      })
-    },
+
   }
 }
 </script>
