@@ -24,5 +24,8 @@ public interface UserService {
 	int updateFlag(String email);
 	
 	EmailAuthDto checkEmailAuth(String email);
+
+	String isKakao(String uid);
+    int leaveUserKakao(String uid);
 	
 	}
