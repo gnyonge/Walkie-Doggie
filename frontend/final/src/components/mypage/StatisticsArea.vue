@@ -18,10 +18,14 @@
 
 <script>
 import Chart from '@/components/mypage/Chart'
+import {mapGetters} from 'vuex'
 export default {
   name: "StatisticsArea",
   components: {
     Chart,
+  },
+  computed: {
+    ...mapGetters(['getUser'])
   },
   methods: {
     goback() {
@@ -37,10 +41,6 @@ export default {
   border-radius: 70%;
   overflow: hidden;
   border: solid 3px;
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
-  
 }
 .mypage-list {
   width: 100%;

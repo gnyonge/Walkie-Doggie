@@ -3,9 +3,9 @@
     <div>  
       <!-- 1. 프로필 박스 -->
       <div class="mx-3 mt-3" id="mainBox">
-        <div class="d-flex">
+        <div class="d-flex justify-space-between">
           <!-- 1. 프로필 사진 --> 
-          <div class="mt-10">
+          <div class="mt-10 mr-2">
             <!-- 프사 있을 때 -->
             <v-img :src="pet.pe_profile_photo" 
             class="rounded-circle"
@@ -54,7 +54,6 @@
           </div>
         </div>
       </div>
-        
       <!-- 버튼 그룹 --> 
       <div class="d-flex">
         <!-- 건강 버튼-->
@@ -82,49 +81,49 @@
       </div>
     </div>
       <!-- 3.강아지 일기 관리 --> 
-      <div class="ml-5 mt-3">
-        <h5><b>강아지 계정 관리</b> </h5>
-      </div>
-        <div class="frame" >
-          <div class="card-list">
-            <div class="mt-5" id="dogBox" v-for="(my, idx) in myPetList" :key="idx" :class="{push: pet.peid == my.peid}">
-              <div class="d-flex justify-end">
-                <v-icon v-if="pet.peid == my.peid" @click="goto('dogchange')">mdi-cog-outline</v-icon>
-                <v-icon v-else style="color: white;">mdi-radiobox-blank</v-icon>
-              </div>
-              <div>
-                <v-img :src="my.pe_profile_photo" 
-                  class="rounded-circle" height="158"
-                  max-height="158"
-                  max-width="158" alt="프로필"
-                  @click="selectDog(my.peid)">
-                  </v-img>
-              </div>
-              <div class="d-flex justify-center mt-9">
-                <p style="color:#79704F; font-size:24px;">{{my.pe_name}}</p>
-              </div>
-              <div class="d-flex justify-center">
-                <div style="color:#79704F; font-size:20px;">{{my.pe_age}}살</div>
-              </div>
-              
-            </div>
-            <div class="mt-3">
-              <v-btn
-              class="mx-2"
-              fab
-              dark
-              color="#BAF1E4"
-              @click="addDog()"
-            >
-                <v-icon>
-                  mdi-plus
-                </v-icon>
-              </v-btn>
-            </div>
-            <div class="space"></div>
-            </div>
+    <div class="ml-5 mt-3">
+      <h5><b>강아지 계정 관리</b> </h5>
+    </div>
+    <div class="frame" >
+      <div class="card-list">
+        <div class="mt-5" id="dogBox" v-for="(my, idx) in myPetList" :key="idx" :class="{push: pet.peid == my.peid}">
+          <div class="d-flex justify-end">
+            <v-icon v-if="pet.peid == my.peid" @click="goto('dogchange')">mdi-cog-outline</v-icon>
+            <v-icon v-else style="color: white;">mdi-radiobox-blank</v-icon>
           </div>
+          <div>
+            <v-img :src="my.pe_profile_photo" 
+              class="rounded-circle" height="158"
+              max-height="158"
+              max-width="158" alt="프로필"
+              @click="selectDog(my.peid)">
+              </v-img>
+          </div>
+          <div class="d-flex justify-center mt-9">
+            <p style="color:#79704F; font-size:24px;">{{my.pe_name}}</p>
+          </div>
+          <div class="d-flex justify-center">
+            <div style="color:#79704F; font-size:20px;">{{my.pe_age}}살</div>
+          </div>
+          
         </div>
+        <div class="mt-3">
+          <v-btn
+          class="mx-2"
+          fab
+          dark
+          color="#BAF1E4"
+          @click="addDog()"
+        >
+            <v-icon>
+              mdi-plus
+            </v-icon>
+          </v-btn>
+        </div>
+        <div class="space"></div>
+        </div>
+      </div>
+  </div>
 </template>
 
 <script>
@@ -144,18 +143,24 @@ export default {
       myPetList: [],
     }),
   created() {
-    this.getUserInfoInApi(this.getUser.uid) // 모든 펫 리스트 가져오기
-    .then(() => {
-      this.myPetList = this.getMyDogListInfo
-    })
-    this.showDogInfoInApi(this.getDogInfo.pet.peid) // 현재 펫 정보 가져오기
-    .then(() => {
-      this.pet = this.getDogInfo.pet
-      if (this.getDogInfo.pet.pe_profile_photo.length != 0) {
-        this.photo = true
+     if (this.getUser == undefined) {
+        alert('로그인 해주세요!')
+        this.$router.push('/')
+      } else {
+        this.getUserInfoInApi(this.getUser.uid) // 모든 펫 리스트 가져오기
+        .then(() => {
+          this.myPetList = this.getMyDogListInfo
+        })
+        this.showDogInfoInApi(this.getDogInfo.pet.peid) // 현재 펫 정보 가져오기
+        .then(() => {
+          this.pet = this.getDogInfo.pet
+          if (this.getDogInfo.pet.pe_profile_photo.length != 0) {
+            this.photo = true
+          }
+          this.allergy = this.getDogInfo.allergy
+        })
       }
-      this.allergy = this.getDogInfo.allergy
-    })
+    
   },
   computed: {
     ...mapGetters(['getDogInfo', 'getUser', 'getMyDogListInfo', 'getAddress']) 
@@ -221,7 +226,7 @@ export default {
 }
 
 .frame {
-  width: 360px;
+  min-width: 360px;
   overflow: auto;
 }
 

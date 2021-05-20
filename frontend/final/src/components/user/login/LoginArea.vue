@@ -1,7 +1,7 @@
 <template>
-  <div class="">
+  <div>
     <!-- 로그인--> 
-    <div class="">
+    <div>
       <!-- <v-form @submit.prevent="onSignin"> -->
       <div id="mainBox">
         <div class="d-flex justify-space-between">
@@ -21,13 +21,12 @@
         <div style="color:red; font-size:14px" v-if="check">
           아이디나 비밀번호를 확인해주세요.
         </div>
-          <div class="d-flex justify-center">
-            <v-btn class="login-btn" id="mainBtn" style="width:100%; margin-top:30px; margin-bottom: 30px; font-size: 20px; height:45px; border-radius: 5px;" @click="login()"><b>로그인</b></v-btn>
-          </div>
+        <div class="d-flex justify-center">
+          <v-btn class="login-btn" id="mainBtn" style="width:100%; margin-top:30px; margin-bottom: 30px; font-size: 20px; height:45px; border-radius: 5px;" @click="login()"><b>로그인</b></v-btn>
+        </div>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -73,15 +72,12 @@ export default {
             .then(() => {
               this.$router.push('/calendar')
             })
-            
           })
         }
         else {
           this.check = true
         }
       })
-      
-       // 반려견 등록 페이지로 이동 
     },
   }
 }

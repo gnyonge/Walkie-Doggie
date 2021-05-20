@@ -104,5 +104,15 @@ public class UserServiceImpl implements UserService{
 		return udao.checkEmailAuth(email);
 	}
 
+	@Override
+	public String isKakao(String uid) {
+		return udao.isKakao(uid);
+	}
+
+	@Override
+	public int leaveUserKakao(String uid) {
+		return udao.leaveUserKakao(uid);
+	}
+
 
 }

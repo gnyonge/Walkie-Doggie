@@ -56,4 +56,13 @@
 	<select id="checkEmailAuth" parameterType="String" resultType="EmailAuthDto">
 		select * from emailAuth where email=#{email}
 	</select>
+
+	<select id="isKakao" parameterType="String" resultType="String">
+		select IFNULL(u_password,'0') from User where uid=#{uid}
+	</select>
+
+	<update id="leaveUserKakao" parameterType="String">
+		update User set u_flag=1 where uid=#{uid}
+	</update>
+
 </mapper>
