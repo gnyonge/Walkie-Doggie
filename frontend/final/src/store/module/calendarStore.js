@@ -8,6 +8,7 @@ const state = {
   myDiaryObject: {}, // 다이어리 전체 객체
   myWalkObject: {}, // 산책기록 전체 객체
   foodResult: {}, // 성분분석 후 전체 객체
+  allDiaryList: [] // 전체 일기들
 };
 const getters = {
   getNowTab(state) {
@@ -31,6 +32,9 @@ const getters = {
   getFoodResult(state) {
     return state.foodResult
   },
+  getAllDiaryList(state) {
+    return state.allDiaryList
+  },
 };
 const mutations = {
   setNowTab(state, now) {
@@ -53,6 +57,9 @@ const mutations = {
   },
   setFoodResult(state, data) {
     state.foodResult = data
+  },
+  setAllDiaryList(state, data) {
+    state.allDiaryList = data
   },
 };
 const actions = {
@@ -136,6 +143,15 @@ const actions = {
     return rscApi.post(`ocr?peid=${peid}`, formData)
     .then((res) => {
       context.commit('setFoodResult', res.data)
+    }).catch((error) => {
+      console.log(error)
+    })
+  },
+  allDiaryInApi(context, peid) {
+    return rscApi.get(`diary/show?peid=${peid}`)
+    .then((res) => {
+      context.commit('setAllDiaryList', res.data.All_diary)
+      console.log(res.data.All_diary, '올다이어리')
     }).catch((error) => {
       console.log(error)
     })
