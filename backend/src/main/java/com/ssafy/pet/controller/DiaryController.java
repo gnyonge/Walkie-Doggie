@@ -135,7 +135,6 @@ public class DiaryController {
 
 		try {
 			logger.info("=====> 기록일지 등록 시작! 사진없이!");
-			System.out.println(diary);
 
 			if (health_list != null) {
 				for (HealthDto dto : health_list) {

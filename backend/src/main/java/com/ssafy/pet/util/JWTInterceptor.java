@@ -21,7 +21,7 @@ public class JWTInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println(request.getMethod() + " : " + request.getServletPath());
+		logger.info(request.getMethod() + " : " + request.getServletPath());
 		logger.info("PASS");
 
 		// option 요청은 바로 통과시켜주자.

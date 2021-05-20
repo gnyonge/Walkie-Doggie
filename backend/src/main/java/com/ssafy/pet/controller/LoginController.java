@@ -76,21 +76,16 @@ public class LoginController {
 
 		try {
 			logger.info("=====> 카카오 로그인 시작");
-			for (String name : res.getHeaderNames()) {
-				System.out.println(name + " " + res.getHeader(name));
-			}
+
 			String access_Token = kakao.getAccessToken(code);
 
 			Map<String, Object> userInfo = kakao.getUserInfo(access_Token);
-			System.out.println("login Controller : " + userInfo);
 			// 닉네임이랑 이메일만 가져옵니다 저는
 
-			System.out.println(userInfo.get("email"));
 			String email = (String) userInfo.get("email");
 			String nickname = (String) userInfo.get("nickname");
 
 			UserDto kakaoCome = loginservice.check_email(email);
-			System.out.println(kakaoCome);
 			if (kakaoCome != null && kakaoCome.getU_password() != null) {
 				resultMap.put("message", "회원가입이 되어있는 이메일입니다.");
 
@@ -175,7 +170,6 @@ public class LoginController {
 			logger.info("=====> 카카오 정보 로그인 시작");
 			UserDto check_user = loginservice.check_email(user.getU_email());
 
-			System.out.println(check_user);
 			if (check_user != null && check_user.getU_password() != null) {
 				resultMap.put("message", "회원가입이 되어있는 이메일입니다.");
 
