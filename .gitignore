@@ -42,5 +42,3 @@ build/
 application.pid
 package-lock.json
 
-###readme###
-/readme.assets

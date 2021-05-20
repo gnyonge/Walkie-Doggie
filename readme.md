@@ -49,82 +49,11 @@ backend
 
 ### 📦backend
 
-┣ 📂.mvn
-┣ 📂.settings
-┣ 📂src
-┃ ┣ 📂main
-┃ ┃ ┣ 📂java
-┃ ┃ ┃ ┗ 📂com
-┃ ┃ ┃ ┃ ┗ 📂ssafy
-┃ ┃ ┃ ┃ ┃ ┗ 📂pet
-┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂config
-┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
-┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂dao
-┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂dto
-┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂service
-┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂util
-┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜BackendApplication.java
-┃ ┃ ┗ 📂resources
-┃ ┃ ┃ ┣ 📂mapper
-┃ ┃ ┃ ┗ 📜application.properties
-┃ ┗ 📂test
-┣ 📂target
-┣ 📂tessdata
-┣ 📜.classpath
-┣ 📜.factorypath
-┣ 📜.gitignore
-┣ 📜.project
-┣ 📜mvnw
-┣ 📜mvnw.cmd
-┣ 📜pom.xml
-┗ [📜README.md](http://xn--readme-o754e.md/)
+![](C:\SSAFY\3rdProject\FnalProject(0511)\readme.assets\백엔드구조.PNG)
 
 ### 📦frontend
 
-┣ 📂node_modules
-┣ 📂public
-┣ 📂src
-┃ ┣ 📂assets
-┃ ┣ 📂components
-┃ ┃ ┣ 📂calendar
-┃ ┃ ┣ 📂food
-┃ ┃ ┣ 📂mypage
-┃ ┃ ┣ 📂user
-┃ ┃ ┣ 📂walk
-┃ ┃ ┣ 📜BarChart.vue
-┃ ┃ ┣ 📜BottomNav.vue
-┃ ┃ ┣ 📜Reactive.vue
-┃ ┃ ┗📜TopNav.vue
-┃ ┣ 📂plugins
-┃ ┣ 📂router
-┃ ┣ 📂services
-┃ ┣ 📂store
-┃ ┃ ┣📂module
-┃ ┃ ┃ ┣ 📜calendarStore.js
-┃ ┃ ┃ ┣ 📜foodStore.js
-┃ ┃ ┃ ┣ 📜loginSignupStore.js
-┃ ┃ ┃ ┣ 📜mypageStore.js
-┃ ┃ ┃ ┗ 📜walkStore.js
-┃ ┃ ┗ 📜index.js
-┃ ┗ 📂views
-┃ ┃ ┣ 📂calendar
-┃ ┃ ┣ 📂food
-┃ ┃ ┣ 📂mypage
-┃ ┃ ┣ 📂register
-┃ ┃ ┣ 📂walk
-┃ ┃ ┣ 📜Login.vue
-┃ ┃ ┣ 📜LoginMain.vue
-┃ ┃ ┣ 📜NotFound.vue
-┃ ┃ ┗ 📜Signup.vue
-┃ ┣ 📜App.vue
-┃ ┗ 📜main.js
-┣ 📜.gitignore
-┣ 📜babel.config.js
-┣ 📜package-lock.json
-┣ 📜package.json
-┣ [📜README.md](http://xn--readme-o754e.md/)
-┣ 📜vue.config.js
-┗ 📜yarn.lock
+![](C:\SSAFY\3rdProject\FnalProject(0511)\readme.assets\프론트구조.PNG)
 
 ## 시스템 아키텍처
 
