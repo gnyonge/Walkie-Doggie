@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ssafy.pet.dao.WalkDao">
+	
+	<!-- 산책 정보 -->
+	<insert id="createWalk" parameterType="WalkDto" useGeneratedKeys="true" keyProperty="wid" keyColumn="wid" >
+		insert into Walk(peid, w_date, w_flag, w_like, w_location)
+		values(#{peid}, now(), 0, #{w_like}, #{w_location});
+	</insert>
+
+	<update id="endWalk" parameterType="WalkDto" >
+		update Walk
+		set w_like=#{w_like}, w_time=#{w_time}, w_flag=2 
+		where wid=#{wid};
+	</update>
+
+	<select id="getLikeInfo" parameterType="Integer" resultType="map" >
+		select l.lid, l.l_image, l.l_desc, l.l_date, pl.p_latitude, pl.p_longtitude, p.pe_name
+		from LikePlace as l join Pet as p on l.peid = p.peid join Place as pl on l.pid = pl.pid
+		where l.lid=#{lid} and l.l_flag=0
+		order by l.l_like desc;
+	</select>
+
+</mapper>

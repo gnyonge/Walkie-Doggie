@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ssafy.pet.dao.UserDao">
+
+	<insert id="signup" parameterType="UserDto">
+		insert into User(uid, u_email, u_password, u_nickname)
+		values(#{uid}, #{u_email}, #{u_password}, #{u_nickname})
+	</insert>
+	
+	<select id="check_nick" parameterType="String" resultType="int">
+		select count(*) from User where u_nickname= #{u_nickname}
+	</select>
+	
+	<select id="checkEmail" parameterType="String" resultType="UserDto">
+		select * from User where u_email=#{email}
+	</select>
+	
+	<select id="petInfo" parameterType="String" resultType="PetDto">
+		select * from Pet where uid=#{uid} and pe_flag=0
+	</select>
+	
+	<update id="setAddress" parameterType="map">
+		update User set u_location=#{address} where uid=#{uid}
+	</update>
+	
+	<update id="leaveUser" parameterType="map">
+		update User set u_flag=1 where uid=#{uid} and u_password=#{password}
+	</update>
+	
+	<select id="checkPass" parameterType="String" resultType="UserDto">
+		select * from User where uid=#{uid}
+	</select>
+	<update id="changePass" parameterType="map">
+		update User set u_password=#{password} where uid=#{uid}
+	</update>
+	
+	<select id="checkAuth" parameterType="String" resultType="EmailAuthDto">
+		select * from emailAuth where email=#{email}
+	</select>
+	
+	<insert id="insertAuth" parameterType="EmailAuthDto">
+		insert into emailAuth(email, auth)
+		values(#{email}, #{auth})	
+	</insert>
+	
+	<update id="updateAuth" parameterType="EmailAuthDto">
+		update emailAuth set auth=#{auth} where email=#{email}
+	</update>
+	
+	<update id="updateFlag" parameterType="String">
+		update emailAuth set flag=1 where email=#{email}
+	</update>
+	
+	<select id="checkEmailAuth" parameterType="String" resultType="EmailAuthDto">
+		select * from emailAuth where email=#{email}
+	</select>
+
+	<select id="isKakao" parameterType="String" resultType="String">
+		select IFNULL(u_password,'0') from User where uid=#{uid}
+	</select>
+
+	<update id="leaveUserKakao" parameterType="String">
+		update User set u_flag=1 where uid=#{uid}
+	</update>
+
+</mapper>

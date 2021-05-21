@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.pet.dao.HealthDao">
+
+	<insert id="insert_health" parameterType="HealthDto">
+		insert into
+		Health(hid,
+		peid,
+		h_content, h_date, h_flag)
+		values(#{hid},
+		#{peid},
+		#{h_content},
+		#{h_date}, 0)
+	</insert>
+
+	<select id="get_health" parameterType="String"
+		resultType="HealthDto">
+		select * from Health where h_flag=0 and h_date=#{h_date} and peid=#{peid}
+	</select>
+
+	<update id="update_health" parameterType="HealthDto">
+		update Health
+		set
+		h_content=#{h_content} where hid=#{hid}
+	</update>
+
+	<update id="delete_health" parameterType="HealthDto">
+		update Health set
+		h_flag=1
+		where hid=#{hid}
+	</update>
+
+</mapper>
