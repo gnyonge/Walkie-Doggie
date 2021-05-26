@@ -32,11 +32,16 @@
 
 ```bash
 frontend
-> cd final
+
+frontend/final/src/services/api.js
+4번째 줄을 주석처리하고 7번째 줄 주석을 해제한 뒤
+
+> cd frontend/final
 > npm install
 > npm run serve
 
 backend
+> cd backend
 > ./mvnw spring-boot:run
 ```
 
